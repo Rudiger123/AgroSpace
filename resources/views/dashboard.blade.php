@@ -13,5 +13,7 @@
                 </div>
             </div>
         </div>
+        <livewire:logout>
+            
     </div>
 </x-app-layout>

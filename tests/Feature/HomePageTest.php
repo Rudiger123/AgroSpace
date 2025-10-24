@@ -1,7 +1,6 @@
 <?php
 
-it('returns a successful response', function () {
+it('Welcome to AgroSpace', function () {
     $response = $this->get('/');
-
     $response->assertStatus(200);
 });
