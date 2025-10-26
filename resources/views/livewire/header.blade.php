@@ -27,7 +27,7 @@ new class extends Component {
         <!-- Logo -->
         <div class="flex items-center space-x-2">
             <a href="/" class="flex items-center space-x-2">
-                <img src="{{ asset('images/logo-agrospace.png') }}" alt="AgroSpace Logo" class="h-8 w-8 object-contain">
+                <img src="{{ asset('agrospace.png') }}" alt="AgroSpace Logo" class="h-8 w-8 object-contain">
                 <span class="text-2xl font-bold text-green-900">AgroSpace</span>
             </a>
         </div>

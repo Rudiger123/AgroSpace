@@ -29,7 +29,7 @@ new class extends Component {
 
 <div>
     <button wire:click="logout"
-    class="w-full text-left px-4 py-2 rounded-lg  bg-gradient-to-br from-[#132c15] via-[#033806] to-[#05640b] hover:bg-green-700">
+    class="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors">
         Déconnexion
     </button>
 </div>
