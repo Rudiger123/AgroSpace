@@ -5,7 +5,7 @@
     x-transition:leave="transition ease-in duration-300"
     x-transition:leave-start="opacity-100 transform translate-y-0"
     x-transition:leave-end="opacity-0 transform translate-y-2"
-    class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-lg shadow-md">
+    class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-lg shadow-md m-4">
     <div class="flex items-center">
         <div class="flex-shrink-0">
             <svg class="h-6 w-6 text-green-500" fill="none" stroke="currentColor"

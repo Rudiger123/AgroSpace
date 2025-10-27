@@ -8,19 +8,35 @@ use Livewire\Volt\Component;
 new #[Layout('layouts.guest')] class extends Component {
     public LoginForm $form;
 
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function login(): void
-    {
-        $this->validate();
+  /**
+ * Handle an incoming authentication request.
+ */
+public function login(): void
+{
+    $this->validate();
 
-        $this->form->authenticate();
+    $this->form->authenticate(); // Authentifie l'utilisateur
+    $user = Auth::user();
 
-        Session::regenerate();
+    Session::regenerate(); // Sécurise la session
 
-        $this->redirectIntended(default: route('dashboard', absolute: false));
+    // Vérifie si 2FA est activé
+    if ($user->two_factor_enabled) {
+        // Déconnecte temporairement l'utilisateur
+        Auth::logout();
+
+        // Stocke l'ID utilisateur dans la session pour le challenge 2FA
+        session(['2fa:user:id' => $user->id]);
+
+        // Redirige vers la page de challenge 2FA
+        $this->redirectRoute('2fa.challenge');
+        return; // On stoppe ici pour ne pas continuer vers le dashboard
     }
+
+    // Sinon, accès normal au dashboard
+    $this->redirectIntended(default: route('dashboard', absolute: false));
+}
+
 }; ?>
 
 <div>

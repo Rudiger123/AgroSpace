@@ -24,12 +24,17 @@ class User extends Authenticatable implements MustVerifyEmail
         'avatar',
         'bio',
         'location',
-        'activity'
+        'activity',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
+        'two_factor_enabled',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     protected function casts(): array
@@ -37,6 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'two_factor_enabled' => 'boolean',
         ];
     }
 
@@ -44,4 +50,25 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Role::class);
     }
+
+     // Accessors pour chiffrer/déchiffrer automatiquement
+     public function setTwoFactorSecretAttribute($value)
+     {
+         $this->attributes['two_factor_secret'] = encrypt($value);
+     }
+ 
+     public function getTwoFactorSecretAttribute($value)
+     {
+         return $value ? decrypt($value) : null;
+     }
+ 
+     public function setTwoFactorRecoveryCodesAttribute($value)
+     {
+         $this->attributes['two_factor_recovery_codes'] = encrypt(json_encode($value));
+     }
+ 
+     public function getTwoFactorRecoveryCodesAttribute($value)
+     {
+         return $value ? json_decode(decrypt($value), true) : [];
+     }
 }

@@ -20,7 +20,7 @@ new class extends Component {
         $logout();
         // Message flash pour la page de connexion
         session()->flash('message', 'Vous avez été déconnecté avec succès.');
-        $this->redirect('/', navigate: true);
+        $this->redirect('/');
     }
 }; ?>
 <aside x-data.ignore="{

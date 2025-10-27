@@ -209,7 +209,7 @@ new #[Layout('layouts.admin')] class extends Component {
                 <!-- Colonne droite - Informations détaillées -->
                 <div class="lg:col-span-2 space-y-6">
                     <!-- Tabs navigation -->
-                    <div x-data="{ activeTab: 'overview' }" class="bg-white rounded-xl shadow-soft overflow-hidden">
+                    <div x-data.ignore="{ activeTab: 'overview' }" class="bg-white rounded-xl shadow-soft overflow-hidden">
                         <!-- Tabs header -->
                         <div class="flex border-b border-[#E0E0E0]">
                             <button @click="activeTab = 'overview'"
@@ -314,13 +314,15 @@ new #[Layout('layouts.admin')] class extends Component {
                                         <div>
                                             <p class="text-sm font-medium text-[#37474F]">Authentification à deux
                                                 facteurs</p>
-                                            <p class="text-xs text-[#37474F]/60 mt-1">Activée</p>
+                                            <p class="text-xs text-[#37474F]/60 mt-1">Activée(recommandé)</p>
                                         </div>
                                         <div class="w-10 h-6 bg-[#2E7D32] rounded-full relative cursor-pointer">
                                             <div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full">
                                             </div>
                                         </div>
                                     </div>
+
+                                    @livewire('auth.two-factor-settings')
 
                                     <button
                                         class="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg hover:bg-[#F9F6EE] transition-colors text-left">

@@ -1,4 +1,7 @@
 <?php
+
+use App\Livewire\Auth\TwoFactorChallenge;
+use App\Livewire\Auth\TwoFactorSettings;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -21,5 +24,11 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('/profile/settings', 'pages.admin.profile.profile-settings')->name('profile.settings');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/account/security', TwoFactorSettings::class)->name('account.security');
+});
 
+Route::get('/2fa-challenge', TwoFactorChallenge::class)
+    ->middleware('guest')
+    ->name('2fa.challenge');
 require __DIR__ . '/../auth/main.php';
