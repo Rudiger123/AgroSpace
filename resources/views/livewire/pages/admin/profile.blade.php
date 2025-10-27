@@ -56,7 +56,7 @@ new #[Layout('layouts.admin')] class extends Component {
 
             <!-- Carte profil -->
             <div class="max-w-5xl mx-auto px-6">
-                <div class="bg-white rounded-2xl shadow-strong -mt-24 relative z-10 p-6">
+                <div class="bg-white rounded-2xl shadow-strong -mt-24 relative p-6">
                     <div class="flex items-start justify-between">
                         <!-- Photo et infos -->
                         <div class="flex items-start space-x-6">
@@ -93,7 +93,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                             </path>
                                         </svg>
-                                        <span>Membre depuis {{ $created }}</span>
+                                        <span>Membre depuis {{ $created->format('d/m/Y') }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -329,6 +329,14 @@ new #[Layout('layouts.admin')] class extends Component {
                                             jours</p>
                                     </button>
 
+                                    @livewire('pages.admin.profile.changepasswordmodal')
+
+                                    <button
+                                        class="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg hover:bg-[#F9F6EE] transition-colors text-left">
+                                        <p class="text-sm font-medium text-[#5e4950]">Supprimer mon compte</p>
+                                    </button>
+                                    @livewire('pages.admin.profile.delete-account-modal')
+                                    
                                     <button
                                         class="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg hover:bg-[#F9F6EE] transition-colors text-left">
                                         <p class="text-sm font-medium text-[#37474F]">Sessions actives</p>

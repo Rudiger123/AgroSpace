@@ -1,5 +1,4 @@
 <?php
-use App\Livewire\Admin\Profile as AdminProfile;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -11,11 +10,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('dashboard');
 
     Volt::route('/profile', 'pages.admin.profile')->name('profile');
-    //Route::get('/profile', AdminProfile::class)->name('profile');
 });
 
 Route::middleware(['auth', 'verified', 'role:admin'])->get('/admin', function () {
     return view('admin');
 })->name('admin');
+
+// Route protégée pour les paramètres de profil
+Route::middleware(['auth'])->group(function () {
+    Volt::route('/profile/settings', 'pages.admin.profile.profile-settings')->name('profile.settings');
+});
+
 
 require __DIR__ . '/../auth/main.php';

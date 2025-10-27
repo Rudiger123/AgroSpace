@@ -29,6 +29,12 @@ new #[Layout('layouts.guest')] class extends Component {
             <h2 class="text-2xl font-poppins text-agro-green mb-6">Login</h2>
             <form wire:submit="login" class="space-y-5">
 
+                {{-- Message Flash de Succès --}}
+                @if (session()->has('message'))
+                    <x-flash-message>
+                        {{ session('message') }}
+                    </x-flash-message>
+                @endif
 
                 {{-- Email Field --}}
                 <div>

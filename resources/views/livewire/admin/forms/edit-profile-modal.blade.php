@@ -1,4 +1,4 @@
-<div x-data.ignore x-cloak>
+<div x-data.ignore="{ show : false }" x-cloak>
 
     <style>
         [x-cloak] {
@@ -6,7 +6,7 @@
         }
     </style>
 
-    <button wire:click="open"
+    <button @click="show = true"
         class="px-4 py-2 bg-[#2E7D32] text-white rounded-lg font-medium hover:bg-[#1B5E20] 
           transition-all duration-200 transform hover:scale-105 shadow-soft hover:shadow-medium
           flex items-center space-x-2">
@@ -21,14 +21,14 @@
     {{-- resources/views/livewire/edit-profile-modal.blade.php --}}
     <div>
         <!-- Modal Overlay -->
-        <div x-show="{{ $isOpen }}" wire:click='close' x-transition:enter="transition ease-out duration-300"
+        <div x-show="show" @click="show = !show" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
             x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-60"
+            x-transition:leave-end="opacity-0" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
             style="display: none;"></div>
 
         <!-- Modal Content -->
-        <div x-show="{{ $isOpen }}" x-transition:enter="transition ease-out duration-300"
+        <div x-show="show" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 transform translate-y-4 scale-95"
             x-transition:enter-end="opacity-100 transform translate-y-0 scale-100"
             x-transition:leave="transition ease-in duration-200"
@@ -55,13 +55,20 @@
                                 <p class="text-white/80 text-sm">Mettez à jour vos informations personnelles</p>
                             </div>
                         </div>
-                        <button wire:click='close' class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                        <button @click="show = !show" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                         </button>
                     </div>
+
+                    {{-- Message Flash de Succès --}}
+                    @if (session()->has('message'))
+                        <x-flash-message>
+                            {{ session('message') }}
+                        </x-flash-message>
+                    @endif
 
                     <!-- Form Content -->
                     <form wire:submit.prevent="save" class="p-6 space-y-6">
@@ -282,7 +289,7 @@
 
                         <!-- Footer Buttons -->
                         <div class="flex items-center justify-end space-x-3 pt-4 border-t border-[#E0E0E0]">
-                            <button type="button" wire:click='close'
+                            <button type="button" @click="show = !show"
                                 class="px-6 py-2.5 border border-[#E0E0E0] rounded-lg font-medium text-[#37474F] hover:bg-[#F9F6EE] transition-all duration-200">
                                 Annuler
                             </button>

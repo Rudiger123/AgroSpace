@@ -86,7 +86,7 @@ class EditProfileModal extends Component
         $this->saving = false;
         
         // Message de succès
-        session()->flash('message', 'Profil mis à jour avec succès !');
+        session()->flash('message', 'Profil mis à jour avec succès ! Appuyer sur X ou annuler pour sortir');
         
         $this->close();
     }
