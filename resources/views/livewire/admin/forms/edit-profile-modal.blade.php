@@ -109,7 +109,6 @@
                                         </svg>
                                     </div>
                                 </div>
-
                                 <!-- Boutons d'upload -->
                                 <div class="flex-1">
                                     <label class="cursor-pointer">

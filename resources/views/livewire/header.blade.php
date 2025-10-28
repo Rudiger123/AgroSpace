@@ -90,9 +90,7 @@ new class extends Component {
                         x-transition
                         class="absolute right-0 mt-2 w-48 text-white bg-gradient-to-br from-[#2E7D32] via-[#388E3C] to-[#1B5E20] rounded-lg shadow-lg border border-green-400"
                     >
-                        <a href="/dashboard" class="block px-4 py-2 hover:bg-[#388E3C] rounded-lg">Dashboard</a>
-                       
-                        <livewire:logout>
+                        <a href="/dashboard" class="block px-4 py-2 hover:bg-[#388E3C] rounded-lg">Dashboard</a
                     </div>
                 </div>
             @endguest

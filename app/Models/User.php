@@ -14,7 +14,8 @@ use Illuminate\Notifications\Notifiable;
 #[UsePolicy(UserPolicy::class)]
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
 
     protected $fillable = [
         'name',
@@ -51,24 +52,29 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Role::class);
     }
 
-     // Accessors pour chiffrer/déchiffrer automatiquement
-     public function setTwoFactorSecretAttribute($value)
-     {
-         $this->attributes['two_factor_secret'] = encrypt($value);
-     }
- 
-     public function getTwoFactorSecretAttribute($value)
-     {
-         return $value ? decrypt($value) : null;
-     }
- 
-     public function setTwoFactorRecoveryCodesAttribute($value)
-     {
-         $this->attributes['two_factor_recovery_codes'] = encrypt(json_encode($value));
-     }
- 
-     public function getTwoFactorRecoveryCodesAttribute($value)
-     {
-         return $value ? json_decode(decrypt($value), true) : [];
-     }
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
+
+    // Accessors pour chiffrer/déchiffrer automatiquement
+    public function setTwoFactorSecretAttribute($value)
+    {
+        $this->attributes['two_factor_secret'] = encrypt($value);
+    }
+
+    public function getTwoFactorSecretAttribute($value)
+    {
+        return $value ? decrypt($value) : null;
+    }
+
+    public function setTwoFactorRecoveryCodesAttribute($value)
+    {
+        $this->attributes['two_factor_recovery_codes'] = encrypt(json_encode($value));
+    }
+
+    public function getTwoFactorRecoveryCodesAttribute($value)
+    {
+        return $value ? json_decode(decrypt($value), true) : [];
+    }
 }

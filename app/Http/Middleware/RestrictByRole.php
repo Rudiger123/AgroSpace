@@ -16,9 +16,9 @@ class RestrictByRole
     public function handle(Request $request, Closure $next, string $role): Response
     {
         if ($request->user()->role->name !== $role) {
-            abort(403,'Unauthorized');
+            abort(403, 'Unauthorized');
         }
-        
+
         return $next($request);
     }
 }

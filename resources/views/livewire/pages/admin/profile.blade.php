@@ -117,7 +117,6 @@ new #[Layout('layouts.admin')] class extends Component {
             </div>
         </div>
 
-
         <!-- Contenu principal -->
         <div class="max-w-5xl mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -209,7 +208,8 @@ new #[Layout('layouts.admin')] class extends Component {
                 <!-- Colonne droite - Informations détaillées -->
                 <div class="lg:col-span-2 space-y-6">
                     <!-- Tabs navigation -->
-                    <div x-data.ignore="{ activeTab: 'overview' }" class="bg-white rounded-xl shadow-soft overflow-hidden">
+                    <div x-data.ignore="{ activeTab: 'overview' }"
+                        class="bg-white rounded-xl shadow-soft overflow-hidden">
                         <!-- Tabs header -->
                         <div class="flex border-b border-[#E0E0E0]">
                             <button @click="activeTab = 'overview'"
@@ -338,7 +338,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                         <p class="text-sm font-medium text-[#5e4950]">Supprimer mon compte</p>
                                     </button>
                                     @livewire('pages.admin.profile.delete-account-modal')
-                                    
+
                                     <button
                                         class="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg hover:bg-[#F9F6EE] transition-colors text-left">
                                         <p class="text-sm font-medium text-[#37474F]">Sessions actives</p>

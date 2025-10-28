@@ -22,10 +22,51 @@
 <body class="font-inter antialiased bg-agro-white text-agro-gray">
     {{-- Header Component --}}
     @livewire('header')
-    
+
     <main>
         {{ $slot }}
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('message');
+            @if (session('toast'))
+                Swal.fire({
+                    icon: "{{ session('toast.type') }}",
+                    title: "{{ session('toast.message') }}",
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            @endif
+        });
+
+        // Écouteur pour les notifications toast
+        window.addEventListener('show-toast', event => {
+            const {
+                type,
+                message
+            } = event.detail;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: type || 'info',
+                title: message || 'Opération effectuée'
+            });
+        });
+    </script>
 
     @livewireScripts
 </body>

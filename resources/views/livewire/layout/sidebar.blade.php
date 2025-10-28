@@ -12,6 +12,20 @@ new class extends Component {
         $this->user = Auth::user();
     }
 
+    protected $listeners = [
+        "logout" => 'logout',
+    ];
+
+      // Confirmation de la deconnection
+      public function confirmLogout()
+      {
+        $this->dispatch(
+            'confirm-logout',
+            title: 'Confirmer la déconnexion',
+            text:"Êtes-vous sûr de vouloir vous déconnecter ?",
+        );
+      }
+
     /**
      *  Déconnexion de l'utilisateur
      */
@@ -19,7 +33,10 @@ new class extends Component {
     {
         $logout();
         // Message flash pour la page de connexion
-        session()->flash('message', 'Vous avez été déconnecté avec succès.');
+        session()->flash('toast', [
+            'type' => 'success',
+            'message' => 'Vous avez été déconnecté avec succès.',
+        ]);
         $this->redirect('/');
     }
 }; ?>
@@ -116,18 +133,11 @@ new class extends Component {
             <div x-show="open && sidebarOpen" x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 transform -translate-y-2"
                 x-transition:enter-end="opacity-100 transform translate-y-0" class="ml-11 mt-1 space-y-1">
-                <a href="/offers/all"
+                <a href="{{ route('offers.my') }}"
                     class="block px-4 py-2 text-sm text-[#37474F] hover:text-[#2E7D32] transition-colors rounded-lg hover:bg-[#F9F6EE]">
-                    Toutes les offres
+                    Mes offres
                 </a>
-                <a href="/offers/active"
-                    class="block px-4 py-2 text-sm text-[#37474F] hover:text-[#2E7D32] transition-colors rounded-lg hover:bg-[#F9F6EE]">
-                    Offres actives
-                </a>
-                <a href="/offers/archived"
-                    class="block px-4 py-2 text-sm text-[#37474F] hover:text-[#2E7D32] transition-colors rounded-lg hover:bg-[#F9F6EE]">
-                    Archives
-                </a>
+
             </div>
         </div>
     </nav>
@@ -158,7 +168,7 @@ new class extends Component {
                 </a>
 
                 <div>
-                    <button wire:click="logout" wire:confirm="Êtes-vous sûr de vouloir vous déconnecter ?"
+                    <button wire:click="confirmLogout"
                         class="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors">
                         <span class="flex items-center space-x-3">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

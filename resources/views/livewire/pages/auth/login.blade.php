@@ -44,14 +44,6 @@ public function login(): void
         <div class="bg-agro-white p-8 rounded-lg shadow-lg w-full max-w-md">
             <h2 class="text-2xl font-poppins text-agro-green mb-6">Login</h2>
             <form wire:submit="login" class="space-y-5">
-
-                {{-- Message Flash de Succès --}}
-                @if (session()->has('message'))
-                    <x-flash-message>
-                        {{ session('message') }}
-                    </x-flash-message>
-                @endif
-
                 {{-- Email Field --}}
                 <div>
                     <label for="email" class="block text-sm font-medium text-[#37474F] mb-2">

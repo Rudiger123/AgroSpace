@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Auth;
 
-
 use Livewire\Component;
 use PragmaRX\Google2FA\Google2FA;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -31,7 +30,7 @@ class TwoFactorSettings extends Component
         $user->two_factor_secret = encrypt($secret);
 
         // 2️⃣ Générer les codes de récupération
-        $this->recoveryCodes = collect(range(1, 8))->map(fn() => bin2hex(random_bytes(5)))->toArray();
+        $this->recoveryCodes = collect(range(1, 8))->map(fn () => bin2hex(random_bytes(5)))->toArray();
         $user->two_factor_recovery_codes = encrypt(json_encode($this->recoveryCodes));
 
         $user->two_factor_enabled = true;
@@ -72,9 +71,9 @@ class TwoFactorSettings extends Component
         session()->flash('success', 'Authentification à deux facteurs désactivée.');
     }
 
-     /**
-     * Exporter les codes de récupération en CSV
-     */
+    /**
+    * Exporter les codes de récupération en CSV
+    */
     public function exportRecoveryCodes()
     {
         if (!$this->recoveryCodes || count($this->recoveryCodes) === 0) {

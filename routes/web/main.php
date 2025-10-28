@@ -1,10 +1,10 @@
 <?php
 
+use App\Livewire\Admin\Producer\OffersTable;
 use App\Livewire\Auth\TwoFactorChallenge;
 use App\Livewire\Auth\TwoFactorSettings;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
-
 
 Route::view('/', 'home')->name('home');
 
@@ -13,6 +13,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('dashboard');
 
     Volt::route('/profile', 'pages.admin.profile')->name('profile');
+
+    Route::get('/my-offers', OffersTable::class)->name('offers.my');
 });
 
 Route::middleware(['auth', 'verified', 'role:admin'])->get('/admin', function () {
