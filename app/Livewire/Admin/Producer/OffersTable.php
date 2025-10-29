@@ -77,7 +77,7 @@ class OffersTable extends Component
             'price' => 'nullable|numeric|min:0',
             'region' => 'required|string',
             'contact' => 'required|string|max:255',
-            'croppedImage' => 'nullable|string', // Base64 de l'image recadrée
+           'image' => 'nullable|image|max:5120', // 5MB
         ];
     }
     protected $messages = [
@@ -223,7 +223,7 @@ class OffersTable extends Component
             'contact' => $this->contact,
         ];
         // Traiter la nouvelle image si fournie
-        if ($this->croppedImage) {
+        if ($this->image) {
             // Supprimer l'ancienne image
             if ($offer->image && Storage::exists($offer->image)) {
                 Storage::delete($offer->image);
@@ -264,26 +264,15 @@ class OffersTable extends Component
      */
     private function processCroppedImage()
     {
-        if (!$this->croppedImage) {
+        if (!$this->image) {
             return;
         }
-        // Décoder l'image base64
-        $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $this->croppedImage));
+        if ($this->image) {
+            $path = $this->image->store('offers', 'public');
+            $this->existingImage = $path;
+        }
 
-        // Créer un nom de fichier unique
-        $filename = 'offers/' . uniqid() . '.jpg';
-
-        // Sauvegarder l'image avec Intervention Image pour optimisation
-        $image = Image::make($imageData);
-        $image->resize(800, 600, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
-        $image->encode('jpg', 85);
-
-        Storage::put($filename, (string) $image);
-
-        return $filename;
+        return $path;
     }
     /**
      * Fermer les modals

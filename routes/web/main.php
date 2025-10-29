@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Admin\consumer\DemandsTable;
 use App\Livewire\Admin\Producer\OffersTable;
 use App\Livewire\Auth\TwoFactorChallenge;
 use App\Livewire\Auth\TwoFactorSettings;
@@ -15,6 +16,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Volt::route('/profile', 'pages.admin.profile')->name('profile');
 
     Route::get('/my-offers', OffersTable::class)->name('offers.my');
+
+    Route::get('/my-demands', DemandsTable::class)->name('demands.my');
 });
 
 Route::middleware(['auth', 'verified', 'role:admin'])->get('/admin', function () {

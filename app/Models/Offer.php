@@ -46,7 +46,7 @@ class Offer extends Model
         }
 
         // Image par défaut si aucune image
-        return asset('images/default-offer.jpg');
+        return asset('images/offer-default.png');
     }
 
     /**
@@ -68,9 +68,9 @@ class Offer extends Model
     {
         return $query->where(function ($q) use ($search) {
             $q->where('title', 'like', "%{$search}%")
-              ->orWhere('description', 'like', "%{$search}%")
-              ->orWhere('category', 'like', "%{$search}%")
-              ->orWhere('region', 'like', "%{$search}%");
+                ->orWhere('description', 'like', "%{$search}%")
+                ->orWhere('category', 'like', "%{$search}%")
+                ->orWhere('region', 'like', "%{$search}%");
         });
     }
 

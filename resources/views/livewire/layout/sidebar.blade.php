@@ -140,6 +140,41 @@ new class extends Component {
 
             </div>
         </div>
+
+        <!-- Menu avec sous-menu -->
+        <div x-data.ignore="{ open: false }">
+            <button @click="open = !open"
+                class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 
+                   text-[#37474F] hover:bg-[#F9F6EE] group">
+                <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:scale-110"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+
+                <span x-show="sidebarOpen" x-transition class="font-medium flex-1 text-left">
+                    Demands
+                </span>
+
+                <svg x-show="sidebarOpen" :class="open ? 'rotate-180' : 'rotate-0'"
+                    class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                    </path>
+                </svg>
+            </button>
+
+            <!-- Sous-menu avec animation -->
+            <div x-show="open && sidebarOpen" x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 transform -translate-y-2"
+                x-transition:enter-end="opacity-100 transform translate-y-0" class="ml-11 mt-1 space-y-1">
+                <a href="{{ route('demands.my') }}"
+                    class="block px-4 py-2 text-sm text-[#37474F] hover:text-[#2E7D32] transition-colors rounded-lg hover:bg-[#F9F6EE]">
+                    My demands
+                </a>
+
+            </div>
+        </div>
     </nav>
 
     <!-- Footer avec profil utilisateur -->

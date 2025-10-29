@@ -95,15 +95,14 @@
                         wire:key="offer-{{ $offer->id }}">
                         {{-- Image --}}
                         <div class="relative h-48 overflow-hidden bg-gray-200">
-                            @if ($offer->image !== null)
-                            <img src="{{ $offer->image_url }}" alt="{{ $offer->title }}"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                            @else
-                            <img src="{{ Storage::url('offers-photos/offer-default.png') }}" alt="{{ $offer->title }}"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                            
+                            @php
+                                $imageUrl = $offer->image_url;
+                            @endphp
 
-                            @endif
-                           
+                            <img src="{{ $imageUrl }}" alt="{{ $offer->title }}"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+
                             {{-- Badge Catégorie --}}
                             <div class="absolute top-3 left-3">
                                 <span
@@ -269,129 +268,69 @@
                     <form wire:submit.prevent="{{ $showCreateModal ? 'createOffer' : 'updateOffer' }}"
                         class="p-6 space-y-6">
 
-                        {{-- Upload Image avec Cropper.js --}}
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-3">
-                                Photo de l'offre
-                            </label>
-                            <div x-data="{
-                                cropper: null,
-                                showCropper: false,
-                                imagePreview: '{{ $existingImage ? Storage::url($existingImage) : '' }}',
-                                initCropper(event) {
-                                    const file = event.target.files[0];
-                                    if (!file) return;
-                            
-                                    const reader = new FileReader();
-                                    reader.onload = (e) => {
-                                        this.imagePreview = e.target.result;
-                                        this.showCropper = true;
-                            
-                                        this.$nextTick(() => {
-                                            const image = document.getElementById('cropperImage');
-                                            if (this.cropper) {
-                                                this.cropper.destroy();
-                                            }
-                            
-                                            this.cropper = new Cropper(image, {
-                                                aspectRatio: 4 / 3,
-                                                viewMode: 2,
-                                                dragMode: 'move',
-                                                autoCropArea: 1,
-                                                restore: false,
-                                                guides: true,
-                                                center: true,
-                                                highlight: false,
-                                                cropBoxMovable: true,
-                                                cropBoxResizable: true,
-                                                toggleDragModeOnDblclick: false,
-                                            });
-                                        });
-                                    };
-                                    reader.readAsDataURL(file);
-                                },
-                                cropImage() {
-                                    if (this.cropper) {
-                                        const canvas = this.cropper.getCroppedCanvas({
-                                            width: 800,
-                                            height: 600,
-                                            imageSmoothingEnabled: true,
-                                            imageSmoothingQuality: 'high',
-                                        });
-                            
-                                        const croppedImage = canvas.toDataURL('image/jpeg', 0.85);
-                                        @this.set('croppedImage', croppedImage);
-                            
-                                        this.imagePreview = croppedImage;
-                                        this.showCropper = false;
-                                        this.cropper.destroy();
-                                        this.cropper = null;
-                                    }
-                                },
-                                cancelCrop() {
-                                    if (this.cropper) {
-                                        this.cropper.destroy();
-                                        this.cropper = null;
-                                    }
-                                    this.showCropper = false;
-                                    this.imagePreview = '{{ $existingImage ? Storage::url($existingImage) : '' }}';
-                                    document.getElementById('imageInput').value = '';
-                                }
-                            }" class="space-y-4">
-                                {{-- Zone d'upload --}}
-                                <div x-show="!showCropper">
-                                    <label
-                                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors relative overflow-hidden group">
+                        {{-- Upload Image Livewire simple --}}
+                        <div class="space-y-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Photo de l'offre</label>
 
-                                        {{-- Prévisualisation --}}
-                                        <div x-show="imagePreview" class="absolute inset-0">
-                                            <img :src="imagePreview" class="w-full h-full object-cover">
-                                            <div
-                                                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                <span class="text-white font-semibold">Changer l'image</span>
-                                            </div>
+                            <div
+                                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors relative overflow-hidden group">
+
+                                {{-- Prévisualisation Livewire --}}
+                                @if ($image)
+                                    <div class="absolute inset-0">
+                                        <img src="{{ $image->temporaryUrl() }}" class="w-full h-full object-cover">
+                                        <div
+                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <button type="button" wire:click="$set('image', null)"
+                                                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all">
+                                                Changer l'image
+                                            </button>
                                         </div>
-
-                                        {{-- Zone de drop par défaut --}}
-                                        <div x-show="!imagePreview"
-                                            class="flex flex-col items-center justify-center pt-5 pb-6">
-                                            <svg class="w-16 h-16 mb-4 text-gray-400" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
-                                                </path>
-                                            </svg>
-                                            <p class="mb-2 text-sm text-gray-500">
-                                                <span class="font-semibold">Cliquez pour télécharger</span> ou
-                                                glissez-déposez
-                                            </p>
-                                            <p class="text-xs text-gray-400">PNG, JPG, JPEG (MAX. 5MB)</p>
+                                    </div>
+                                @elseif($existingImage)
+                                    <div class="absolute inset-0">
+                                        <img src="{{ Storage::url($existingImage) }}"
+                                            class="w-full h-full object-cover">
+                                        <div
+                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <button type="button" wire:click="$set('image', null)"
+                                                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all">
+                                                Modifier
+                                            </button>
                                         </div>
-
-                                        <input id="imageInput" type="file" @change="initCropper($event)"
-                                            accept="image/png,image/jpeg,image/jpg" class="hidden">
-                                    </label>
-                                </div>
-
-                                {{-- Zone de recadrage --}}
-                                <div x-show="showCropper" x-cloak>
-                                    <div class="bg-gray-900 rounded-xl p-4">
-                                        <img id="cropperImage" :src="imagePreview" class="max-w-full">
                                     </div>
-
-                                    <div class="flex items-center justify-end space-x-3 mt-4">
-                                        <button type="button" @click="cancelCrop()"
-                                            class="px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-all">
-                                            Annuler
-                                        </button>
-                                        <button type="button" @click="cropImage()"
-                                            class="px-4 py-2 bg-[#2E7D32] text-white rounded-lg font-medium hover:bg-[#1B5E20] transition-all">
-                                            Valider le recadrage
-                                        </button>
+                                @else
+                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <svg class="w-16 h-16 mb-4 text-gray-400" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                            </path>
+                                        </svg>
+                                        <p class="mb-2 text-sm text-gray-500">
+                                            <span class="font-semibold">Cliquez pour télécharger</span> ou
+                                            glissez-déposez
+                                        </p>
+                                        <p class="text-xs text-gray-400">PNG, JPG, JPEG (MAX. 5MB)</p>
                                     </div>
-                                </div>
+                                @endif
+
+                                <input id="imageInput" type="file" wire:model="image"
+                                    accept="image/png,image/jpeg,image/jpg"
+                                    class="absolute inset-0 opacity-0 cursor-pointer" />
                             </div>
+
+                            {{-- Indicateur de chargement --}}
+                            <div wire:loading wire:target="image" class="text-sm text-green-700 font-medium">
+                                Téléversement en cours...
+                            </div>
+
+                            {{-- Erreur validation --}}
+                            @error('image')
+                                <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
+                            @enderror
                         </div>
+
 
                         {{-- Grille de champs --}}
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -651,181 +590,198 @@
             </div>
         @endif
 
-        {{-- Modal Suppression --}}
+        {{-- Modal Détails de l’Offre --}}
         @if ($showDetailsModal)
-            <div x-data="{ isOpen: @entangle('showDetailsModal') }" x-show="isOpen" x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                @click="$wire.closeModals()"
-                class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-                <div
-                    x-transition:enter="transition ease-out duration-300"
-                    x-transition:enter-start="opacity-0 transform scale-95"
-                    x-transition:enter-end="opacity-100 transform scale-100"
-                    class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto my-8">
-                    {{-- Header --}}
-                    <div
-                        class="sticky top-0 bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] px-6 py-5 flex items-center justify-between z-10">
-                        <h2 class="text-2xl font-bold text-white" style="font-family: 'Poppins', sans-serif;">
-                            Details de l'offre
-                        </h2>
-                        <button wire:click="closeModals" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg> </button>
-                    </div>
-                    {{-- Formulaire --}}
-                    <div class="p-6 space-y-6">
-
-                        {{-- Upload Image avec Cropper.js --}}
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-3">
-                                Photo de l'offre
-                            </label>
-                            <div class="space-y-4">
-                                {{-- Zone d'upload --}}
-                                <div>
-                                    <label
-                                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors relative overflow-hidden group">
-
-                                        {{-- Prévisualisation --}}
-                                        <div class="absolute inset-0">
-                                            <img src="{{ Storage::url($existingImage) }}"
-                                                class="w-full h-full object-cover">
-                                        </div>
-                                    </label>
-                                </div>
-
-
+        <div 
+        x-data="{ isOpen: @entangle('showDetailsModal') }" 
+        x-show="isOpen"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0" 
+        x-transition:enter-end="opacity-100"
+        @keydown.escape.window="$wire.closeModals()" 
+        @click.self="$wire.closeModals()"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
+    >
+    
+        {{-- Contenu principal --}}
+        <div 
+            @click.stop
+            x-transition:enter="transition ease-out duration-300 delay-100"
+            x-transition:enter-start="opacity-0 transform scale-95"
+            x-transition:enter-end="opacity-100 transform scale-100"
+            class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+        >
+    
+            {{-- Header --}}
+            <div class="bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] px-6 py-5 flex items-center justify-between rounded-t-2xl">
+                <div>
+                    <h2 class="text-2xl font-bold text-white font-poppins">Détails de l’offre</h2>
+                    <p class="text-white/80 text-sm mt-1">Informations complètes sur cette offre</p>
+                </div>
+                <button 
+                    wire:click="closeModals" 
+                    class="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    aria-label="Fermer le modal"
+                >
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+    
+            {{-- Contenu du modal --}}
+            <div class="p-6 space-y-8">
+    
+                {{-- Image de l’offre --}}
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-3">Photo de l'offre</h3>
+                    <div class="w-full h-64 rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+                        @if ($existingImage)
+                            <img src="{{ Storage::url($existingImage) }}" alt="Photo de l'offre"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                        @else
+                            <div class="flex items-center justify-center h-full text-gray-400 italic">
+                                Aucune image disponible
                             </div>
-                        </div>
-
-                        {{-- Grille de champs --}}
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                            {{-- Titre --}}
-                            <div class="md:col-span-2">
-                                <label for="title" class="block text-md font-medium text-gray-700 mb-2">
-                                    Titre de l'offre <span class="text-red-500">*</span>
-                                </label>
-                                <span id="title"
-                                    class="w-full px-4 py-3 border rounded-lg transition-all
-                                 border-gray-300">
-                                    {{ $title }} </span>
-
-
-                            </div>
-
-                            {{-- Description --}}
-                            <div class="md:col-span-2">
-                                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Description <span class="text-red-500">*</span>
-                                </label>
-                                <span id="title"
-                                    class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                 border-gray-300">
-                                    {{ $description }} </span>
-                            </div>
-
-                            {{-- Catégorie --}}
-                            <div>
-                                <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Catégorie <span class="text-red-500">*</span>
-                                </label>
-                                <span id="title"
-                                    class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                             border-gray-300">
-                                    {{ $category }} </span>
-                            </div>
-
-                            {{-- Prix --}}
-                            <div>
-                                <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Prix (FCFA)
-                                </label>
-                                <div class="relative">
-                                    <span type="number" id="price" wire:model="price" step="0.01"
-                                        min="0"
-                                        class="w-full pl-4 pr-20 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all">
-                                        {{ $price }} </span>
-                                    <span
-                                        class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">
-                                        FCFA
-                                    </span>
-                                </div>
-
-                            </div>
-
-                            {{-- Région --}}
-                            <div>
-                                <label for="region" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Région <span class="text-red-500">*</span>
-                                </label>
-                                <span id="title"
-                                    class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                             border-gray-300">
-                                    {{ $region }} </span>
-                            </div>
-
-                            {{-- Contact --}}
-                            <div>
-                                <label for="contact" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Contact <span class="text-red-500">*</span>
-                                </label>
-                                <span id="title"
-                                    class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                             border-gray-300">
-                                    {{ $contact }} </span>
-                            </div>
-                        </div>
-
-                        {{-- Barre de progression --}}
-                        <div wire:loading wire:target="{{ $showDetailsModal }}"
-                            class="relative h-1 bg-gray-200 rounded-full overflow-hidden">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-r from-[#2E7D32] to-[#4CAF50] animate-progress">
-                            </div>
-                        </div>
-
-
+                        @endif
                     </div>
                 </div>
+    
+                {{-- Informations principales --}}
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold text-gray-900">{{ $title }}</h3>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
+                            {{ $category }}
+                        </span>
+                        @if ($price)
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
+                                {{ number_format($price, 0, ',', ' ') }} FCFA
+                            </span>
+                        @endif
+                    </div>
+                </div>
+    
+                {{-- Description --}}
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-700 mb-2">Description</h4>
+                    <p class="text-gray-600 leading-relaxed">{{ $description }}</p>
+                </div>
+    
+                {{-- Informations complémentaires --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    
+                    {{-- Région --}}
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Région</p>
+                                <p class="text-lg font-bold text-gray-900">{{ $region }}</p>
+                            </div>
+                        </div>
+                    </div>
+    
+                    {{-- Contact --}}
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Contact</p>
+                                <p class="text-lg font-bold text-gray-900">{{ $contact }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                {{-- Auteur --}}
+                <div class="border-t border-gray-200 pt-4">
+                    <h4 class="text-sm font-semibold text-gray-700 mb-3">Publié par</h4>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-[#2E7D32] rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">{{ substr($author_name ?? '', 0, 1) }}</span>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-900">{{ $offer->user->name ?? 'Utilisateur' }}</p>
+                            <p class="text-sm text-gray-500">{{ $offer->created_at?->diffForHumans() }}</p>
+                        </div>
+                    </div>
+                </div>
+    
+                {{-- Bouton Contact --}}
+                <div class="bg-[#2E7D32]/5 border border-[#2E7D32]/20 rounded-lg p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 mb-1">Intéressé par cette offre ?</h4>
+                            <p class="text-sm text-gray-600">Contactez directement le vendeur</p>
+                        </div>
+                        <a href="tel:{{ $contact }}"
+                            class="px-6 py-3 bg-[#2E7D32] text-white rounded-lg font-medium hover:bg-[#1B5E20] transition-all transform hover:scale-105 shadow-md">
+                            Contacter
+                        </a>
+                    </div>
+                </div>
+    
+                {{-- Barre de chargement Livewire --}}
+                <div wire:loading class="relative h-1 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#2E7D32] to-[#4CAF50] animate-progress"></div>
+                </div>
+    
             </div>
+        </div>
     </div>
-    @endif
+    
+        @endif
 
-    {{-- Styles supplémentaires --}}
-    <style>
-        [x-cloak] {
-            display: none !important;
-        }
-
-        @keyframes progress {
-            0% {
-                transform: translateX(-100%);
+        {{-- Styles supplémentaires --}}
+        <style>
+            [x-cloak] {
+                display: none !important;
             }
 
-            100% {
-                transform: translateX(100%);
+            @keyframes progress {
+                0% {
+                    transform: translateX(-100%);
+                }
+
+                100% {
+                    transform: translateX(100%);
+                }
             }
-        }
 
-        .animate-progress {
-            animation: progress 1.5s ease-in-out infinite;
-        }
+            .animate-progress {
+                animation: progress 1.5s ease-in-out infinite;
+            }
 
-        .line-clamp-1 {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
+            .line-clamp-1 {
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
 
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-    </style>
-</div>
+            .line-clamp-2 {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        </style>
+    </div>

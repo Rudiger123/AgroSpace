@@ -24,33 +24,33 @@
     <div class="flex h-screen overflow-hidden">
         {{-- Sidebar --}}
         @livewire('layout.sidebar')
-    
+
         {{-- Styles personnalisés --}}
         <style>
             /* Scrollbar personnalisée */
             .custom-scrollbar::-webkit-scrollbar {
                 width: 6px;
             }
-    
+
             .custom-scrollbar::-webkit-scrollbar-track {
                 background: transparent;
             }
-    
+
             .custom-scrollbar::-webkit-scrollbar-thumb {
                 background: #E0E0E0;
                 border-radius: 3px;
             }
-    
+
             .custom-scrollbar::-webkit-scrollbar-thumb:hover {
                 background: #2E7D32;
             }
         </style>
-    
+
         {{-- Contenu principal --}}
         <div class="flex-1 flex flex-col overflow-hidden">
             {{-- Barre de navigation --}}
             @livewire('layout.menu')
-    
+
             {{-- Contenu de la page --}}
             <main class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50">
                 {{ $slot }}
@@ -65,7 +65,17 @@
                     title: data[0].title,
                     text: data[0].text,
                     icon: data[0].type,
-                    confirmButtonText: 'OK'
+                    confirmButtonColor: '#2E7D32',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'px-6 py-3 rounded-lg font-medium',
+                    },
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown animate__faster'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp animate__faster'
+                    }
                 });
             });
         });
@@ -82,31 +92,31 @@
             @endif
         });
 
-        
-            // Écouteur pour la confirmation de suppression
-            window.addEventListener('confirm-logout', event => {
-                const {
-                    title,
-                    text
-                } = event.detail;
 
-                Swal.fire({
-                    title: title || 'Confirmer la déconnexion',
-                    text: text || "Êtes-vous sûr de vouloir vous déconnecter ?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Oui, deconnexion !',
-                    cancelButtonText: 'Annuler'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Livewire.dispatch('logout');
-                    }
-                });
+        // Écouteur pour la confirmation de suppression
+        window.addEventListener('confirm-logout', event => {
+            const {
+                title,
+                text
+            } = event.detail;
+
+            Swal.fire({
+                title: title || 'Confirmer la déconnexion',
+                text: text || "Êtes-vous sûr de vouloir vous déconnecter ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, deconnexion !',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('logout');
+                }
             });
-        </script>
-    
+        });
+    </script>
+
 
     @livewireScripts
 </body>
