@@ -95,7 +95,7 @@
                         wire:key="offer-{{ $offer->id }}">
                         {{-- Image --}}
                         <div class="relative h-48 overflow-hidden bg-gray-200">
-                            
+
                             @php
                                 $imageUrl = $offer->image_url;
                             @endphp
@@ -342,7 +342,7 @@
                                 </label>
                                 <input type="text" id="title" wire:model.live.debounce.300ms="title"
                                     class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                @error('title') border-red-500 @else border-gray-300 @enderror"
+                                 border-gray-300"
                                     placeholder="Ex: Vente de 100 sacs de maïs">
                                 @error('title')
                                     <p class="text-red-500 text-xs mt-1 flex items-center">
@@ -363,7 +363,7 @@
                                 </label>
                                 <textarea id="description" wire:model.live.debounce.300ms="description" rows="4"
                                     class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all resize-none
-                                @error('description') border-red-500 @else border-gray-300 @enderror"
+                                 border-gray-300"
                                     placeholder="Décrivez votre offre en détail..."></textarea>
                                 @error('description')
                                     <p class="text-red-500 text-xs mt-1 flex items-center">
@@ -384,7 +384,7 @@
                                 </label>
                                 <select id="category" wire:model="category"
                                     class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                @error('category') border-red-500 @else border-gray-300 @enderror">
+                                  border-gray-300">
                                     <option value="">Sélectionnez une catégorie</option>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat }}">{{ $cat }}</option>
@@ -411,7 +411,7 @@
                                     <input type="number" id="price" wire:model="price" step="0.01"
                                         min="0"
                                         class="w-full pl-4 pr-20 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                    @error('price') border-red-500 @else border-gray-300 @enderror"
+                                     border-gray-300"
                                         placeholder="0">
                                     <span
                                         class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">
@@ -437,7 +437,7 @@
                                 </label>
                                 <select id="region" wire:model="region"
                                     class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                @error('region') border-red-500 @else border-gray-300 @enderror">
+                                 border-gray-300">
                                     <option value="">Sélectionnez une région</option>
                                     @foreach ($regions as $reg)
                                         <option value="{{ $reg }}">{{ $reg }}</option>
@@ -462,7 +462,7 @@
                                 </label>
                                 <input type="text" id="contact" wire:model="contact"
                                     class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                @error('contact') border-red-500 @else border-gray-300 @enderror"
+                                 border-gray-300"
                                     placeholder="Ex: +237 6XX XX XX XX">
                                 @error('contact')
                                     <p class="text-red-500 text-xs mt-1 flex items-center">
@@ -592,162 +592,157 @@
 
         {{-- Modal Détails de l’Offre --}}
         @if ($showDetailsModal)
-        <div 
-        x-data="{ isOpen: @entangle('showDetailsModal') }" 
-        x-show="isOpen"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0" 
-        x-transition:enter-end="opacity-100"
-        @keydown.escape.window="$wire.closeModals()" 
-        @click.self="$wire.closeModals()"
-        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
-    >
-    
-        {{-- Contenu principal --}}
-        <div 
-            @click.stop
-            x-transition:enter="transition ease-out duration-300 delay-100"
-            x-transition:enter-start="opacity-0 transform scale-95"
-            x-transition:enter-end="opacity-100 transform scale-100"
-            class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
-        >
-    
-            {{-- Header --}}
-            <div class="bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] px-6 py-5 flex items-center justify-between rounded-t-2xl">
-                <div>
-                    <h2 class="text-2xl font-bold text-white font-poppins">Détails de l’offre</h2>
-                    <p class="text-white/80 text-sm mt-1">Informations complètes sur cette offre</p>
-                </div>
-                <button 
-                    wire:click="closeModals" 
-                    class="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                    aria-label="Fermer le modal"
-                >
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-    
-            {{-- Contenu du modal --}}
-            <div class="p-6 space-y-8">
-    
-                {{-- Image de l’offre --}}
-                <div>
-                    <h3 class="text-sm font-semibold text-gray-700 mb-3">Photo de l'offre</h3>
-                    <div class="w-full h-64 rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
-                        @if ($existingImage)
-                            <img src="{{ Storage::url($existingImage) }}" alt="Photo de l'offre"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                        @else
-                            <div class="flex items-center justify-center h-full text-gray-400 italic">
-                                Aucune image disponible
-                            </div>
-                        @endif
-                    </div>
-                </div>
-    
-                {{-- Informations principales --}}
-                <div class="space-y-4">
-                    <h3 class="text-2xl font-bold text-gray-900">{{ $title }}</h3>
-                    <div class="flex flex-wrap items-center gap-3">
-                        <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
-                            {{ $category }}
-                        </span>
-                        @if ($price)
-                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
-                                {{ number_format($price, 0, ',', ' ') }} FCFA
-                            </span>
-                        @endif
-                    </div>
-                </div>
-    
-                {{-- Description --}}
-                <div>
-                    <h4 class="text-sm font-semibold text-gray-700 mb-2">Description</h4>
-                    <p class="text-gray-600 leading-relaxed">{{ $description }}</p>
-                </div>
-    
-                {{-- Informations complémentaires --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    
-                    {{-- Région --}}
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                    </path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">Région</p>
-                                <p class="text-lg font-bold text-gray-900">{{ $region }}</p>
-                            </div>
-                        </div>
-                    </div>
-    
-                    {{-- Contact --}}
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500">Contact</p>
-                                <p class="text-lg font-bold text-gray-900">{{ $contact }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
-                {{-- Auteur --}}
-                <div class="border-t border-gray-200 pt-4">
-                    <h4 class="text-sm font-semibold text-gray-700 mb-3">Publié par</h4>
-                    <div class="flex items-center space-x-3">
-                        <div class="w-12 h-12 bg-[#2E7D32] rounded-full flex items-center justify-center">
-                            <span class="text-white font-bold text-lg">{{ substr($author_name ?? '', 0, 1) }}</span>
-                        </div>
+            <div x-data="{ isOpen: @entangle('showDetailsModal') }" x-show="isOpen" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                @keydown.escape.window="$wire.closeModals()" @click.self="$wire.closeModals()"
+                class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+
+                {{-- Contenu principal --}}
+                <div @click.stop x-transition:enter="transition ease-out duration-300 delay-100"
+                    x-transition:enter-start="opacity-0 transform scale-95"
+                    x-transition:enter-end="opacity-100 transform scale-100"
+                    class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+
+                    {{-- Header --}}
+                    <div
+                        class="bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] px-6 py-5 flex items-center justify-between rounded-t-2xl">
                         <div>
-                            <p class="font-semibold text-gray-900">{{ $offer->user->name ?? 'Utilisateur' }}</p>
-                            <p class="text-sm text-gray-500">{{ $offer->created_at?->diffForHumans() }}</p>
+                            <h2 class="text-2xl font-bold text-white font-poppins">Détails de l’offre</h2>
+                            <p class="text-white/80 text-sm mt-1">Informations complètes sur cette offre</p>
                         </div>
+                        <button wire:click="closeModals" class="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            aria-label="Fermer le modal">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
                     </div>
-                </div>
-    
-                {{-- Bouton Contact --}}
-                <div class="bg-[#2E7D32]/5 border border-[#2E7D32]/20 rounded-lg p-4">
-                    <div class="flex items-center justify-between">
+
+                    {{-- Contenu du modal --}}
+                    <div class="p-6 space-y-8">
+
+                        {{-- Image de l’offre --}}
                         <div>
-                            <h4 class="font-semibold text-gray-900 mb-1">Intéressé par cette offre ?</h4>
-                            <p class="text-sm text-gray-600">Contactez directement le vendeur</p>
+                            <h3 class="text-sm font-semibold text-gray-700 mb-3">Photo de l'offre</h3>
+                            <div class="w-full h-64 rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+                                @if ($existingImage)
+                                    <img src="{{ Storage::url($existingImage) }}" alt="Photo de l'offre"
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                @else
+                                    <div class="flex items-center justify-center h-full text-gray-400 italic">
+                                        Aucune image disponible
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-                        <a href="tel:{{ $contact }}"
-                            class="px-6 py-3 bg-[#2E7D32] text-white rounded-lg font-medium hover:bg-[#1B5E20] transition-all transform hover:scale-105 shadow-md">
-                            Contacter
-                        </a>
+
+                        {{-- Informations principales --}}
+                        <div class="space-y-4">
+                            <h3 class="text-2xl font-bold text-gray-900">{{ $title }}</h3>
+                            <div class="flex flex-wrap items-center gap-3">
+                                <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
+                                    {{ $category }}
+                                </span>
+                                @if ($price)
+                                    <span
+                                        class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
+                                        {{ number_format($price, 0, ',', ' ') }} FCFA
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- Description --}}
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-700 mb-2">Description</h4>
+                            <p class="text-gray-600 leading-relaxed">{{ $description }}</p>
+                        </div>
+
+                        {{-- Informations complémentaires --}}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            {{-- Région --}}
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                            </path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500">Région</p>
+                                        <p class="text-lg font-bold text-gray-900">{{ $region }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Contact --}}
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500">Contact</p>
+                                        <p class="text-lg font-bold text-gray-900">{{ $contact }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Auteur --}}
+                        <div class="border-t border-gray-200 pt-4">
+                            <h4 class="text-sm font-semibold text-gray-700 mb-3">Publié par</h4>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-[#2E7D32] rounded-full flex items-center justify-center">
+                                    <span
+                                        class="text-white font-bold text-lg">{{ substr($author_name ?? '', 0, 1) }}</span>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900">{{ $offer->user->name ?? 'Utilisateur' }}
+                                    </p>
+                                    <p class="text-sm text-gray-500">{{ $offer->created_at?->diffForHumans() }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Bouton Contact --}}
+                        <div class="bg-[#2E7D32]/5 border border-[#2E7D32]/20 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-1">Intéressé par cette offre ?</h4>
+                                    <p class="text-sm text-gray-600">Contactez directement le vendeur</p>
+                                </div>
+                                <a href="tel:{{ $contact }}"
+                                    class="px-6 py-3 bg-[#2E7D32] text-white rounded-lg font-medium hover:bg-[#1B5E20] transition-all transform hover:scale-105 shadow-md">
+                                    Contacter
+                                </a>
+                            </div>
+                        </div>
+
+                        {{-- Barre de chargement Livewire --}}
+                        <div wire:loading class="relative h-1 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-[#2E7D32] to-[#4CAF50] animate-progress">
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-    
-                {{-- Barre de chargement Livewire --}}
-                <div wire:loading class="relative h-1 bg-gray-200 rounded-full overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-r from-[#2E7D32] to-[#4CAF50] animate-progress"></div>
-                </div>
-    
             </div>
-        </div>
-    </div>
-    
+
         @endif
 
         {{-- Styles supplémentaires --}}
