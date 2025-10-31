@@ -13,6 +13,8 @@
         "bacon/bacon-qr-code": "^3.0",
         "intervention/image": "^3.11",
         "laravel/framework": "^12.0",
+        "laravel/horizon": "^5.38",
+        "laravel/reverb": "^1.6",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6.4",
         "livewire/volt": "^1.7.0",

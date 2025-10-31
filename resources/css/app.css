@@ -22,3 +22,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+[x-cloak] {
+    display: none !important;
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #81C784 100%);
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out;
+}
