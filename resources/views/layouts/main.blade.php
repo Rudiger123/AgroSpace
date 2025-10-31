@@ -20,8 +20,6 @@
 </head>
 
 <body class="font-inter antialiased bg-agro-white text-agro-gray">
-    {{-- Header Component --}}
-    @livewire('header')
 
     <main>
         {{ $slot }}

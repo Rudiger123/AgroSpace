@@ -3,7 +3,7 @@
 use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
 
-new #[Layout('layouts.guest')] class extends Component {
+new #[Layout('layouts.main')] class extends Component {
     //
 }; ?>
 <div>
@@ -36,7 +36,7 @@ new #[Layout('layouts.guest')] class extends Component {
                         <a href="#blog"
                             class="text-gray-700 hover:text-primary transition-colors font-medium">Blog</a>
                         <!-- Bouton Connexion -->
-                        <a href="#"
+                        <a href="{{ route('login') }}"
                             class="flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 rounded-xl font-semibold 
          text-white bg-gradient-to-r from-green-600 to-emerald-500 
          hover:from-green-700 hover:to-emerald-600 transition-all duration-300 
@@ -52,7 +52,7 @@ new #[Layout('layouts.guest')] class extends Component {
                         </a>
 
                         <!-- Bouton Inscription -->
-                        <a href="#"
+                        <a href="{{ route('register') }}"
                             class="flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 rounded-xl font-semibold 
          text-green-700 border-2 border-green-600 
          hover:bg-green-600 hover:text-white transition-all duration-300 
@@ -95,7 +95,7 @@ new #[Layout('layouts.guest')] class extends Component {
                     <a href="#blog" @click="mobileMenuOpen = false"
                         class="block text-gray-700 hover:text-primary font-medium py-2">Blog</a>
                     <!-- Bouton Connexion -->
-                    <a href="#"
+                    <a href="{{ route('login') }}"
                         class="flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 rounded-xl font-semibold 
          text-white bg-gradient-to-r from-green-600 to-emerald-500 
          hover:from-green-700 hover:to-emerald-600 transition-all duration-300 
@@ -111,7 +111,7 @@ new #[Layout('layouts.guest')] class extends Component {
                     </a>
 
                     <!-- Bouton Inscription -->
-                    <a href="#"
+                    <a href="{{ route('register') }}"
                         class="flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 rounded-xl font-semibold 
          text-green-700 border-2 border-green-600 
          hover:bg-green-600 hover:text-white transition-all duration-300 
