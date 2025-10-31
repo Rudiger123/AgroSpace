@@ -52,7 +52,7 @@ new #[Layout('layouts.guest')] class extends Component {
                 <div class="relative">
                     <input type="text" id="name" wire:model.live.debounce.300ms="name"
                         class="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                            @error('name') border-red-500 @else border-gray-300 @enderror"
+                             border-gray-300 @enderror"
                         placeholder="Jean Dupont">
                     <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,7 @@ new #[Layout('layouts.guest')] class extends Component {
                 <div class="relative">
                     <input type="email" id="email" wire:model.live.debounce.300ms="email"
                         class="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                            @error('email') border-red-500 @else border-gray-300 @enderror"
+                             border-gray-300"
                         placeholder="votre@email.com">
                     <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
@@ -106,7 +106,7 @@ new #[Layout('layouts.guest')] class extends Component {
                 <div class="relative">
                     <select wire:model="role_id" id="role_id"
                         class="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                @error('role_id') border-red-500 @else border-gray-300 @enderror">
+                 border-gray-300">
                         <option value="">Select a role</option>
                         @foreach (App\Models\Role::all() as $role)
                             <option value="{{ $role->id }}">{{ ucfirst($role->name) }}</option>

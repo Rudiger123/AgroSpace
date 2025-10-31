@@ -153,7 +153,7 @@
                                 <div class="relative">
                                     <input type="text" id="name" wire:model.live.debounce.300ms="name"
                                         class="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                        @error('name') border-red-500 @else border-[#E0E0E0] @enderror"
+                                        border-[#E0E0E0]"
                                         placeholder="Votre nom complet">
                                     <svg class="w-5 h-5 text-[#37474F]/40 absolute left-3 top-1/2 transform -translate-y-1/2"
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -182,7 +182,7 @@
                                 <div class="relative">
                                     <input type="email" id="email" wire:model.live.debounce.300ms="email"
                                         class="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                        @error('email') border-red-500 @else border-[#E0E0E0] @enderror"
+                                         border-[#E0E0E0]"
                                         placeholder="votre@email.com">
                                     <svg class="w-5 h-5 text-[#37474F]/40 absolute left-3 top-1/2 transform -translate-y-1/2"
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
