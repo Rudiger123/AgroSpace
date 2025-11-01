@@ -40,58 +40,29 @@ public function login(): void
 }; ?>
 
 <div>
-    <div class="min-h-screen bg-agro-beige flex items-center justify-center">
-        <div class="bg-agro-white p-8 rounded-lg shadow-lg w-full max-w-md">
-            <h2 class="text-2xl font-poppins text-agro-green mb-6">Login</h2>
-            <form wire:submit="login" class="space-y-5">
-                {{-- Email Field --}}
-                <div>
-                    <label for="email" class="block text-sm font-medium text-[#37474F] mb-2">
-                        Adresse Email
-                    </label>
+    <div class="min-h-screen bg-[#F9F6F1] flex items-center justify-center">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row gap-0 md:gap-10">
+    
+            <!-- Colonne Gauche : Formulaire -->
+            <div class="w-full md:w-2/5 bg-white rounded-3xl shadow-xl p-10 flex flex-col justify-center">
+                <h1 class="text-3xl font-bold text-[#16a34a] mb-2">Bienvenue sur Agrospace</h1>
+                <p class="text-gray-600 mb-6">Connectez-vous ou créez un compte en 1 minute</p>
+    
+                <form wire:submit="login" class="space-y-5">
+                    <!-- Email -->
                     <div class="relative">
-                        <input type="email" id="email" wire:model="form.email"
-                            class="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                name="email"
-                            required autofocus autocomplete="username" placeholder="votre@email.com">
-                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207">
-                            </path>
-                        </svg>
+                        <input type="email" wire:model="form.email" placeholder="Votre email"
+                            class="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16a34a] transition" />
+                        @error('form.email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
-                    @error('form.email')
-                        <p class="text-red-500 text-xs mt-1 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-
-
-                {{-- Password Field --}}
-                <div x-data.ignore="{ showPassword: false }">
-                    <label for="password" class="block text-sm font-medium text-[#37474F] mb-2">
-                        Mot de passe
-                    </label>
-                    <div class="relative">
-                        <input :type="showPassword ? 'text' : 'password'" id="password" wire:model="form.password"
-                            class="w-full pl-10 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                            "
-                            name="password" required autocomplete="current-password" placeholder="••••••••">
-                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                            </path>
-                        </svg>
+    
+                    <!-- Password -->
+                    <div x-data="{ showPassword: false }" class="relative">
+                        <input :type="showPassword ? 'text' : 'password'" wire:model="form.password"
+                            placeholder="Mot de passe"
+                            class="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16a34a] transition" />
                         <button type="button" @click="showPassword = !showPassword"
-                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#2E7D32] transition-colors">
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#16a34a] transition">
                             <svg x-show="!showPassword" class="w-5 h-5" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -103,86 +74,70 @@ public function login(): void
                             <svg x-show="showPassword" x-cloak class="w-5 h-5" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21">
+                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M3 3l3.59 3.59">
                                 </path>
                             </svg>
                         </button>
+                        @error('form.password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
-                    @error('form.password')
-                        <p class="text-red-500 text-xs mt-1 flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            {{ $message }}
-                        </p>
-                    @enderror
+    
+                    <!-- Submit -->
+                    <button type="submit"
+                        class="w-full bg-[#16a34a] hover:bg-[#15803d] text-white py-3 rounded-lg font-semibold transition transform hover:scale-[1.02]">
+                        Continuer
+                    </button>
+                </form>
+    
+                <!-- Séparateur -->
+                <div class="flex items-center my-5">
+                    <hr class="flex-1 border-gray-300" />
+                    <span class="px-2 text-gray-400 text-sm">ou continuer avec</span>
+                    <hr class="flex-1 border-gray-300" />
                 </div>
-
-
-                <div class="flex items-center justify-between mt-4">
-                    <div>
-                        <label class="flex items-start cursor-pointer group">
-                            <input type="checkbox" wire:model="form.remember" id="remember" mame="remember"
-                                class="w-4 h-4 text-[#2E7D32] border-gray-300 rounded focus:ring-[#2E7D32] focus:ring-2 transition-all cursor-pointer mt-1">
-                            <span class="ml-2 text-sm text-[#37474F] group-hover:text-[#2E7D32] transition-colors">
-                                {{ __('Remember me') }}
-                            </span>
-                        </label>
-
-                    </div>
-
-                    <div class="">
-                        @if (Route::has('password.request'))
-                            <a class="underline text-sm text-[#2E7D32] hover:text-opacity-80 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                                href="{{ route('password.request') }}" wire:navigate>
-                                {{ __('Forgot your password?') }}
-                            </a>
-                        @endif
-                    </div>
-
+    
+                <!-- Boutons sociaux -->
+                <div class="flex flex-col gap-3">
+                    <button type="button"
+                        class="flex items-center justify-center gap-2 w-full border border-gray-300 rounded-lg py-2 hover:shadow-lg transition">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                            class="w-5 h-5" alt="Google" /> Google
+                    </button>
+                    <button type="button"
+                        class="flex items-center justify-center gap-2 w-full border border-gray-300 rounded-lg py-2 hover:shadow-lg transition">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+                            class="w-5 h-5" alt="Facebook" /> Facebook
+                    </button>
                 </div>
-
-
-
-                {{-- Submit Button --}}
-                <button type="submit" wire:loading.attr="disabled"
-                    class="w-full bg-[#2E7D32] text-white py-3 rounded-lg font-semibold hover:bg-[#1B5E20] focus:outline-none focus:ring-4 focus:ring-[#2E7D32]/50 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
-                    <span wire:loading.remove>
-                        Se connecter
-                    </span>
-                    <span wire:loading class="flex items-center justify-center">
-                        <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                            </path>
-                        </svg>
-                        Connexion en cours...
-                    </span>
-                </button>
-            </form>
-
-            {{-- Footer Links --}}
-            <div class="text-center mt-6" x-transition:enter="transition ease-out duration-500 delay-300"
-                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-                <a href="{{ route('home') }}"
-                    class="text-sm text-[#2E7D32] font-semibold hover:text-[#1B5E20] transition-colors flex items-center justify-center">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Retour à l'acceuil
-                </a>
             </div>
-
-            <style>
-                [x-cloak] {
-                    display: none !important;
-                }
-            </style>
+    
+            <!-- Colonne Droite : Carrousel -->
+            <div class="w-full md:w-3/5 relative hidden md:block rounded-3xl overflow-hidden shadow-xl h-[500px]">
+                <div x-data="{ images: [
+                        { src: 'https://source.unsplash.com/900x700/?farm', text: 'Agriculture durable et innovante en Afrique' },
+                        { src: 'https://source.unsplash.com/900x700/?crops', text: 'Technologie et productivité pour les producteurs locaux' },
+                        { src: 'https://source.unsplash.com/900x700/?agriculture', text: 'Valorisation des cultures et des communautés' }
+                    ], index: 0 }"
+                    x-init="setInterval(() => { index = (index + 1) % images.length }, 5000)"
+                    class="w-full h-full relative">
+                    <template x-for="(img, i) in images" :key="i">
+                        <div :class="{'opacity-100': index === i, 'opacity-0': index !== i}"
+                            class="absolute inset-0 w-full h-full transition-opacity duration-1000">
+                            <img :src="img.src" class="w-full h-full object-cover" />
+                            <div
+                                class="absolute inset-0 flex items-center justify-center text-center bg-black bg-opacity-30 p-4">
+                                <p class="text-white text-xl font-semibold" x-text="img.text"></p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
         </div>
+    
+        <style>
+            [x-cloak] {
+                display: none !important;
+            }
+        </style>
     </div>
+    
 </div>

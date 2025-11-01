@@ -19,7 +19,7 @@
     @livewireStyles
 </head>
 
-<body class="font-inter antialiased bg-agro-white text-agro-gray">
+<body class="font-sans antialiased bg-agro-white text-agro-gray" x-data="{ mobileMenuOpen: false }">
 
     <main>
         {{ $slot }}
@@ -65,6 +65,8 @@
             });
         });
     </script>
+
+    @stack('scripts')
 
     @livewireScripts
 </body>

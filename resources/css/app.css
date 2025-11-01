@@ -30,6 +30,10 @@
     background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #81C784 100%);
 }
 
+.gradient-cta {
+    background: linear-gradient(135deg, #1B5E20 0%, #81C784 100%);
+}
+
 .glass-effect {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -48,4 +52,22 @@
 
 .animate-fade-in-up {
     animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+animate-float {
+    animation: float 3s ease-in-out infinite;
 }

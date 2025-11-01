@@ -26,7 +26,7 @@ new #[Layout('layouts.guest')] class extends Component {
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
             'role_id' => ['required', 'exists:roles,id'],
-            'terms' => ['accepted'], // validation des conditions
+            'terms' => ['accepted'],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -52,7 +52,7 @@ new #[Layout('layouts.guest')] class extends Component {
                 <div class="relative">
                     <input type="text" id="name" wire:model.live.debounce.300ms="name"
                         class="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                             border-gray-300 @enderror"
+                             border-gray-300"
                         placeholder="Jean Dupont">
                     <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">

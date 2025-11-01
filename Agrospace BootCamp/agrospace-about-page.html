@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - Agrospace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        [x-cloak] { display: none; }
+    </style>
+</head>
+<body class="bg-white">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50" x-data="{ mobileMenuOpen: false }">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-[#1B5E20]">🌿 Agrospace</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-700 hover:text-[#1B5E20] transition">Accueil</a>
+                    <a href="/fonctionnalites" class="text-gray-700 hover:text-[#1B5E20] transition">Fonctionnalités</a>
+                    <a href="/producteurs" class="text-gray-700 hover:text-[#1B5E20] transition">Producteurs</a>
+                    <a href="/consommateurs" class="text-gray-700 hover:text-[#1B5E20] transition">Consommateurs</a>
+                    <a href="/blog" class="text-gray-700 hover:text-[#1B5E20] transition">Blog</a>
+                    <a href="/about" class="text-[#1B5E20] font-semibold border-b-2 border-[#1B5E20]">À propos</a>
+                </div>
+
+                <!-- Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="/connexion" class="text-gray-700 hover:text-[#1B5E20] transition">Connexion</a>
+                    <a href="/inscription" class="bg-[#1B5E20] text-white px-6 py-2 rounded-lg hover:bg-[#2E7D32] transition">Inscription</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-gray-700">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        <path x-show="mobileMenuOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div x-show="mobileMenuOpen" x-cloak x-transition class="md:hidden pb-4">
+                <div class="flex flex-col space-y-3">
+                    <a href="/" class="text-gray-700 hover:text-[#1B5E20] transition">Accueil</a>
+                    <a href="/fonctionnalites" class="text-gray-700 hover:text-[#1B5E20] transition">Fonctionnalités</a>
+                    <a href="/producteurs" class="text-gray-700 hover:text-[#1B5E20] transition">Producteurs</a>
+                    <a href="/consommateurs" class="text-gray-700 hover:text-[#1B5E20] transition">Consommateurs</a>
+                    <a href="/blog" class="text-gray-700 hover:text-[#1B5E20] transition">Blog</a>
+                    <a href="/about" class="text-[#1B5E20] font-semibold">À propos</a>
+                    <a href="/connexion" class="text-gray-700 hover:text-[#1B5E20] transition">Connexion</a>
+                    <a href="/inscription" class="bg-[#1B5E20] text-white px-6 py-2 rounded-lg hover:bg-[#2E7D32] transition text-center">Inscription</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-[#F9FAF6] to-emerald-50 py-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                        Connecter, Valoriser, Collaborer pour un monde agropastoral durable
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Agrospace est la première plateforme qui relie les producteurs et consommateurs agricoles pour créer un réseau collaboratif et local.
+                    </p>
+                    <a href="/inscription" class="inline-block bg-[#1B5E20] text-white px-8 py-4 rounded-xl hover:bg-[#2E7D32] transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        Rejoindre la communauté
+                    </a>
+                </div>
+                <div class="relative">
+                    <div class="bg-gradient-to-br from-green-400 to-emerald-600 rounded-3xl p-8 shadow-2xl">
+                        <svg class="w-full h-auto text-white" viewBox="0 0 400 300" fill="none">
+                            <circle cx="200" cy="150" r="100" fill="currentColor" opacity="0.2"/>
+                            <path d="M150 150 L200 100 L250 150 L200 200 Z" fill="currentColor" opacity="0.3"/>
+                            <circle cx="150" cy="150" r="40" fill="currentColor"/>
+                            <circle cx="250" cy="150" r="40" fill="currentColor"/>
+                            <circle cx="200" cy="100" r="40" fill="currentColor"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-[#F9FAF6] p-10 rounded-2xl">
+                    <div class="w-16 h-16 bg-[#1B5E20] rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Notre Mission</h2>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        Faciliter les échanges entre acteurs agricoles et valoriser la production locale grâce au numérique. Nous créons des ponts entre ceux qui produisent et ceux qui consomment.
+                    </p>
+                </div>
+
+                <div class="bg-emerald-50 p-10 rounded-2xl">
+                    <div class="w-16 h-16 bg-[#81C784] rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Notre Vision</h2>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        Devenir la référence africaine de la collaboration agropastorale et de la transformation numérique du secteur. Un avenir où chaque acteur trouve sa place.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nos Valeurs -->
+    <section class="py-20 bg-[#F9FAF6]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Nos valeurs fondamentales</h2>
+                <p class="text-xl text-gray-600">Les principes qui guident chacune de nos actions</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Valeur 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">🌿</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Durabilité</h3>
+                    <p class="text-gray-600">
+                        Promouvoir une agriculture responsable et respectueuse de la nature pour les générations futures.
+                    </p>
+                </div>
+
+                <!-- Valeur 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">🤝</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Collaboration</h3>
+                    <p class="text-gray-600">
+                        Créer des ponts entre producteurs et consommateurs pour renforcer l'écosystème agricole.
+                    </p>
+                </div>
+
+                <!-- Valeur 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">💡</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Innovation</h3>
+                    <p class="text-gray-600">
+                        Utiliser le numérique pour moderniser et faciliter les échanges dans le secteur agropastoral.
+                    </p>
+                </div>
+
+                <!-- Valeur 4 -->
+                <div class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2">
+                    <div class="text-5xl mb-4">❤️</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Confiance</h3>
+                    <p class="text-gray-600">
+                        Garantir un espace sûr, authentique et humain où chaque membre se sent valorisé.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notre Histoire -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold text-gray-900 mb-6">L'histoire d'Agrospace</h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        Né de la passion pour l'agriculture et l'innovation, Agrospace est un projet créé pour résoudre un problème majeur : le manque de visibilité et de communication entre les acteurs du monde agricole.
+                    </p>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        Nous avons constaté que de nombreux producteurs talentueux restaient invisibles, tandis que des consommateurs cherchaient désespérément des sources locales et fiables. Cette déconnexion nous a motivés à créer une solution.
+                    </p>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        Aujourd'hui, nous construisons un réseau où les producteurs et les consommateurs peuvent échanger, collaborer et croître ensemble. Agrospace, c'est le LinkedIn de l'agriculture africaine.
+                    </p>
+                </div>
+                <div class="relative">
+                    <div class="bg-gradient-to-br from-emerald-100 to-green-200 rounded-3xl p-8 shadow-xl">
+                        <svg class="w-full h-auto text-[#1B5E20]" viewBox="0 0 400 400" fill="none">
+                            <rect x="50" y="150" width="100" height="200" fill="currentColor" opacity="0.3" rx="10"/>
+                            <rect x="250" y="100" width="100" height="250" fill="currentColor" opacity="0.5" rx="10"/>
+                            <circle cx="200" cy="200" r="80" fill="currentColor" opacity="0.4"/>
+                            <path d="M100 250 Q200 200 300 250" stroke="currentColor" stroke-width="4" fill="none"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- L'Équipe -->
+    <section class="py-20 bg-emerald-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Une équipe engagée pour un avenir vert 🌍</h2>
+                <p class="text-xl text-gray-600">Des passionnés au service de l'agriculture durable</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Membre 1 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="h-48 bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center text-6xl">
+                            👨‍💼
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Feutsop Rüdiger</h3>
+                        <p class="text-[#1B5E20] font-semibold mb-4">Fondateur & Développeur principal</p>
+                        <p class="text-gray-600">
+                            Passionné par l'innovation technologique et l'agriculture, Rüdiger a créé Agrospace pour transformer le secteur agricole africain grâce au numérique.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Membre 2 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="h-48 bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center text-6xl">
+                            👩‍💼
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Marie Kouam</h3>
+                        <p class="text-[#1B5E20] font-semibold mb-4">Responsable Communauté</p>
+                        <p class="text-gray-600">
+                            Experte en engagement communautaire, Marie veille à ce que chaque membre d'Agrospace trouve sa place et crée des connexions authentiques.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Membre 3 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2">
+                    <div class="h-48 bg-gradient-to-br from-green-500 to-emerald-700 flex items-center justify-center">
+                        <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center text-6xl">
+                            👨‍🌾
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Jean Nkoulou</h3>
+                        <p class="text-[#1B5E20] font-semibold mb-4">Expert Agropastoral</p>
+                        <p class="text-gray-600">
+                            Avec 15 ans d'expérience dans le secteur agricole, Jean apporte son expertise pour garantir la pertinence et l'utilité de notre plateforme.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact & Chiffres -->
+    <section class="py-20 bg-gradient-to-br from-emerald-50 to-green-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Notre impact en quelques chiffres</h2>
+                <p class="text-xl text-gray-600">Des résultats concrets qui témoignent de notre engagement</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Chiffre 1 -->
+                <div class="bg-white p-8 rounded-2xl text-center shadow-lg">
+                    <div class="text-5xl mb-4">👥</div>
+                    <div class="text-4xl font-bold text-[#1B5E20] mb-2">+500</div>
+                    <p class="text-gray-600 font-medium">Utilisateurs inscrits</p>
+                </div>
+
+                <!-- Chiffre 2 -->
+                <div class="bg-white p-8 rounded-2xl text-center shadow-lg">
+                    <div class="text-5xl mb-4">🤝</div>
+                    <div class="text-4xl font-bold text-[#1B5E20] mb-2">+120</div>
+                    <p class="text-gray-600 font-medium">Connexions créées</p>
+                </div>
+
+                <!-- Chiffre 3 -->
+                <div class="bg-white p-8 rounded-2xl text-center shadow-lg">
+                    <div class="text-5xl mb-4">📍</div>
+                    <div class="text-4xl font-bold text-[#1B5E20] mb-2">+30</div>
+                    <p class="text-gray-600 font-medium">Régions couvertes</p>
+                </div>
+
+                <!-- Chiffre 4 -->
+                <div class="bg-white p-8 rounded-2xl text-center shadow-lg">
+                    <div class="text-5xl mb-4">📢</div>
+                    <div class="text-4xl font-bold text-[#1B5E20] mb-2">+100</div>
+                    <p class="text-gray-600 font-medium">Offres publiées/mois</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gradient-to-r from-[#1B5E20] to-green-600">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6">
+                Rejoignez la communauté Agrospace dès aujourd'hui
+            </h2>
+            <p class="text-xl text-green-50 mb-8">
+                Contribuez à l'avenir durable de l'agriculture africaine et créez des connexions qui comptent vraiment.
+            </p>
+            <a href="/inscription" class="inline-block bg-white text-[#1B5E20] px-10 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+                Créer un compte gratuitement
+            </a>
+            <p class="text-green-100 mt-4 text-sm">C'est rapide, simple et gratuit.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <!-- Logo & Slogan -->
+                <div class="col-span-2">
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl font-bold text-white">🌿 Agrospace</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Le réseau professionnel de l'agriculture africaine. Connectons, valorisons et collaborons pour un avenir durable.
+                    </p>
+                </div>
+
+                <!-- Liens rapides -->
+                <div>
+                    <h3 class="text-white font-bold mb-4">Liens rapides</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+                        <li><a href="/fonctionnalites" class="hover:text-white transition">Fonctionnalités</a></li>
+                        <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="/about" class="hover:text-white transition">À propos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Légal -->
+                <div>
+                    <h3 class="text-white font-bold mb-4">Légal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/conditions" class="hover:text-white transition">Conditions d'utilisation</a></li>
+                        <li><a href="/confidentialite" class="hover:text-white transition">Politique de confidentialité</a></li>
+                        <li><a href="/contact" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Réseaux sociaux & Copyright -->
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    © 2025 Agrospace – Tous droits réservés.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 

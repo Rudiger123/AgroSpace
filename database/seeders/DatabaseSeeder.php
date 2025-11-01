@@ -35,6 +35,16 @@ class DatabaseSeeder extends Seeder
         );
         */
 
+        User::factory()->create([
+            'email' => 'rudi@gmail.com',
+            'password' => Hash::make('password')
+        ]);
+
+        User::factory()->create([
+            'email' => 'rudi1@gmail.com',
+            'password' => Hash::make('password')
+        ]);
+
         User::factory(5)->hasOffers(10)->create();
 
         User::factory(5)->hasDemands(10)->create();

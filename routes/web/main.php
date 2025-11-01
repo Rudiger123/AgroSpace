@@ -6,7 +6,13 @@ use App\Livewire\Auth\TwoFactorChallenge;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
+// Guest Routes
 Volt::route('/', 'welcome')->name('home');
+Volt::route('/features', 'features')->name('features');
+Volt::route('/blog', 'blog-page')->name('blog.page');
+Volt::route('/about', 'about-page')->name('about.page');
+Volt::route('/consumers', 'consumer-page')->name('consumer.page');
+Volt::route('/producers', 'producer-page')->name('producer.page');
 
 /**
  * Les Routes protegées
