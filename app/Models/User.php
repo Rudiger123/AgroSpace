@@ -62,6 +62,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Demand::class);
     }
 
+    
     // Accessors pour chiffrer/déchiffrer automatiquement
     public function setTwoFactorSecretAttribute($value)
     {
@@ -82,4 +83,5 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $value ? json_decode(decrypt($value), true) : [];
     }
+    
 }

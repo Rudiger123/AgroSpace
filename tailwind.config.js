@@ -19,13 +19,17 @@ export default {
                 'agro-yellow': '#FFB300',
                 primary: '#1B5E20',
                 secondary: '#81C784',
-                accent: '#F5F5DC'
+                accent: '#F5F5DC',
+
             },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 inter: ['Inter', 'sans-serif'],
                 poppins: ['Poppins', 'sans-serif'],
             },
+            animation: {
+                'bounce-slow': 'bounce 2s infinite',
+            }
         },
     },
 
