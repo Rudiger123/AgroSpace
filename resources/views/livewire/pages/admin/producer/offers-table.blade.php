@@ -342,7 +342,7 @@
                                 </label>
                                 <input type="text" id="title" wire:model.live.debounce.300ms="title"
                                     class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                @error('title') border-red-500 @else border-gray-300 @enderror"
+                                 border-gray-300"
                                     placeholder="Ex: Vente de 100 sacs de maïs">
                                 @error('title')
                                     <p class="text-red-500 text-xs mt-1 flex items-center">
@@ -363,7 +363,7 @@
                                 </label>
                                 <textarea id="description" wire:model.live.debounce.300ms="description" rows="4"
                                     class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all resize-none
-                                @error('description') border-red-500 @else border-gray-300 @enderror"
+                                 border-gray-300"
                                     placeholder="Décrivez votre offre en détail..."></textarea>
                                 @error('description')
                                     <p class="text-red-500 text-xs mt-1 flex items-center">
@@ -384,7 +384,7 @@
                                 </label>
                                 <select id="category" wire:model="category"
                                     class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                @error('category') border-red-500 @else border-gray-300 @enderror">
+                                 border-gray-300">
                                     <option value="">Sélectionnez une catégorie</option>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat }}">{{ $cat }}</option>
@@ -411,7 +411,7 @@
                                     <input type="number" id="price" wire:model="price" step="0.01"
                                         min="0"
                                         class="w-full pl-4 pr-20 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                    @error('price') border-red-500 @else border-gray-300 @enderror"
+                                    border-gray-300"
                                         placeholder="0">
                                     <span
                                         class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">
@@ -437,7 +437,7 @@
                                 </label>
                                 <select id="region" wire:model="region"
                                     class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                @error('region') border-red-500 @else border-gray-300 @enderror">
+                                 border-gray-300">
                                     <option value="">Sélectionnez une région</option>
                                     @foreach ($regions as $reg)
                                         <option value="{{ $reg }}">{{ $reg }}</option>
@@ -462,7 +462,7 @@
                                 </label>
                                 <input type="text" id="contact" wire:model="contact"
                                     class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                @error('contact') border-red-500 @else border-gray-300 @enderror"
+                                 border-gray-300"
                                     placeholder="Ex: +237 6XX XX XX XX">
                                 @error('contact')
                                     <p class="text-red-500 text-xs mt-1 flex items-center">
