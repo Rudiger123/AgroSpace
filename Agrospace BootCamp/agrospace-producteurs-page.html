@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producteurs - Agrospace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        [x-cloak] { display: none; }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50" x-data="{ mobileMenuOpen: false }">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-[#1B5E20]">🌿 Agrospace</a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-700 hover:text-[#1B5E20] transition">Accueil</a>
+                    <a href="/fonctionnalites" class="text-gray-700 hover:text-[#1B5E20] transition">Fonctionnalités</a>
+                    <a href="/producteurs" class="text-[#1B5E20] font-semibold border-b-2 border-[#1B5E20]">Producteurs</a>
+                    <a href="/consommateurs" class="text-gray-700 hover:text-[#1B5E20] transition">Consommateurs</a>
+                    <a href="/blog" class="text-gray-700 hover:text-[#1B5E20] transition">Blog</a>
+                    <a href="/about" class="text-gray-700 hover:text-[#1B5E20] transition">À propos</a>
+                </div>
+
+                <!-- Auth Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="/connexion" class="text-gray-700 hover:text-[#1B5E20] transition">Connexion</a>
+                    <a href="/inscription" class="bg-[#1B5E20] text-white px-6 py-2 rounded-lg hover:bg-[#2E7D32] transition">Inscription</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-gray-700">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        <path x-show="mobileMenuOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div x-show="mobileMenuOpen" x-cloak x-transition class="md:hidden pb-4">
+                <div class="flex flex-col space-y-3">
+                    <a href="/" class="text-gray-700 hover:text-[#1B5E20] transition">Accueil</a>
+                    <a href="/fonctionnalites" class="text-gray-700 hover:text-[#1B5E20] transition">Fonctionnalités</a>
+                    <a href="/producteurs" class="text-[#1B5E20] font-semibold">Producteurs</a>
+                    <a href="/consommateurs" class="text-gray-700 hover:text-[#1B5E20] transition">Consommateurs</a>
+                    <a href="/blog" class="text-gray-700 hover:text-[#1B5E20] transition">Blog</a>
+                    <a href="/about" class="text-gray-700 hover:text-[#1B5E20] transition">À propos</a>
+                    <a href="/connexion" class="text-gray-700 hover:text-[#1B5E20] transition">Connexion</a>
+                    <a href="/inscription" class="bg-[#1B5E20] text-white px-6 py-2 rounded-lg hover:bg-[#2E7D32] transition text-center">Inscription</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-[#1B5E20] via-green-700 to-[#81C784] py-20 lg:py-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-white animate-fade-in-up">
+                    <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                        Vous produisez, Agrospace vous connecte à vos futurs clients
+                    </h1>
+                    <p class="text-xl lg:text-2xl mb-8 text-green-50 leading-relaxed">
+                        Valorisez vos produits agricoles, gagnez en visibilité et trouvez de nouvelles opportunités sans intermédiaires.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="/inscription?type=producteur" class="inline-block bg-white text-[#1B5E20] px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 text-center">
+                            Devenir Producteur sur Agrospace
+                        </a>
+                        <a href="#fonctionnalites" class="inline-block bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold hover:bg-white hover:text-[#1B5E20] transition text-center">
+                            Découvrir la plateforme
+                        </a>
+                    </div>
+                </div>
+                <div class="relative lg:block hidden">
+                    <div class="relative z-10">
+                        <svg class="w-full h-auto" viewBox="0 0 500 500" fill="none">
+                            <circle cx="250" cy="250" r="200" fill="white" opacity="0.1"/>
+                            <circle cx="250" cy="250" r="150" fill="white" opacity="0.15"/>
+                            <circle cx="250" cy="250" r="100" fill="white" opacity="0.2"/>
+                            <path d="M250 150 L300 200 L250 250 L200 200 Z" fill="white" opacity="0.3"/>
+                            <circle cx="250" cy="200" r="30" fill="white"/>
+                            <circle cx="200" cy="250" r="25" fill="white" opacity="0.8"/>
+                            <circle cx="300" cy="250" r="25" fill="white" opacity="0.8"/>
+                            <path d="M220 280 Q250 300 280 280" stroke="white" stroke-width="3" fill="none"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Avantages pour Producteurs -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                    Les avantages pour les producteurs agricoles
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Agrospace vous offre tous les outils pour développer votre activité et toucher de nouveaux clients
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Avantage 1 -->
+                <div class="bg-emerald-50 p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105">
+                    <div class="w-16 h-16 bg-[#1B5E20] rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Visibilité régionale et nationale</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Soyez découvert par de nouveaux clients dans votre région et au-delà grâce à notre plateforme.
+                    </p>
+                </div>
+
+                <!-- Avantage 2 -->
+                <div class="bg-emerald-50 p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105">
+                    <div class="w-16 h-16 bg-[#1B5E20] rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Gestion simple de vos offres</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Créez, modifiez ou supprimez vos annonces facilement en quelques clics depuis votre tableau de bord.
+                    </p>
+                </div>
+
+                <!-- Avantage 3 -->
+                <div class="bg-emerald-50 p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105">
+                    <div class="w-16 h-16 bg-[#1B5E20] rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Communication directe</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Discutez, négociez et construisez des relations durables avec vos clients potentiels.
+                    </p>
+                </div>
+
+                <!-- Avantage 4 -->
+                <div class="bg-emerald-50 p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105">
+                    <div class="w-16 h-16 bg-[#1B5E20] rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Tableau de bord intuitif</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Suivez vos activités, vos vues et vos messages en un coup d'œil avec notre interface claire.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Témoignages -->
+    <section class="py-20 bg-emerald-50" x-data="{ currentTestimonial: 0, testimonials: [
+        {
+            name: 'Paul Mbarga',
+            location: 'Bafoussam, Ouest',
+            text: 'Grâce à Agrospace, j\'ai trouvé un partenaire commercial en 3 jours ! Ma production de légumes est maintenant mieux valorisée.',
+            emoji: '👨‍🌾'
+        },
+        {
+            name: 'Sophie Tchuente',
+            location: 'Douala, Littoral',
+            text: 'Une plateforme exceptionnelle qui m\'a permis de doubler mes contacts clients en un mois. Je recommande à tous les producteurs !',
+            emoji: '👩‍🌾'
+        },
+        {
+            name: 'Jean Nkoulou',
+            location: 'Yaoundé, Centre',
+            text: 'Simple, efficace et gratuit. Agrospace a transformé ma façon de travailler et m\'a ouvert de nouvelles opportunités.',
+            emoji: '👨‍🌾'
+        }
+    ] }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                    Ils font déjà confiance à Agrospace
+                </h2>
+                <p class="text-xl text-gray-600">Des producteurs satisfaits qui ont transformé leur activité</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-3xl shadow-2xl p-12 relative">
+                    <template x-for="(testimonial, index) in testimonials" :key="index">
+                        <div x-show="currentTestimonial === index" x-transition class="text-center">
+                            <div class="text-6xl mb-6" x-text="testimonial.emoji"></div>
+                            <p class="text-2xl text-gray-700 italic mb-8 leading-relaxed" x-text="'« ' + testimonial.text + ' »'"></p>
+                            <div>
+                                <p class="text-xl font-bold text-gray-900" x-text="testimonial.name"></p>
+                                <p class="text-gray-600" x-text="testimonial.location"></p>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Navigation dots -->
+                    <div class="flex justify-center space-x-2 mt-8">
+                        <template x-for="(testimonial, index) in testimonials" :key="index">
+                            <button 
+                                @click="currentTestimonial = index"
+                                :class="currentTestimonial === index ? 'bg-[#1B5E20] w-8' : 'bg-gray-300 w-3'"
+                                class="h-3 rounded-full transition-all duration-300"
+                            ></button>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <a href="/inscription?type=producteur" class="inline-block bg-[#1B5E20] text-white px-10 py-4 rounded-xl font-bold hover:bg-[#2E7D32] transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        Rejoindre Agrospace maintenant
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fonctionnalités pour Producteurs -->
+    <section class="py-20 bg-white" id="fonctionnalites">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                    Tout ce dont vous avez besoin pour développer votre activité
+                </h2>
+                <p class="text-xl text-gray-600">Des outils simples et puissants à votre disposition</p>
+            </div>
+
+            <div class="space-y-20">
+                <!-- Fonctionnalité 1 -->
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="inline-block bg-green-100 text-[#1B5E20] px-4 py-2 rounded-full font-bold text-sm mb-4">
+                            📦 Gestion d'offres
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Créez vos offres facilement</h3>
+                        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            Publiez vos produits en quelques minutes avec notre interface intuitive. Ajoutez des photos attractives, des descriptions détaillées et définissez vos conditions de vente.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#1B5E20] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700">Graphiques clairs et intuitifs</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#1B5E20] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700">Rapports exportables</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-100 to-pink-200 rounded-3xl p-8 shadow-xl">
+                        <svg class="w-full h-auto" viewBox="0 0 400 300" fill="none">
+                            <rect x="50" y="50" width="300" height="200" rx="20" fill="white"/>
+                            <rect x="80" y="80" width="60" height="15" rx="5" fill="#E0E0E0"/>
+                            <rect x="150" y="80" width="60" height="15" rx="5" fill="#1B5E20"/>
+                            <rect x="220" y="80" width="60" height="15" rx="5" fill="#E0E0E0"/>
+                            <path d="M80 120 L120 160 L160 140 L200 180 L240 150 L280 200" stroke="#1B5E20" stroke-width="3" fill="none"/>
+                            <circle cx="80" cy="120" r="5" fill="#1B5E20"/>
+                            <circle cx="120" cy="160" r="5" fill="#1B5E20"/>
+                            <circle cx="160" cy="140" r="5" fill="#1B5E20"/>
+                            <circle cx="200" cy="180" r="5" fill="#1B5E20"/>
+                            <circle cx="240" cy="150" r="5" fill="#1B5E20"/>
+                            <circle cx="280" cy="200" r="5" fill="#1B5E20"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parcours Producteur -->
+    <section class="py-20 bg-[#FAF7F0]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Comment ça marche ?</h2>
+                <p class="text-xl text-gray-600">Trois étapes simples pour commencer à développer votre activité</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Étape 1 -->
+                <div class="relative">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition">
+                        <div class="absolute -top-6 left-8 w-12 h-12 bg-[#1B5E20] text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                            1
+                        </div>
+                        <div class="mt-6 mb-6">
+                            <svg class="w-20 h-20 mx-auto text-[#1B5E20]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Créez votre compte producteur</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Renseignez vos informations, ajoutez votre photo de profil et présentez votre exploitation en quelques mots.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Étape 2 -->
+                <div class="relative">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition">
+                        <div class="absolute -top-6 left-8 w-12 h-12 bg-[#1B5E20] text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                            2
+                        </div>
+                        <div class="mt-6 mb-6">
+                            <svg class="w-20 h-20 mx-auto text-[#1B5E20]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Publiez votre première offre</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Ajoutez vos produits avec photos, descriptions, prix indicatifs et votre localisation pour être visible.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Étape 3 -->
+                <div class="relative">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition">
+                        <div class="absolute -top-6 left-8 w-12 h-12 bg-[#1B5E20] text-white rounded-full flex items-center justify-center text-2xl font-bold">
+                            3
+                        </div>
+                        <div class="mt-6 mb-6">
+                            <svg class="w-20 h-20 mx-auto text-[#1B5E20]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Recevez vos premiers contacts</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Discutez directement avec les consommateurs intéressés via notre messagerie intégrée et développez votre réseau.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="/inscription?type=producteur" class="inline-block bg-[#1B5E20] text-white px-10 py-4 rounded-xl font-bold hover:bg-[#2E7D32] transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    Commencer gratuitement
+                </a>
+                <p class="text-gray-600 mt-4">Aucune carte bancaire requise • Gratuit pour toujours</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chiffres et Impact -->
+    <section class="py-20 bg-gradient-to-br from-emerald-50 to-green-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                    Une communauté agricole en pleine croissance
+                </h2>
+                <p class="text-xl text-gray-600">Rejoignez des centaines de producteurs qui développent leur activité</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Stat 1 -->
+                <div class="bg-white rounded-2xl p-10 text-center shadow-lg">
+                    <div class="text-5xl mb-4">👨‍🌾</div>
+                    <div class="text-5xl lg:text-6xl font-bold text-[#1B5E20] mb-3">+500</div>
+                    <p class="text-xl text-gray-700 font-medium">Producteurs inscrits</p>
+                    <p class="text-gray-500 mt-2">et ce nombre augmente chaque jour</p>
+                </div>
+
+                <!-- Stat 2 -->
+                <div class="bg-white rounded-2xl p-10 text-center shadow-lg">
+                    <div class="text-5xl mb-4">🤝</div>
+                    <div class="text-5xl lg:text-6xl font-bold text-[#1B5E20] mb-3">+120</div>
+                    <p class="text-xl text-gray-700 font-medium">Connexions créées</p>
+                    <p class="text-gray-500 mt-2">entre producteurs et consommateurs</p>
+                </div>
+
+                <!-- Stat 3 -->
+                <div class="bg-white rounded-2xl p-10 text-center shadow-lg">
+                    <div class="text-5xl mb-4">📍</div>
+                    <div class="text-5xl lg:text-6xl font-bold text-[#1B5E20] mb-3">+30</div>
+                    <p class="text-xl text-gray-700 font-medium">Régions couvertes</p>
+                    <p class="text-gray-500 mt-2">à travers tout le Cameroun</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Final -->
+    <section class="py-20 bg-gradient-to-r from-[#1B5E20] via-green-700 to-[#81C784]">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6">
+                Rejoignez la communauté Agrospace
+            </h2>
+            <p class="text-xl lg:text-2xl text-green-50 mb-10 leading-relaxed">
+                Valorisez vos produits agricoles dès aujourd'hui et touchez de nouveaux clients dans toute votre région. C'est gratuit, simple et rapide.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/inscription?type=producteur" class="inline-block bg-white text-[#1B5E20] px-10 py-5 rounded-xl font-bold hover:bg-gray-100 transition shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 text-lg">
+                    S'inscrire comme Producteur
+                </a>
+                <a href="/producteurs/liste" class="inline-block bg-transparent border-2 border-white text-white px-10 py-5 rounded-xl font-bold hover:bg-white hover:text-[#1B5E20] transition text-lg">
+                    Découvrir les offres
+                </a>
+            </div>
+            <p class="text-green-100 mt-6">✓ Gratuit pour toujours  ✓ Sans engagement  ✓ Support disponible 7j/7</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <!-- Logo & Slogan -->
+                <div class="col-span-2">
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl font-bold text-white">🌿 Agrospace</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Le réseau professionnel de l'agriculture africaine. Connectons, valorisons et collaborons pour un avenir durable.
+                    </p>
+                </div>
+
+                <!-- Liens rapides -->
+                <div>
+                    <h3 class="text-white font-bold mb-4">Liens rapides</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+                        <li><a href="/about" class="hover:text-white transition">À propos</a></li>
+                        <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="/contact" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Légal -->
+                <div>
+                    <h3 class="text-white font-bold mb-4">Légal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/conditions" class="hover:text-white transition">Conditions d'utilisation</a></li>
+                        <li><a href="/confidentialite" class="hover:text-white transition">Politique de confidentialité</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Réseaux sociaux & Copyright -->
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    © 2025 Agrospace – Tous droits réservés.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Auto-rotate testimonials
+        document.addEventListener('alpine:init', () => {
+            setInterval(() => {
+                const testimonialSection = document.querySelector('[x-data*="currentTestimonial"]');
+                if (testimonialSection && testimonialSection.__x) {
+                    const data = testimonialSection.__x.$data;
+                    data.currentTestimonial = (data.currentTestimonial + 1) % data.testimonials.length;
+                }
+            }, 5000);
+        });
+    </script>
+
+</body>
+</html" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700">Ajoutez jusqu'à 10 photos par produit</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#1B5E20] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700">Modifiez vos offres en temps réel</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#1B5E20] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700">Organisez vos produits par catégories</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-100 to-emerald-200 rounded-3xl p-8 shadow-xl">
+                        <svg class="w-full h-auto" viewBox="0 0 400 300" fill="none">
+                            <rect x="50" y="50" width="300" height="200" rx="20" fill="white"/>
+                            <rect x="70" y="70" width="120" height="80" rx="10" fill="#81C784"/>
+                            <rect x="210" y="70" width="120" height="30" rx="5" fill="#E0E0E0"/>
+                            <rect x="210" y="110" width="120" height="15" rx="3" fill="#E0E0E0"/>
+                            <rect x="210" y="135" width="80" height="15" rx="3" fill="#E0E0E0"/>
+                            <circle cx="100" cy="200" r="15" fill="#1B5E20"/>
+                            <circle cx="140" cy="200" r="15" fill="#81C784"/>
+                            <circle cx="180" cy="200" r="15" fill="#81C784"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Fonctionnalité 2 -->
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1 bg-gradient-to-br from-blue-100 to-cyan-200 rounded-3xl p-8 shadow-xl">
+                        <svg class="w-full h-auto" viewBox="0 0 400 300" fill="none">
+                            <rect x="50" y="50" width="300" height="200" rx="20" fill="white"/>
+                            <circle cx="120" cy="110" r="30" fill="#1B5E20"/>
+                            <rect x="170" y="90" width="150" height="15" rx="5" fill="#E0E0E0"/>
+                            <rect x="170" y="115" width="100" height="10" rx="3" fill="#E0E0E0"/>
+                            <circle cx="280" cy="170" r="30" fill="#81C784"/>
+                            <rect x="100" y="150" width="150" height="15" rx="5" fill="#E0E0E0"/>
+                            <rect x="100" y="175" width="120" height="10" rx="3" fill="#E0E0E0"/>
+                            <path d="M200 220 L220 240 L240 220" stroke="#1B5E20" stroke-width="3" fill="none"/>
+                        </svg>
+                    </div>
+                    <div class="order-1 lg:order-2">
+                        <div class="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-bold text-sm mb-4">
+                            💬 Communication
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Échangez directement avec les consommateurs</h3>
+                        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            Notre messagerie intégrée vous permet de répondre rapidement aux demandes, négocier les conditions et construire des relations de confiance avec vos clients.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#1B5E20] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700">Messagerie instantanée sécurisée</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#1B5E20] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700">Notifications en temps réel</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#1B5E20] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700">Historique de conversations accessible</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fonctionnalité 3 -->
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="inline-block bg-purple-100 text-purple-700 px-4 py-2 rounded-full font-bold text-sm mb-4">
+                            📊 Statistiques
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Analysez vos performances</h3>
+                        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            Votre tableau de bord personnel vous donne accès à toutes les métriques importantes : vues de profil, clics sur vos offres, messages reçus et bien plus encore.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#1B5E20] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700">Suivi des vues et interactions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-[#1B5E20] mr-3 flex-shrink-0

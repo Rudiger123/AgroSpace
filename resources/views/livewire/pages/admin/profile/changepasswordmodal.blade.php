@@ -170,7 +170,7 @@ new class extends Component {
                                 <input :type="showPassword ? 'text' : 'password'" id="current_password"
                                     wire:model.live.debounce.300ms="current_password"
                                     class="w-full pl-10 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                    @error('current_password') border-red-500 @else border-gray-300 @enderror"
+                                    border-gray-300 "
                                     placeholder="Votre ancien mot de passe">
                                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,7 +217,7 @@ new class extends Component {
                                 <input :type="showPassword ? 'text' : 'password'" id="password"
                                     wire:model.live.debounce.300ms="password"
                                     class="w-full pl-10 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                    @error('password') border-red-500 @else border-gray-300 @enderror"
+                                     border-gray-300"
                                     placeholder="Minimum 8 caractères">
                                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">

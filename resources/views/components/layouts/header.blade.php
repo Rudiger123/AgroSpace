@@ -15,17 +15,17 @@
 
              <!-- Desktop Menu -->
              <div class="hidden md:flex items-center space-x-8">
-                 <a href="{{ route('home') }}"
+                 <a href="{{ route('home') }}" wire:navigate
                      class="text-gray-700 hover:text-primary transition-colors font-medium">Accueil</a>
-                 <a href="{{ route('features') }}"
+                 <a href="{{ route('features') }}" wire:navigate
                      class="text-gray-700 hover:text-primary transition-colors font-medium">Fonctionnalités</a>
-                 <a href="{{ route('producer.page') }}"
+                 <a href="{{ route('producer.page') }}" wire:navigate
                      class="text-gray-700 hover:text-primary transition-colors font-medium">Producteurs</a>
-                 <a href="{{ route('consumer.page') }}"
+                 <a href="{{ route('consumer.page') }}" wire:navigate
                      class="text-gray-700 hover:text-primary transition-colors font-medium">consommateurs</a>
-                 <a href="{{ route('about.page') }}"
+                 <a href="{{ route('about.page') }}" wire:navigate
                      class="text-gray-700 hover:text-primary transition-colors font-medium">about</a>
-                 <a href="{{ route('blog.page') }}"
+                 <a href="{{ route('blog.page') }}" wire:navigate
                      class="text-gray-700 hover:text-primary transition-colors font-medium">Blog</a>
                  <!-- Bouton Connexion -->
                  <a href="{{ route('login') }}"

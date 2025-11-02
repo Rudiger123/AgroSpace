@@ -10,12 +10,17 @@ use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Wirechat\Wirechat\Contracts\WirechatUser;
+use Wirechat\Wirechat\Panel;
+use Wirechat\Wirechat\Traits\InteractsWithWirechat;
 
 #[UsePolicy(UserPolicy::class)]
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, WirechatUser
 {
     use HasFactory;
     use Notifiable;
+
+    use InteractsWithWirechat;
 
     protected $fillable = [
         'name',
@@ -62,7 +67,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Demand::class);
     }
 
-    
+
     // Accessors pour chiffrer/déchiffrer automatiquement
     public function setTwoFactorSecretAttribute($value)
     {
@@ -83,5 +88,29 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $value ? json_decode(decrypt($value), true) : [];
     }
-    
+
+    /**
+     * Decide if this user may access the given panel.
+     * Here, only users with verified emails are allowed.
+     */
+    public function canAccessWirechatPanel(Panel $panel): bool
+    {
+        return $this->hasVerifiedEmail();
+    }
+
+    /**
+     * Control whether this user is allowed to create 1-to-1 chats.
+     */
+    public function canCreateChats(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Control whether this user can create group conversations.
+     */
+    public function canCreateGroups(): bool
+    {
+        return true;
+    }
 }
