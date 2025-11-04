@@ -12,13 +12,16 @@ return new class () extends Migration {
             $table->text('bio')->nullable()->after('avatar');
             $table->string('location')->nullable()->after('bio');
             $table->string('activity')->nullable()->after('location');
+            $table->string('phone')->nullable();
+            $table->enum('status', ['active', 'suspended', 'banned'])->default('active');
+            $table->timestamp('last_active_at')->nullable();
         });
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['avatar', 'bio', 'location', 'activity']);
+            $table->dropColumn(['avatar', 'bio', 'location', 'activity','phone','status']);
         });
     }
 };

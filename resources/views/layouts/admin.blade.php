@@ -6,17 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', '🌿🌿✨Agrospace🌿🌿✨ - Connectons les acteurs du monde agropastoral') }}</title>
+    <title>{{ config('app.name', '🌿Agrospace🌿 - Connectons les acteurs du monde agropastoral') }}</title>
 
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
     @livewireStyles
+
+    <!-- Page Specific Styles -->
+    @stack('styles')
 </head>
 
 <body class="font-inter antialiased bg-agro-white text-agro-gray">
@@ -117,8 +124,71 @@
         });
     </script>
 
+    <!-- SweetAlert Integration Script -->
+    <script>
+        // Global SweetAlert Configuration
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        // Listen for Livewire events
+        window.addEventListener('alert', event => {
+            const data = event.detail[0] || event.detail;
+            Toast.fire({
+                icon: data.type || 'info',
+                title: data.message
+            });
+        });
+
+        window.addEventListener('confirm-action', event => {
+            const data = event.detail[0] || event.detail;
+            Swal.fire({
+                title: data.title || '{{ __('Êtes-vous sûr ?') }}',
+                text: data.text || '{{ __('Cette action est irréversible.') }}',
+                icon: data.icon || 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#2E7D32',
+                cancelButtonColor: '#d33',
+                confirmButtonText: data.confirmText || '{{ __('Oui, continuer') }}',
+                cancelButtonText: data.cancelText || '{{ __('Annuler') }}'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Emit event back to Livewire
+                    Livewire.dispatch(data.callback || 'confirmed');
+                }
+            });
+        });
+
+        // Success notification helper
+        window.showSuccess = (message) => {
+            Toast.fire({
+                icon: 'success',
+                title: message
+            });
+        };
+
+        // Error notification helper
+        window.showError = (message) => {
+            Toast.fire({
+                icon: 'error',
+                title: message
+            });
+        };
+    </script>
+
 
     @livewireScripts
+
+    <!-- Page Specific Scripts -->
+    @stack('scripts')
 </body>
 
 </html>

@@ -173,7 +173,7 @@ new class extends Component {
                             </label>
                             <input type="text" id="confirmation" wire:model.live.debounce.300ms="confirmation"
                                 class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all
-                                @error('confirmation') border-red-500 @else border-gray-300 @enderror"
+                                border-gray-300"
                                 placeholder="Tapez SUPPRIMER">
                             @error('confirmation')
                                 <p class="text-red-500 text-xs mt-1 flex items-center">
@@ -196,7 +196,7 @@ new class extends Component {
                                 <input :type="showPassword ? 'text' : 'password'" id="password"
                                     wire:model.live.debounce.300ms="password"
                                     class="w-full pl-10 pr-12 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all
-                                    @error('password') border-red-500 @else border-gray-300 @enderror"
+                                     border-gray-300"
                                     placeholder="Entrez votre mot de passe">
                                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">

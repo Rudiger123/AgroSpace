@@ -19,10 +19,6 @@
     font-style: normal;
 }
 
-
-/* resources/css/app.css */
-
-@import '../../vendor/wirechat/wirechat/resources/css/app.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -74,4 +70,27 @@
 
 animate-float {
     animation: float 3s ease-in-out infinite;
+}
+
+
+/* Scrollbar design global */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+ ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    /* gray-100 */
+    border-radius: 8px;
+}
+
+ ::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    /* ton vert Agrospace */
+    border-radius: 8px;
+}
+
+ ::-webkit-scrollbar-thumb:hover {
+    background: #388E3C;
 }

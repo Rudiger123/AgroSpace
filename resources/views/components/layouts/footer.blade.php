@@ -4,12 +4,8 @@
             <!-- Logo & Slogan -->
             <div class="space-y-4">
                 <div class="flex items-center space-x-2">
-                    <svg class="w-8 h-8 text-secondary" fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-4 0-7-3-7-7V8.3l7-3.5 7 3.5V13c0 4-3 7-7 7z" />
-                        <circle cx="12" cy="12" r="3" />
-                    </svg>
-                    <span class="text-2xl font-bold text-white">Agrospace</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="Agrospace" class="w-12 h-12">
+                    <span class="text-2xl font-bold text-white">AgroSpace</span>
                 </div>
                 <p class="text-gray-400 leading-relaxed">
                     Connecter les acteurs de l'agriculture pour un avenir durable et prospère.
@@ -44,8 +40,8 @@
                 <h4 class="text-white font-bold text-lg mb-4">Liens rapides</h4>
                 <ul class="space-y-3">
                     <li><a href="#accueil" class="hover:text-secondary transition-colors">Accueil</a></li>
-                    <li><a href="#fonctionnalites"
-                            class="hover:text-secondary transition-colors">Fonctionnalités</a></li>
+                    <li><a href="#fonctionnalites" class="hover:text-secondary transition-colors">Fonctionnalités</a>
+                    </li>
                     <li><a href="#temoignages" class="hover:text-secondary transition-colors">Témoignages</a>
                     </li>
                     <li><a href="#blog" class="hover:text-secondary transition-colors">Blog</a></li>
@@ -75,8 +71,8 @@
                 <h4 class="text-white font-bold text-lg mb-4">Contact</h4>
                 <ul class="space-y-3">
                     <li class="flex items-start space-x-2">
-                        <svg class="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -85,8 +81,8 @@
                         <span>Bafoussam, Cameroun</span>
                     </li>
                     <li class="flex items-start space-x-2">
-                        <svg class="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
@@ -94,8 +90,8 @@
                             class="hover:text-secondary transition-colors">contact@agrospace.cm</a>
                     </li>
                     <li class="flex items-start space-x-2">
-                        <svg class="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>

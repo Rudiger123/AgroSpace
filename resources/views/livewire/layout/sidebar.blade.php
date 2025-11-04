@@ -182,8 +182,14 @@ new class extends Component {
         <div x-data.ignore="{ menuOpen: false }" class="relative">
             <button @click="menuOpen = !menuOpen"
                 class="w-full flex items-center space-x-3 px-3 py-2 rounded-xl hover:bg-[#F9F6EE] transition-all duration-200 group">
+                @if(auth()->user()->avatar)
                 <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
-                    class="w-10 h-10 rounded-full ring-2 ring-[#2E7D32]/20 group-hover:ring-[#2E7D32]/40 transition-all">
+                class="w-10 h-10 rounded-full ring-2 ring-[#2E7D32]/20 group-hover:ring-[#2E7D32]/40 transition-all">
+            @else
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-agro-green to-primary flex items-center justify-center text-white font-semibold text-sm border-2 border-agro-green">
+                    {{ substr(auth()->user()->name, 0, 1) }}
+                </div>
+            @endif
                 <div x-show="sidebarOpen" x-transition class="flex-1 text-left">
                     <p class="text-sm font-medium text-[#37474F]"> {{ $user->name }} </p>
                     <p class="text-xs text-[#37474F]/60"> {{ $user->email }} </p>
