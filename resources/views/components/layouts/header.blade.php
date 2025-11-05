@@ -179,7 +179,7 @@
                                     </div>
                                 </a>
 
-                                <a href="{{ route('profile') }}"
+                                <a href="{{ route('profile') }}" wire:navigate
                                     class="flex items-center space-x-3 px-4 py-2.5 hover:bg-gray-50 transition">
                                     <div class="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
@@ -196,7 +196,7 @@
                                 </a>
 
                                 @if (auth()->user()->role === 'producer')
-                                    <a href="{{ route('offers.index') }}"
+                                    <a href="{{ route('offers.index') }}" wire:navigate
                                         class="flex items-center space-x-3 px-4 py-2.5 hover:bg-gray-50 transition">
                                         <div class="w-9 h-9 bg-amber-100 rounded-lg flex items-center justify-center">
                                             <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor"
@@ -214,7 +214,7 @@
                                 @endif
 
                                 @if (auth()->user()->role === 'consumer')
-                                    <a href="{{ route('demands.index') }}"
+                                    <a href="{{ route('demands.index') }}" wire:navigate
                                         class="flex items-center space-x-3 px-4 py-2.5 hover:bg-gray-50 transition">
                                         <div class="w-9 h-9 bg-purple-100 rounded-lg flex items-center justify-center">
                                             <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
@@ -231,7 +231,7 @@
                                     </a>
                                 @endif
 
-                                <a href="#"
+                                <a href="#" wire:navigate
                                     class="flex items-center space-x-3 px-4 py-2.5 hover:bg-gray-50 transition">
                                     <div class="w-9 h-9 bg-teal-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor"
@@ -247,7 +247,7 @@
                                     </div>
                                 </a>
 
-                                <a href="#"
+                                <a href="#" wire:navigate
                                     class="flex items-center space-x-3 px-4 py-2.5 hover:bg-gray-50 transition">
                                     <div class="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
@@ -263,33 +263,11 @@
                                     </div>
                                 </a>
                             </div>
-
-                            <!-- Logout -->
-                            <div class="border-t border-gray-100 p-2">
-                                <form>
-                                    @csrf
-                                    <button type="submit"
-                                        class="flex items-center space-x-3 px-4 py-2.5 hover:bg-red-50 transition w-full rounded-lg">
-                                        <div class="w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div class="text-left">
-                                            <p class="text-sm font-semibold text-red-600">Déconnexion</p>
-                                            <p class="text-xs text-red-400">Se déconnecter</p>
-                                        </div>
-                                    </button>
-                                </form>
-                            </div>
                         </div>
                     </div>
                 @else
                     <!-- Boutons pour utilisateurs non connectés -->
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('login') }}" wire:navigate
                         class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold 
                         text-white bg-gradient-to-r from-green-600 to-emerald-500 
                         hover:from-green-700 hover:to-emerald-600 transition-all duration-300 
@@ -302,7 +280,7 @@
                         <span>Connexion</span>
                     </a>
 
-                    <a href="{{ route('register') }}"
+                    <a href="{{ route('register') }}" wire:navigate
                         class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold 
                         text-green-700 border-2 border-green-600 
                         hover:bg-green-600 hover:text-white transition-all duration-300 
@@ -335,17 +313,17 @@
             x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 -translate-y-2" class="md:hidden mt-4 pb-4 space-y-3">
-            <a href="{{ route('home') }}" @click="mobileMenuOpen = false"
+            <a href="{{ route('home') }}" @click="mobileMenuOpen = false" wire:navigate
                 class="block text-gray-700 hover:text-primary font-medium py-2">Accueil</a>
-            <a href="{{ route('features') }}" @click="mobileMenuOpen = false"
+            <a href="{{ route('features') }}" @click="mobileMenuOpen = false" wire:navigate
                 class="block text-gray-700 hover:text-primary font-medium py-2">Fonctionnalités</a>
-            <a href="{{ route('producer.page') }}" @click="mobileMenuOpen = false"
+            <a href="{{ route('producer.page') }}" @click="mobileMenuOpen = false" wire:navigate
                 class="block text-gray-700 hover:text-primary font-medium py-2">Producteurs</a>
-            <a href="{{ route('consumer.page') }}" @click="mobileMenuOpen = false"
+            <a href="{{ route('consumer.page') }}" @click="mobileMenuOpen = false" wire:navigate
                 class="block text-gray-700 hover:text-primary font-medium py-2">Consommateurs</a>
-            <a href="{{ route('about.page') }}" @click="mobileMenuOpen = false"
+            <a href="{{ route('about.page') }}" @click="mobileMenuOpen = false" wire:navigate
                 class="block text-gray-700 hover:text-primary font-medium py-2">À propos</a>
-            <a href="{{ route('blog.page') }}" @click="mobileMenuOpen = false"
+            <a href="{{ route('blog.page') }}" @click="mobileMenuOpen = false" wire:navigate
                 class="block text-gray-700 hover:text-primary font-medium py-2">Blog</a>
 
             @auth
@@ -359,13 +337,13 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('dashboard') }}" @click="mobileMenuOpen = false"
+                    <a href="{{ route('dashboard') }}" @click="mobileMenuOpen = false" wire:navigate
                         class="block text-gray-700 hover:text-primary font-medium py-2">📊 Tableau de bord</a>
-                    <a href="{{ route('profile') }}" @click="mobileMenuOpen = false"
+                    <a href="{{ route('profile') }}" @click="mobileMenuOpen = false" wire:navigate
                         class="block text-gray-700 hover:text-primary font-medium py-2">👤 Mon Profil</a>
-                    <a href="{{ route('dashboard') }}" @click="mobileMenuOpen = false"
+                    <a href="{{ route('dashboard') }}" @click="mobileMenuOpen = false" wire:navigate
                         class="block text-gray-700 hover:text-primary font-medium py-2">💬 Messages</a>
-                    <a href="{{ route('profile') }}" @click="mobileMenuOpen = false"
+                    <a href="{{ route('profile') }}" @click="mobileMenuOpen = false" wire:navigate
                         class="block text-gray-700 hover:text-primary font-medium py-2">⚙️ Paramètres</a>
 
                     <form class="mt-3">
@@ -377,7 +355,7 @@
                 </div>
             @else
                 <div class="border-t border-gray-200 pt-3 mt-3 space-y-2">
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('login') }}" wire:navigate
                         class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold 
                         text-white bg-gradient-to-r from-green-600 to-emerald-500 
                         hover:from-green-700 hover:to-emerald-600 transition-all duration-300 
@@ -390,7 +368,7 @@
                         <span>Connexion</span>
                     </a>
 
-                    <a href="{{ route('register') }}"
+                    <a href="{{ route('register') }}" wire:navigate
                         class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold 
                         text-green-700 border-2 border-green-600 
                         hover:bg-green-600 hover:text-white transition-all duration-300 

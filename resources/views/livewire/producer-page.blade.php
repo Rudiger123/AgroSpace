@@ -31,10 +31,10 @@ new #[Layout('layouts.main')] class extends Component {
                         Valorisez vos produits agricoles, gagnez en visibilité et trouvez de nouvelles opportunités sans intermédiaires.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                        <a href="/register?type=producteur" class="bg-white text-primary px-8 py-4 rounded-lg font-bold hover:bg-yellow-300 hover:text-primary transition-all shadow-xl hover:shadow-2xl text-center text-lg">
+                        <a href="/register?type=producteur" class="bg-white text-base px-8 py-4 rounded-lg font-bold hover:bg-yellow-300 hover:text-base transition-all shadow-xl hover:shadow-2xl text-center text-lg">
                             Devenir Producteur sur Agrospace
                         </a>
-                        <a href="/fonctionnalites" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-primary transition-all text-center">
+                        <a href="/fonctionnalites" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-base transition-all text-center">
                             Découvrir la plateforme
                         </a>
                     </div>
@@ -90,9 +90,9 @@ new #[Layout('layouts.main')] class extends Component {
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Avantage 1 -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-primary group">
-                    <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-base group">
+                    <div class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
@@ -105,7 +105,7 @@ new #[Layout('layouts.main')] class extends Component {
                 <!-- Avantage 2 -->
                 <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-secondary group">
                     <div class="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
@@ -117,9 +117,9 @@ new #[Layout('layouts.main')] class extends Component {
                 </div>
 
                 <!-- Avantage 3 -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-primary group">
-                    <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-base group">
+                    <div class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                         </svg>
                     </div>
@@ -132,7 +132,7 @@ new #[Layout('layouts.main')] class extends Component {
                 <!-- Avantage 4 -->
                 <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-secondary group">
                     <div class="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                         </svg>
                     </div>
@@ -193,7 +193,7 @@ new #[Layout('layouts.main')] class extends Component {
                             <div class="flex flex-col md:flex-row items-center gap-8">
                                 <!-- Avatar -->
                                 <div class="flex-shrink-0">
-                                    <div class="w-32 h-32 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-6xl shadow-xl">
+                                    <div class="w-32 h-32 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center text-6xl shadow-xl">
                                         <span x-text="testimonial.avatar"></span>
                                     </div>
                                 </div>
@@ -215,7 +215,7 @@ new #[Layout('layouts.main')] class extends Component {
                                     <!-- Author -->
                                     <div>
                                         <h4 class="text-xl font-bold text-gray-900" x-text="testimonial.name"></h4>
-                                        <p class="text-primary font-medium" x-text="testimonial.location"></p>
+                                        <p class="text-base font-medium" x-text="testimonial.location"></p>
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +226,7 @@ new #[Layout('layouts.main')] class extends Component {
                     <div class="flex justify-center gap-3 mt-8">
                         <template x-for="(testimonial, index) in testimonials" :key="index">
                             <button @click="currentIndex = index" 
-                                    :class="currentIndex === index ? 'bg-primary w-12' : 'bg-gray-300 w-3'"
+                                    :class="currentIndex === index ? 'bg-base w-12' : 'bg-gray-300 w-3'"
                                     class="h-3 rounded-full transition-all duration-300"></button>
                         </template>
                     </div>
@@ -234,7 +234,7 @@ new #[Layout('layouts.main')] class extends Component {
             </div>
 
             <div class="text-center mt-12">
-                <a href="/register?type=producteur" class="inline-block bg-primary text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                <a href="/register?type=producteur" class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Rejoindre Agrospace maintenant
                 </a>
             </div>
@@ -255,8 +255,8 @@ new #[Layout('layouts.main')] class extends Component {
                 <!-- Features List -->
                 <div class="space-y-6">
                     <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
-                        <div class="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="flex-shrink-0 w-12 h-12 bg-base/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                             </svg>
                         </div>
@@ -268,7 +268,7 @@ new #[Layout('layouts.main')] class extends Component {
 
                     <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
                         <div class="flex-shrink-0 w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                             </svg>
                         </div>
@@ -279,8 +279,8 @@ new #[Layout('layouts.main')] class extends Component {
                     </div>
 
                     <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
-                        <div class="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="flex-shrink-0 w-12 h-12 bg-base/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
@@ -293,7 +293,7 @@ new #[Layout('layouts.main')] class extends Component {
 
                     <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
                         <div class="flex-shrink-0 w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                             </svg>
                         </div>
@@ -304,8 +304,8 @@ new #[Layout('layouts.main')] class extends Component {
                     </div>
 
                     <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
-                        <div class="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="flex-shrink-0 w-12 h-12 bg-base/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                             </svg>
                         </div>
@@ -317,10 +317,10 @@ new #[Layout('layouts.main')] class extends Component {
                 </div>
 
                 <!-- Dashboard Mockup -->
-                <div class="bg-gradient-to-br from-primary/10 to-secondary/20 p-8 rounded-3xl">
+                <div class="bg-gradient-to-br from-base/10 to-secondary/20 p-8 rounded-3xl">
                     <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
                         <!-- Header -->
-                        <div class="bg-gradient-to-r from-primary to-green-600 p-6 text-white">
+                        <div class="bg-gradient-to-r from-base to-green-600 p-6 text-white">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <h3 class="text-xl font-bold">Tableau de Bord Producteur</h3>
@@ -338,7 +338,7 @@ new #[Layout('layouts.main')] class extends Component {
                         <div class="p-6 grid grid-cols-2 gap-4">
                             <div class="bg-green-50 p-4 rounded-xl">
                                 <p class="text-sm text-gray-600 mb-1">Offres actives</p>
-                                <p class="text-3xl font-bold text-primary">12</p>
+                                <p class="text-3xl font-bold text-base">12</p>
                             </div>
                             <div class="bg-blue-50 p-4 rounded-xl">
                                 <p class="text-sm text-gray-600 mb-1">Vues ce mois</p>
@@ -358,13 +358,13 @@ new #[Layout('layouts.main')] class extends Component {
                         <div class="p-6 border-t">
                             <p class="text-sm text-gray-600 mb-4 font-semibold">Activité des 7 derniers jours</p>
                             <div class="h-32 flex items-end justify-around gap-2">
-                                <div class="w-full bg-gradient-to-t from-primary to-secondary rounded-t-lg" style="height: 60%"></div>
-                                <div class="w-full bg-gradient-to-t from-primary to-secondary rounded-t-lg" style="height: 80%"></div>
-                                <div class="w-full bg-gradient-to-t from-primary to-secondary rounded-t-lg" style="height: 45%"></div>
-                                <div class="w-full bg-gradient-to-t from-primary to-secondary rounded-t-lg" style="height: 90%"></div>
-                                <div class="w-full bg-gradient-to-t from-primary to-secondary rounded-t-lg" style="height: 70%"></div>
-                                <div class="w-full bg-gradient-to-t from-primary to-secondary rounded-t-lg" style="height: 85%"></div>
-                                <div class="w-full bg-gradient-to-t from-primary to-secondary rounded-t-lg" style="height: 95%"></div>
+                                <div class="w-full bg-gradient-to-t from-base to-secondary rounded-t-lg" style="height: 60%"></div>
+                                <div class="w-full bg-gradient-to-t from-base to-secondary rounded-t-lg" style="height: 80%"></div>
+                                <div class="w-full bg-gradient-to-t from-base to-secondary rounded-t-lg" style="height: 45%"></div>
+                                <div class="w-full bg-gradient-to-t from-base to-secondary rounded-t-lg" style="height: 90%"></div>
+                                <div class="w-full bg-gradient-to-t from-base to-secondary rounded-t-lg" style="height: 70%"></div>
+                                <div class="w-full bg-gradient-to-t from-base to-secondary rounded-t-lg" style="height: 85%"></div>
+                                <div class="w-full bg-gradient-to-t from-base to-secondary rounded-t-lg" style="height: 95%"></div>
                             </div>
                         </div>
                     </div>
@@ -387,12 +387,12 @@ new #[Layout('layouts.main')] class extends Component {
                 <!-- Étape 1 -->
                 <div class="relative">
                     <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full">
-                        <div class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-xl">
+                        <div class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center shadow-xl">
                             <span class="text-3xl font-bold text-white">1</span>
                         </div>
                         <div class="pt-8">
-                            <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                                <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                 </svg>
                             </div>
@@ -413,12 +413,12 @@ new #[Layout('layouts.main')] class extends Component {
                 <!-- Étape 2 -->
                 <div class="relative">
                     <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full">
-                        <div class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-xl">
+                        <div class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center shadow-xl">
                             <span class="text-3xl font-bold text-white">2</span>
                         </div>
                         <div class="pt-8">
                             <div class="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                 </svg>
                             </div>
@@ -439,12 +439,12 @@ new #[Layout('layouts.main')] class extends Component {
                 <!-- Étape 3 -->
                 <div class="relative">
                     <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full">
-                        <div class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-xl">
+                        <div class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center shadow-xl">
                             <span class="text-3xl font-bold text-white">3</span>
                         </div>
                         <div class="pt-8">
-                            <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                                <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                                 </svg>
                             </div>
@@ -458,7 +458,7 @@ new #[Layout('layouts.main')] class extends Component {
             </div>
 
             <div class="text-center">
-                <a href="/register?type=producteur" class="inline-block bg-primary text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                <a href="/register?type=producteur" class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Commencer gratuitement
                 </a>
                 <p class="text-sm text-gray-600 mt-4">✓ Aucune carte bancaire requise • ✓ Inscription en 2 minutes</p>
@@ -479,8 +479,8 @@ new #[Layout('layouts.main')] class extends Component {
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Stat 1 -->
                 <div class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center">
-                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-20 h-20 bg-base/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
                     </div>
@@ -492,7 +492,7 @@ new #[Layout('layouts.main')] class extends Component {
                 <!-- Stat 2 -->
                 <div class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center">
                     <div class="w-20 h-20 bg-secondary/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-10 h-10 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
                     </div>
@@ -503,8 +503,8 @@ new #[Layout('layouts.main')] class extends Component {
 
                 <!-- Stat 3 -->
                 <div class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center">
-                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-20 h-20 bg-base/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
@@ -549,10 +549,10 @@ new #[Layout('layouts.main')] class extends Component {
                 Des milliers de producteurs ont déjà choisi Agrospace pour développer leur activité. Pourquoi pas vous ?
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="/register?type=producteur" class="bg-white text-primary px-12 py-6 rounded-lg font-bold text-xl hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105">
+                <a href="/register?type=producteur" class="bg-white text-base px-12 py-6 rounded-lg font-bold text-xl hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105">
                     S'inscrire comme Producteur
                 </a>
-                <a href="/offres" class="bg-transparent border-2 border-white text-white px-12 py-6 rounded-lg font-bold text-xl hover:bg-white hover:text-primary transition-all">
+                <a href="/offres" class="bg-transparent border-2 border-white text-white px-12 py-6 rounded-lg font-bold text-xl hover:bg-white hover:text-base transition-all">
                     Découvrir les offres
                 </a>
             </div>

@@ -35,7 +35,7 @@ new #[Layout('layouts.guest')] class extends Component {
 
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false));
+        $this->redirect(route('dashboard', absolute: false), navigate: true);
     }
 }; ?>
 <div>
@@ -295,7 +295,7 @@ new #[Layout('layouts.guest')] class extends Component {
                     <!-- Lien connexion -->
                     <p class="text-center text-gray-600 mt-6">
                         Vous avez déjà un compte ?
-                        <a href="{{ route('login') }}"
+                        <a href="{{ route('login') }}" wire:navigate
                             class="text-[#16a34a] hover:text-[#15803d] font-semibold transition">
                             Se connecter
                         </a>
@@ -303,7 +303,7 @@ new #[Layout('layouts.guest')] class extends Component {
 
                     <!-- Retour accueil -->
                     <div class="text-center mt-4">
-                        <a href="{{ route('home') }}"
+                        <a href="{{ route('home') }}" wire:navigate
                             class="text-sm text-gray-500 hover:text-[#16a34a] transition flex items-center justify-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -319,19 +319,19 @@ new #[Layout('layouts.guest')] class extends Component {
             <div class="hidden lg:flex lg:w-[60%] relative overflow-hidden">
                 <div x-data="{
                     slides: [{
-                            image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200&auto=format&fit=crop',
+                            image: 'images/photo-1625246333195-78d9c38ad449.jpeg',
                             title: 'Rejoignez 500+ producteurs africains',
                             subtitle: 'Inscrivez-vous gratuitement et commencez à valoriser vos produits agricoles auprès d\'une communauté engagée.',
                             cta: 'Votre réseau agricole commence ici'
                         },
                         {
-                            image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1200&auto=format&fit=crop',
+                            image: 'images/photo-1574943320219-553eb213f72d.avif',
                             title: 'Publiez vos offres en 2 minutes',
                             subtitle: 'Une interface simple et intuitive pour gérer vos produits, recevoir des demandes et échanger avec vos clients.',
                             cta: 'Simplifiez votre gestion agricole'
                         },
                         {
-                            image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&auto=format&fit=crop',
+                            image: 'images/photo-1500382017468-9049fed747ef.jpeg',
                             title: 'Gagnez en visibilité locale',
                             subtitle: 'Connectez-vous avec des consommateurs, restaurants et distributeurs près de chez vous grâce à notre carte interactive.',
                             cta: 'Développez votre clientèle dès aujourd\'hui'

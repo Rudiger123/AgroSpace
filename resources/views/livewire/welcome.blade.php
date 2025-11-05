@@ -117,8 +117,8 @@ new #[Layout('layouts.main')] class extends Component {
                     <div
                         class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group">
                         <div
-                            class="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="bg-base/10 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
@@ -133,7 +133,7 @@ new #[Layout('layouts.main')] class extends Component {
                         class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group">
                         <div
                             class="bg-secondary/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor"
+                            <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -149,7 +149,7 @@ new #[Layout('layouts.main')] class extends Component {
                         class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group">
                         <div
                             class="bg-accent w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor"
+                            <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -163,7 +163,7 @@ new #[Layout('layouts.main')] class extends Component {
 
                 <div class="text-center mt-12">
                     <a href="#"
-                        class="inline-block bg-primary text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-800 transition-all shadow-lg hover:shadow-xl">
+                        class="inline-block bg-base text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-800 transition-all shadow-lg hover:shadow-xl">
                         Explorer la communauté
                     </a>
                 </div>
@@ -183,7 +183,7 @@ new #[Layout('layouts.main')] class extends Component {
                     <!-- Step 1 -->
                     <div class="text-center relative">
                         <div
-                            class="bg-gradient-to-br from-primary to-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                            class="bg-gradient-to-br from-base to-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
                             <span class="text-3xl font-bold text-white">1</span>
                         </div>
                         <div
@@ -197,7 +197,7 @@ new #[Layout('layouts.main')] class extends Component {
                     <!-- Step 2 -->
                     <div class="text-center relative">
                         <div
-                            class="bg-gradient-to-br from-primary to-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                            class="bg-gradient-to-br from-base to-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
                             <span class="text-3xl font-bold text-white">2</span>
                         </div>
                         <div
@@ -211,7 +211,7 @@ new #[Layout('layouts.main')] class extends Component {
                     <!-- Step 3 -->
                     <div class="text-center relative">
                         <div
-                            class="bg-gradient-to-br from-primary to-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                            class="bg-gradient-to-br from-base to-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
                             <span class="text-3xl font-bold text-white">3</span>
                         </div>
                         <div
@@ -267,7 +267,7 @@ new #[Layout('layouts.main')] class extends Component {
                                     <div class="text-6xl mr-6" x-text="testimonial.avatar"></div>
                                     <div>
                                         <h4 class="text-xl font-bold text-gray-900" x-text="testimonial.name"></h4>
-                                        <p class="text-primary font-medium" x-text="testimonial.role"></p>
+                                        <p class="text-base font-medium" x-text="testimonial.role"></p>
                                     </div>
                                 </div>
                                 <p class="text-lg text-gray-700 leading-relaxed italic"
@@ -279,7 +279,7 @@ new #[Layout('layouts.main')] class extends Component {
                         <div class="flex justify-center gap-3 mt-8">
                             <template x-for="(testimonial, index) in testimonials" :key="index">
                                 <button @click="currentIndex = index"
-                                    :class="currentIndex === index ? 'bg-primary w-8' : 'bg-gray-300 w-3'"
+                                    :class="currentIndex === index ? 'bg-base w-8' : 'bg-gray-300 w-3'"
                                     class="h-3 rounded-full transition-all duration-300"></button>
                             </template>
                         </div>
@@ -288,7 +288,7 @@ new #[Layout('layouts.main')] class extends Component {
 
                 <div class="text-center mt-12">
                     <a href="#"
-                        class="inline-block bg-primary text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-800 transition-all shadow-lg hover:shadow-xl">
+                        class="inline-block bg-base text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-800 transition-all shadow-lg hover:shadow-xl">
                         Rejoindre la communauté
                     </a>
                 </div>
@@ -308,17 +308,17 @@ new #[Layout('layouts.main')] class extends Component {
                     <!-- Article 1 -->
                     <article
                         class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group">
-                        <div class="h-48 bg-gradient-to-br from-primary to-secondary"></div>
+                        <div class="h-48 bg-gradient-to-br from-base to-secondary"></div>
                         <div class="p-6">
-                            <span class="text-sm text-primary font-semibold">🌱 Innovation</span>
+                            <span class="text-sm text-base font-semibold">🌱 Innovation</span>
                             <h3
-                                class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-primary transition-colors">
+                                class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-base transition-colors">
                                 L'agriculture digitale au Cameroun : une révolution en marche
                             </h3>
                             <p class="text-gray-600 mb-4">Découvrez comment la technologie transforme les pratiques
                                 agricoles et crée de nouvelles opportunités...</p>
                             <a href="#"
-                                class="text-primary font-semibold hover:underline inline-flex items-center">
+                                class="text-base font-semibold hover:underline inline-flex items-center">
                                 Lire plus
                                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -333,15 +333,15 @@ new #[Layout('layouts.main')] class extends Component {
                         class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group">
                         <div class="h-48 bg-gradient-to-br from-secondary to-green-300"></div>
                         <div class="p-6">
-                            <span class="text-sm text-primary font-semibold">🤝 Collaboration</span>
+                            <span class="text-sm text-base font-semibold">🤝 Collaboration</span>
                             <h3
-                                class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-primary transition-colors">
+                                class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-base transition-colors">
                                 5 conseils pour réussir vos partenariats agropastoraux
                             </h3>
                             <p class="text-gray-600 mb-4">Les meilleures pratiques pour établir des relations durables
                                 avec vos partenaires commerciaux...</p>
                             <a href="#"
-                                class="text-primary font-semibold hover:underline inline-flex items-center">
+                                class="text-base font-semibold hover:underline inline-flex items-center">
                                 Lire plus
                                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -354,17 +354,17 @@ new #[Layout('layouts.main')] class extends Component {
                     <!-- Article 3 -->
                     <article
                         class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group">
-                        <div class="h-48 bg-gradient-to-br from-green-600 to-primary"></div>
+                        <div class="h-48 bg-gradient-to-br from-green-600 to-base"></div>
                         <div class="p-6">
-                            <span class="text-sm text-primary font-semibold">📊 Économie</span>
+                            <span class="text-sm text-base font-semibold">📊 Économie</span>
                             <h3
-                                class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-primary transition-colors">
+                                class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-base transition-colors">
                                 Marchés agricoles 2025 : tendances et opportunités
                             </h3>
                             <p class="text-gray-600 mb-4">Analyse des perspectives économiques pour les producteurs et
                                 les acteurs de la chaîne de valeur...</p>
                             <a href="#"
-                                class="text-primary font-semibold hover:underline inline-flex items-center">
+                                class="text-base font-semibold hover:underline inline-flex items-center">
                                 Lire plus
                                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -377,7 +377,7 @@ new #[Layout('layouts.main')] class extends Component {
 
                 <div class="text-center mt-12">
                     <a href="#"
-                        class="inline-block border-2 border-primary text-primary px-8 py-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all">
+                        class="inline-block border-2 border-base text-base px-8 py-4 rounded-lg font-semibold hover:bg-base hover:text-white transition-all">
                         Voir tous les articles
                     </a>
                 </div>
@@ -401,7 +401,7 @@ new #[Layout('layouts.main')] class extends Component {
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <a href="#"
-                        class="bg-white text-primary px-10 py-5 rounded-lg font-bold text-lg hover:bg-accent transition-all shadow-2xl hover:scale-105">
+                        class="bg-white text-base px-10 py-5 rounded-lg font-bold text-lg hover:bg-accent transition-all shadow-2xl hover:scale-105">
                         Créer mon compte maintenant
                     </a>
                 </div>
@@ -418,7 +418,7 @@ new #[Layout('layouts.main')] class extends Component {
         <!-- Scroll to top button -->
         <button x-data="{ showButton: false }" x-init="window.addEventListener('scroll', () => { showButton = window.pageYOffset > 300 })" x-show="showButton" x-cloak
             @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
-            class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full shadow-2xl hover:bg-green-800 transition-all hover:scale-110 flex items-center justify-center z-40">
+            class="fixed bottom-8 right-8 bg-base text-white w-12 h-12 rounded-full shadow-2xl hover:bg-green-800 transition-all hover:scale-110 flex items-center justify-center z-40">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M5 10l7-7m0 0l7 7m-7-7v18" />

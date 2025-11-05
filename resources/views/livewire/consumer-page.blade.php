@@ -17,11 +17,11 @@ new #[Layout('layouts.main')] class extends Component {
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <!-- Left Content -->
                 <div class="space-y-6 animate-fade-in-up">
-                    <div class="inline-block bg-primary/10 px-4 py-2 rounded-full text-white font-semibold text-sm mb-4">
+                    <div class="inline-block bg-base/10 px-4 py-2 rounded-full text-white font-semibold text-sm mb-4">
                         🛒 Espace Consommateurs
                     </div>
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-50 leading-tight">
-                        Trouvez facilement les <span class="text-primary">producteurs agricoles</span> près de chez vous
+                        Trouvez facilement les <span class="text-base">producteurs agricoles</span> près de chez vous
                     </h1>
                     <p class="text-lg md:text-xl text-gray-50 leading-relaxed">
                         Accédez à des offres vérifiées, contactez directement les producteurs et soutenez l'agriculture
@@ -29,11 +29,11 @@ new #[Layout('layouts.main')] class extends Component {
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 pt-4">
                         <a href="/register?type=consommateur"
-                            class="bg-primary text-white px-8 py-4 rounded-lg font-bold hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl text-center text-lg">
+                            class="bg-base text-white px-8 py-4 rounded-lg font-bold hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl text-center text-lg">
                             Créer un compte Consommateur
                         </a>
                         <a href="/offres"
-                            class="bg-white border-2 border-primary text-primary px-8 py-4 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all text-center">
+                            class="bg-white border-2 border-base text-base px-8 py-4 rounded-lg font-semibold hover:bg-base hover:text-white transition-all text-center">
                             Parcourir les offres
                         </a>
                     </div>
@@ -99,10 +99,10 @@ new #[Layout('layouts.main')] class extends Component {
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Avantage 1 -->
                 <div
-                    class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-primary group">
+                    class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-base group">
                     <div
-                        class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
@@ -119,7 +119,7 @@ new #[Layout('layouts.main')] class extends Component {
                     class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-secondary group">
                     <div
                         class="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -135,10 +135,10 @@ new #[Layout('layouts.main')] class extends Component {
 
                 <!-- Avantage 3 -->
                 <div
-                    class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-primary group">
+                    class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-base group">
                     <div
-                        class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                         </svg>
@@ -154,7 +154,7 @@ new #[Layout('layouts.main')] class extends Component {
                     class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-secondary group">
                     <div
                         class="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                         </svg>
@@ -168,7 +168,7 @@ new #[Layout('layouts.main')] class extends Component {
 
             <div class="text-center mt-12">
                 <a href="/register?type=consommateur"
-                    class="inline-block bg-primary text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                    class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Rejoindre la communauté
                 </a>
             </div>
@@ -188,7 +188,7 @@ new #[Layout('layouts.main')] class extends Component {
             <!-- Feature 1 -->
             <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
                 <div class="space-y-6">
-                    <div class="inline-block bg-primary/10 px-4 py-2 rounded-full text-primary font-semibold text-sm">
+                    <div class="inline-block bg-base/10 px-4 py-2 rounded-full text-base font-semibold text-sm">
                         🛒 Parcourir
                     </div>
                     <h3 class="text-3xl font-bold text-gray-900">Parcourir les offres disponibles</h3>
@@ -237,7 +237,7 @@ new #[Layout('layouts.main')] class extends Component {
                             <div class="flex-1">
                                 <h4 class="font-bold text-gray-900">Tomates Bio - 50kg</h4>
                                 <p class="text-sm text-gray-600">Producteur: Marie K. • Bafoussam</p>
-                                <p class="text-primary font-bold mt-1">2,500 FCFA/kg</p>
+                                <p class="text-base font-bold mt-1">2,500 FCFA/kg</p>
                             </div>
                         </div>
                         <div
@@ -248,7 +248,7 @@ new #[Layout('layouts.main')] class extends Component {
                             <div class="flex-1">
                                 <h4 class="font-bold text-gray-900">Maïs frais - 100kg</h4>
                                 <p class="text-sm text-gray-600">Producteur: Jean N. • Douala</p>
-                                <p class="text-primary font-bold mt-1">1,800 FCFA/kg</p>
+                                <p class="text-base font-bold mt-1">1,800 FCFA/kg</p>
                             </div>
                         </div>
                         <div
@@ -259,7 +259,7 @@ new #[Layout('layouts.main')] class extends Component {
                             <div class="flex-1">
                                 <h4 class="font-bold text-gray-900">Lait frais - 20L/jour</h4>
                                 <p class="text-sm text-gray-600">Producteur: Aïcha M. • Maroua</p>
-                                <p class="text-primary font-bold mt-1">1,200 FCFA/L</p>
+                                <p class="text-base font-bold mt-1">1,200 FCFA/L</p>
                             </div>
                         </div>
                     </div>
@@ -269,7 +269,7 @@ new #[Layout('layouts.main')] class extends Component {
             <!-- Feature 2 -->
             <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
                 <div class="order-2 md:order-1 bg-white p-8 rounded-3xl shadow-2xl">
-                    <div class="bg-gradient-to-br from-primary/10 to-secondary/20 p-8 rounded-2xl">
+                    <div class="bg-gradient-to-br from-base/10 to-secondary/20 p-8 rounded-2xl">
                         <div class="bg-white p-6 rounded-xl shadow-lg">
                             <h4 class="font-bold text-gray-900 mb-4">📢 Nouvelle demande</h4>
                             <div class="space-y-3">
@@ -285,7 +285,7 @@ new #[Layout('layouts.main')] class extends Component {
                                     <label class="text-sm text-gray-600">Localisation</label>
                                     <div class="h-10 bg-gray-100 rounded-lg mt-1"></div>
                                 </div>
-                                <button class="w-full bg-primary text-white py-3 rounded-lg font-semibold">
+                                <button class="w-full bg-base text-white py-3 rounded-lg font-semibold">
                                     Publier ma demande
                                 </button>
                             </div>
@@ -295,7 +295,7 @@ new #[Layout('layouts.main')] class extends Component {
 
                 <div class="order-1 md:order-2 space-y-6">
                     <div
-                        class="inline-block bg-secondary/20 px-4 py-2 rounded-full text-primary font-semibold text-sm">
+                        class="inline-block bg-secondary/20 px-4 py-2 rounded-full text-base font-semibold text-sm">
                         📢 Demandes
                     </div>
                     <h3 class="text-3xl font-bold text-gray-900">Créer vos propres demandes</h3>
@@ -341,7 +341,7 @@ new #[Layout('layouts.main')] class extends Component {
             <!-- Feature 3 -->
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="space-y-6">
-                    <div class="inline-block bg-primary/10 px-4 py-2 rounded-full text-primary font-semibold text-sm">
+                    <div class="inline-block bg-base/10 px-4 py-2 rounded-full text-base font-semibold text-sm">
                         💬 Messagerie
                     </div>
                     <h3 class="text-3xl font-bold text-gray-900">Échanger via la messagerie intégrée</h3>
@@ -381,7 +381,7 @@ new #[Layout('layouts.main')] class extends Component {
                 </div>
 
                 <div class="bg-white p-6 rounded-3xl shadow-2xl">
-                    <div class="bg-primary text-white p-4 rounded-t-2xl flex items-center gap-3">
+                    <div class="bg-base text-white p-4 rounded-t-2xl flex items-center gap-3">
                         <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                             <span class="text-2xl">👨🏾‍🌾</span>
                         </div>
@@ -399,7 +399,7 @@ new #[Layout('layouts.main')] class extends Component {
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div class="bg-primary text-white rounded-2xl rounded-br-none px-4 py-3 shadow max-w-xs">
+                            <div class="bg-base text-white rounded-2xl rounded-br-none px-4 py-3 shadow max-w-xs">
                                 <p class="text-sm">Parfait ! Quelle est la quantité minimum ?</p>
                                 <span class="text-xs text-green-100">10:25</span>
                             </div>
@@ -414,8 +414,8 @@ new #[Layout('layouts.main')] class extends Component {
                     </div>
                     <div class="p-4 bg-white border-t flex gap-2">
                         <input type="text" placeholder="Écrivez votre message..."
-                            class="flex-1 px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
-                        <button class="bg-primary text-white p-2 rounded-full hover:bg-green-800 transition-colors">
+                            class="flex-1 px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-base">
+                        <button class="bg-base text-white p-2 rounded-full hover:bg-green-800 transition-colors">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -443,13 +443,13 @@ new #[Layout('layouts.main')] class extends Component {
                     <div
                         class="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full">
                         <div
-                            class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-xl">
+                            class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center shadow-xl">
                             <span class="text-3xl font-bold text-white">1</span>
                         </div>
                         <div class="pt-8">
                             <div
-                                class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor"
+                                class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                                <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -476,13 +476,13 @@ new #[Layout('layouts.main')] class extends Component {
                     <div
                         class="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full">
                         <div
-                            class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-xl">
+                            class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center shadow-xl">
                             <span class="text-3xl font-bold text-white">2</span>
                         </div>
                         <div class="pt-8">
                             <div
                                 class="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor"
+                                <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -509,13 +509,13 @@ new #[Layout('layouts.main')] class extends Component {
                     <div
                         class="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full">
                         <div
-                            class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-xl">
+                            class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center shadow-xl">
                             <span class="text-3xl font-bold text-white">3</span>
                         </div>
                         <div class="pt-8">
                             <div
-                                class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor"
+                                class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
+                                <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
@@ -533,7 +533,7 @@ new #[Layout('layouts.main')] class extends Component {
 
             <div class="text-center">
                 <a href="/register?type=consommateur"
-                    class="inline-block bg-primary text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                    class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Créer mon compte gratuitement
                 </a>
                 <p class="text-sm text-gray-600 mt-4">✓ Aucune carte bancaire requise • ✓ Sans engagement</p>
@@ -589,7 +589,7 @@ new #[Layout('layouts.main')] class extends Component {
                                 <!-- Avatar -->
                                 <div class="flex-shrink-0">
                                     <div
-                                        class="w-32 h-32 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-6xl shadow-xl">
+                                        class="w-32 h-32 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center text-6xl shadow-xl">
                                         <span x-text="testimonial.avatar"></span>
                                     </div>
                                 </div>
@@ -614,7 +614,7 @@ new #[Layout('layouts.main')] class extends Component {
                                     <!-- Author -->
                                     <div>
                                         <h4 class="text-xl font-bold text-gray-900" x-text="testimonial.name"></h4>
-                                        <p class="text-primary font-medium" x-text="testimonial.location"></p>
+                                        <p class="text-base font-medium" x-text="testimonial.location"></p>
                                     </div>
                                 </div>
                             </div>
@@ -625,7 +625,7 @@ new #[Layout('layouts.main')] class extends Component {
                     <div class="flex justify-center gap-3 mt-8">
                         <template x-for="(testimonial, index) in testimonials" :key="index">
                             <button @click="currentIndex = index"
-                                :class="currentIndex === index ? 'bg-primary w-12' : 'bg-gray-300 w-3'"
+                                :class="currentIndex === index ? 'bg-base w-12' : 'bg-gray-300 w-3'"
                                 class="h-3 rounded-full transition-all duration-300"></button>
                         </template>
                     </div>
@@ -634,7 +634,7 @@ new #[Layout('layouts.main')] class extends Component {
 
             <div class="text-center mt-12">
                 <a href="/register?type=consommateur"
-                    class="inline-block bg-primary text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                    class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Créer mon compte gratuitement
                 </a>
             </div>
@@ -655,8 +655,8 @@ new #[Layout('layouts.main')] class extends Component {
                 <!-- Stat 1 -->
                 <div
                     class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center">
-                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor"
+                    <div class="w-20 h-20 bg-base/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-base" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -671,7 +671,7 @@ new #[Layout('layouts.main')] class extends Component {
                 <div
                     class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center">
                     <div class="w-20 h-20 bg-secondary/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor"
+                        <svg class="w-10 h-10 text-base" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -685,8 +685,8 @@ new #[Layout('layouts.main')] class extends Component {
                 <!-- Stat 3 -->
                 <div
                     class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center">
-                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor"
+                    <div class="w-20 h-20 bg-base/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-base" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
@@ -717,11 +717,11 @@ new #[Layout('layouts.main')] class extends Component {
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <a href="/register?type=consommateur"
-                    class="bg-white text-primary px-12 py-6 rounded-lg font-bold text-xl hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105">
+                    class="bg-white text-base px-12 py-6 rounded-lg font-bold text-xl hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105">
                     Créer un compte Consommateur
                 </a>
                 <a href="/offres"
-                    class="bg-transparent border-2 border-white text-white px-12 py-6 rounded-lg font-bold text-xl hover:bg-white hover:text-primary transition-all">
+                    class="bg-transparent border-2 border-white text-white px-12 py-6 rounded-lg font-bold text-xl hover:bg-white hover:text-base transition-all">
                     Découvrir les offres
                 </a>
             </div>

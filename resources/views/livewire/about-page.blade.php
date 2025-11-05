@@ -32,7 +32,7 @@ new #[Layout('layouts.main')] class extends Component {
                         créer un réseau collaboratif et local.
                     </p>
                     <a href="#"
-                        class="inline-flex items-center gap-2 bg-white text-primary font-semibold px-8 py-4 rounded-lg 
+                        class="inline-flex items-center gap-2 bg-white text-base font-semibold px-8 py-4 rounded-lg 
                            shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 
                            hover:bg-gradient-to-r hover:from-green-500 hover:to-emerald-500 hover:text-white 
                            focus:outline-none focus:ring-2 focus:ring-green-300 focus:ring-offset-2">

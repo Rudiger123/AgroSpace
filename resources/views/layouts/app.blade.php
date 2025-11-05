@@ -127,7 +127,8 @@
         {{-- Logo --}}
         <div class="p-6 border-b border-green-700">
             <div class="flex items-center justify-between">
-                <a href="{{ route('home') }}" class="flex items-center space-x-3">
+                <a href="{{ route('home') }}" wire:navigate
+                 class="flex items-center space-x-3">
                     <div class="bg-white rounded-xl p-2 animate-pulse-slow">
                         <img class="w-8 h-8 text-green-600" src="{{ asset('images/logo.png') }}" alt="">
                     </div>
