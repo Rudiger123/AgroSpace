@@ -46,6 +46,12 @@
                     <!-- Body Content -->
                     <tr>
                         <td style="padding: 40px 30px;">
+                            @if(isset($user) && $user)
+                            <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px;">
+                                Cher(e) <strong>{{ $user->name }}</strong>,
+                            </p>
+                            @endif
+                            
                             <div style="color: #374151; font-size: 16px; line-height: 1.8;">
                                 {!! nl2br(e($message)) !!}
                             </div>
@@ -58,19 +64,12 @@
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td align="center" style="border-radius: 12px; background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);">
-                                        <a href="https://agrospace.cm" target="_blank" style="display: inline-block; padding: 16px 32px; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 16px;">
+                                        <a href="{{ url('/') }}" target="_blank" style="display: inline-block; padding: 16px 32px; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 16px;">
                                             Accéder à mon compte
                                         </a>
                                     </td>
                                 </tr>
                             </table>
-                        </td>
-                    </tr>
-
-                    <!-- Divider -->
-                    <tr>
-                        <td style="padding: 0 30px;">
-                            <div style="border-top: 2px solid #e5e7eb;"></div>
                         </td>
                     </tr>
 
@@ -105,30 +104,6 @@
                                         </table>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td width="50%" style="padding: 12px; vertical-align: top;">
-                                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                            <tr>
-                                                <td style="background-color: #fef3c7; border-radius: 12px; padding: 20px; text-align: center;">
-                                                    <div style="font-size: 32px; margin-bottom: 12px;">💬</div>
-                                                    <div style="color: #92400e; font-weight: 600; font-size: 14px; margin-bottom: 4px;">Messagerie</div>
-                                                    <div style="color: #d97706; font-size: 12px;">Échangez facilement</div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td width="50%" style="padding: 12px; vertical-align: top;">
-                                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                            <tr>
-                                                <td style="background-color: #fce7f3; border-radius: 12px; padding: 20px; text-align: center;">
-                                                    <div style="font-size: 32px; margin-bottom: 12px;">📰</div>
-                                                    <div style="color: #831843; font-weight: 600; font-size: 14px; margin-bottom: 4px;">Blog</div>
-                                                    <div style="color: #db2777; font-size: 12px;">Restez informé</div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
                             </table>
                         </td>
                     </tr>
@@ -136,52 +111,18 @@
                     <!-- Footer -->
                     <tr>
                         <td style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 30px; text-align: center;">
-                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                <tr>
-                                    <td align="center">
-                                        <!-- Social Icons -->
-                                        <table cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto 20px;">
-                                            <tr>
-                                                <td style="padding: 0 8px;">
-                                                    <a href="#" style="display: inline-block; background-color: #22c55e; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
-                                                        <span style="color: white; font-size: 18px;">f</span>
-                                                    </a>
-                                                </td>
-                                                <td style="padding: 0 8px;">
-                                                    <a href="#" style="display: inline-block; background-color: #22c55e; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
-                                                        <span style="color: white; font-size: 18px;">𝕏</span>
-                                                    </a>
-                                                </td>
-                                                <td style="padding: 0 8px;">
-                                                    <a href="#" style="display: inline-block; background-color: #22c55e; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
-                                                        <span style="color: white; font-size: 18px;">in</span>
-                                                    </a>
-                                                </td>
-                                                <td style="padding: 0 8px;">
-                                                    <a href="#" style="display: inline-block; background-color: #22c55e; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
-                                                        <span style="color: white; font-size: 18px;">📷</span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </table>
-
-                                        <p style="color: #166534; font-size: 14px; font-weight: 600; margin: 0 0 8px;">Agrospace - Connecter, Valoriser, Collaborer</p>
-                                        <p style="color: #16a34a; font-size: 12px; margin: 0 0 16px;">La plateforme agropastorale du Cameroun 🇨🇲</p>
-                                        
-                                        <div style="border-top: 1px solid #bbf7d0; padding-top: 16px;">
-                                            <p style="color: #6b7280; font-size: 11px; margin: 0 0 8px;">
-                                                📧 <a href="mailto:contact@agrospace.cm" style="color: #22c55e; text-decoration: none;">contact@agrospace.cm</a> | 
-                                                📞 +237 690 123 456
-                                            </p>
-                                            <p style="color: #9ca3af; font-size: 10px; margin: 0;">
-                                                © 2024 Agrospace. Tous droits réservés.<br>
-                                                <a href="#" style="color: #22c55e; text-decoration: none;">Se désabonner</a> | 
-                                                <a href="#" style="color: #22c55e; text-decoration: none;">Politique de confidentialité</a>
-                                            </p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
+                            <p style="color: #166534; font-size: 14px; font-weight: 600; margin: 0 0 8px;">Agrospace - Connecter, Valoriser, Collaborer</p>
+                            <p style="color: #16a34a; font-size: 12px; margin: 0 0 16px;">La plateforme agropastorale du Cameroun 🇨🇲</p>
+                            
+                            <div style="border-top: 1px solid #bbf7d0; padding-top: 16px;">
+                                <p style="color: #6b7280; font-size: 11px; margin: 0 0 8px;">
+                                    📧 <a href="mailto:contact@agrospace.cm" style="color: #22c55e; text-decoration: none;">contact@agrospace.cm</a>
+                                </p>
+                                <p style="color: #9ca3af; font-size: 10px; margin: 0;">
+                                    © {{ date('Y') }} Agrospace. Tous droits réservés.<br>
+                                    <a href="{{ url('/unsubscribe') }}" style="color: #22c55e; text-decoration: none;">Se désabonner</a>
+                                </p>
+                            </div>
                         </td>
                     </tr>
 

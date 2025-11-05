@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Admin\Modals;
 
-use App\Mail\AdminEmail;
 use App\Models\User;
+use App\Notifications\AdminNotification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -90,19 +90,25 @@ class SendEmailModal extends Component
             $personalizedSubject = $this->replaceVariables($this->subject, $recipient);
             $personalizedMessage = $this->replaceVariables($this->message, $recipient);
 
-            // Logique d'envoi d'email
-            Mail::to($recipient->email)->send(
-                new AdminEmail($personalizedSubject, $personalizedMessage)
-            );
+            // Envoyer la notification
+            $recipient->notify(new AdminNotification($this->subject, $this->message));
+
+            Notification::send($recipient, new AdminNotification($this->subject, $this->message));
         }
 
         if ($this->sendCopy) {
-            Mail::to(Auth::user()->email)->send(
-                new AdminEmail($this->subject, $this->message)
-            );
+            Auth::user()->notify(new AdminNotification($this->subject, $this->message));
         }
+        $message = count($this->recipients) . " utilisateur(s) sélectionné(s) pour l'envoi d'email.";
 
-        session()->flash('success', 'Email(s) envoyé(s) avec succès !');
+        $this->dispatch('toast', [
+            'type' => 'success',
+            'message' => $message
+        ]);
+
+        // Rafraîchir la liste des utilisateurs
+        $this->dispatch('refresh-users');
+
         $this->close();
     }
 

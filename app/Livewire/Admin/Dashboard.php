@@ -8,14 +8,13 @@ use Livewire\Attributes\Title;
 use App\Models\User;
 use App\Models\Offer;
 use App\Models\Demand;
-use Illuminate\Support\Facades\DB;
 
 #[Layout('layouts.app')]
 #[Title('Dashboard')]
 class Dashboard extends Component
 {
     public $activityPeriod = '6';
-    
+
     public $stats = [];
     public $activityData = [];
     public $categories = [];

@@ -104,18 +104,18 @@ class User extends Authenticatable implements MustVerifyEmail
             $q->where('name', 'producer');
         });
     }
-    
+
     public function scopeConsumers($query)
     {
         return $query->whereHas('role', function ($q) {
             $q->where('name', 'consumer');
         });
     }
-    
+
     public function scopeByRole($query, $role = null)
     {
         return $role
-            ? $query->whereHas('role', fn($q) => $q->where('name', $role))
+            ? $query->whereHas('role', fn ($q) => $q->where('name', $role))
             : $query;
     }
 
@@ -183,7 +183,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function verified(): Attribute
     {
         return Attribute::make(
-            get: fn() => !is_null($this->email_verified_at)
+            get: fn () => !is_null($this->email_verified_at)
         );
     }
 
@@ -191,20 +191,20 @@ class User extends Authenticatable implements MustVerifyEmail
      * Méthodes Helper
      */
 
-     public function isAdmin(): bool
-     {
-         return optional($this->role)->name === 'admin';
-     }
-     
-     public function isProducer(): bool
-     {
-         return optional($this->role)->name === 'producer';
-     }
-     
-     public function isConsumer(): bool
-     {
-         return optional($this->role)->name === 'consumer';
-     }
+    public function isAdmin(): bool
+    {
+        return optional($this->role)->name === 'admin';
+    }
+
+    public function isProducer(): bool
+    {
+        return optional($this->role)->name === 'producer';
+    }
+
+    public function isConsumer(): bool
+    {
+        return optional($this->role)->name === 'consumer';
+    }
 
     // Vérifier si l'utilisateur est actif
     public function isActive(): bool

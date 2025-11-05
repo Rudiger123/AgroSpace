@@ -7,9 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'Dashboard' }} - Agrospace Admin</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
+    <!-- Page Specific Styles -->
+    @stack('styles')
 
     <style>
         [x-cloak] {
@@ -122,19 +127,15 @@
         {{-- Logo --}}
         <div class="p-6 border-b border-green-700">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
+                <a href="{{ route('home') }}" class="flex items-center space-x-3">
                     <div class="bg-white rounded-xl p-2 animate-pulse-slow">
-                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                            </path>
-                        </svg>
+                        <img class="w-8 h-8 text-green-600" src="{{ asset('images/logo.png') }}" alt="">
                     </div>
                     <div>
                         <h1 class="text-xl font-bold">Agrospace</h1>
                         <p class="text-xs text-green-200">Admin Dashboard</p>
                     </div>
-                </div>
+                </a>
                 {{-- Bouton fermer sidebar --}}
                 <button @click="$store.sidebar.close()"
                     class="lg:hidden text-white hover:bg-green-700 p-2 rounded-lg transition">
@@ -250,8 +251,16 @@
         {{-- User Profile --}}
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-green-700 bg-green-900/50">
             <div class="flex items-center space-x-3">
-                <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=22c55e&color=fff"
-                    class="w-10 h-10 rounded-full ring-2 ring-white" alt="{{ auth()->user()->name }}">
+
+                @if (auth()->user()->avatar)
+                    <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
+                        class="w-10 h-10 rounded-full ring-2  ring-white group-hover:ring-[#2E7D32]/40 transition-all">
+                @else
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-agro-green to-primary flex items-center justify-center text-white font-semibold text-sm border-2 border-white">
+                        {{ substr(auth()->user()->name, 0, 1) }}
+                    </div>
+                @endif
                 <div class="flex-1 min-w-0">
                     <p class="font-semibold text-sm truncate">{{ auth()->user()->name }}</p>
                     <p class="text-xs text-green-200 truncate">{{ auth()->user()->email }}</p>
@@ -301,8 +310,7 @@
 
                 <div class="flex items-center space-x-3">
                     {{-- Search Bar --}}
-                    <div class="flex-1 max-w-xl mx-6" x-data="{
-                        searchOpen: false">
+                    <div class="flex-1 max-w-xl mx-6">
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="w-5 h-5 text-[#37474F]/40" fill="none" stroke="currentColor"
@@ -312,32 +320,12 @@
                                 </svg>
                             </div>
 
-                            <input type="text" @focus="searchOpen = true"
-                                @blur="setTimeout(() => searchOpen = false, 200)"
-                                placeholder="Rechercher des offres, utilisateurs, projets..."
+                            <input type="text" placeholder="Rechercher des offres, utilisateurs, projets..."
                                 class="w-full pl-10 pr-4 py-2.5 bg-[#F9F6EE] border border-transparent rounded-xl
                                focus:outline-none focus:ring-2 focus:ring-[#2E7D32]/30 focus:bg-white focus:border-[#2E7D32]
                                transition-all duration-200 placeholder-[#37474F]/40">
 
-                            <!-- Suggestions de recherche -->
-                            <div x-show="searchOpen" x-transition:enter="transition ease-out duration-200"
-                                x-transition:enter-start="opacity-0 transform translate-y-2"
-                                x-transition:enter-end="opacity-100 transform translate-y-0"
-                                class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-strong border border-[#E0E0E0] overflow-hidden">
-                                <div class="p-2 space-y-1">
-                                    <a href="#"
-                                        class="block px-3 py-2 rounded-lg hover:bg-[#F9F6EE] transition-colors">
-                                        <div class="flex items-center space-x-3">
-                                            <svg class="w-4 h-4 text-[#2E7D32]" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                            <span class="text-sm text-[#37474F]">Recherches récentes</span>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 
@@ -403,11 +391,18 @@
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open"
                             class="flex items-center space-x-2 p-1.5 hover:bg-gray-100 rounded-xl transition-all duration-200">
-                            <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=22c55e&color=fff"
-                                class="w-9 h-9 rounded-full ring-2 ring-green-200" alt="{{ auth()->user()->name }}">
+                            @if (auth()->user()->avatar)
+                                <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
+                                    class="w-9 h-9 rounded-full ring-2  ring-white group-hover:ring-[#2E7D32]/40 transition-all">
+                            @else
+                                <div
+                                    class="w-9 h-9 rounded-full bg-agro-green flex items-center justify-center text-white font-semibold text-sm border-2 border-white">
+                                    {{ substr(auth()->user()->name, 0, 1) }}
+                                </div>
+                            @endif
                             <div class="hidden lg:block text-left">
                                 <p class="text-sm font-semibold text-gray-800">{{ auth()->user()->name }}</p>
-                                <p class="text-xs text-gray-500">Administrateur</p>
+                                <p class="text-xs text-gray-500">{{ auth()->user()->role->name }}</p>
                             </div>
                             <svg class="w-4 h-4 text-gray-500 hidden lg:block" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -421,9 +416,15 @@
                             class="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
                             <div class="bg-gradient-to-r from-green-600 to-green-700 px-4 py-4">
                                 <div class="flex items-center space-x-3">
-                                    <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=ffffff&color=22c55e"
-                                        class="w-12 h-12 rounded-full ring-2 ring-white/30"
-                                        alt="{{ auth()->user()->name }}">
+                                    @if (auth()->user()->avatar)
+                                        <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
+                                            class="w-12 h-12 rounded-full ring-2 ring-white/30 group-hover:ring-[#2E7D32]/40 transition-all">
+                                    @else
+                                        <div
+                                            class="w-12 h-12 rounded-full ring-2 ring-white/30 bg-gradient-to-br from-agro-green to-primary flex items-center justify-center text-white font-semibold text-sm border-2">
+                                            {{ substr(auth()->user()->name, 0, 1) }}
+                                        </div>
+                                    @endif
                                     <div class="text-white">
                                         <p class="font-bold">{{ auth()->user()->name }}</p>
                                         <p class="text-xs text-green-100">{{ auth()->user()->email }}</p>
@@ -463,24 +464,9 @@
                                 </a>
                             </div>
                             <div class="border-t border-gray-100 p-2">
-                                <form method="POST">
-                                    @csrf
-                                    <button type="submit"
-                                        class="flex items-center space-x-3 px-4 py-2.5 hover:bg-red-50 transition w-full rounded-lg">
-                                        <div class="w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div class="text-left">
-                                            <p class="text-sm font-semibold text-red-600">Déconnexion</p>
-                                            <p class="text-xs text-red-400">Se déconnecter</p>
-                                        </div>
-                                    </button>
-                                </form>
+                                <div>
+                                    @livewire('pages.auth.logout')
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -578,52 +564,63 @@
             });
         });
 
-
         // Dans votre layout principal ou dans un script spécifique
         document.addEventListener('DOMContentLoaded', function() {
-            // Écouter l'événement de confirmation de suppression
-            Livewire.on('show-admin-delete-confirmation', (data) => {
+
+            // Alertes classiques
+            Livewire.on('alert', function(data) {
+                let alertData = data;
+                if (Array.isArray(data)) {
+                    alertData = data[0] || {};
+                }
+
                 Swal.fire({
-                    title: 'Confirmer la suppression',
-                    html: `
-                <div class="text-left">
-                    <p class="text-red-600 font-semibold mb-2">⚠️ Action irréversible !</p>
-                    <p class="mb-2">Vous êtes sur le point de supprimer l'utilisateur :</p>
-                    <div class="bg-gray-100 p-3 rounded-lg mb-3">
-                        <p><strong>Nom :</strong> ${data.userName}</p>
-                        <p><strong>Email :</strong> ${data.userEmail}</p>
-                    </div>
-                    <p class="text-sm text-gray-600">
-                        Toutes les données associées à cet utilisateur seront définitivement supprimées.
-                    </p>
-                </div>
-            `,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Oui, supprimer cet utilisateur',
-                    cancelButtonText: 'Annuler',
-                    reverseButtons: true,
-                    customClass: {
-                        popup: 'text-left'
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Lancer la suppression via Livewire
-                        Livewire.dispatch('delete-user');
-                    }
+                    title: alertData.title || 'Information',
+                    text: alertData.text || '',
+                    icon: alertData.icon || 'info',
+                    confirmButtonText: alertData.confirmText || 'OK',
+                    confirmButtonColor: '#22c55e'
                 });
             });
 
-            // Écouter les alertes Livewire pour les afficher avec SweetAlert
-            Livewire.on('alert', (data) => {
+            // Toasts
+            Livewire.on('toast', function(data) {
+                let toastData = data;
+                if (Array.isArray(data)) {
+                    toastData = data[0] || {};
+                }
+
+                let type = toastData.type || 'info';
+                let message = toastData.message || 'Opération réussie';
+
+                Toast.fire({
+                    icon: type,
+                    title: message
+                });
+            });
+
+            // Dans votre app.js - version simplifiée
+            Livewire.on('swal:confirm', function(data) {
+                let confirmData = data;
+                if (Array.isArray(data)) {
+                    confirmData = data[0] || {};
+                }
+
                 Swal.fire({
-                    title: data.title || 'Information',
-                    text: data.message,
-                    icon: data.type || 'info',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: data.type === 'error' ? '#d33' : '#3085d6'
+                    title: confirmData.title || 'Êtes-vous sûr ?',
+                    text: confirmData.text || 'Cette action est irréversible.',
+                    icon: confirmData.icon || 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#22c55e',
+                    cancelButtonColor: '#ef4444',
+                    confirmButtonText: confirmData.confirmText || 'Oui, continuer',
+                    cancelButtonText: confirmData.cancelText || 'Annuler',
+                    reverseButtons: true
+                }).then(function(result) {
+                    if (result.isConfirmed && confirmData.method) {
+                        // Re-dispatch vers Livewire avec la méthode
+                        Livewire.dispatch(confirmData.method, confirmData.params || {});
+                    }
                 });
             });
         });

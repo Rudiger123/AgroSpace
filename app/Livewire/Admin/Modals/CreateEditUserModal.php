@@ -18,7 +18,7 @@ class CreateEditUserModal extends Component
 
     public $show = false;
     public $userId = null;
-    
+
     // Champs du formulaire
     public $name;
     public $email;
@@ -86,7 +86,7 @@ class CreateEditUserModal extends Component
     {
         $this->reset();
         $user = User::findOrFail($userId);
-        
+
         $this->userId = $user->id;
         $this->name = $user->name;
         $this->email = $user->email;
@@ -99,7 +99,7 @@ class CreateEditUserModal extends Component
         $this->status = $user->status;
         $this->currentAvatar = $user->avatar_url;
         $this->emailVerified = !is_null($user->email_verified_at);
-        
+
         $this->show = true;
     }
 
@@ -155,7 +155,8 @@ class CreateEditUserModal extends Component
             'title' => $title,
             'text' => $message
         ]);
-        
+
+        session()->flash('success', $message);
         $this->close();
     }
 

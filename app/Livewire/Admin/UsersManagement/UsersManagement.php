@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin\UsersManagement;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
@@ -17,10 +16,6 @@ use Livewire\Attributes\On;
 class UsersManagement extends Component
 {
     use WithPagination;
-
-    protected $listeners = [
-        'deleteUser' => 'deleteUser',
-    ];
 
     // Filtres
     #[Url(as: 'q')]
@@ -45,6 +40,7 @@ class UsersManagement extends Component
     public $producers;
     public $consumers;
     public $verifiedUsers;
+
     // View History
     public $selectedUser;
     public $offers = [];
@@ -61,11 +57,6 @@ class UsersManagement extends Component
     public function mount()
     {
         $this->loadStats();
-    }
-
-    public function sleep()
-    {
-        sleep(13);
     }
 
     public function loadStats()
@@ -135,9 +126,11 @@ class UsersManagement extends Component
                         ->orWhere('phone', 'like', '%' . $this->search . '%');
                 });
             })
-            ->when($this->filterRole, fn($query) => $query->ByRole($this->filterRole))
-            ->when($this->filterStatus, fn($query) => $query->where('status', $this->filterStatus))
-            ->when($this->filterRegion, fn($query) => $query->where('region', $this->filterRegion))
+            ->when($this->filterRole, fn ($query) => $query->whereHas('role', function ($q) {
+                $q->where('name', $this->filterRole);
+            }))
+            ->when($this->filterStatus, fn ($query) => $query->where('status', $this->filterStatus))
+            ->when($this->filterRegion, fn ($query) => $query->where('region', $this->filterRegion))
             ->withCount(['offers', 'demands'])
             ->orderBy('created_at', 'desc');
     }
@@ -167,86 +160,217 @@ class UsersManagement extends Component
         $this->dispatch('openSendEmailModal', userIds: [$userId]);
     }
 
-
-    public function verifyUser($userId)
+    /**
+     * Confirmation pour vérifier un utilisateur
+     */
+    public function confirmVerifyUser($userId)
     {
-        $user = User::findOrFail($userId);
+        $user = User::find($userId);
 
-        $user->email_verified_at = now();
-        $user->save();
-
-        $this->loadStats();
-
-        session()->flash('success', "L'utilisateur {$user->name} a été vérifié avec succès.");
-    }
-
-    public function suspendUser($userId)
-    {
-        $user = User::findOrFail($userId);
-
-        $user->status = 'suspended';
-        $user->save();
-
-        $this->loadStats();
-
-        session()->flash('warning', "L'utilisateur {$user->name} a été suspendu.");
-    }
-
-    public function reactivateUser($userId)
-    {
-        $user = User::findOrFail($userId);
-
-        $user->status = 'active';
-        $user->save();
-        $this->loadStats();
-
-        session()->flash('success', "L'utilisateur {$user->name} a été réactivé.");
-    }
-
-    public function deleteUser()
-    {
-        try {
-            if (!$this->selectedUser) {
-                throw new \Exception('Aucun utilisateur sélectionné');
-            }
-
-            $userName = $this->selectedUser->name;
-            $userEmail = $this->selectedUser->email;
-            $user = $this->selectedUser;
-
-            // Empêcher l'administrateur de se supprimer lui-même
-            if ($this->selectedUser->id === Auth::user()->id) {
-                $this->alert('error', 'Vous ne pouvez pas supprimer votre propre compte !');
-                return;
-            }
-
-            // Supprimer l'utilisateur et toutes ses données associées
-            DB::transaction(function () use ($user) {
-                $user->offers()->delete();
-                $user->demands()->delete();
-                $user->delete();
-            });
-
-            // Message de succès
-            $this->alert('success', "L'utilisateur {$userName} ({$userEmail}) a été supprimé avec succès.");
-
-            // Réinitialiser la sélection
-            $this->selectedUser = null;
-        } catch (\Exception $e) {
-            Log::error('Erreur suppression utilisateur: ' . $e->getMessage());
-            $this->alert('error', 'Erreur lors de la suppression: ' . $e->getMessage());
+        if (!$user) {
+            $this->dispatch('toast', [
+                'type' => 'error',
+                'message' => 'Utilisateur non trouvé.'
+            ]);
+            return;
         }
-    }
 
-    public function confirmDelete($userId)
-    {
-        $this->selectedUser = User::findOrFail($userId);
-        $this->dispatch('show-admin-delete-confirmation', [
-            'userName' => $this->selectedUser->name,
-            'userEmail' => $this->selectedUser->email
+        $this->dispatch('swal:confirm', [
+            'title' => 'Confirmer la vérification',
+            'text' => "Êtes-vous sûr de vouloir vérifier l'utilisateur \"{$user->name}\" ?",
+            'icon' => 'question',
+            'confirmText' => 'Oui, vérifier',
+            'cancelText' => 'Annuler',
+            'method' => 'verifyUser',
+            'params' => ['userId' => $userId] // Toujours passer un tableau
         ]);
     }
 
+    #[On('verifyUser')]
+    public function verifyUser($userId)
+    {
+        try {
+            $user = User::findOrFail($userId);
+
+            $user->email_verified_at = now();
+            $user->save();
+
+            $this->loadStats();
+
+            $this->dispatch('toast', [
+                'type' => 'success',
+                'message' => "L'utilisateur {$user->name} a été vérifié avec succès."
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('alert', [
+                'title' => 'Erreur',
+                'text' => 'Une erreur est survenue lors de la vérification : ' . $e->getMessage(),
+                'icon' => 'error'
+            ]);
+        }
+    }
+
+    /**
+     * Confirmation pour suspendre un utilisateur
+     */
+    public function confirmSuspendUser($userId)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            $this->dispatch('toast', [
+                'type' => 'error',
+                'message' => 'Utilisateur non trouvé.'
+            ]);
+            return;
+        }
+
+        $this->dispatch('swal:confirm', [
+            'title' => 'Confirmer la suspension',
+            'text' => "Êtes-vous sûr de vouloir suspendre l'utilisateur \"{$user->name}\" ?",
+            'icon' => 'warning',
+            'confirmText' => 'Oui, suspendre',
+            'cancelText' => 'Annuler',
+            'method' => 'suspendUser',
+            'params' => ['userId' => $userId] // Toujours passer un tableau
+        ]);
+    }
+
+    #[On('suspendUser')]
+    public function suspendUser($userId)
+    {
+        try {
+            $user = User::findOrFail($userId);
+
+            $user->status = 'suspended';
+            $user->save();
+
+            $this->loadStats();
+
+            $this->dispatch('toast', [
+                'type' => 'warning',
+                'message' => "L'utilisateur {$user->name} a été suspendu."
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('alert', [
+                'title' => 'Erreur',
+                'text' => 'Une erreur est survenue lors de la suspension : ' . $e->getMessage(),
+                'icon' => 'error'
+            ]);
+        }
+    }
+
+    /**
+     * Confirmation pour réactiver un utilisateur
+     */
+    public function confirmReactivateUser($userId)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            $this->dispatch('toast', [
+                'type' => 'error',
+                'message' => 'Utilisateur non trouvé.'
+            ]);
+            return;
+        }
+
+        $this->dispatch('swal:confirm', [
+            'title' => 'Confirmer la réactivation',
+            'text' => "Êtes-vous sûr de vouloir réactiver l'utilisateur \"{$user->name}\" ?",
+            'icon' => 'question',
+            'confirmText' => 'Oui, réactiver',
+            'cancelText' => 'Annuler',
+            'method' => 'reactivateUser',
+            'params' => ['userId' => $userId] // Toujours passer un tableau
+        ]);
+    }
+
+    #[On('reactivateUser')]
+    public function reactivateUser($userId)
+    {
+        try {
+            $user = User::findOrFail($userId);
+
+            $user->status = 'active';
+            $user->save();
+            $this->loadStats();
+
+            $this->dispatch('toast', [
+                'type' => 'success',
+                'message' => "L'utilisateur {$user->name} a été réactivé."
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('alert', [
+                'title' => 'Erreur',
+                'text' => 'Une erreur est survenue lors de la réactivation : ' . $e->getMessage(),
+                'icon' => 'error'
+            ]);
+        }
+    }
+
+    /**
+     * Confirmation de suppression d'un utilisateur
+     */
+    public function confirmDelete($userId)
+    {
+        $user = User::find($userId);
+
+        if (!$user) {
+            $this->dispatch('toast', [
+                'type' => 'error',
+                'message' => 'Utilisateur non trouvé.'
+            ]);
+            return;
+        }
+
+        $this->dispatch('swal:confirm', [
+            'title' => 'Confirmer la suppression',
+            'text' => "Êtes-vous sûr de vouloir supprimer l'utilisateur \"{$user->name}\" ? Cette action est irréversible.",
+            'icon' => 'warning',
+            'confirmText' => 'Oui, supprimer',
+            'cancelText' => 'Annuler',
+            'method' => 'deleteUser',
+            'params' => ['userId' => $userId] // Toujours passer un tableau
+        ]);
+    }
+
+    /**
+     * Suppression effective de l'utilisateur
+     */
+    #[On('deleteUser')]
+    public function deleteUser($userId)
+    {
+        try {
+            DB::transaction(function () use ($userId) {
+                $user = User::find($userId);
+
+                if ($user) {
+                    // Supprimer les relations si nécessaire
+                    if (method_exists($user, 'offers')) {
+                        $user->offers()->delete();
+                    }
+                    if (method_exists($user, 'demands')) {
+                        $user->demands()->delete();
+                    }
+
+                    $userName = $user->name;
+                    $user->delete();
+
+                    $this->dispatch('toast', [
+                        'type' => 'success',
+                        'message' => "L'utilisateur \"{$userName}\" a été supprimé avec succès."
+                    ]);
+                }
+            });
+        } catch (\Exception $e) {
+            $this->dispatch('alert', [
+                'title' => 'Erreur',
+                'text' => 'Une erreur est survenue lors de la suppression : ' . $e->getMessage(),
+                'icon' => 'error'
+            ]);
+        }
+    }
 
     public function viewHistory($userId)
     {
@@ -265,66 +389,199 @@ class UsersManagement extends Component
     }
 
     // Actions en masse
+
+    /**
+     * Confirmation pour l'envoi d'email en masse
+     */
+    public function confirmBulkSendEmail()
+    {
+        if (empty($this->selectedUsers)) {
+            $this->dispatch('alert', [
+                'title' => 'Aucune sélection',
+                'text' => 'Veuillez sélectionner au moins un utilisateur.',
+                'icon' => 'warning'
+            ]);
+            return;
+        }
+
+        $count = count($this->selectedUsers);
+        $userText = $count > 1 ? "ces {$count} utilisateurs" : "cet utilisateur";
+
+        $this->dispatch('swal:confirm', [
+            'title' => 'Confirmer l\'envoi d\'email',
+            'text' => "Êtes-vous sûr de vouloir envoyer un email à {$userText} ?",
+            'icon' => 'question',
+            'confirmText' => 'Oui, envoyer',
+            'cancelText' => 'Annuler',
+            'method' => 'bulkSendEmail',
+            'params' => [] // Tableau vide pour les méthodes sans paramètres
+        ]);
+    }
+
+    #[On('bulkSendEmail')]
     public function bulkSendEmail()
     {
         if (empty($this->selectedUsers)) {
-            session()->flash('error', 'Aucun utilisateur sélectionné.');
+            $this->dispatch('alert', [
+                'title' => 'Erreur',
+                'text' => 'Aucun utilisateur sélectionné.',
+                'icon' => 'error'
+            ]);
             return;
         }
 
-        $users = User::whereIn('id', $this->selectedUsers)->get();
-
         // Dispatch event pour ouvrir modal d'envoi d'email en masse
-        $this->dispatch('openBulkEmailModal', userIds: $this->selectedUsers);
+        $this->dispatch('openSendEmailModal', userIds: $this->selectedUsers);
 
-        session()->flash('success', count($this->selectedUsers) . " utilisateur(s) sélectionné(s) pour l'envoi d'email.");
+        $this->dispatch('toast', [
+            'type' => 'info',
+            'message' => count($this->selectedUsers) . " utilisateur(s) sélectionné(s) pour l'envoi d'email."
+        ]);
     }
 
+    /**
+     * Confirmation pour la suspension en masse
+     */
+    public function confirmBulkSuspend()
+    {
+        if (empty($this->selectedUsers)) {
+            $this->dispatch('alert', [
+                'title' => 'Aucune sélection',
+                'text' => 'Veuillez sélectionner au moins un utilisateur.',
+                'icon' => 'warning'
+            ]);
+            return;
+        }
+
+        $count = count($this->selectedUsers);
+        $userText = $count > 1 ? "ces {$count} utilisateurs" : "cet utilisateur";
+
+        $this->dispatch('swal:confirm', [
+            'title' => 'Confirmer la suspension multiple',
+            'text' => "Êtes-vous sûr de vouloir suspendre {$userText} ?",
+            'icon' => 'warning',
+            'confirmText' => 'Oui, suspendre',
+            'cancelText' => 'Annuler',
+            'method' => 'bulkSuspend',
+            'params' => [] // Tableau vide pour les méthodes sans paramètres
+        ]);
+    }
+
+    #[On('bulkSuspend')]
     public function bulkSuspend()
     {
         if (empty($this->selectedUsers)) {
-            session()->flash('error', 'Aucun utilisateur sélectionné.');
+            $this->dispatch('alert', [
+                'title' => 'Erreur',
+                'text' => 'Aucun utilisateur sélectionné.',
+                'icon' => 'error'
+            ]);
             return;
         }
 
-        User::whereIn('id', $this->selectedUsers)
-            ->where('role', '!=', 'admin') // Ne pas suspendre les admins
-            ->update(['status' => 'suspended']);
+        try {
+            $affected = User::whereIn('id', $this->selectedUsers)
+                ->whereHas('role', function ($query) {
+                    $query->where('name', '!=', 'admin');
+                })
+                ->update(['status' => 'suspended']);
 
-        $this->loadStats();
-        $count = count($this->selectedUsers);
-        $this->selectedUsers = [];
-        $this->selectAll = false;
+            $this->loadStats();
+            $this->selectedUsers = [];
+            $this->selectAll = false;
 
-        session()->flash('warning', "{$count} utilisateur(s) suspendu(s) avec succès.");
+            $this->dispatch('toast', [
+                'type' => 'warning',
+                'message' => "{$affected} utilisateur(s) suspendu(s) avec succès."
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('alert', [
+                'title' => 'Erreur',
+                'text' => 'Une erreur est survenue lors de la suspension : ' . $e->getMessage(),
+                'icon' => 'error'
+            ]);
+        }
     }
 
+    /**
+     * Confirmation pour la suppression en masse
+     */
+    public function confirmBulkDelete()
+    {
+        if (empty($this->selectedUsers)) {
+            $this->dispatch('alert', [
+                'title' => 'Aucune sélection',
+                'text' => 'Veuillez sélectionner au moins un utilisateur à supprimer.',
+                'icon' => 'warning'
+            ]);
+            return;
+        }
+
+        $count = count($this->selectedUsers);
+        $userText = $count > 1 ? "ces {$count} utilisateurs" : "cet utilisateur";
+
+        $this->dispatch('swal:confirm', [
+            'title' => 'Confirmer la suppression multiple',
+            'text' => "Êtes-vous sûr de vouloir supprimer {$userText} ? Cette action est irréversible.",
+            'icon' => 'warning',
+            'confirmText' => 'Oui, supprimer',
+            'cancelText' => 'Annuler',
+            'method' => 'bulkDelete',
+            'params' => [] // Tableau vide pour les méthodes sans paramètres
+        ]);
+    }
+
+    #[On('bulkDelete')]
     public function bulkDelete()
     {
         if (empty($this->selectedUsers)) {
-            session()->flash('error', 'Aucun utilisateur sélectionné.');
+            $this->dispatch('alert', [
+                'title' => 'Erreur',
+                'text' => 'Aucun utilisateur sélectionné.',
+                'icon' => 'error'
+            ]);
             return;
         }
 
-        DB::transaction(function () {
-            $users = User::whereIn('id', $this->selectedUsers)
-                ->where('role', '!=', 'admin') // Ne pas supprimer les admins
-                ->get();
+        try {
+            DB::transaction(function () {
+                $users = User::whereIn('id', $this->selectedUsers)
+                    ->whereHas('role', function ($query) {
+                        $query->where('name', '!=', 'admin');
+                    })
+                    ->get();
 
-            foreach ($users as $user) {
-                $user->offers()->delete();
-                $user->demands()->delete();
-                $user->messages()->delete();
-                $user->delete();
-            }
-        });
+                $count = 0;
+                foreach ($users as $user) {
+                    if (method_exists($user, 'offers')) {
+                        $user->offers()->delete();
+                    }
+                    if (method_exists($user, 'demands')) {
+                        $user->demands()->delete();
+                    }
+                    if (method_exists($user, 'messages')) {
+                        $user->messages()->delete();
+                    }
+                    $user->delete();
+                    $count++;
+                }
 
-        $this->loadStats();
-        $count = count($this->selectedUsers);
-        $this->selectedUsers = [];
-        $this->selectAll = false;
+                $this->loadStats();
+                $this->selectedUsers = [];
+                $this->selectAll = false;
 
-        session()->flash('success', "{$count} utilisateur(s) supprimé(s) définitivement.");
+                $this->dispatch('toast', [
+                    'type' => 'success',
+                    'message' => "{$count} utilisateur(s) supprimé(s) définitivement."
+                ]);
+            });
+        } catch (\Exception $e) {
+            $this->dispatch('alert', [
+                'title' => 'Erreur',
+                'text' => 'Une erreur est survenue lors de la suppression : ' . $e->getMessage(),
+                'icon' => 'error'
+            ]);
+        }
     }
 
     public function exportUsers()
@@ -365,9 +622,10 @@ class UsersManagement extends Component
                     $user->name,
                     $user->email,
                     $user->phone,
-                    $user->role,
+                    $user->role->name ?? $user->role,
                     $user->status,
-                    $user->location,
+                    $user->region,
+                    $user->city,
                     $user->email_verified_at ? 'Oui' : 'Non',
                     $user->created_at->format('Y-m-d H:i:s'),
                     $user->last_active_at ? $user->last_active_at->diffForHumans() : 'Jamais',

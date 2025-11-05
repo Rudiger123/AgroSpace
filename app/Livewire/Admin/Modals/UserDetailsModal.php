@@ -20,7 +20,7 @@ class UserDetailsModal extends Component
         $this->user = User::with(['offers', 'demands'])
             ->withCount(['offers', 'demands'])
             ->findOrFail($userId);
-        
+
         $this->show = true;
     }
 
@@ -47,4 +47,3 @@ class UserDetailsModal extends Component
         return view('livewire.admin.modals.user-details-modal');
     }
 }
-

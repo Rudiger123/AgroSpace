@@ -17,7 +17,7 @@ export default {
                 'agro-white': '#FFFFFF',
                 'agro-gray': '#37474F',
                 'agro-yellow': '#FFB300',
-                primary: '#1B5E20',
+                base: '#1B5E20',
                 secondary: '#81C784 ',
                 accent: '#F5F5DC',
 

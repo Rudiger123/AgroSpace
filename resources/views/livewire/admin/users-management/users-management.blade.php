@@ -7,15 +7,6 @@
         @livewire('admin.modals.user-details-modal')
         @livewire('admin.modals.send-email-modal')
 
-        <button wire:click="sleep"
-            class="bg-white text-green-600 hover:bg-green-50 px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition flex items-center space-x-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
-                </path>
-            </svg>
-            <span>Nouvelle Offre</span>
-        </button>
-
         <!-- Header Gestion Utilisateurs -->
         <div class="bg-white border-b border-gray-200 shadow-sm">
             <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-5">
@@ -234,7 +225,7 @@
                                 </svg>
                                 Envoyer email
                             </button>
-                            <button wire:click="bulkSuspend"
+                            <button wire:click="confirmBulkSuspend"
                                 class="px-2 py-1.5 bg-white border border-orange-300 text-orange-700 rounded-lg text-xs sm:text-sm font-medium hover:bg-orange-50 transition flex items-center gap-1">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -244,8 +235,7 @@
                                 </svg>
                                 Suspendre
                             </button>
-                            <button wire:click="bulkDelete"
-                                wire:confirm="Êtes-vous sûr de vouloir supprimer ces utilisateurs ?"
+                            <button wire:click="confirmBulkDelete"
                                 class="px-2 py-1.5 bg-white border border-red-300 text-red-700 rounded-lg text-xs sm:text-sm font-medium hover:bg-red-50 transition flex items-center gap-1">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -474,7 +464,7 @@
                                                     @endif
 
                                                     @if ($user->status === 'active')
-                                                        <button wire:click="suspendUser({{ $user->id }})"
+                                                        <button wire:click="confirmSuspendUser({{ $user->id }})"
                                                             class="w-full text-left px-4 py-2 text-sm text-orange-700 hover:bg-orange-50 flex items-center gap-2">
                                                             <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
@@ -486,7 +476,8 @@
                                                             Suspendre
                                                         </button>
                                                     @elseif($user->status === 'suspended')
-                                                        <button wire:click="reactivateUser({{ $user->id }})"
+                                                        <button
+                                                            wire:click="confirmReactivateUser({{ $user->id }})"
                                                             class="w-full text-left px-4 py-2 text-sm text-green-700 hover:bg-green-50 flex items-center gap-2">
                                                             <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                                 viewBox="0 0 24 24">
@@ -513,7 +504,6 @@
                                                     <div class="border-t border-gray-100 my-1"></div>
 
                                                     <button wire:click="confirmDelete({{ $user->id }})"
-                                                        wire:confirm="Êtes-vous sûr de vouloir supprimer cet utilisateur ?"
                                                         class="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50 flex items-center gap-2">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">

@@ -13,7 +13,6 @@ use Livewire\Volt\Volt;
  * Les Routes protegées
  */
 Route::middleware(['auth', 'verified'])->group(function () {
-
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
     Route::get('/users', UsersManagement::class)->name('users-management');
