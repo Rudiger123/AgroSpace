@@ -7,9 +7,11 @@ namespace App\Models;
 use App\Policies\UserPolicy;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 #[UsePolicy(UserPolicy::class)]
 class User extends Authenticatable implements MustVerifyEmail
@@ -24,7 +26,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'role_id',
         'avatar',
         'bio',
-        'location',
+        'phone',
+        'region',
+        'city',
         'activity',
         'two_factor_secret',
         'two_factor_recovery_codes',
@@ -63,7 +67,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Demand::class);
     }
 
-
     // Accessors pour chiffrer/déchiffrer automatiquement
     public function setTwoFactorSecretAttribute($value)
     {
@@ -83,5 +86,227 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getTwoFactorRecoveryCodesAttribute($value)
     {
         return $value ? json_decode(decrypt($value), true) : [];
+    }
+
+    /**
+     * Scopes
+     */
+
+    // Scope pour les administrateurs
+    public function scopeAdmins($query)
+    {
+        return $query->role('admin');
+    }
+
+    public function scopeProducers($query)
+    {
+        return $query->whereHas('role', function ($q) {
+            $q->where('name', 'producer');
+        });
+    }
+    
+    public function scopeConsumers($query)
+    {
+        return $query->whereHas('role', function ($q) {
+            $q->where('name', 'consumer');
+        });
+    }
+    
+    public function scopeByRole($query, $role = null)
+    {
+        return $role
+            ? $query->whereHas('role', fn($q) => $q->where('name', $role))
+            : $query;
+    }
+
+    // Scope pour les utilisateurs actifs
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    // Scope pour les utilisateurs vérifiés
+    public function scopeVerified($query)
+    {
+        return $query->whereNotNull('email_verified_at');
+    }
+
+    // Scope pour rechercher par nom ou email
+    public function scopeSearch($query, $term)
+    {
+        return $query->where(function ($q) use ($term) {
+            $q->where('name', 'like', "%{$term}%")
+                ->orWhere('email', 'like', "%{$term}%")
+                ->orWhere('phone', 'like', "%{$term}%");
+        });
+    }
+
+    /**
+     * Accesseurs & Mutateurs
+     */
+
+    // URL de l'avatar
+    protected function avatarUrl(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
+                    return Storage::url($this->avatar);
+                }
+                return asset('images/avatar.jpg');
+            }
+        );
+    }
+
+    // Dernière activité formatée
+    protected function lastActive(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (!$this->last_active_at) {
+                    return 'Jamais connecté';
+                }
+
+                $now = now();
+                $diff = $this->last_active_at->diffInMinutes($now);
+
+                if ($diff < 5) {
+                    return 'En ligne';
+                }
+
+                return $this->last_active_at->diffForHumans();
+            }
+        );
+    }
+
+    // Vérifier si l'utilisateur est vérifié
+    protected function verified(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => !is_null($this->email_verified_at)
+        );
+    }
+
+    /**
+     * Méthodes Helper
+     */
+
+     public function isAdmin(): bool
+     {
+         return optional($this->role)->name === 'admin';
+     }
+     
+     public function isProducer(): bool
+     {
+         return optional($this->role)->name === 'producer';
+     }
+     
+     public function isConsumer(): bool
+     {
+         return optional($this->role)->name === 'consumer';
+     }
+
+    // Vérifier si l'utilisateur est actif
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
+    }
+
+    // Vérifier si l'utilisateur est suspendu
+    public function isSuspended(): bool
+    {
+        return $this->status === 'suspended';
+    }
+
+    // Vérifier si l'utilisateur est banni
+    public function isBanned(): bool
+    {
+        return $this->status === 'banned';
+    }
+
+    // Mettre à jour la dernière activité
+    public function updateLastActive(): void
+    {
+        $this->update(['last_active_at' => now()]);
+    }
+
+    // Compter les offres actives (pour les producteurs)
+    public function activeOffersCount(): int
+    {
+        return $this->offers()->where('status', 'active')->count();
+    }
+
+    // Compter les demandes actives (pour les consommateurs)
+    public function activeDemandsCount(): int
+    {
+        return $this->demands()->where('status', 'active')->count();
+    }
+
+    // Compter les messages non lus
+    public function unreadMessagesCount(): int
+    {
+        return $this->receivedMessages()->where('read_at', null)->count();
+    }
+
+    // Obtenir le nom complet avec le rôle
+    public function getFullNameWithRole(): string
+    {
+        $roleLabels = [
+            'producer' => '👨‍🌾 Producteur',
+            'consumer' => '🛒 Consommateur',
+            'admin' => '👨‍💼 Administrateur',
+        ];
+
+        $roleLabel = $roleLabels[$this->role] ?? $this->role;
+
+        return "{$this->name} ({$roleLabel})";
+    }
+
+    // Obtenir la badge du statut
+    public function getStatusBadge(): array
+    {
+        $badges = [
+            'active' => [
+                'class' => 'bg-green-100 text-green-700',
+                'label' => '✓ Actif',
+            ],
+            'suspended' => [
+                'class' => 'bg-orange-100 text-orange-700',
+                'label' => '⏸ Suspendu',
+            ],
+            'banned' => [
+                'class' => 'bg-red-100 text-red-700',
+                'label' => '⛔ Banni',
+            ],
+        ];
+
+        return $badges[$this->status] ?? [
+            'class' => 'bg-gray-100 text-gray-700',
+            'label' => $this->status,
+        ];
+    }
+
+    // Obtenir la badge du rôle
+    public function getRoleBadge(): array
+    {
+        $badges = [
+            '2' => [
+                'class' => 'bg-green-100 text-green-700',
+                'label' => '👨‍🌾 Producteur',
+            ],
+            '3' => [
+                'class' => 'bg-blue-100 text-blue-700',
+                'label' => '🛒 Consommateur',
+            ],
+            '1' => [
+                'class' => 'bg-purple-100 text-purple-700',
+                'label' => '👨‍💼 Admin',
+            ],
+        ];
+
+        return $badges[$this->role_id] ?? [
+            'class' => 'bg-gray-100 text-gray-700',
+            'label' => $this->role,
+        ];
     }
 }

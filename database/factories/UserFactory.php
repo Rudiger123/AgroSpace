@@ -29,7 +29,8 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'role_id' => $this->faker->numberBetween(1, 3),
             'bio' => $this->faker->text(80),
-            'location' => $this->faker->city(),
+            'city' => $this->faker->city(),
+            'region' => $this->faker->country(),
             'activity' => $this->faker->domainName(),
         ];
     }

@@ -5,7 +5,7 @@
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
-        {{-- Overlay --}} 
+        {{-- Overlay --}}
         <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" @click="$wire.close()"></div>
 
         {{-- Modal --}}
@@ -135,9 +135,15 @@
                             <select wire:model="role"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition">
                                 <option value="">Sélectionner un rôle</option>
-                                <option value="producer">👨‍🌾 Producteur</option>
-                                <option value="consumer">🛒 Consommateur</option>
-                                <option value="admin">👨‍💼 Administrateur</option>
+                                @foreach (App\Models\Role::all() as $role)
+                                    @if ($role->id == 1)
+                                        <option value="{{ $role->id }}">👨‍💼 Administrateur</option>
+                                    @elseif ($role->id == 2)
+                                        <option value="{{ $role->id }}">👨‍🌾 Producteur</option>
+                                    @else
+                                        <option value="{{ $role->id }}">🛒 Consommateur</option>
+                                    @endif
+                                @endforeach
                             </select>
                             @error('role')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -173,6 +179,19 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+                    </div>
+
+                    {{-- Activité --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Activité/Proféssion <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" wire:model="activity"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition"
+                            placeholder="Eleveur de Poulet">
+                        @error('activity')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     {{-- Biographie --}}

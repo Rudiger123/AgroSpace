@@ -27,6 +27,7 @@ class CreateEditUserModal extends Component
     public $region;
     public $city;
     public $bio;
+    public $activity;
     public $status = 'active';
     public $password;
     public $password_confirmation;
@@ -40,12 +41,13 @@ class CreateEditUserModal extends Component
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $this->userId,
             'phone' => 'required|string|max:20',
-            'role' => 'required|in:producer,consumer,admin',
+            'role' => 'required|exists:roles,id',
             'region' => 'required|string',
             'city' => 'required|string|max:255',
             'bio' => 'nullable|string|max:1000',
             'status' => 'required|in:active,suspended,banned',
             'avatar' => 'nullable|image|max:2048',
+            "activity" => 'nullable|string|max:255'
         ];
 
         if (!$this->userId) {
@@ -69,6 +71,7 @@ class CreateEditUserModal extends Component
         'password.confirmed' => 'Les mots de passe ne correspondent pas',
         'avatar.image' => 'Le fichier doit être une image',
         'avatar.max' => 'L\'image ne doit pas dépasser 2 Mo',
+        'role.exists' => 'Le role selectionné est inexistant'
     ];
 
     #[On('openCreateUserModal')]
@@ -88,10 +91,11 @@ class CreateEditUserModal extends Component
         $this->name = $user->name;
         $this->email = $user->email;
         $this->phone = $user->phone;
-        $this->role = $user->role;
+        $this->role = $user->role_id;
         $this->region = $user->region;
         $this->city = $user->city;
         $this->bio = $user->bio;
+        $this->activity = $user->activity;
         $this->status = $user->status;
         $this->currentAvatar = $user->avatar_url;
         $this->emailVerified = !is_null($user->email_verified_at);
@@ -107,11 +111,12 @@ class CreateEditUserModal extends Component
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'role' => $this->role,
+            'role_id' => $this->role,
             'region' => $this->region,
             'city' => $this->city,
             'bio' => $this->bio,
             'status' => $this->status,
+            'activity' => $this->activity,
             'email_verified_at' => $this->emailVerified ? now() : null,
         ];
 
@@ -135,15 +140,21 @@ class CreateEditUserModal extends Component
         if ($this->userId) {
             $user = User::findOrFail($this->userId);
             $user->update($data);
+            $title = 'Mise à Jour';
             $message = "L'utilisateur {$user->name} a été mis à jour avec succès.";
         } else {
             $user = User::create($data);
+            $title = 'Création';
             $message = "L'utilisateur {$user->name} a été créé avec succès.";
         }
 
         $this->dispatch('userSaved');
         $this->dispatch('refresh-users');
-        session()->flash('success', $message);
+        $this->dispatch('showAlert', [
+            'type' => 'success',
+            'title' => $title,
+            'text' => $message
+        ]);
         
         $this->close();
     }

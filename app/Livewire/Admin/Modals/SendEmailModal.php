@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Modals;
 
+use App\Mail\AdminEmail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -91,13 +92,13 @@ class SendEmailModal extends Component
 
             // Logique d'envoi d'email
             Mail::to($recipient->email)->send(
-                new \App\Mail\AdminEmail($personalizedSubject, $personalizedMessage)
+                new AdminEmail($personalizedSubject, $personalizedMessage)
             );
         }
 
         if ($this->sendCopy) {
             Mail::to(Auth::user()->email)->send(
-                new \App\Mail\AdminEmail($this->subject, $this->message)
+                new AdminEmail($this->subject, $this->message)
             );
         }
 
@@ -119,7 +120,7 @@ class SendEmailModal extends Component
         $this->dispatch('showPreview', [
             'subject' => $this->subject,
             'message' => $this->message,
-            'recipient' => $this->recipients[1]
+            'recipient' => $this->recipients->first()
         ]);
     }
 

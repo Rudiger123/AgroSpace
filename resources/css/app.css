@@ -19,6 +19,12 @@
     font-style: normal;
 }
 
+@layer base {
+    body {
+        @apply font-sans antialiased;
+    }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

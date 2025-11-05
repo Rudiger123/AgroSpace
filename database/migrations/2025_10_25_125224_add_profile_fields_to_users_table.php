@@ -10,8 +10,9 @@ return new class () extends Migration {
         Schema::table('users', function (Blueprint $table) {
             $table->string('avatar')->nullable()->after('email');
             $table->text('bio')->nullable()->after('avatar');
-            $table->string('location')->nullable()->after('bio');
-            $table->string('activity')->nullable()->after('location');
+            $table->string('region')->nullable()->after('bio');
+            $table->string('city')->nullable()->after('region');
+            $table->string('activity')->nullable()->after('city');
             $table->string('phone')->nullable();
             $table->enum('status', ['active', 'suspended', 'banned'])->default('active');
             $table->timestamp('last_active_at')->nullable();

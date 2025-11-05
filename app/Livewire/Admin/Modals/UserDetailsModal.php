@@ -18,7 +18,7 @@ class UserDetailsModal extends Component
     public function open($userId)
     {
         $this->user = User::with(['offers', 'demands'])
-            ->withCount(['offers', 'demands', 'messages'])
+            ->withCount(['offers', 'demands'])
             ->findOrFail($userId);
         
         $this->show = true;

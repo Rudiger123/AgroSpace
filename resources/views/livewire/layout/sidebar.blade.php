@@ -13,18 +13,14 @@ new class extends Component {
     }
 
     protected $listeners = [
-        "logout" => 'logout',
+        'logout' => 'logout',
     ];
 
-      // Confirmation de la deconnection
-      public function confirmLogout()
-      {
-        $this->dispatch(
-            'confirm-logout',
-            title: 'Confirmer la déconnexion',
-            text:"Êtes-vous sûr de vouloir vous déconnecter ?",
-        );
-      }
+    // Confirmation de la deconnection
+    public function confirmLogout()
+    {
+        $this->dispatch('confirm-logout', title: 'Confirmer la déconnexion', text: 'Êtes-vous sûr de vouloir vous déconnecter ?');
+    }
 
     /**
      *  Déconnexion de l'utilisateur
@@ -182,14 +178,15 @@ new class extends Component {
         <div x-data.ignore="{ menuOpen: false }" class="relative">
             <button @click="menuOpen = !menuOpen"
                 class="w-full flex items-center space-x-3 px-3 py-2 rounded-xl hover:bg-[#F9F6EE] transition-all duration-200 group">
-                @if(auth()->user()->avatar)
-                <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
-                class="w-10 h-10 rounded-full ring-2 ring-[#2E7D32]/20 group-hover:ring-[#2E7D32]/40 transition-all">
-            @else
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-agro-green to-primary flex items-center justify-center text-white font-semibold text-sm border-2 border-agro-green">
-                    {{ substr(auth()->user()->name, 0, 1) }}
-                </div>
-            @endif
+                @if (auth()->user()->avatar)
+                    <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
+                        class="w-10 h-10 rounded-full ring-2 ring-[#2E7D32]/20 group-hover:ring-[#2E7D32]/40 transition-all">
+                @else
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-agro-green to-primary flex items-center justify-center text-white font-semibold text-sm border-2 border-agro-green">
+                        {{ substr(auth()->user()->name, 0, 1) }}
+                    </div>
+                @endif
                 <div x-show="sidebarOpen" x-transition class="flex-1 text-left">
                     <p class="text-sm font-medium text-[#37474F]"> {{ $user->name }} </p>
                     <p class="text-xs text-[#37474F]/60"> {{ $user->email }} </p>
@@ -197,14 +194,17 @@ new class extends Component {
             </button>
 
             <!-- Menu contextuel -->
-            <div x-show="menuOpen" @click.away="menuOpen = false" x-transition:enter="transition ease-out duration-200"
+            <div x-show="menuOpen" @click.away="menuOpen = false"
+                x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 transform scale-95"
                 x-transition:enter-end="opacity-100 transform scale-100"
                 class="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-xl shadow-strong border border-[#E0E0E0] overflow-hidden">
-                <a href="/profile" class="block px-4 py-3 text-sm text-[#37474F] hover:bg-[#F9F6EE] transition-colors">
+                <a href="/profile"
+                    class="block px-4 py-3 text-sm text-[#37474F] hover:bg-[#F9F6EE] transition-colors">
                     Mon Profil
                 </a>
-                <a href="/settings" class="block px-4 py-3 text-sm text-[#37474F] hover:bg-[#F9F6EE] transition-colors">
+                <a href="/settings"
+                    class="block px-4 py-3 text-sm text-[#37474F] hover:bg-[#F9F6EE] transition-colors">
                     Paramètres
                 </a>
 
