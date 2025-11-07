@@ -53,7 +53,7 @@
                             @endif
                             
                             <div style="color: #374151; font-size: 16px; line-height: 1.8;">
-                                {!! nl2br(e($message)) !!}
+                                {!! nl2br(e($content)) !!}
                             </div>
                         </td>
                     </tr>

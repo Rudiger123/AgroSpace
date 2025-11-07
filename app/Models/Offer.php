@@ -21,6 +21,7 @@ class Offer extends Model
         'category',
         'price',
         'region',
+        'status',
         'contact',
     ];
 

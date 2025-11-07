@@ -13,6 +13,7 @@ return new class () extends Migration {
             $table->string('product');
             $table->text('description');
             $table->string('category');
+            $table->enum('status',['active','inactive','fulfilled'])->default('active');
             $table->integer('quantity')->nullable();
             $table->string('region');
             $table->string('contact');

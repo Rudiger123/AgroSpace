@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
+use PragmaRX\Google2FA\Google2FA;
 
 #[UsePolicy(UserPolicy::class)]
 class User extends Authenticatable implements MustVerifyEmail
@@ -25,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role_id',
         'avatar',
+        'status',
         'bio',
         'phone',
         'region',
@@ -32,7 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'activity',
         'two_factor_secret',
         'two_factor_recovery_codes',
-        'two_factor_enabled',
+        'two_factor_confirmed_at',
         'last_active_at'
     ];
 
@@ -48,7 +50,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'two_factor_enabled' => 'boolean',
+            'two_factor_confirmed_at' => 'datetime',
         ];
     }
 
@@ -115,7 +117,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeByRole($query, $role = null)
     {
         return $role
-            ? $query->whereHas('role', fn ($q) => $q->where('name', $role))
+            ? $query->whereHas('role', fn($q) => $q->where('name', $role))
             : $query;
     }
 
@@ -183,7 +185,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function verified(): Attribute
     {
         return Attribute::make(
-            get: fn () => !is_null($this->email_verified_at)
+            get: fn() => !is_null($this->email_verified_at)
         );
     }
 
@@ -307,6 +309,86 @@ class User extends Authenticatable implements MustVerifyEmail
         return $badges[$this->role_id] ?? [
             'class' => 'bg-gray-100 text-gray-700',
             'label' => $this->role,
+        ];
+    }
+
+    // Relations
+    public function activityLogs()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
+
+    // Méthodes 2FA
+    public function hasTwoFactorEnabled(): bool
+    {
+        return !is_null($this->two_factor_secret) && !is_null($this->two_factor_confirmed_at);
+    }
+
+    public function twoFactorQrCodeSvg(): string
+    {
+        return app(Google2FA::class)->getQRCodeUrl(
+            config('app.name'),
+            $this->email,
+            decrypt($this->two_factor_secret)
+        );
+    }
+
+    public function recoveryCodes(): array
+    {
+        return json_decode(decrypt($this->two_factor_recovery_codes), true) ?? [];
+    }
+
+    // Statistiques producteur
+    public function getProducerStats(): array
+    {
+        if (!$this->isProducer()) {
+            return [];
+        }
+
+        $totalOffers = $this->offers()->count();
+        $completedOffers = $this->offers()->where('status', 'completed')->count();
+        $activeOffers = $this->offers()->where('status', 'active')->count();
+
+        $conversionRate = $totalOffers > 0 ? round(($completedOffers / $totalOffers) * 100, 2) : 0;
+
+        return [
+            'total_offers' => $totalOffers,
+            'active_offers' => $activeOffers,
+            'completed_offers' => $completedOffers,
+            'conversion_rate' => $conversionRate,
+            // Supprimer success_percentage qui est dupliqué, ou le garder avec une valeur différente :
+            'success_percentage' => $conversionRate, // Ou calculer autre chose si besoin
+        ];
+    }
+
+    // Statistiques consommateur
+    public function getConsumerStats(): array
+    {
+        if (!$this->isConsumer()) {
+            return [];
+        }
+
+        $totalDemands = $this->demands()->count();
+        $fulfilledDemands = $this->demands()->where('status', 'fulfilled')->count();
+        $activeDemands = $this->demands()->where('status', 'active')->count();
+
+        $fulfillmentRate = $totalDemands > 0 ? round(($fulfilledDemands / $totalDemands) * 100, 2) : 0;
+
+        // Vérification de la logique du matching_rate
+        // Si vous voulez le taux de demandes qui ont eu au moins un match (actives ou fulfillies)
+        $matchedDemands = $this->demands()
+            ->whereIn('status', ['active', 'fulfilled'])
+            ->count();
+
+        $matchingRate = $totalDemands > 0 ? round(($matchedDemands / $totalDemands) * 100, 2) : 0;
+
+        return [
+            'total_demands' => $totalDemands,
+            'active_demands' => $activeDemands,
+            'fulfilled_demands' => $fulfilledDemands,
+            'fulfillment_rate' => $fulfillmentRate,
+            'matching_rate' => $matchingRate,
         ];
     }
 }

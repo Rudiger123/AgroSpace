@@ -7,19 +7,61 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-     <!-- Favicon -->
-     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    @stack('css')
 </head>
 
 <body class="font-inter antialiased bg-agro-white text-agro-gray">
     {{ $slot }}
     @livewireScripts
+    @stack('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('message');
+            @if (session('toast'))
+                Swal.fire({
+                    icon: "{{ session('toast.type') }}",
+                    title: "{{ session('toast.message') }}",
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            @endif
+        });
+
+        // Écouteur pour les notifications toast
+        window.addEventListener('show-toast', event => {
+            const {
+                type,
+                message
+            } = event.detail;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: type || 'info',
+                title: message || 'Opération effectuée'
+            });
+        });
+    </script>
 </body>
 
 </html>

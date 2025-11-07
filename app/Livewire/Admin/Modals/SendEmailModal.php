@@ -91,8 +91,6 @@ class SendEmailModal extends Component
             $personalizedMessage = $this->replaceVariables($this->message, $recipient);
 
             // Envoyer la notification
-            $recipient->notify(new AdminNotification($this->subject, $this->message));
-
             Notification::send($recipient, new AdminNotification($this->subject, $this->message));
         }
 

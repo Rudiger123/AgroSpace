@@ -42,7 +42,7 @@ class AdminNotification extends Notification implements ShouldQueue
             ->subject($this->subject)
             ->view('emails.admin-notification', [
                 'subject' => $this->subject,
-                'message' => $this->message,
+                'content' => $this->message,
                 'user' => $notifiable, // L'utilisateur qui reçoit la notification
             ]);
     }

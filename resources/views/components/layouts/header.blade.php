@@ -108,7 +108,7 @@
                         <button @click="userMenuOpen = !userMenuOpen"
                             class="flex items-center space-x-2 p-1.5 hover:bg-gray-100 rounded-lg transition">
                             @if (auth()->user()->avatar)
-                                <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
+                                <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="Avatar"
                                     class="w-10 h-10 rounded-full ring-2 ring-[#2E7D32]/20 group-hover:ring-[#2E7D32]/40 transition-all">
                             @else
                                 <div
@@ -119,9 +119,9 @@
                             <div class="text-left">
                                 <p class="text-sm font-semibold text-gray-800">{{ auth()->user()->name }}</p>
                                 <p class="text-xs text-gray-500">
-                                    @if (auth()->user()->role === 'producer')
+                                    @if (auth()->user()->role->name === 'producer')
                                         Producteur
-                                    @elseif(auth()->user()->role === 'consumer')
+                                    @elseif(auth()->user()->role->name === 'consumer')
                                         Consommateur
                                     @else
                                         Administrateur
@@ -146,7 +146,7 @@
                             <div class="bg-gradient-to-r from-green-600 to-emerald-500 px-4 py-4">
                                 <div class="flex items-center space-x-3">
                                     @if (auth()->user()->avatar)
-                                        <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
+                                        <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="Avatar"
                                             class="w-10 h-10 rounded-full ring-2 ring-[#2E7D32]/20 group-hover:ring-[#2E7D32]/40 transition-all">
                                     @else
                                         <div
@@ -163,7 +163,7 @@
 
                             <!-- Menu Items -->
                             <div class="py-2">
-                                <a href="{{ route('dashboard') }}"
+                                <a href="{{ route('dashboard') }}" wire:navigate
                                     class="flex items-center space-x-3 px-4 py-2.5 hover:bg-gray-50 transition">
                                     <div class="w-9 h-9 bg-green-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"

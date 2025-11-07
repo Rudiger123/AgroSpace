@@ -17,6 +17,7 @@ class Demand extends Model
         'quantity',
         'region',
         'contact',
+        'status'
     ];
 
     protected $casts = [

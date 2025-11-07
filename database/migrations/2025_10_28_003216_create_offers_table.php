@@ -17,6 +17,7 @@ return new class () extends Migration {
             $table->text('description');
             $table->string('image')->nullable();
             $table->string('category');
+            $table->enum('status', ['active', 'completed','inactive'])->default('active');
             $table->decimal('price', 8, 2)->nullable();
             $table->string('region');
             $table->string('contact');

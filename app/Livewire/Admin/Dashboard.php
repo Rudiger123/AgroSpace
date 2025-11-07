@@ -198,11 +198,6 @@ class Dashboard extends Component
         $this->dispatch('notify', type: 'info', message: 'Chargement de plus d\'activités...');
     }
 
-    public function createOffer()
-    {
-        dump('Hello World');
-    }
-
     public function inviteUsers()
     {
         $this->dispatch('notify', type: 'success', message: 'Fonctionnalité d\'invitation bientôt disponible !');

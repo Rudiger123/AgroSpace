@@ -11,8 +11,8 @@
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <!-- Favicon -->
-     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
@@ -30,7 +30,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('message');
+
             @if (session('toast'))
                 Swal.fire({
                     icon: "{{ session('toast.type') }}",

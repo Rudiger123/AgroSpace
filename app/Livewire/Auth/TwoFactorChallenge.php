@@ -3,57 +3,150 @@
 namespace App\Livewire\Auth;
 
 use Livewire\Component;
+use App\Models\User;
+use App\Services\TwoFactorService;
 use Illuminate\Support\Facades\Auth;
-use PragmaRX\Google2FA\Google2FA;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 
+#[Layout('layouts.guest')]
+#[Title('2fa challenge - AgroSpace')]
 class TwoFactorChallenge extends Component
 {
-    public $code;
+    public $code = '';
+    public $recovery_code = '';
+    public $useRecoveryCode = false;
+    public $attempts = 0;
+    public $maxAttempts = 5;
     public $user;
 
     protected $rules = [
-        'code' => ['required', 'digits:6'],
-    ];
-
-    protected $messages = [
-        'code.required' => 'Veuillez saisir le code de vérification.',
-        'code.digits' => 'Le code doit comporter 6 chiffres.',
+        'code' => 'required|string|size:6',
+        'recovery_code' => 'required|string|min:10',
     ];
 
     public function mount()
     {
-        // Récupère l'utilisateur depuis la session temporaire
-        $userId = session('2fa:user:id');
-        $this->user = \App\Models\User::find($userId);
-
-        if (!$this->user) {
-            abort(403, 'Utilisateur non trouvé ou session expirée.');
+        // Vérifier si un utilisateur est en attente de 2FA
+        if (!session()->has('two_factor_user_id')) {
+            return redirect()->route('login');
         }
+
+        $this->user = User::find(session('two_factor_user_id'));
+
+        if (!$this->user || !$this->user->hasTwoFactorEnabled()) {
+            session()->forget('two_factor_user_id');
+            return redirect()->route('login');
+        }
+
+        // Récupérer le nombre de tentatives
+        $this->attempts = session('two_factor_attempts', 0);
+    }
+
+    public function toggleRecoveryCode()
+    {
+        $this->useRecoveryCode = !$this->useRecoveryCode;
+        $this->reset(['code', 'recovery_code']);
+        $this->resetErrorBag();
     }
 
     public function verify()
     {
-        $this->validate();
+        // Vérifier le rate limiting
+        $key = 'two-factor-challenge:' . request()->ip();
 
-        $google2fa = new Google2FA();
+        if (RateLimiter::tooManyAttempts($key, $this->maxAttempts)) {
+            $seconds = RateLimiter::availableIn($key);
 
-        // Vérifie le code OTP
-        if (!$google2fa->verifyKey(decrypt($this->user->two_factor_secret), $this->code)) {
-            $this->addError('code', 'Code invalide. Réessayez.');
+            $this->addError('code', "Trop de tentatives. Réessayez dans {$seconds} secondes.");
             return;
         }
 
-        // Connexion définitive de l'utilisateur
-        Auth::login($this->user);
-        session()->forget('2fa:user:id');
-        session(['2fa_passed' => true]);
+        $service = new TwoFactorService();
+        $verified = false;
 
-        session()->flash('message', 'Authentification réussie !');
-        return redirect()->route('dashboard');
+        if ($this->useRecoveryCode) {
+            $this->validate(['recovery_code' => 'required|string|min:10']);
+            $verified = $service->verifyRecoveryCode($this->user, $this->recovery_code);
+
+            if (!$verified) {
+                $this->addError('recovery_code', 'Code de récupération invalide.');
+            }
+        } else {
+            $this->validate(['code' => 'required|string|size:6']);
+            $verified = $service->verifyCode($this->user, $this->code);
+
+            if (!$verified) {
+                $this->addError('code', 'Code d\'authentification invalide.');
+            }
+        }
+
+        if (!$verified) {
+            RateLimiter::hit($key, 300); // 5 minutes
+
+            $this->attempts++;
+            session(['two_factor_attempts' => $this->attempts]);
+
+            // Après 3 tentatives, proposer les codes de récupération
+            if ($this->attempts >= 3 && !$this->useRecoveryCode) {
+                $this->dispatch('suggest-recovery', [
+                    'message' => 'Vous avez fait plusieurs tentatives. Essayez un code de récupération.'
+                ]);
+            }
+
+            // Après max tentatives, bloquer temporairement
+            if ($this->attempts >= $this->maxAttempts) {
+                session()->forget(['two_factor_user_id', 'two_factor_attempts']);
+
+                return redirect()->route('login')->with(
+                    'error',
+                    'Trop de tentatives échouées. Veuillez réessayer plus tard.'
+                );
+            }
+
+            return;
+        }
+
+        // Succès - Authentifier l'utilisateur
+        RateLimiter::clear($key);
+        Auth::login($this->user);
+        $service->markSessionAsAuthenticated();
+
+        // Nettoyer la session
+        session()->forget(['two_factor_user_id', 'two_factor_attempts']);
+        session()->regenerate();
+
+        $this->dispatch('toast', [
+            'type' => 'success',
+            'message' => 'Authentification réussie !'
+        ]);
+
+        // Rediriger selon le rôle
+        return redirect()->intended($this->getRedirectUrl());
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        $role = $this->user->role->name;
+
+        return match ($role) {
+            'admin' => route('dashboard'),
+            'producer' => route('dashboard'),
+            'consumer' => route('dashboard'),
+            default => route('dashboard'),
+        };
+    }
+
+    public function logout()
+    {
+        session()->forget(['two_factor_user_id', 'two_factor_attempts']);
+        return redirect()->route('login');
     }
 
     public function render()
     {
-        return view('livewire.auth.two-factor-challenge')->layout('layouts.guest');
+        return view('livewire.auth.two-factor-challenge');
     }
 }

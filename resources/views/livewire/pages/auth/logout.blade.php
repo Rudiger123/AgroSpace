@@ -33,11 +33,17 @@ new class extends Component {
             'type' => 'success',
             'message' => 'Vous avez été déconnecté avec succès.',
         ]);
+
+        $this->dispatch('toast', [
+            'type' => 'success',
+            'message' => 'Vous avez été déconnecté avec succès.',
+        ]);
         $this->redirect('/', navigate: true);
     }
 }; ?>
 
-<button wire:click ="confirmLogout" class="flex items-center space-x-3 px-4 py-2.5 hover:bg-red-50 transition w-full rounded-lg">
+<button wire:click ="confirmLogout"
+    class="flex items-center space-x-3 px-4 py-2.5 hover:bg-red-50 transition w-full rounded-lg">
     <div class="w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center">
         <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

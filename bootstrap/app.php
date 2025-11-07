@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureTwoFactorAuthenticated;
 use App\Http\Middleware\RestrictByRole;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,13 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'role' => RestrictByRole::class
+            'role' => RestrictByRole::class,
+            '2fa' => EnsureTwoFactorAuthenticated::class
         ]);
 
-        // Activer l'authentification pour les routes de broadcasting
-        $middleware->validateCsrfTokens(except: [
-            '/broadcasting/auth',
-        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

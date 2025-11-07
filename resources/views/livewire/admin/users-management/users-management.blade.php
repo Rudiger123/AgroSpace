@@ -548,30 +548,6 @@
             </div>
         </div>
 
-        {{-- Preloader Livewire pour Agrospace --}}
-        <div wire:loading
-            class="fixed inset-0 z-[9999] flex items-center justify-center min-h-screen bg-white/20 backdrop-blur-sm"
-            style="transition: opacity 0.3s ease-in-out;">
-
-            <div class="relative flex items-center justify-center h-screen">
-
-                {{-- Cercle fixe (fond) --}}
-                <div class="absolute w-32 h-32 border-4 border-green-400/40 rounded-full"></div>
-
-                {{-- Cercle animé tournant --}}
-                <div
-                    class="absolute w-32 h-32 border-4 border-transparent border-t-green-600 border-r-green-600 rounded-full animate-spin">
-                </div>
-
-                {{-- Logo Agrospace --}}
-                <div class="relative z-10 animate-pulse">
-                    <img src="{{ asset('images/logo.png') }}" alt="Agrospace Logo" class="w-16 h-16 rounded-full" />
-                </div>
-
-            </div>
-        </div>
-
-
         @if ($showHistory)
             <div x-data="{ showHistory: @entangle('showHistory') }" x-show="showHistory" x-cloak @click.away="showHistory = false"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-300">

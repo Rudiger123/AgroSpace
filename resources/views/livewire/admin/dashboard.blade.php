@@ -186,7 +186,7 @@
                     <p class="text-green-100 text-sm">Connectez plus de producteurs et consommateurs dès aujourd'hui</p>
                 </div>
                 <div class="flex flex-wrap gap-3 justify-center">
-                    <button wire:click="createOffer"
+                    <button
                         class="bg-white text-green-600 hover:bg-green-50 px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition flex items-center space-x-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use App\Models\ActivityLog;
 
 new #[Layout('layouts.guest')] class extends Component {
     public LoginForm $form;
@@ -12,7 +13,7 @@ new #[Layout('layouts.guest')] class extends Component {
     /**
      * Handle an incoming authentication request.
      */
-    public function login(): void
+    public function login()
     {
         $this->validate();
 
@@ -21,21 +22,41 @@ new #[Layout('layouts.guest')] class extends Component {
 
         Session::regenerate(); // Sécurise la session
 
-        // Vérifie si 2FA est activé
-        if ($user && $user->two_factor_enabled) {
-            // Déconnecte temporairement l'utilisateur
+        // Logger la connexion
+        ActivityLog::log('login', 'Tentative de connexion réussie');
+
+        // Si 2FA activé, rediriger vers la page 2FA
+        if ($user->hasTwoFactorEnabled()) {
+            // Stocker l'ID utilisateur pour la page 2FA
+            session(['two_factor_user_id' => $user->id]);
+
+            // Déconnecter temporairement
             Auth::logout();
 
-            // Stocke l'ID utilisateur dans la session pour le challenge 2FA
-            session(['2fa:user:id' => $user->id]);
-
-            // Redirige vers la page de challenge 2FA
-            $this->redirectRoute('2fa.challenge');
-            return; // On stoppe ici pour ne pas continuer vers le dashboard
+            return to_route('2fa.challenge');
         }
 
-        // Sinon, accès normal au dashboard
-        $this->redirectIntended(default: route('dashboard', absolute: false));
+        // Sinon, marquer comme authentifié et rediriger
+        session(['two_factor_authenticated' => true]);
+
+        $this->dispatch('toast', [
+            'type' => 'success',
+            'message' => "Bienvenue 2 $user->name",
+        ]);
+
+        return redirect()->intended($this->redirectPath());
+    }
+
+    protected function redirectPath()
+    {
+        $user = Auth::user();
+
+        return match ($user->role->name) {
+            'admin' => route('dashboard'),
+            'producer' => route('dashboard'),
+            'consumer' => route('dashboard'),
+            default => route('dashboard'),
+        };
     }
 }; ?>
 
@@ -107,7 +128,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                 <label for="password" class="block text-sm font-semibold text-gray-700">
                                     Mot de passe
                                 </label>
-                                <a href="{{ route('password.request') }}"
+                                <a href="{{ route('password.request') }}" wire:navigate
                                     class="text-sm text-[#16a34a] hover:text-[#15803d] font-medium transition">
                                     Mot de passe oublié ?
                                 </a>

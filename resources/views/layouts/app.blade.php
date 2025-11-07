@@ -127,8 +127,7 @@
         {{-- Logo --}}
         <div class="p-6 border-b border-green-700">
             <div class="flex items-center justify-between">
-                <a href="{{ route('home') }}" wire:navigate
-                 class="flex items-center space-x-3">
+                <a href="{{ route('home') }}" wire:navigate class="flex items-center space-x-3">
                     <div class="bg-white rounded-xl p-2 animate-pulse-slow">
                         <img class="w-8 h-8 text-green-600" src="{{ asset('images/logo.png') }}" alt="">
                     </div>
@@ -254,7 +253,7 @@
             <div class="flex items-center space-x-3">
 
                 @if (auth()->user()->avatar)
-                    <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
+                    <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="Avatar"
                         class="w-10 h-10 rounded-full ring-2  ring-white group-hover:ring-[#2E7D32]/40 transition-all">
                 @else
                     <div
@@ -393,7 +392,7 @@
                         <button @click="open = !open"
                             class="flex items-center space-x-2 p-1.5 hover:bg-gray-100 rounded-xl transition-all duration-200">
                             @if (auth()->user()->avatar)
-                                <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
+                                <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="Avatar"
                                     class="w-9 h-9 rounded-full ring-2  ring-white group-hover:ring-[#2E7D32]/40 transition-all">
                             @else
                                 <div
@@ -418,7 +417,7 @@
                             <div class="bg-gradient-to-r from-green-600 to-green-700 px-4 py-4">
                                 <div class="flex items-center space-x-3">
                                     @if (auth()->user()->avatar)
-                                        <img src="{{ Storage::url($user->avatar) }}" alt="Avatar"
+                                        <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="Avatar"
                                             class="w-12 h-12 rounded-full ring-2 ring-white/30 group-hover:ring-[#2E7D32]/40 transition-all">
                                     @else
                                         <div
@@ -433,7 +432,7 @@
                                 </div>
                             </div>
                             <div class="py-2">
-                                <a href="{{ route('profile') }}"
+                                <a href="{{ route('profile') }}" wire:navigate
                                     class="flex items-center space-x-3 px-4 py-2.5 hover:bg-gray-50 transition">
                                     <div class="w-9 h-9 bg-green-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
@@ -503,6 +502,30 @@
             </div>
         </footer>
     </div>
+
+    {{-- Preloader Livewire pour Agrospace --}}
+    <div wire:loading
+        class="fixed inset-0 z-[9999] flex items-center justify-center min-h-screen bg-black/20 backdrop-blur-sm"
+        style="transition: opacity 0.3s ease-in-out;">
+
+        <div class="relative flex items-center justify-center h-screen">
+
+            {{-- Cercle fixe (fond) --}}
+            <div class="absolute w-32 h-32 border-4 border-green-400/40 rounded-full"></div>
+
+            {{-- Cercle animé tournant --}}
+            <div
+                class="absolute w-32 h-32 border-4 border-transparent border-t-green-600 border-r-green-600 rounded-full animate-spin">
+            </div>
+
+            {{-- Logo Agrospace --}}
+            <div class="relative z-10 animate-pulse">
+                <img src="{{ asset('images/logo.png') }}" alt="Agrospace Logo" class="w-16 h-16 rounded-full" />
+            </div>
+
+        </div>
+    </div>
+
 
     @livewireScripts
 
