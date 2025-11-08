@@ -104,6 +104,8 @@ class ManageOffers extends Component
         $this->resetForm();
         $this->showCreateModal = true;
         $this->showEditModal = false;
+        $this->showDetailsModal = false;
+        $this->showDeleteModal = false;
     }
 
     public function closeModals()
@@ -136,6 +138,8 @@ class ManageOffers extends Component
         $this->existingPhotos = $offer->photos->toArray();
 
         $this->showEditModal = true;
+        $this->showDetailsModal = false;
+        $this->showCreateModal = false;
     }
 
     public function openDeleteModal($offerId)

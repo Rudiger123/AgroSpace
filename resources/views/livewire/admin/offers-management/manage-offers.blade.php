@@ -193,9 +193,9 @@
             <!-- Liste des offres (Grid) -->
             <div x-show="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($offers as $offre)
-                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition group">
+                    <div class="bg-white rounded-2xl shadow-lg overflow-visible hover:shadow-xl transition group">
                         <!-- Image -->
-                        <div class="relative h-48 bg-gray-200 overflow-hidden">
+                        <div class="relative h-48 bg-gray-200 overflow-hidden rounded-t-2xl">
                             @if ($offre->photo_principale_url)
                                 <img src="{{ $offre->photo_principale_url }}" alt="{{ $offre->titre }}"
                                     class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
@@ -238,7 +238,7 @@
                         </div>
 
                         <!-- Contenu -->
-                        <div class="p-5">
+                        <div class="p-5 overflow-visible">
                             <h3 class="text-lg font-bold text-gray-800 mb-2 truncate">{{ $offre->titre }}</h3>
                             <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ $offre->description }}</p>
 
@@ -303,7 +303,7 @@
                             </div>
 
                             <!-- Actions -->
-                            <div class="flex items-center space-x-2">
+                            <div class="flex items-center space-x-2 relative z-10">
                                 <button wire:click="openDetailsModal({{ $offre->id }})"
                                     class="flex-1 bg-primary-50 text-primary-600 px-4 py-2 rounded-lg hover:bg-primary-100 transition font-medium text-sm">
                                     Détails
@@ -316,7 +316,7 @@
                                         </path>
                                     </svg>
                                 </button>
-                                <div x-data="{ open: false }" class="relative">
+                                <div x-data="{ open: false }" class="relative z-10">
                                     <button @click="open = !open"
                                         class="p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
@@ -328,8 +328,14 @@
                                     </button>
 
                                     <!-- Dropdown menu -->
-                                    <div x-show="open" @click.away="open = false" x-transition
-                                        class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+                                    <div x-show="open" x-cloak @click.away="open = false"
+                                        x-transition:enter="transition ease-out duration-100"
+                                        x-transition:enter-start="opacity-0 scale-95"
+                                        x-transition:enter-end="opacity-100 scale-100"
+                                        x-transition:leave="transition ease-in duration-75"
+                                        x-transition:leave-start="opacity-100 scale-100"
+                                        x-transition:leave-end="opacity-0 scale-95"
+                                        class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-[100]">
                                         @if ($offre->statut === 'active')
                                             <button wire:click="markAsSold({{ $offre->id }})"
                                                 class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition flex items-center">
@@ -393,7 +399,7 @@
             </div>
 
             <!-- Liste des offres (List) -->
-            <div x-show="viewMode === 'list'" class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div x-show="viewMode === 'list'" class="bg-white rounded-2xl shadow-lg overflow-visible">
                 @forelse($offers as $offre)
                     <div class="border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition group">
                         <div class="p-6">
@@ -529,7 +535,7 @@
                                 </div>
 
                                 <!-- Actions -->
-                                <div class="lg:w-48 lg:flex-shrink-0">
+                                <div class="lg:w-48 lg:flex-shrink-0 relative z-10">
                                     <div
                                         class="flex lg:flex-col items-center lg:items-end space-x-2 lg:space-x-0 lg:space-y-2">
                                         <button wire:click="openDetailsModal({{ $offre->id }})"
@@ -545,7 +551,7 @@
                                                 </path>
                                             </svg>
                                         </button>
-                                        <div x-data="{ open: false }" class="relative">
+                                        <div x-data="{ open: false }" class="relative z-10">
                                             <button @click="open = !open"
                                                 class="p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
@@ -558,8 +564,15 @@
                                             </button>
 
                                             <!-- Dropdown menu -->
-                                            <div x-show="open" @click.away="open = false" x-transition
-                                                class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+                                            <div x-show="open" x-cloak @click.away="open = false"
+                                                x-transition:enter="transition ease-out duration-100"
+                                                x-transition:enter-start="opacity-0 scale-95"
+                                                x-transition:enter-end="opacity-100 scale-100"
+                                                x-transition:leave="transition ease-in duration-75"
+                                                x-transition:leave-start="opacity-100 scale-100"
+                                                x-transition:leave-end="opacity-0 scale-95"
+                                                class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-[100]"
+                                                style="display: none;">
                                                 @if ($offre->statut === 'active')
                                                     <button wire:click="markAsSold({{ $offre->id }})"
                                                         class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition flex items-center">
@@ -633,11 +646,13 @@
         <!-- Modales (Créer, Éditer, Supprimer, Détails) - À créer séparément -->
 
         <!-- Modal Créer/Éditer Offre -->
-        <div x-show="showCreateModal || showEditModal" x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        <div x-show="$wire.showCreateModal || $wire.showEditModal"
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-cloak
             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
 
-            <div x-show="showCreateModal || showEditModal" x-transition:enter="transition ease-out duration-300"
+            <div x-show="$wire.showCreateModal || $wire.showEditModal"
+                x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 transform scale-90"
                 x-transition:enter-end="opacity-100 transform scale-100"
                 class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8"
@@ -655,7 +670,7 @@
                         <span x-text="$wire.showCreateModal ? 'Créer une nouvelle offre' : 'Modifier l\'offre'"></span>
                     </h3>
                     <button type="button" wire:click="closeModals"
-                    class="p-2 hover:bg-gray-100 rounded-lg transition">
+                        class="p-2 hover:bg-gray-100 rounded-lg transition">
                         <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12"></path>
@@ -663,7 +678,7 @@
                     </button>
                 </div>
 
-                <form wire:submit="{{ $showCreateModal ? 'createOffer' : 'updateOffer' }}">
+                <form wire:submit="{{ $showCreateModal ? 'createOffer' : 'updateOffer' }}" @submit.prevent>
 
                     <!-- Body -->
                     <div class="p-6 space-y-6">
@@ -998,9 +1013,9 @@
 
         <!-- Modal Détails Offre -->
         <div x-show="$wire.showDetailsModal" x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-cloak
             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto"
-            @click.self="$wire.showDetailsModal = false">
+            @click.self="$wire.closeModals()">
 
             <div x-show="$wire.showDetailsModal" x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 transform scale-90"
@@ -1012,8 +1027,7 @@
                     <div
                         class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10 rounded-t-2xl">
                         <h3 class="text-2xl font-bold text-gray-800">Détails de l'offre</h3>
-                        <button @click="$wire.showDetailsModal = false"
-                            class="p-2 hover:bg-gray-100 rounded-lg transition">
+                        <button wire:click="closeModals" class="p-2 hover:bg-gray-100 rounded-lg transition">
                             <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1043,7 +1057,7 @@
                                                 @elseif($selectedOffer->statut === 'vendue')
                                                     <span
                                                         class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">Vendue</span>
-                                                @elseif($selectedOffe->statut === 'expirée')
+                                                @elseif($selectedOffer->statut === 'expirée')
                                                     <span
                                                         class="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">Expirée</span>
                                                 @endif
@@ -1246,11 +1260,11 @@
                     <!-- Footer -->
                     <div
                         class="sticky bottom-0 bg-white border-t px-6 py-4 flex items-center justify-end space-x-3 rounded-b-2xl">
-                        <button @click="$wire.showDetailsModal = false"
+                        <button wire:click="closeModals"
                             class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-medium">
                             Fermer
                         </button>
-                        <button wire:click="openEditModal({{ $selectedOffer->id }}); $wire.showDetailsModal = false"
+                        <button wire:click="openEditModal({{ $selectedOffer->id }})"
                             class="px-6 py-3 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition font-medium shadow-lg hover:shadow-xl flex items-center space-x-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1266,9 +1280,9 @@
 
         <!-- Modal Supprimer Offre -->
         <div x-show="$wire.showDeleteModal" x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-cloak
             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-            @click.self="$wire.showDeleteModal = false">
+            @click.self="$wire.closeModals()">
 
             <div x-show="$wire.showDeleteModal" x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 transform scale-90"
@@ -1291,7 +1305,7 @@
                     </p>
 
                     <div class="flex items-center justify-center space-x-3">
-                        <button @click="$wire.showDeleteModal = false"
+                        <button wire:click="closeModals"
                             class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-medium">
                             Annuler
                         </button>
