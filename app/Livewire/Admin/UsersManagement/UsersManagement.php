@@ -127,11 +127,11 @@ class UsersManagement extends Component
                         ->orWhere('phone', 'like', '%' . $this->search . '%');
                 });
             })
-            ->when($this->filterRole, fn($query) => $query->whereHas('role', function ($q) {
+            ->when($this->filterRole, fn ($query) => $query->whereHas('role', function ($q) {
                 $q->where('name', $this->filterRole);
             }))
-            ->when($this->filterStatus, fn($query) => $query->where('status', $this->filterStatus))
-            ->when($this->filterRegion, fn($query) => $query->where('region', $this->filterRegion))
+            ->when($this->filterStatus, fn ($query) => $query->where('status', $this->filterStatus))
+            ->when($this->filterRegion, fn ($query) => $query->where('region', $this->filterRegion))
             ->withCount(['offers', 'demands'])
             ->orderBy('created_at', 'desc');
     }
@@ -356,7 +356,7 @@ class UsersManagement extends Component
                     }
 
                     $userName = $user->name;
-                    
+
                     // Supprimer l'avatar
                     if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
                         Storage::disk('public')->delete($user->avatar);

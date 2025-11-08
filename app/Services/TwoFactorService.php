@@ -1,4 +1,5 @@
 <?php
+
 // app/Services/TwoFactorService.php
 
 namespace App\Services;

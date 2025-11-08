@@ -17,10 +17,10 @@ class EnsureTwoFactorAuthenticated
             // Déconnecter temporairement
             $userId = $user->id;
             Auth::logout();
-            
+
             // Stocker l'ID en session pour la page 2FA
             session(['two_factor_user_id' => $userId]);
-            
+
             return redirect()->route('2fa.challenge');
         }
 

@@ -329,8 +329,15 @@
             @auth
                 <div class="border-t border-gray-200 pt-3 mt-3">
                     <div class="flex items-center space-x-3 px-2 py-2 bg-gray-50 rounded-lg mb-3">
-                        <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=22c55e&color=fff"
-                            class="w-10 h-10 rounded-full" alt="{{ auth()->user()->name }}">
+                        @if (auth()->user()->avatar)
+                            <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="Avatar"
+                                class="w-10 h-10 rounded-full ring-2 ring-[#2E7D32]/20 group-hover:ring-[#2E7D32]/40 transition-all">
+                        @else
+                            <div
+                                class="w-10 h-10 rounded-full bg-gradient-to-br from-agro-green to-primary flex items-center justify-center text-white font-semibold text-sm border-2 border-agro-green">
+                                {{ substr(auth()->user()->name, 0, 1) }}
+                            </div>
+                        @endif
                         <div>
                             <p class="text-sm font-semibold text-gray-800">{{ auth()->user()->name }}</p>
                             <p class="text-xs text-gray-500">{{ auth()->user()->email }}</p>

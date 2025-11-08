@@ -17,12 +17,19 @@ class OfferFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->text(5),
+            'titre' => $this->faker->text(5),
             'description' => $this->faker->text(50),
-            'category' => $this->faker->colorName(),
-            'price' => $this->faker->numberBetween(2000, 500000),
+            'categorie' => $this->faker->colorName(),
+            'prix' => $this->faker->numberBetween(2000, 500000),
             'region' => $this->faker->country(),
-            'contact' => $this->faker->e164PhoneNumber(),
+            'contact' => $this->faker->phoneNumber(),
+            'quantite' => $this->faker->numberBetween(100,1000),
+            'unite' => 'kg',
+            'localisation' => 'Douala, Littoral',
+            'ville' => $this->faker->city(),
+            'date_publication' => now(),
+            'statut' => 'active',
+            'contact' => $this->faker->phoneNumber(),
         ];
     }
 }

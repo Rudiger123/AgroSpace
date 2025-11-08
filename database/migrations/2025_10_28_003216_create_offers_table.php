@@ -12,16 +12,30 @@ return new class () extends Migration {
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('title');
+            $table->foreignId('producer_id')->constrained('users')->onDelete('cascade');
+            $table->string('titre');
             $table->text('description');
-            $table->string('image')->nullable();
-            $table->string('category');
-            $table->enum('status', ['active', 'completed','inactive'])->default('active');
-            $table->decimal('price', 8, 2)->nullable();
-            $table->string('region');
-            $table->string('contact');
+            $table->string('categorie');
+            $table->decimal('prix', 10, 2);
+            $table->integer('quantite');
+            $table->string('unite'); // kg, tonne, sac, pièce
+            $table->string('localisation');
+            $table->string('region')->nullable();
+            $table->string('ville')->nullable();
+            $table->timestamp('date_publication');
+            $table->timestamp('date_expiration')->nullable();
+            $table->enum('statut', ['active', 'expirée', 'vendue', 'suspendue'])->default('active');
+            $table->text('conditions_livraison')->nullable();
+            $table->string('contact')->nullable();
+            $table->integer('views_count')->default(0);
+            $table->integer('contacts_count')->default(0);
+            $table->boolean('is_featured')->default(false);
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->index(['statut', 'date_publication']);
+            $table->index(['categorie', 'statut']);
+            $table->index('producer_id');
         });
     }
 

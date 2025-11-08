@@ -1,4 +1,5 @@
 <?php
+
 // app/Services/ProfileService.php
 
 namespace App\Services;
@@ -85,7 +86,6 @@ class ProfileService
 
     public function deleteAccount(User $user, string $password): bool
     {
-
         if (!Hash::check($password, $user->password)) {
             throw new \Exception('Le mot de passe est incorrect.');
         }
@@ -113,11 +113,6 @@ class ProfileService
                 }
 
                 $user->delete();
-
-                session()->flash('toast', [
-                    'type' => 'success',
-                    'message' => "Votre compte a été supprimé avec succès."
-                ]);
             }
         });
 

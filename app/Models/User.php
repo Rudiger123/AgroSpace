@@ -61,7 +61,27 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function offers()
     {
-        return $this->hasMany(Offer::class);
+        return $this->hasMany(Offer::class, 'producer_id');
+    }
+
+    public function avisRecus()
+    {
+        return $this->hasMany(Avis::class, 'producer_id');
+    }
+
+    public function avisDonnes()
+    {
+        return $this->hasMany(Avis::class, 'consumer_id');
+    }
+
+    public function getNoteMoyenneAttribute(): float
+    {
+        return Avis::getNoteMoyenne($this->id);
+    }
+
+    public function getNombreAvisAttribute(): int
+    {
+        return $this->avisRecus()->visible()->count();
     }
 
     public function demands()
@@ -117,7 +137,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeByRole($query, $role = null)
     {
         return $role
-            ? $query->whereHas('role', fn($q) => $q->where('name', $role))
+            ? $query->whereHas('role', fn ($q) => $q->where('name', $role))
             : $query;
     }
 
@@ -185,7 +205,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function verified(): Attribute
     {
         return Attribute::make(
-            get: fn() => !is_null($this->email_verified_at)
+            get: fn () => !is_null($this->email_verified_at)
         );
     }
 
@@ -232,7 +252,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->update(['last_active_at' => now()]);
     }
 
-    // Compter les offres actives (pour les producteurs)
+    // Compter les offres actives (pour les producers)
     public function activeOffersCount(): int
     {
         return $this->offers()->where('status', 'active')->count();
@@ -254,7 +274,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getFullNameWithRole(): string
     {
         $roleLabels = [
-            'producer' => '👨‍🌾 Producteur',
+            'producer' => '👨‍🌾 producer',
             'consumer' => '🛒 Consommateur',
             'admin' => '👨‍💼 Administrateur',
         ];
@@ -294,7 +314,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $badges = [
             '2' => [
                 'class' => 'bg-green-100 text-green-700',
-                'label' => '👨‍🌾 Producteur',
+                'label' => '👨‍🌾 producer',
             ],
             '3' => [
                 'class' => 'bg-blue-100 text-blue-700',
@@ -339,7 +359,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return json_decode(decrypt($this->two_factor_recovery_codes), true) ?? [];
     }
 
-    // Statistiques producteur
+    // Statistiques producer
     public function getProducerStats(): array
     {
         if (!$this->isProducer()) {
@@ -347,8 +367,8 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         $totalOffers = $this->offers()->count();
-        $completedOffers = $this->offers()->where('status', 'completed')->count();
-        $activeOffers = $this->offers()->where('status', 'active')->count();
+        $completedOffers = $this->offers()->where('statut', 'vendue')->count();
+        $activeOffers = $this->offers()->where('statut', 'active')->count();
 
         $conversionRate = $totalOffers > 0 ? round(($completedOffers / $totalOffers) * 100, 2) : 0;
 

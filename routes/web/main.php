@@ -1,7 +1,7 @@
 <?php
 
 use App\Livewire\Admin\Dashboard;
-use App\Livewire\Admin\OffersManagement\OffersManagement;
+use App\Livewire\Admin\OffersManagement\ManageOffers;
 use App\Livewire\Admin\ProfileManagement\ProfileManagement;
 use App\Livewire\Admin\UsersManagement\UsersManagement;
 use App\Livewire\Auth\TwoFactorChallenge;
@@ -12,17 +12,14 @@ use Livewire\Volt\Volt;
  * Les Routes protegées
  */
 Route::middleware(['auth', 'verified','2fa'])->group(function () {
-    
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
     Route::get('/profile/settings', ProfileManagement::class)->name('profile');
 
     Route::get('/users', UsersManagement::class)->name('users-management');
 
-    Route::get('/offers', OffersManagement::class)->name('offers-management');
-
+    Route::get('/my-offers', ManageOffers::class)->name('offers-management');
 });
-
 
 /**
  * Les Routes Guest

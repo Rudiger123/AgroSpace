@@ -18,7 +18,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RestrictByRole::class,
             '2fa' => EnsureTwoFactorAuthenticated::class
         ]);
-
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

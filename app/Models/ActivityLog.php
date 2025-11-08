@@ -1,4 +1,5 @@
 <?php
+
 // app/Models/ActivityLog.php
 
 namespace App\Models;
@@ -54,7 +55,7 @@ class ActivityLog extends Model
         return [
             'total_logins' => $logs->count(),
             'last_login' => $logs->sortByDesc('created_at')->first()?->created_at,
-            'logins_by_day' => $logs->groupBy(fn($log) => $log->created_at->format('Y-m-d'))
+            'logins_by_day' => $logs->groupBy(fn ($log) => $log->created_at->format('Y-m-d'))
                 ->map->count()
                 ->toArray(),
         ];

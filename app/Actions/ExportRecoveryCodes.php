@@ -1,4 +1,5 @@
 <?php
+
 // app/Actions/ExportRecoveryCodes.php
 
 namespace App\Actions;
@@ -13,7 +14,7 @@ class ExportRecoveryCodes
     {
         $csv = "Code de récupération,Date de génération\n";
         $date = now()->format('Y-m-d H:i:s');
-        
+
         foreach ($codes as $code) {
             $csv .= "{$code},{$date}\n";
         }
@@ -27,7 +28,7 @@ class ExportRecoveryCodes
         $md .= "**Date de génération :** " . now()->format('d/m/Y H:i:s') . "\n\n";
         $md .= "## 🔑 Vos codes de récupération\n\n";
         $md .= "⚠️ **Important :** Conservez ces codes en lieu sûr. Chaque code ne peut être utilisé qu'une seule fois.\n\n";
-        
+
         foreach ($codes as $index => $code) {
             $md .= ($index + 1) . ". `{$code}`\n";
         }
@@ -47,7 +48,7 @@ class ExportRecoveryCodes
         ];
 
         $pdf = Pdf::loadView('pdf.recovery-codes', $data);
-        
+
         return $pdf->download('agrospace-recovery-codes.pdf');
     }
 
