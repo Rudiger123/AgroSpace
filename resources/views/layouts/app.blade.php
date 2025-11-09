@@ -12,6 +12,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    @wirechatStyles
 
     <!-- Page Specific Styles -->
     @stack('styles')
@@ -528,6 +529,7 @@
 
 
     @livewireScripts
+    @wirechatAssets
 
     {{-- Toast Notifications --}}
     <script>

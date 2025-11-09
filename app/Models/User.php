@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
+use Namu\WireChat\Traits\Chatable;
 use PragmaRX\Google2FA\Google2FA;
 
 #[UsePolicy(UserPolicy::class)]
@@ -19,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;
+    use Chatable;
 
     protected $fillable = [
         'name',
