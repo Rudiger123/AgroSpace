@@ -43,7 +43,6 @@ style="contain: content">
          class="invisible transition-all duration-300 flex justify-center py-4">
         <div class="bg-white rounded-2xl shadow-lg px-6 py-4 flex items-center space-x-3">
             <x-wirechat::loading-spin />
-            <span class="text-sm text-gray-600 font-medium">Chargement des messages...</span>
         </div>
     </div>
 

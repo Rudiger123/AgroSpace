@@ -65,7 +65,7 @@ return [
     | This will be used to highlight buttons and elements.
     |
     */
-    'color' => '#a855f7',
+    'color' => '#1B5E20',
 
     /*
     |--------------------------------------------------------------------------

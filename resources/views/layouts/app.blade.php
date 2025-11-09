@@ -195,7 +195,7 @@
                 <span class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
             </a>
 
-            <a href="#" wire:navigate
+            <a href="/chats" wire:navigate
                 class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('admin.messages.*') ? 'bg-green-700 shadow-lg' : '' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -553,43 +553,7 @@
                 });
             });
         });
-        document.addEventListener('DOMContentLoaded', () => {
-            @if (session('toast'))
-                Swal.fire({
-                    icon: "{{ session('toast.type') }}",
-                    title: "{{ session('toast.message') }}",
-                    toast: true,
-                    position: 'bottom-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            @endif
-        });
-
-
-        // Écouteur pour la confirmation de suppression
-        window.addEventListener('confirm-logout', event => {
-            const {
-                title,
-                text
-            } = event.detail;
-
-            Swal.fire({
-                title: title || 'Confirmer la déconnexion',
-                text: text || "Êtes-vous sûr de vouloir vous déconnecter ?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Oui, deconnexion !',
-                cancelButtonText: 'Annuler'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.dispatch('logout');
-                }
-            });
-        });
-
+    
         // Dans votre layout principal ou dans un script spécifique
         document.addEventListener('DOMContentLoaded', function() {
 

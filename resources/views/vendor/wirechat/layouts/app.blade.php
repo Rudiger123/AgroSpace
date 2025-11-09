@@ -227,7 +227,7 @@
                 <span class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
             </a>
 
-            <a href="#" wire:navigate
+            <a href="/chats" wire:navigate
                 class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('admin.messages.*') ? 'bg-green-700 shadow-lg' : '' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -509,7 +509,7 @@
 
 
         {{-- Main Content Area - SANS x-data parent pour Livewire --}}
-        <main class="p-4 sm:p-6 lg:p-8">
+        <main class="p-4 sm:p-6 lg:p-8 h-[calc(100vh_-_5.5rem)]">
             {{ $slot }}
         </main>
 
