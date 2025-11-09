@@ -2,6 +2,7 @@
 
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\OffersManagement\ManageOffers;
+use App\Livewire\Admin\OffersManagement\OffresList;
 use App\Livewire\Admin\ProfileManagement\ProfileManagement;
 use App\Livewire\Admin\UsersManagement\UsersManagement;
 use App\Livewire\Auth\TwoFactorChallenge;
@@ -19,6 +20,8 @@ Route::middleware(['auth', 'verified','2fa'])->group(function () {
     Route::get('/users', UsersManagement::class)->name('users-management');
 
     Route::get('/my-offers', ManageOffers::class)->name('offers-management');
+
+    Route::get('/offers' , OffresList::class)->name('offers-list');
 });
 
 /**
