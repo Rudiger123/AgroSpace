@@ -16,8 +16,8 @@
 <div {{-- We use style here to make it easy for dynamic and safe injection --}} @style([
     'background-color:var(--wc-brand-primary)' => $belongsToAuth == true,
 ]) @class([
-    'flex flex-wrap max-w-fit text-[15px] border border-gray-200/40 rounded-xl p-2.5 flex flex-col text-white bg-[#f6f6f8fb]',
-    'text-green-100' => $belongsToAuth, // Background color for messages sent by the authenticated user
+    'flex flex-wrap max-w-fit text-[15px] border border-gray-200/40 rounded-xl p-2.5 flex flex-col text-[#1B5E20] bg-[#f6f6f8fb]',
+    'text-white' => $belongsToAuth, // Background color for messages sent by the authenticated user
     'bg-[var(--wc-light-secondary)]' => !$belongsToAuth,
 
     // Message styles based on position and ownership

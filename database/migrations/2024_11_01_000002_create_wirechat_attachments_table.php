@@ -5,15 +5,13 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Namu\WireChat\Models\Attachment;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-
-        Schema::create((new Attachment)->getTable(), function (Blueprint $table) {
+        Schema::create((new Attachment())->getTable(), function (Blueprint $table) {
             $table->id();
             $table->morphs('attachable');
             $table->string('file_path');
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists((new Attachment)->getTable());
+        Schema::dropIfExists((new Attachment())->getTable());
     }
 };

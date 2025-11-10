@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Schema;
 use Namu\WireChat\Facades\WireChat;
 use Namu\WireChat\Models\Conversation;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /*** Run the migrations */
     public function up(): void
     {
         $usesUuid = WireChat::usesUuid();
-        Schema::create((new Conversation)->getTable(), function (Blueprint $table) use ($usesUuid) {
+        Schema::create((new Conversation())->getTable(), function (Blueprint $table) use ($usesUuid) {
             if ($usesUuid) {
                 $table->uuid('id')->primary();
             } else {
@@ -29,6 +28,6 @@ return new class extends Migration
     /*** Reverse the migrations */
     public function down(): void
     {
-        Schema::dropIfExists((new Conversation)->getTable());
+        Schema::dropIfExists((new Conversation())->getTable());
     }
 };

@@ -11,12 +11,16 @@ use App\Services\AvisService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Namu\WireChat\Facades\WireChat;
+use Namu\WireChat\Livewire\Widgets\WireChat as WidgetsWireChat;
+use Namu\WireChat\Livewire\Concerns\Widget;
 
 #[Layout("layouts.app")]
 #[Title("Offers Public")]
 class OffresList extends Component
 {
     use WithPagination;
+    use Widget;
 
     // Filtres
     public $search = '';
@@ -59,7 +63,7 @@ class OffresList extends Component
     {
         $this->selectedOffre = Offer::with([
             'photos',
-            'producer.avisRecus' => function($query) {
+            'producer.avisRecus' => function ($query) {
                 $query->visible()->latest()->take(5);
             }
         ])->findOrFail($offreId);
@@ -79,10 +83,25 @@ class OffresList extends Component
         $offre = Offer::findOrFail($offreId);
         $offre->incrementContacts();
 
+        $model = $offre->producer;
+
         // Rediriger vers la messagerie ou ouvrir modal de contact
+        if ($model) {
+            $createdConversation = Auth::user()->createConversationWith($model);
+
+            if ($createdConversation) {
+                // redirect to conversation
+                $this->handleComponentTermination(
+                    redirectRoute: route(WireChat::viewRouteName(), [$createdConversation->id]),
+                    events: [
+                        WidgetsWireChat::class => ['open-chat',  ['conversation' => $createdConversation->id]],
+                    ]
+                );
+            }
+        }
         $this->dispatch('toast', [
             'type' => 'info',
-            'message' => 'Vous pouvez maintenant contacter le producer'
+            'message' => 'Vous pouvez maintenant discuter avec le producteur de cette offre'
         ]);
 
         // TODO: Implémenter la redirection vers le chat
@@ -106,7 +125,7 @@ class OffresList extends Component
         // Vérifier si l'utilisateur peut laisser un avis
         $service = new AvisService();
         $producer = \App\Models\User::findOrFail($producerId);
-        
+
         if (!$service->canUserLeaveAvis(Auth::user(), $producer)) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -131,7 +150,7 @@ class OffresList extends Component
 
         try {
             $service = new AvisService();
-            
+
             $service->createAvis([
                 'producer_id' => $this->avisproducerId,
                 'offre_id' => $this->avisOffreId,
@@ -231,4 +250,4 @@ class OffresList extends Component
             'regions' => Offer::getRegionsOptions(),
         ]);
     }
-} 
+}

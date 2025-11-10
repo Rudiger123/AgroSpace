@@ -111,10 +111,10 @@
                             </span>
                         @elseif($receiver)
                             <span class="inline-block px-2 py-1 text-xs font-medium rounded-full
-                                {{ $receiver->role === 'producteur' ? 
+                                {{ $receiver->role->name === 'producer' ? 
                                    'bg-green-100 text-green-700' : 
                                    'bg-blue-100 text-blue-700' }}">
-                                {{ $receiver->role === 'producteur' ? '👨‍🌾 Producteur' : '🛒 Consommateur' }}
+                                {{ $receiver->role->name === 'producer' ? '👨‍🌾 Producteur' : '🛒 Consommateur' }}
                             </span>
                         @endif
 

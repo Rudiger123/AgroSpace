@@ -21,7 +21,7 @@ Route::middleware(['auth', 'verified','2fa'])->group(function () {
 
     Route::get('/my-offers', ManageOffers::class)->name('offers-management');
 
-    Route::get('/offers' , OffresList::class)->name('offers-list');
+    Route::get('/offers', OffresList::class)->name('offers-list');
 });
 
 /**

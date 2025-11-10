@@ -12,7 +12,6 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-    @wirechatStyles
 
     <!-- Page Specific Styles -->
     @stack('styles')
@@ -179,7 +178,18 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
-                <span class="font-medium">Offres</span>
+                <span class="font-medium">Mes Offres</span>
+                <span
+                    class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">156</span>
+            </a>
+
+            <a href="{{ route('offers-list') }}" wire:navigate
+                class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('offers-list') ? 'bg-green-700 shadow-lg' : '' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                <span class="font-medium">Offres Publiques</span>
                 <span
                     class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">156</span>
             </a>
@@ -529,7 +539,6 @@
 
 
     @livewireScripts
-    @wirechatAssets
 
     {{-- Toast Notifications --}}
     <script>
@@ -553,7 +562,7 @@
                 });
             });
         });
-    
+
         // Dans votre layout principal ou dans un script spécifique
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -586,6 +595,29 @@
                 Toast.fire({
                     icon: type,
                     title: message
+                });
+            });
+
+            // Écouteur pour la deconnexion
+            window.addEventListener('confirm-logout', event => {
+                const {
+                    title,
+                    text
+                } = event.detail;
+
+                Swal.fire({
+                    title: title || 'Confirmer la déconnexion',
+                    text: text || "Êtes-vous sûr de vouloir vous déconnecter ?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, deconnexion !',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.dispatch('logout');
+                    }
                 });
             });
 

@@ -7,15 +7,14 @@ use Namu\WireChat\Facades\WireChat;
 use Namu\WireChat\Models\Conversation;
 use Namu\WireChat\Models\Group;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         $usesUuid = WireChat::usesUuid();
-        Schema::create((new Group)->getTable(), function (Blueprint $table) use ($usesUuid) {
+        Schema::create((new Group())->getTable(), function (Blueprint $table) use ($usesUuid) {
             $table->id();
 
             // Foreign key for conversation
@@ -38,7 +37,6 @@ return new class extends Migration
 
             $table->softDeletes();
             $table->timestamps();
-
         });
     }
 
@@ -47,6 +45,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists((new Group)->getTable());
+        Schema::dropIfExists((new Group())->getTable());
     }
 };

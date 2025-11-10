@@ -165,7 +165,7 @@ class ProfileManagement extends Component
             $this->avatar = $url;
             $this->newAvatar = null;
 
-            $this->emit('profile-updated');
+            $this->dispatch('profile-updated');
             $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => 'Photo de profil mise à jour !'

@@ -34,10 +34,6 @@ new class extends Component {
             'message' => 'Vous avez été déconnecté avec succès.',
         ]);
 
-        $this->dispatch('toast', [
-            'type' => 'success',
-            'message' => 'Vous avez été déconnecté avec succès.',
-        ]);
         $this->redirect('/', navigate: true);
     }
 }; ?>

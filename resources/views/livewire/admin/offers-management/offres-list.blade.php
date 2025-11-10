@@ -880,7 +880,7 @@
         <div x-show="$wire.showAvisModal" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 transform scale-90"
             x-transition:enter-end="opacity-100 transform scale-100"
-            class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6" x-data="{ hoverNote: 0 }">
+            class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6" x-data="{ hoverNote: 0 }" x-cloak>
 
             <div class="text-center mb-6">
                 <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-yellow-100 mb-4">

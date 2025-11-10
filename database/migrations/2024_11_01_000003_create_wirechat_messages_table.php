@@ -7,15 +7,14 @@ use Namu\WireChat\Facades\WireChat;
 use Namu\WireChat\Models\Conversation;
 use Namu\WireChat\Models\Message;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         $usesUuid = WireChat::usesUuid();
-        Schema::create((new Message)->getTable(), function (Blueprint $table) use ($usesUuid) {
+        Schema::create((new Message())->getTable(), function (Blueprint $table) use ($usesUuid) {
             $table->id();
 
             if ($usesUuid) {
@@ -23,13 +22,13 @@ return new class extends Migration
             } else {
                 $table->unsignedBigInteger('conversation_id');
             }
-            $table->foreign('conversation_id')->references('id')->on((new Conversation)->getTable())->cascadeOnDelete();
+            $table->foreign('conversation_id')->references('id')->on((new Conversation())->getTable())->cascadeOnDelete();
 
             $table->unsignedBigInteger('sendable_id');
             $table->string('sendable_type');
 
             $table->unsignedBigInteger('reply_id')->nullable();
-            $table->foreign('reply_id')->references('id')->on((new Message)->getTable())->nullOnDelete();
+            $table->foreign('reply_id')->references('id')->on((new Message())->getTable())->nullOnDelete();
 
             $table->text('body')->nullable();
             $table->string('type')->default('text');
@@ -50,6 +49,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists((new Message)->getTable());
+        Schema::dropIfExists((new Message())->getTable());
     }
 };

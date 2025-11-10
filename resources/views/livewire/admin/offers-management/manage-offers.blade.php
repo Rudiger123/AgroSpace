@@ -1,6 +1,5 @@
 <div>
-    <div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-green-50 p-6"
-        x-data.ignore="{
+    <div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-green-50 p-6" x-data="{
         viewMode: 'grid'
     }" x-cloak>
 
@@ -91,7 +90,6 @@
             <!-- Barre de recherche et filtres - Version simplifiée -->
             <div class="bg-white rounded-2xl p-6 shadow-lg glass-effect" x-data="{
                 showFilters: false,
-                viewMode: 'grid'
             }">
                 <div
                     class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 space-y-4 md:space-y-0 md:space-x-4">
@@ -120,7 +118,8 @@
                             <span>Filtres</span>
                         </button>
 
-                        <div class="flex items-center bg-gray-100 rounded-xl p-1">
+                        <!-- Vue -->
+                        <div class="hidden md:flex items-center bg-gray-100 rounded-xl p-1">
                             <button @click="viewMode = 'grid'"
                                 :class="viewMode === 'grid' ? 'bg-white shadow' : ''"
                                 class="p-2 rounded-lg transition">
@@ -400,7 +399,7 @@
 
             <!-- Liste des offres (List) -->
             <div x-show="viewMode === 'list'" class="bg-white rounded-2xl shadow-lg overflow-visible">
-                @forelse($offers as $offre)
+                @foreach ($offers as $offre)
                     <div class="border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition group">
                         <div class="p-6">
                             <div class="flex flex-col lg:flex-row lg:items-start gap-6">
@@ -614,27 +613,7 @@
                             </div>
                         </div>
                     </div>
-                @empty
-                    <div class="p-12 text-center">
-                        <svg class="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
-                            </path>
-                        </svg>
-                        <h3 class="text-xl font-bold text-gray-700 mb-2">Aucune offre trouvée</h3>
-                        <p class="text-gray-500 mb-6">Créez votre première offre pour commencer à vendre vos
-                            produits</p>
-                        <button wire:click="openCreateModal"
-                            class="bg-primary-500 text-white px-6 py-3 rounded-xl hover:bg-primary-600 transition inline-flex items-center space-x-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4v16m8-8H4"></path>
-                            </svg>
-                            <span>Créer une offre</span>
-                        </button>
-                    </div>
-                @endforelse
+                @endforeach
             </div>
 
             <!-- Pagination -->

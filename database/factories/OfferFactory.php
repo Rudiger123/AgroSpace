@@ -23,7 +23,7 @@ class OfferFactory extends Factory
             'prix' => $this->faker->numberBetween(2000, 500000),
             'region' => $this->faker->country(),
             'contact' => $this->faker->phoneNumber(),
-            'quantite' => $this->faker->numberBetween(100,1000),
+            'quantite' => $this->faker->numberBetween(100, 1000),
             'unite' => 'kg',
             'localisation' => 'Douala, Littoral',
             'ville' => $this->faker->city(),

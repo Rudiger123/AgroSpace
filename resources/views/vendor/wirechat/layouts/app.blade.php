@@ -83,7 +83,7 @@
         }
 
         :root {
-            --wc-brand-primary: #1E9B5A;
+            --wc-brand-primary: #1B5E20;
             --wc-light-primary: #ffffff;
             --wc-light-secondary: #F8FAF9;
             --wc-light-accent: #EEF7F2;

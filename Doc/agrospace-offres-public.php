@@ -1,4 +1,5 @@
 <?php
+
 // app/Http/Livewire/Offres/OffresList.php
 
 namespace App\Http\Livewire\Offres;
@@ -55,7 +56,7 @@ class OffresList extends Component
     {
         $this->selectedOffre = Offre::with([
             'photos',
-            'producteur.avisRecus' => function($query) {
+            'producteur.avisRecus' => function ($query) {
                 $query->visible()->latest()->take(5);
             }
         ])->findOrFail($offreId);
@@ -102,7 +103,7 @@ class OffresList extends Component
         // Vérifier si l'utilisateur peut laisser un avis
         $service = new AvisService();
         $producteur = \App\Models\User::findOrFail($producteurId);
-        
+
         if (!$service->canUserLeaveAvis(Auth::user(), $producteur)) {
             $this->dispatchBrowserEvent('notify', [
                 'type' => 'error',
@@ -127,7 +128,7 @@ class OffresList extends Component
 
         try {
             $service = new AvisService();
-            
+
             $service->createAvis([
                 'producteur_id' => $this->avisProducteurId,
                 'offre_id' => $this->avisOffreId,

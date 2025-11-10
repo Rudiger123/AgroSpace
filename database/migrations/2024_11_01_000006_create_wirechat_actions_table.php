@@ -5,15 +5,13 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Namu\WireChat\Models\Action;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-
-        Schema::create((new Action)->getTable(), function (Blueprint $table) {
+        Schema::create((new Action())->getTable(), function (Blueprint $table) {
             $table->id();
 
             // Actionable (the entity being acted upon)
@@ -34,7 +32,6 @@ return new class extends Migration
             $table->index(['actionable_id', 'actionable_type']);
             $table->index(['actor_id', 'actor_type']);
             $table->index('type');
-
         });
     }
 
@@ -43,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists((new Action)->getTable());
+        Schema::dropIfExists((new Action())->getTable());
     }
 };
