@@ -17,12 +17,15 @@ class DemandFactory extends Factory
     public function definition(): array
     {
         return [
-            'product' => $this->faker->text(5),
-            'description' => $this->faker->text(50),
-            'category' => $this->faker->colorName(),
-            'quantity' => $this->faker->numberBetween(500, 100000),
-            'region' => $this->faker->streetName(),
-            'contact' => $this->faker->phoneNumber(),
+            'category_id' => 1,
+            'title' => $this->faker->text,
+            'description'=> $this->faker->text(100),
+            'quantity'=> $this->faker->numberBetween(1,100),
+            'city'=> $this->faker->city,
+            'region' => "Ouest",
+            'validity_date'=> $this->faker->date(),
+            'budget'=> $this->faker->numberBetween(500, 10000),
+            'views_count'=> $this->faker->numberBetween(10,50),
         ];
     }
 }

@@ -316,8 +316,8 @@
 
                             <!-- Overlay hover -->
                             <div
-                                class="absolute inset-0 bg-black/50 bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
-                                <svg class="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-50 group-hover:scale-100"
+                                class="absolute inset-0 bg-gradient-to-br from-green-100 to-green-200 bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+                                <svg class="w-12 h-12 text-primary-500 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-50 group-hover:scale-100"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -574,7 +574,7 @@
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100"
             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto"
-            @click.self="$wire.showDetailsModal = false">
+            @click.self="$wire.showDetailsModal = false" x-cloak>
 
             <div x-show="$wire.showDetailsModal" x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 transform scale-90"
@@ -782,7 +782,7 @@
                                 <button
                                     wire:click="openAvisModal({{ $selectedOffre->producer_id }}, {{ $selectedOffre->id }})"
                                     class="w-full bg-white text-primary-600 py-2 rounded-xl hover:bg-primary-50 transition font-medium text-sm border-2 border-primary-200">
-                                    ⭐ Laisser un avis
+                                    ⭐ Laisser un avis 
                                 </button>
                             </div>
                         </div>
@@ -875,7 +875,7 @@
     <div x-show="$wire.showAvisModal" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-        @click.self="$wire.showAvisModal = false">
+        @click.self="$wire.showAvisModal = false" x-cloak>
 
         <div x-show="$wire.showAvisModal" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 transform scale-90"

@@ -1,6 +1,8 @@
 <?php
 
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\DemandsManagement\MyDemands;
+use App\Livewire\Admin\DemandsManagement\PublicDemands;
 use App\Livewire\Admin\OffersManagement\ManageOffers;
 use App\Livewire\Admin\OffersManagement\OffresList;
 use App\Livewire\Admin\ProfileManagement\ProfileManagement;
@@ -13,6 +15,7 @@ use Livewire\Volt\Volt;
  * Les Routes protegées
  */
 Route::middleware(['auth', 'verified','2fa'])->group(function () {
+    
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
     Route::get('/profile/settings', ProfileManagement::class)->name('profile');
@@ -22,6 +25,11 @@ Route::middleware(['auth', 'verified','2fa'])->group(function () {
     Route::get('/my-offers', ManageOffers::class)->name('offers-management');
 
     Route::get('/offers', OffresList::class)->name('offers-list');
+
+    Route::get('/my-demands', MyDemands::class)->name('demands-management');
+
+    Route::get('/demands', PublicDemands::class)->name('demands-list');
+
 });
 
 /**

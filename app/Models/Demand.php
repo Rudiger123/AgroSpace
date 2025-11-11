@@ -10,90 +10,94 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Demand extends Model
 {
     protected $fillable = [
-        'user_id',
-        'product',
-        'description',
-        'category',
-        'quantity',
-        'region',
-        'contact',
-        'status'
+        'user_id', 'category_id', 'title', 'description', 'quantity',
+        'city', 'region', 'validity_date', 'budget', 'urgency',
+        'status', 'views_count', 'contacts_received', 'is_verified', 'verified_at'
     ];
 
     protected $casts = [
-        'quantity' => 'integer',
+        'validity_date' => 'date',
+        'budget' => 'decimal:2',
+        'views_count' => 'integer',
+        'contacts_received' => 'integer',
+        'is_verified' => 'boolean',
+        'verified_at' => 'datetime',
     ];
 
-    /**
-     * Relation avec l'utilisateur
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Scope pour la recherche
-     */
-    public function scopeSearch($query, $search)
+    public function category(): BelongsTo
     {
-        return $query->where(function ($q) use ($search) {
-            $q->where('product', 'like', "%{$search}%")
-              ->orWhere('description', 'like', "%{$search}%")
-              ->orWhere('category', 'like', "%{$search}%")
-              ->orWhere('region', 'like', "%{$search}%");
-        });
+        return $this->belongsTo(Category::class);
     }
 
-    /**
-     * Scope pour filtrer par catégorie
-     */
-    public function scopeCategory($query, $category)
+    public function responses()
+    
     {
-        if ($category) {
-            return $query->where('category', $category);
-        }
-        return $query;
+        return $this->hasMany(DemandResponse::class);
     }
 
-    /**
-     * Scope pour filtrer par région
-     */
-    public function scopeRegion($query, $region)
+    // Scopes
+    public function scopeActive($query)
     {
-        if ($region) {
-            return $query->where('region', $region);
-        }
-        return $query;
+        return $query->where('status', 'active')
+                    ->where('validity_date', '>=', now());
     }
 
-    /**
-     * Obtenir le statut formaté de la demande
-     */
-    public function getStatusAttribute(): string
+    public function scopeExpired($query)
     {
-        // Calcul du statut basé sur l'ancienneté
-        $daysOld = $this->created_at->diffInDays(now());
-
-        if ($daysOld < 7) {
-            return 'Récente';
-        } elseif ($daysOld < 30) {
-            return 'Active';
-        } else {
-            return 'Ancienne';
-        }
+        return $query->where('validity_date', '<', now())
+                    ->where('status', '!=', 'satisfied')
+                    ->where('status', '!=', 'cancelled');
     }
 
-    /**
-     * Obtenir la couleur du badge de statut
-     */
-    public function getStatusColorAttribute(): string
+    public function scopeByRegion($query, $region)
     {
-        return match ($this->status) {
-            'Récente' => 'bg-green-100 text-green-800',
-            'Active' => 'bg-blue-100 text-blue-800',
-            'Ancienne' => 'bg-gray-100 text-gray-800',
-            default => 'bg-gray-100 text-gray-800',
+        return $query->where('region', $region);
+    }
+
+    public function scopeByCategory($query, $categoryId)
+    {
+        return $query->where('category_id', $categoryId);
+    }
+
+    // Accessors
+    public function getIsExpiredAttribute(): bool
+    {
+        return $this->validity_date->isPast() && $this->status === 'active';
+    }
+
+    public function getUrgencyBadgeColorAttribute(): string
+    {
+        return match($this->urgency) {
+            'high' => 'bg-red-100 text-red-700',
+            'medium' => 'bg-yellow-100 text-yellow-700',
+            'low' => 'bg-green-100 text-green-700',
+            default => 'bg-gray-100 text-gray-700'
         };
+    }
+
+    public function getStatusBadgeColorAttribute(): string
+    {
+        return match($this->status) {
+            'active' => 'bg-green-100 text-green-700',
+            'satisfied' => 'bg-blue-100 text-blue-700',
+            'expired' => 'bg-gray-100 text-gray-700',
+            'cancelled' => 'bg-red-100 text-red-700',
+            default => 'bg-gray-100 text-gray-700'
+        };
+    }
+
+    public function incrementViews(): void
+    {
+        $this->increment('views_count');
+    }
+
+    public function incrementContacts(): void
+    {
+        $this->increment('contacts_received');
     }
 }
