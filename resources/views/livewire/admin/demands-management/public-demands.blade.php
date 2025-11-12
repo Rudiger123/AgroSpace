@@ -237,12 +237,18 @@
                          x-transition:enter="ease-out duration-300"
                          x-transition:enter-start="opacity-0"
                          x-transition:enter-end="opacity-100"
+                         x-transition:leave="ease-in duration-200"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0"
                          class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
     
                     <div x-show="show" 
                          x-transition:enter="ease-out duration-300"
-                         x-transition:enter-start="opacity-0 translate-y-4 sm:scale-95"
+                         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                          x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                         x-transition:leave="ease-in duration-200"
+                         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                          class="inline-block w-full max-w-2xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-2xl rounded-2xl">
                         
                         <div class="flex items-center justify-between mb-6">
@@ -258,9 +264,15 @@
                         <div class="bg-gradient-to-r from-primary-50 to-earth-50 rounded-xl p-4 mb-6">
                             <div class="flex items-start space-x-3">
                                 <span class="text-3xl">{{ $selectedDemand->category->icon }}</span>
-                                <div>
+                                <div class="flex-1">
                                     <h4 class="font-bold text-gray-900 mb-1">{{ $selectedDemand->title }}</h4>
                                     <p class="text-sm text-gray-600">{{ $selectedDemand->category->name }} • {{ $selectedDemand->city }}, {{ $selectedDemand->region }}</p>
+                                    @if($selectedDemand->quantity)
+                                        <p class="text-sm text-gray-700 mt-2"><strong>Quantité:</strong> {{ $selectedDemand->quantity }}</p>
+                                    @endif
+                                    @if($selectedDemand->budget)
+                                        <p class="text-sm text-gray-700 mt-1"><strong>Budget max:</strong> {{ number_format($selectedDemand->budget, 0, ',', ' ') }} FCFA</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -340,12 +352,18 @@
                          x-transition:enter="ease-out duration-300"
                          x-transition:enter-start="opacity-0"
                          x-transition:enter-end="opacity-100"
+                         x-transition:leave="ease-in duration-200"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0"
                          class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
     
                     <div x-show="show" 
                          x-transition:enter="ease-out duration-300"
-                         x-transition:enter-start="opacity-0 translate-y-4 sm:scale-95"
+                         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                          x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                         x-transition:leave="ease-in duration-200"
+                         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                          class="inline-block w-full max-w-3xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-2xl rounded-2xl max-h-[90vh] overflow-y-auto">
                         
                         <div class="flex items-center justify-between mb-6">
@@ -400,5 +418,97 @@
                                         </svg>
                                         <span class="text-sm font-medium">Quantité</span>
                                     </div>
-                                    <p class="text-
+                                    <p class="text-gray-900 font-semibold">{{ $selectedDemand->quantity }}</p>
+                                </div>
+                                @endif
+    
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <div class="flex items-center text-gray-600 mb-1">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">Localisation</span>
+                                    </div>
+                                    <p class="text-gray-900 font-semibold">{{ $selectedDemand->city }}, {{ $selectedDemand->region }}</p>
+                                </div>
+    
+                                @if($selectedDemand->budget)
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <div class="flex items-center text-gray-600 mb-1">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">Budget maximum</span>
+                                    </div>
+                                    <p class="text-gray-900 font-semibold">{{ number_format($selectedDemand->budget, 0, ',', ' ') }} FCFA</p>
+                                </div>
+                                @endif
+    
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <div class="flex items-center text-gray-600 mb-1">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">Valide jusqu'au</span>
+                                    </div>
+                                    <p class="text-gray-900 font-semibold">{{ $selectedDemand->validity_date->format('d/m/Y') }} ({{ $selectedDemand->validity_date->diffForHumans() }})</p>
+                                </div>
+    
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <div class="flex items-center text-gray-600 mb-1">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">Demandeur</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($selectedDemand->user->name) }}&background=random" 
+                                             class="w-8 h-8 rounded-full"
+                                             alt="{{ $selectedDemand->user->name }}">
+                                        <span class="text-gray-900 font-semibold">{{ $selectedDemand->user->name }}</span>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- Action Button -->
+                            <div class="bg-primary-50 border border-primary-200 rounded-xl p-6">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                    <div>
+                                        <h5 class="font-bold text-gray-900 mb-1">Vous pouvez répondre à cette demande</h5>
+                                        <p class="text-sm text-gray-600">Proposez vos produits ou services à {{ $selectedDemand->user->name }}</p>
+                                    </div>
+                                    <button wire:click="openResponseModal({{ $selectedDemand->id }})"
+                                            class="px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-lg hover:from-primary-700 hover:to-primary-800 shadow-lg transition whitespace-nowrap">
+                                        💬 Répondre maintenant
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+    
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('alert', (event) => {
+                const data = event[0] || event;
+                Swal.fire({
+                    icon: data.type,
+                    title: data.type === 'success' ? 'Succès !' : data.type === 'error' ? 'Erreur !' : 'Information',
+                    text: data.message,
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: true,
+                });
+            });
+        });
+    </script>
+    @endpush
 </div>

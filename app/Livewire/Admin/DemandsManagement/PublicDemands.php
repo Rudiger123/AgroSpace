@@ -6,9 +6,13 @@ use App\Models\Demand;
 use App\Models\Category;
 use App\Models\DemandResponse;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Layout("layouts.app")]
+#[Title('Liste des demandes')]
 class PublicDemands extends Component
 {
     use WithPagination;
@@ -49,7 +53,7 @@ class PublicDemands extends Component
 
     public function openResponseModal($demandId)
     {
-        if (!Auth::user()->check()) {
+        if (!Auth::check()) {
             $this->dispatch('toast', [
                 'type' => 'error',
                 'message' => 'Vous devez être connecté pour répondre à une demande'
@@ -60,7 +64,7 @@ class PublicDemands extends Component
         $demand = Demand::findOrFail($demandId);
 
         // Vérifier si c'est sa propre demande
-        if ($demand->user_id === auth()->id) {
+        if ($demand->user_id === Auth::user()->id) {
             $this->dispatch('toast', [
                 'type' => 'error',
                 'message' => 'Vous ne pouvez pas répondre à votre propre demande'
@@ -70,7 +74,7 @@ class PublicDemands extends Component
 
         // Vérifier si déjà répondu
         $alreadyResponded = DemandResponse::where('demand_id', $demandId)
-            ->where('user_id', auth()->id)
+            ->where('user_id', Auth::user()->id)
             ->exists();
 
         if ($alreadyResponded) {
@@ -86,6 +90,7 @@ class PublicDemands extends Component
         $this->reset(['message', 'proposed_price', 'contact_phone', 'contact_email']);
         $this->contact_phone = Auth::user()->phone ?? '';
         $this->contact_email = Auth::user()->email;
+        $this->showDetailsModal = false;
         $this->showResponseModal = true;
     }
 
@@ -96,7 +101,7 @@ class PublicDemands extends Component
         try {
             DemandResponse::create([
                 'demand_id' => $this->selectedDemandId,
-                'user_id' => auth()->id,
+                'user_id' => Auth::user()->id,
                 'message' => $this->message,
                 'proposed_price' => $this->proposed_price,
                 'contact_phone' => $this->contact_phone,
@@ -130,19 +135,20 @@ class PublicDemands extends Component
         $demand = Demand::with(['category', 'user'])->findOrFail($id);
         
         // Incrémenter le compteur de vues
-        if (!Auth::user()->check() || $demand->user_id !== auth()->id) {
+        if (!Auth::check() || $demand->user_id !== Auth::user()->id) {
             $demand->incrementViews();
         }
 
         $this->selectedDemand = $demand;
+        $this->showResponseModal = false;
         $this->showDetailsModal = true;
     }
 
     public function render()
     {
         $demands = Demand::with(['category', 'user'])
-            ->active()
-            ->where('user_id', '!=', auth()->id ?? 0) // Exclure ses propres demandes
+            ->where('status', 'active')
+            ->where('user_id', '!=', Auth::user()->id ?? 0)
             ->when($this->search, function($query) {
                 $query->where(function($q) {
                     $q->where('title', 'like', '%' . $this->search . '%')
@@ -177,9 +183,9 @@ class PublicDemands extends Component
 
         // Stats
         $stats = [
-            'total' => Demand::active()->count(),
-            'high_urgency' => Demand::active()->where('urgency', 'high')->count(),
-            'new_today' => Demand::active()->whereDate('created_at', today())->count(),
+            'total' => Demand::where('status', 'active')->count(),
+            'high_urgency' => Demand::where('status', 'active')->where('urgency', 'high')->count(),
+            'new_today' => Demand::where('status', 'active')->whereDate('created_at', today())->count(),
         ];
 
         return view('livewire.admin.demands-management.public-demands', [
