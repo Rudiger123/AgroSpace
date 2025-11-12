@@ -216,6 +216,16 @@
                 <span class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
             </a>
 
+            <a href="{{ route('demands.index') }}" wire:navigate
+                class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('admin.demands.*') ? 'bg-green-700 shadow-lg' : '' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                    </path>
+                </svg>
+                <span class="font-medium">Gestion Demandes</span>
+            </a>
+
             <a href="/chats" wire:navigate
                 class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('admin.messages.*') ? 'bg-green-700 shadow-lg' : '' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
