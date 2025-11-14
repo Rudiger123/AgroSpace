@@ -19,7 +19,7 @@ class OfferFactory extends Factory
         return [
             'titre' => $this->faker->text(5),
             'description' => $this->faker->text(50),
-            'categorie' => $this->faker->colorName(),
+            'category_id' => 1,
             'prix' => $this->faker->numberBetween(2000, 500000),
             'region' => $this->faker->country(),
             'contact' => $this->faker->phoneNumber(),
@@ -28,7 +28,7 @@ class OfferFactory extends Factory
             'localisation' => 'Douala, Littoral',
             'ville' => $this->faker->city(),
             'date_publication' => now(),
-            'statut' => 'active',
+            'statut' => 'en attente',
             'contact' => $this->faker->phoneNumber(),
         ];
     }

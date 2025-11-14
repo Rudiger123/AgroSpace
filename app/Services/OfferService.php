@@ -22,7 +22,7 @@ class OfferService
                 'producer_id' => Auth::user()->id,
                 'titre' => $data['titre'],
                 'description' => $data['description'],
-                'categorie' => $data['categorie'],
+                'category_id' => $data['categorie'],
                 'prix' => $data['prix'],
                 'quantite' => $data['quantite'],
                 'unite' => $data['unite'],
@@ -31,9 +31,10 @@ class OfferService
                 'ville' => $data['ville'] ?? null,
                 'date_publication' => now(),
                 'date_expiration' => $data['date_expiration'] ?? null,
-                'statut' => 'active',
+                'statut' => 'en attente',
                 'conditions_livraison' => $data['conditions_livraison'] ?? null,
                 'contact' => $data['contact'] ?? Auth::user()->phone,
+                'is_published' => $data['published']
             ]);
 
             // Uploader les photos
@@ -55,7 +56,7 @@ class OfferService
             $offer->update([
                 'titre' => $data['titre'],
                 'description' => $data['description'],
-                'categorie' => $data['categorie'],
+                'category_id' => $data['categorie'],
                 'prix' => $data['prix'],
                 'quantite' => $data['quantite'],
                 'unite' => $data['unite'],
@@ -65,6 +66,7 @@ class OfferService
                 'date_expiration' => $data['date_expiration'] ?? null,
                 'conditions_livraison' => $data['conditions_livraison'] ?? null,
                 'contact' => $data['contact'] ?? null,
+                'is_published' => $data['published']
             ]);
 
             // Uploader nouvelles photos si présentes
@@ -152,7 +154,7 @@ class OfferService
             $newoffer = $offer->replicate();
             $newoffer->titre = $offer->titre . ' (Copie)';
             $newoffer->date_publication = now();
-            $newoffer->statut = 'active';
+            $newoffer->statut = 'en attente';
             $newoffer->views_count = 0;
             $newoffer->contacts_count = 0;
             $newoffer->save();

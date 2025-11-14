@@ -38,10 +38,10 @@
                     <!-- Quick filters -->
                     <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
                         <span class="text-primary-200 text-sm">Catégories populaires :</span>
-                        @foreach ($categories as $key => $label)
-                            <button wire:click="$set('filterCategorie', '{{ $key }}')"
+                        @foreach ($categories as $category)
+                            <button wire:click="$set('filterCategorie', '{{ $category->id }}')"
                                 class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-full text-sm font-medium transition backdrop-blur-sm">
-                                {{ $label }}
+                                {{ $category->icon }} {{ $category->name }}
                             </button>
                         @endforeach
                     </div>
@@ -102,7 +102,7 @@
                             <div class="p-6">
                                 <span
                                     class="inline-block bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-xs font-semibold mb-3">
-                                    {{ $categories[$offre->categorie] ?? $offre->categorie }}
+                                    {{ $offre->category->name }}
                                 </span>
 
                                 <h3 class="text-xl font-bold text-gray-800 mb-2 line-clamp-1">{{ $offre->titre }}</h3>
@@ -247,9 +247,10 @@
                             <select wire:model.live="filterCategorie"
                                 class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                 <option value="">Toutes les catégories</option>
-                                @foreach ($categories as $key => $label)
-                                    <option value="{{ $key }}">{{ $label }}</option>
-                                @endforeach
+                                @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->icon }} {{ $category->name }}
+                                </option>
+                            @endforeach
                             </select>
                         </div>
 
@@ -316,7 +317,7 @@
 
                             <!-- Overlay hover -->
                             <div
-                                class="absolute inset-0 bg-gradient-to-br from-green-100 to-green-200 bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+                                class="absolute inset-0 bg-gray-600 bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
                                 <svg class="w-12 h-12 text-primary-500 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-50 group-hover:scale-100"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -331,7 +332,7 @@
                             <div class="absolute top-3 left-3">
                                 <span
                                     class="bg-white bg-opacity-95 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm shadow">
-                                    {{ $categories[$offre->categorie] ?? $offre->categorie }}
+                                    {{ $offre->category->name }}
                                 </span>
                             </div>
                         </div>
@@ -455,7 +456,7 @@
                                 <div class="absolute top-3 left-3">
                                     <span
                                         class="bg-white bg-opacity-95 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm shadow">
-                                        {{ $categories[$offre->categorie] ?? $offre->categorie }}
+                                        {{ $offre->category->name }}
                                     </span>
                                 </div>
                             </div>
@@ -643,7 +644,7 @@
                             <div>
                                 <span
                                     class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-3">
-                                    {{ $categories[$selectedOffre->categorie] ?? $selectedOffre->categorie }}
+                                    {{ $selectedOffre->category->name }}
                                 </span>
                                 <h2 class="text-3xl font-bold text-gray-800 mb-2">{{ $selectedOffre->titre }}</h2>
                                 <div class="flex items-baseline space-x-3">

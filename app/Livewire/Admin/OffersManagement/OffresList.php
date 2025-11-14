@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Offre;
 use App\Models\Avis;
+use App\Models\Category;
 use App\Models\Offer;
 use App\Services\AvisService;
 use Illuminate\Support\Facades\Auth;
@@ -207,7 +208,7 @@ class OffresList extends Component
     public function render()
     {
         $query = Offer::with(['photos', 'producer'])
-                      ->active(); // Seulement les offres actives
+                      ->where('statut', 'validé')->where('is_published', true); // Seulement les offres validés et activés
 
         // Recherche
         if ($this->search) {
@@ -216,7 +217,7 @@ class OffresList extends Component
 
         // Filtres
         if ($this->filterCategorie) {
-            $query->byCategorie($this->filterCategorie);
+            $query->byCategory($this->filterCategorie);
         }
 
         if ($this->filterRegion) {
@@ -238,15 +239,15 @@ class OffresList extends Component
 
         // Offres en vedette
         $featuredOffres = Offer::with(['photos', 'producer'])
-                               ->active()
-                               ->featured()
+                               ->where('is_published', true)
+                               ->where('is_featured', true)
                                ->take(3)
                                ->get();
-
+                               
         return view('livewire.admin.offers-management.offres-list', [
             'offres' => $offres,
             'featuredOffres' => $featuredOffres,
-            'categories' => Offer::getCategoriesOptions(),
+            'categories' => Category::where('is_active', true)->get(),
             'regions' => Offer::getRegionsOptions(),
         ]);
     }

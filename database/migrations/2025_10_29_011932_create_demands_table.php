@@ -19,6 +19,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::table('offers', function (Blueprint $table) {
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->index(['category_id', 'statut']);
+        });
+
         Schema::create('demands', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

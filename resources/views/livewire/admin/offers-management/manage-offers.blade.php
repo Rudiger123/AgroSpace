@@ -152,8 +152,9 @@
                         <select wire:model.live="filterCategorie"
                             class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500">
                             <option value="">Toutes</option>
-                            @foreach ($categories as $key => $label)
-                                <option value="{{ $key }}">{{ $label }}</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->icon }} {{ $category->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -162,11 +163,13 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Statut</label>
                         <select wire:model.live="filterStatut"
                             class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500">
-                            <option value="">Tous</option>
-                            <option value="active">Active</option>
-                            <option value="vendue">Vendue</option>
-                            <option value="expirée">Expirée</option>
-                            <option value="suspendue">Suspendue</option>
+                            <option value="all">Tous statuts</option>
+                            <option value="pending">⏳ En attente</option>
+                            <option value="validé">✅ Validées</option>
+                            <option value="rejeté">❌ Rejetées</option>
+                            <option value="suspendue">🚫 Suspendues</option>
+                            <option value="expirée">⏰ Expirées</option>
+                            <option value="vendue">🟢 Vendues</option>
                         </select>
                     </div>
 
@@ -218,20 +221,40 @@
                                 @elseif($offre->statut === 'vendue')
                                     <span
                                         class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">Vendue</span>
+                                @elseif($offre->statut === 'validé')
+                                    <span
+                                        class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">validé</span>
                                 @elseif($offre->statut === 'expirée')
                                     <span
                                         class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">Expirée</span>
+                                @elseif($offre->statut === 'en attente')
+                                    <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">en
+                                        attente</span>
+                                @elseif($offre->statut === 'rejeté')
+                                    <span
+                                        class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">rejeté</span>
                                 @else
                                     <span
                                         class="bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-bold">Suspendue</span>
                                 @endif
+
+                                @if ($offre->is_published)
+                                    <span
+                                        class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">active</span>
+                                @else
+                                    <span
+                                        class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">desactive</span>
+                                @endif
+
+
+
                             </div>
 
                             <!-- Badge catégorie -->
                             <div class="absolute top-3 left-3">
                                 <span
                                     class="bg-white bg-opacity-90 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">
-                                    {{ $categories[$offre->categorie] ?? $offre->categorie }}
+                                    {{ $offre->category->name }}
                                 </span>
                             </div>
                         </div>
@@ -426,16 +449,34 @@
                                         <div class="absolute top-2 right-2">
                                             @if ($offre->statut === 'active')
                                                 <span
-                                                    class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-bold">Active</span>
+                                                    class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">Active</span>
                                             @elseif($offre->statut === 'vendue')
                                                 <span
-                                                    class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-bold">Vendue</span>
+                                                    class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">Vendue</span>
+                                            @elseif($offre->statut === 'validé')
+                                                <span
+                                                    class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">validé</span>
                                             @elseif($offre->statut === 'expirée')
                                                 <span
-                                                    class="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">Expirée</span>
+                                                    class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">Expirée</span>
+                                            @elseif($offre->statut === 'en attente')
+                                                <span
+                                                    class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">en
+                                                    attente</span>
+                                            @elseif($offre->statut === 'rejeté')
+                                                <span
+                                                    class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">rejeté</span>
                                             @else
                                                 <span
-                                                    class="bg-gray-500 text-white px-2 py-1 rounded-full text-xs font-bold">Suspendue</span>
+                                                    class="bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-bold">Suspendue</span>
+                                            @endif
+
+                                            @if ($offre->is_published)
+                                                <span
+                                                    class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">active</span>
+                                            @else
+                                                <span
+                                                    class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">desactive</span>
                                             @endif
                                         </div>
                                     </div>
@@ -453,7 +494,7 @@
                                                     <!-- Badge catégorie -->
                                                     <span
                                                         class="inline-block bg-primary-50 text-primary-700 px-3 py-1 rounded-full text-sm font-semibold mb-3">
-                                                        {{ $categories[$offre->categorie] ?? $offre->categorie }}
+                                                        {{ $offre->category->name }}
                                                     </span>
                                                 </div>
                                                 <!-- Prix - Version desktop -->
@@ -572,7 +613,7 @@
                                                 x-transition:leave-end="opacity-0 scale-95"
                                                 class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-[100]"
                                                 style="display: none;">
-                                                @if ($offre->statut === 'active')
+                                                @if ($offre->statut === 'validé')
                                                     <button wire:click="markAsSold({{ $offre->id }})"
                                                         class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition flex items-center">
                                                         <svg class="w-4 h-4 mr-3" fill="none"
@@ -706,14 +747,40 @@
                                 <select wire:model="categorie"
                                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
                                     <option value="">Sélectionnez une catégorie</option>
-                                    @foreach ($categories as $key => $label)
-                                        <option value="{{ $key }}">{{ $label }}</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->icon }}
+                                            {{ $category->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('categorie')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
+
+                            <label class="flex items-center cursor-pointer select-none space-x-3">
+
+                                <span class="text-gray-800 font-medium">
+                                    Publier
+                                </span>
+
+                                <div class="relative">
+                                    <input type="checkbox" wire:model= "published" class="peer sr-only"
+                                        name="is_published" id="is_published">
+
+                                    <!-- Background -->
+                                    <div
+                                        class="w-12 h-6 rounded-full bg-gray-300 peer-checked:bg-green-600 transition-colors">
+                                    </div>
+
+                                    <!-- Circle -->
+                                    <div
+                                        class="absolute top-0.5 left-0.5 h-5 w-5 bg-white rounded-full shadow
+                                                transition-all peer-checked:translate-x-6">
+                                    </div>
+                                </div>
+
+                                </lab>
+
                         </div>
 
                         <!-- Prix et quantité -->
@@ -1030,15 +1097,34 @@
 
                                             <!-- Badge statut -->
                                             <div class="absolute top-4 right-4">
-                                                @if ($selectedOffer->statut === 'active')
+
+                                               @if($selectedOffer->statut === 'vendue')
                                                     <span
-                                                        class="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">Active</span>
-                                                @elseif($selectedOffer->statut === 'vendue')
+                                                        class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">Vendue</span>
+                                                @elseif($selectedOffer->statut === 'validé')
                                                     <span
-                                                        class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">Vendue</span>
+                                                        class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">validé</span>
                                                 @elseif($selectedOffer->statut === 'expirée')
                                                     <span
-                                                        class="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">Expirée</span>
+                                                        class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">Expirée</span>
+                                                @elseif($selectedOffer->statut === 'en attente')
+                                                    <span
+                                                        class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">en
+                                                        attente</span>
+                                                @elseif($selectedOffer->statut === 'rejeté')
+                                                    <span
+                                                        class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">rejeté</span>
+                                                @else
+                                                    <span
+                                                        class="bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-bold">Suspendue</span>
+                                                @endif
+
+                                                @if ($selectedOffer->is_published)
+                                                    <span
+                                                        class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">active</span>
+                                                @else
+                                                    <span
+                                                        class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">desactive</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -1072,7 +1158,7 @@
                                 <div>
                                     <span
                                         class="inline-block bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm font-semibold mb-3">
-                                        {{ $categories[$selectedOffer->categorie] ?? $selectedOffer->categorie }}
+                                        {{ $selectedOffer->category->name }}
                                     </span>
                                     <h2 class="text-3xl font-bold text-gray-800 mb-3">{{ $selectedOffer->titre }}</h2>
                                     <div class="flex items-baseline space-x-2">

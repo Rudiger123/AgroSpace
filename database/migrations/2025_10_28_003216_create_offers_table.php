@@ -15,7 +15,6 @@ return new class () extends Migration {
             $table->foreignId('producer_id')->constrained('users')->onDelete('cascade');
             $table->string('titre');
             $table->text('description');
-            $table->string('categorie');
             $table->decimal('prix', 10, 2);
             $table->integer('quantite');
             $table->string('unite'); // kg, tonne, sac, pièce
@@ -24,7 +23,8 @@ return new class () extends Migration {
             $table->string('ville')->nullable();
             $table->timestamp('date_publication');
             $table->timestamp('date_expiration')->nullable();
-            $table->enum('statut', ['active', 'expirée', 'vendue', 'suspendue'])->default('active');
+            $table->enum('statut', ['validé', 'expirée', 'vendue', 'suspendue', 'en attente', 'rejeté'])->default('en attente');
+            $table->boolean('is_published')->default('true');
             $table->text('conditions_livraison')->nullable();
             $table->string('contact')->nullable();
             $table->integer('views_count')->default(0);
@@ -34,7 +34,6 @@ return new class () extends Migration {
             $table->softDeletes();
 
             $table->index(['statut', 'date_publication']);
-            $table->index(['categorie', 'statut']);
             $table->index('producer_id');
         });
     }

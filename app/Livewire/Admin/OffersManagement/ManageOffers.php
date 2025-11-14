@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\OffersManagement;
 
+use App\Models\Category;
 use App\Models\Offer;
 use App\Models\OfferPhoto;
 use App\Services\OfferService;
@@ -49,6 +50,7 @@ class ManageOffers extends Component
     public $contact;
     public $photos = [];
     public $existingPhotos = [];
+    public $published = true;
 
     // État
     public $selectedOffer;
@@ -58,7 +60,7 @@ class ManageOffers extends Component
     protected $rules = [
         'titre' => 'required|string|max:255',
         'description' => 'required|string|min:20',
-        'categorie' => 'required|string',
+        'categorie' => 'required|exists:categories,id',
         'prix' => 'required|numeric|min:0',
         'quantite' => 'required|integer|min:1',
         'unite' => 'required|string',
@@ -125,8 +127,9 @@ class ManageOffers extends Component
         $this->offerId = $offer->id;
         $this->titre = $offer->titre;
         $this->description = $offer->description;
-        $this->categorie = $offer->categorie;
+        $this->categorie = $offer->category_id;
         $this->prix = $offer->prix;
+        $this->published = $offer->is_published;
         $this->quantite = $offer->quantite;
         $this->unite = $offer->unite;
         $this->localisation = $offer->localisation;
@@ -175,6 +178,7 @@ class ManageOffers extends Component
                 'date_expiration' => $this->date_expiration,
                 'conditions_livraison' => $this->conditions_livraison,
                 'contact' => $this->contact,
+                'published' => $this->published
             ];
 
             $service->createOffer($data, $this->photos);
@@ -217,6 +221,7 @@ class ManageOffers extends Component
                 'date_expiration' => $this->date_expiration,
                 'conditions_livraison' => $this->conditions_livraison,
                 'contact' => $this->contact,
+                'published' => $this->published
             ];
 
             $service->updateOffer($offer, $data, $this->photos);
@@ -307,13 +312,13 @@ class ManageOffers extends Component
     {
         try {
             $photo = OfferPhoto::findOrFail($photoId);
-            $service = new offerService();
+            $service = new OfferService();
 
             $service->deletePhoto($photo);
 
             // Recharger les photos existantes
             if ($this->offerId) {
-                $offer = offer::with('photos')->findOrFail($this->offerId);
+                $offer = Offer::with('photos')->findOrFail($this->offerId);
                 $this->existingPhotos = $offer->photos->toArray();
             }
 
@@ -332,8 +337,8 @@ class ManageOffers extends Component
     public function setPhotoPrincipale($photoId)
     {
         try {
-            $photo = offerPhoto::findOrFail($photoId);
-            $service = new offerService();
+            $photo = OfferPhoto::findOrFail($photoId);
+            $service = new OfferService();
 
             $service->setPhotoPrincipale($photo);
 
@@ -398,7 +403,7 @@ class ManageOffers extends Component
 
     public function render()
     {
-        $query = offer::with(['photos', 'producer'])
+        $query = Offer::with(['photos', 'producer'])
             ->where('producer_id', Auth::id());
 
         // Recherche
@@ -408,12 +413,19 @@ class ManageOffers extends Component
 
         // Filtres
         if ($this->filterCategorie) {
-            $query->byCategorie($this->filterCategorie);
+            $query->byCategory($this->filterCategorie);
         }
 
         if ($this->filterStatut) {
-            $query->where('statut', $this->filterStatut);
+            $query->when($this->filterStatut !== 'all', function ($query) {
+                if ($this->filterStatut === 'pending') {
+                    $query->where('statut', 'en attente');
+                } else {
+                    $query->where('statut', $this->filterStatut);
+                }
+            });
         }
+
 
         if ($this->filterRegion) {
             $query->byRegion($this->filterRegion);
@@ -426,18 +438,18 @@ class ManageOffers extends Component
 
         // Statistiques
         $stats = [
-            'total' => offer::where('producer_id', Auth::id())->count(),
-            'active' => offer::where('producer_id', Auth::id())->active()->count(),
-            'vendue' => offer::where('producer_id', Auth::id())->where('statut', 'vendue')->count(),
-            'expiree' => offer::where('producer_id', Auth::id())->where('statut', 'expirée')->count(),
+            'total' => Offer::where('producer_id', Auth::id())->count(),
+            'active' => Offer::where('producer_id', Auth::id())->where('is_published', true)->count(),
+            'vendue' => Offer::where('producer_id', Auth::id())->where('statut', 'vendue')->count(),
+            'expiree' => Offer::where('producer_id', Auth::id())->where('statut', 'expirée')->count(),
         ];
 
         return view('livewire.admin.offers-management.manage-offers', [
             'offers' => $offers,
             'stats' => $stats,
-            'categories' => offer::getCategoriesOptions(),
-            'unites' => offer::getUnitesOptions(),
-            'regions' => offer::getRegionsOptions(),
+            'categories' => Category::where('is_active', true)->get(),
+            'unites' => Offer::getUnitesOptions(),
+            'regions' => Offer::getRegionsOptions(),
         ]);
     }
 }

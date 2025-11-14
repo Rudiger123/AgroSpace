@@ -5,6 +5,7 @@ use App\Livewire\Admin\DemandsManagement\DemandsManage;
 use App\Livewire\Admin\DemandsManagement\MyDemands;
 use App\Livewire\Admin\DemandsManagement\PublicDemands;
 use App\Livewire\Admin\OffersManagement\ManageOffers;
+use App\Livewire\Admin\OffersManagement\ModerateOffers;
 use App\Livewire\Admin\OffersManagement\OffresList;
 use App\Livewire\Admin\ProfileManagement\ProfileManagement;
 use App\Livewire\Admin\UsersManagement\UsersManagement;
@@ -33,6 +34,10 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
 
     Route::get('/demandes', DemandsManage::class)
         ->name('demands.index'); //admin
+
+    // Modération des offres
+    Route::get('/offers/moderation', ModerateOffers::class)
+    ->name('offers.moderate');
 
 
 });

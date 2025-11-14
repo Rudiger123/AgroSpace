@@ -19,7 +19,7 @@ class Offer extends Model
         'producer_id',
         'titre',
         'description',
-        'categorie',
+        'category_id',
         'prix',
         'quantite',
         'unite',
@@ -34,6 +34,7 @@ class Offer extends Model
         'views_count',
         'contacts_count',
         'is_featured',
+        'is_published'
     ];
 
     protected $casts = [
@@ -50,6 +51,12 @@ class Offer extends Model
     {
         return $this->belongsTo(User::class, 'producer_id');
     }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 
     public function photos()
     {
@@ -87,22 +94,22 @@ class Offer extends Model
     public function scopeActive($query)
     {
         return $query->where('statut', 'active')
-                     ->where(function ($q) {
-                         $q->whereNull('date_expiration')
-                           ->orWhere('date_expiration', '>', now());
-                     });
+            ->where(function ($q) {
+                $q->whereNull('date_expiration')
+                    ->orWhere('date_expiration', '>', now());
+            });
     }
 
     public function scopeExpired($query)
     {
         return $query->where('statut', 'active')
-                     ->whereNotNull('date_expiration')
-                     ->where('date_expiration', '<=', now());
+            ->whereNotNull('date_expiration')
+            ->where('date_expiration', '<=', now());
     }
 
-    public function scopeByCategorie($query, $categorie)
+    public function scopeByCategory($query, $categoryId)
     {
-        return $query->where('categorie', $categorie);
+        return $query->where('category_id', $categoryId);
     }
 
     public function scopeByRegion($query, $region)
@@ -119,8 +126,8 @@ class Offer extends Model
     {
         return $query->where(function ($q) use ($search) {
             $q->where('titre', 'like', "%{$search}%")
-              ->orWhere('description', 'like', "%{$search}%")
-              ->orWhere('localisation', 'like', "%{$search}%");
+                ->orWhere('description', 'like', "%{$search}%")
+                ->orWhere('localisation', 'like', "%{$search}%");
         });
     }
 
@@ -147,18 +154,6 @@ class Offer extends Model
         return $this->update(['statut' => 'vendue']);
     }
 
-    public static function getCategoriesOptions(): array
-    {
-        return [
-            'cereales' => 'Céréales & Grains',
-            'legumes' => 'Légumes & Fruits',
-            'elevage' => 'Élevage & Volaille',
-            'tubercules' => 'Tubercules',
-            'produits_transformes' => 'Produits Transformés',
-            'services' => 'Services Agricoles',
-        ];
-    }
-
     public static function getUnitesOptions(): array
     {
         return [
@@ -174,9 +169,59 @@ class Offer extends Model
     public static function getRegionsOptions(): array
     {
         return [
-            'Adamaoua', 'Centre', 'Est', 'Extrême-Nord',
-            'Littoral', 'Nord', 'Nord-Ouest', 'Ouest',
-            'Sud', 'Sud-Ouest'
+            'Adamaoua',
+            'Centre',
+            'Est',
+            'Extrême-Nord',
+            'Littoral',
+            'Nord',
+            'Nord-Ouest',
+            'Ouest',
+            'Sud',
+            'Sud-Ouest'
         ];
+    }
+
+    public function validator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'validated_by');
+    }
+
+    public function rejector(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'rejected_by');
+    }
+
+    // Scopes pour la modération
+    public function scopePending($query)
+    {
+        return $query->where('statut', 'en attente');
+    }
+
+    public function scopeValidated($query)
+    {
+        return $query->where('statut', 'validé');
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->where('statut', 'rejeté');
+    }
+
+    public function scopeSuspended($query)
+    {
+        return $query->where('statut', 'suspendue');
+    }
+
+    // Vérifier si l'offre nécessite une modération
+    public function needsModeration(): bool
+    {
+        return $this->statut === 'en attente';
+    }
+
+    // Vérifier si l'offre est validée
+    public function isValidated(): bool
+    {
+        return $this->statut === 'validé' && !is_null($this->date_validation);
     }
 }
