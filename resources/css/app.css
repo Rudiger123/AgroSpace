@@ -19,6 +19,12 @@
     font-style: normal;
 }
 
+@layer base {
+    body {
+        @apply font-sans antialiased;
+    }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -28,6 +34,10 @@
 
 .gradient-bg {
     background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #81C784 100%);
+}
+
+.gradient-cta {
+    background: linear-gradient(135deg, #1B5E20 0%, #81C784 100%);
 }
 
 .glass-effect {
@@ -48,4 +58,45 @@
 
 .animate-fade-in-up {
     animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+
+/* Scrollbar design global */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+ ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    /* gray-100 */
+    border-radius: 8px;
+}
+
+ ::-webkit-scrollbar-thumb {
+    background: #4CAF50;
+    /* ton vert Agrospace */
+    border-radius: 8px;
+}
+
+ ::-webkit-scrollbar-thumb:hover {
+    background: #388E3C;
 }
