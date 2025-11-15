@@ -4,48 +4,45 @@ namespace App\Livewire\Blog;
 
 use App\Models\Post;
 use App\Models\Comment;
-use App\Models\Category;
-use App\Models\Tag;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 #[Layout('layouts.main')]
 class BlogShowEnhanced extends Component
 {
     // Propriétés principales
     public Post $post;
-    
+
     // Commentaires
     #[Validate('required|string|min:3|max:1000')]
     public string $commentContent = '';
     public ?int $replyingTo = null;
     public bool $showAllComments = false;
-    
+
     // Réactions et interactions
     public bool $isLiked = false;
     public int $likesCount = 0;
     public int $commentsCount = 0;
     public int $viewsCount = 0;
     public int $sharesCount = 0;
-    
+
     // Suivi de lecture
     public int $readingProgress = 0;
     public int $timeSpent = 0;
     public bool $hasRead = false;
-    
+
     // Partage
     public bool $showShareModal = false;
     public string $shareUrl = '';
-    
+
     // Navigation
     public ?Post $previousPost = null;
     public ?Post $nextPost = null;
-    
+
     // Recommandations
     public $relatedPosts = [];
 
@@ -54,9 +51,9 @@ class BlogShowEnhanced extends Component
         // Récupérer l'article
         if ($slug) {
             $this->post = Post::with([
-                'author', 
-                'category', 
-                'tags', 
+                'author',
+                'category',
+                'tags',
                 'comments' => function ($query) {
                     $query->with(['user', 'replies.user'])
                         ->approved()
@@ -69,9 +66,9 @@ class BlogShowEnhanced extends Component
         } else {
             // Article le plus récent si aucun slug
             $this->post = Post::with([
-                'author', 
-                'category', 
-                'tags', 
+                'author',
+                'category',
+                'tags',
                 'comments' => function ($query) {
                     $query->with(['user', 'replies.user'])
                         ->approved()
@@ -88,30 +85,30 @@ class BlogShowEnhanced extends Component
         $this->commentsCount = $this->post->comments_count;
         $this->viewsCount = $this->post->views_count;
         $this->sharesCount = $this->post->shares_count;
-        
+
         // Vérifier si l'utilisateur a aimé l'article
         if (Auth::check()) {
             $this->isLiked = $this->post->hasLiked(Auth::user());
         }
-        
+
         // Incrémenter les vues
         $this->post->incrementViews(Auth::user());
         $this->viewsCount++;
-        
+
         // Récupérer les articles précédent et suivant
         $this->previousPost = Post::published()
             ->where('published_at', '<', $this->post->published_at)
             ->orderBy('published_at', 'desc')
             ->first();
-            
+
         $this->nextPost = Post::published()
             ->where('published_at', '>', $this->post->published_at)
             ->orderBy('published_at', 'asc')
             ->first();
-        
+
         // Récupérer les articles liés
         $this->relatedPosts = $this->post->getRelatedPosts(4);
-        
+
         // Générer l'URL de partage
         $this->shareUrl = route('blog.show', $this->post->slug);
     }
@@ -121,7 +118,7 @@ class BlogShowEnhanced extends Component
     {
         $query = $this->post->comments()
             ->with([
-                'user', 
+                'user',
                 'replies' => function ($query) {
                     $query->with('user')
                         ->approved()
@@ -129,11 +126,11 @@ class BlogShowEnhanced extends Component
                 }
             ])
             ->approved();
-            
+
         if (!$this->showAllComments) {
             $query->limit(5);
         }
-        
+
         return $query->latest()->get();
     }
 
@@ -186,7 +183,6 @@ class BlogShowEnhanced extends Component
             ]);
 
             $this->dispatch('comment-added');
-
         } catch (\Exception $e) {
             report($e);
             $this->dispatch('showAlert', [
@@ -236,7 +232,6 @@ class BlogShowEnhanced extends Component
                 'type' => 'success',
                 'message' => $this->isLiked ? 'Article aimé !' : 'Like retiré.'
             ]);
-
         } catch (\Exception $e) {
             report($e);
             $this->dispatch('showAlert', [
@@ -249,7 +244,7 @@ class BlogShowEnhanced extends Component
     public function share(string $platform)
     {
         $validPlatforms = ['facebook', 'twitter', 'linkedin', 'whatsapp', 'email'];
-        
+
         if (!in_array($platform, $validPlatforms)) {
             return;
         }
@@ -262,7 +257,6 @@ class BlogShowEnhanced extends Component
                 'type' => 'success',
                 'message' => 'Merci d\'avoir partagé cet article !'
             ]);
-
         } catch (\Exception $e) {
             report($e);
             $this->dispatch('showAlert', [
@@ -298,17 +292,17 @@ class BlogShowEnhanced extends Component
     {
         $content = strtolower($this->commentContent);
         $spamWords = [
-            'spam', 'viagra', 'casino', 'bitcoin', 'click here', 
+            'spam', 'viagra', 'casino', 'bitcoin', 'click here',
             'buy now', 'free money', 'get rich', 'weight loss'
         ];
-        
+
         $spamCount = 0;
         foreach ($spamWords as $word) {
             if (strpos($content, $word) !== false) {
                 $spamCount++;
             }
         }
-        
+
         return $spamCount > 2;
     }
 

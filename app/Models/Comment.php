@@ -29,10 +29,10 @@ class Comment extends Model
         'reports_count' => 'integer',
     ];
 
-    const STATUS_PENDING = 'pending';
-    const STATUS_APPROVED = 'approved';
-    const STATUS_REJECTED = 'rejected';
-    const STATUS_SPAM = 'spam';
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_APPROVED = 'approved';
+    public const STATUS_REJECTED = 'rejected';
+    public const STATUS_SPAM = 'spam';
 
     public function post(): BelongsTo
     {
@@ -98,7 +98,7 @@ class Comment extends Model
             'reason' => $reason,
             'ip_address' => request()->ip(),
         ]);
-        
+
         $this->increment('reports_count');
     }
 
@@ -116,12 +116,12 @@ class Comment extends Model
     {
         $depth = 0;
         $parent = $this->parent;
-        
+
         while ($parent) {
             $depth++;
             $parent = $parent->parent;
         }
-        
+
         return $depth;
     }
 }

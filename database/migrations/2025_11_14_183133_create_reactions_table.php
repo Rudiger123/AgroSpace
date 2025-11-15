@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
         Schema::create('reactions', function (Blueprint $table) {
@@ -14,7 +13,7 @@ return new class extends Migration
             $table->morphs('reactable');
             $table->string('type');
             $table->timestamps();
-            
+
             $table->unique(['user_id', 'reactable_id', 'reactable_type', 'type']);
             $table->index('user_id');
             $table->index('type');

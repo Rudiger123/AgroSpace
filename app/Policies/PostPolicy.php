@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class PostPolicy
 {
@@ -37,7 +36,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        return $user->isAdmin() || 
+        return $user->isAdmin() ||
                $user->id === $post->author_id ||
                ($user->isAdmin() && $post->published);
     }
@@ -71,7 +70,7 @@ class PostPolicy
      */
     public function publish(User $user, Post $post): bool
     {
-        return $user->isAdmin() || 
+        return $user->isAdmin() ||
                $user->id === $post->author_id;
     }
 

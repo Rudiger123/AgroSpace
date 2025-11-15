@@ -21,7 +21,7 @@ class BlogList extends Component
     public $sortBy = 'published_at';
     public $sortDirection = 'desc';
     public $perPage = 12;
-    
+
     // Affichage
     public $viewMode = 'grid'; // grid, list
     public $featuredPost = null;

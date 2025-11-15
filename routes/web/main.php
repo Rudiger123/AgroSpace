@@ -20,7 +20,6 @@ use Livewire\Volt\Volt;
  * Les Routes protegées
  */
 Route::middleware(['auth', 'verified', '2fa'])->group(function () {
-
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
     Route::get('/profile/settings', ProfileManagement::class)->name('profile');
@@ -41,7 +40,6 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
     // Modération des offres
     Route::get('/offers/moderation', ModerateOffers::class)
     ->name('offers.moderate');
-
 });
 
 /*
@@ -54,23 +52,22 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
 */
 
 Route::prefix('blog')->name('blog.')->group(function () {
-    
     // Page principale du blog - liste des articles
     Route::get('/', BlogList::class)->name('index');
-    
+
     // Affichage d'un article individuel
     Route::get('/{slug}', BlogShowEnhanced::class)->name('show');
-    
+
     // Recherche dans le blog
     Route::get('/search', function () {
         return redirect()->route('blog.index');
     })->name('search');
-    
+
     // Filtrage par catégorie
     Route::get('/category/{category}', function ($category) {
         return redirect()->route('blog.index', ['category' => $category]);
     })->name('category');
-    
+
     // Filtrage par tag
     Route::get('/tag/{tag}', function ($tag) {
         return redirect()->route('blog.index', ['tag' => $tag]);
@@ -79,41 +76,39 @@ Route::prefix('blog')->name('blog.')->group(function () {
 
 // Gestion du blog (administration)
 Route::prefix('admin/blog')->name('admin.blog.')->middleware(['auth', 'verified'])->group(function () {
-    
     // Gestion principale des articles
     Route::get('/', BlogManager::class)->name('index');
-    
+
     // Création d'un article
     Route::get('/create', function () {
         return redirect()->route('blog.index');
     })->name('create');
-    
+
     // Édition d'un article
     Route::get('/{post}/edit', function ($post) {
         return redirect()->route('blog.index');
     })->name('edit');
-    
+
     // API pour la gestion des catégories et tags
     Route::prefix('api')->name('api.')->group(function () {
-        
         // Gestion des catégories
         Route::get('/categories', function () {
             return \App\Models\Category::active()->ordered()->get();
         })->name('categories.index');
-        
+
         Route::post('/categories', function () {
             // Création de catégorie
         })->name('categories.store');
-        
+
         // Gestion des tags
         Route::get('/tags', function () {
             return \App\Models\Tag::active()->popular()->get();
         })->name('tags.index');
-        
+
         Route::post('/tags', function () {
             // Création de tag
         })->name('tags.store');
-        
+
         // Upload d'images
         Route::post('/upload-image', function () {
             // Gestion de l'upload d'images

@@ -19,9 +19,9 @@ class CommentReport extends Model
         'status',
     ];
 
-    const STATUS_PENDING = 'pending';
-    const STATUS_RESOLVED = 'resolved';
-    const STATUS_DISMISSED = 'dismissed';
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_RESOLVED = 'resolved';
+    public const STATUS_DISMISSED = 'dismissed';
 
     public function comment(): BelongsTo
     {

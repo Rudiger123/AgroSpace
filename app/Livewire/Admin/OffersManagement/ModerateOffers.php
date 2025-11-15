@@ -22,12 +22,12 @@ class ModerateOffers extends Component
     public $showRejectModal = false;
     public $showDeleteModal = false;
 
-    
+
     public $selectedOffer = null;
     public $offerId = null;
     public $validationNote = '';
     public $rejectionReason = '';
-    
+
     public $search = '';
     public $statusFilter = 'pending';
     public $categorieFilter = '';
@@ -79,9 +79,9 @@ class ModerateOffers extends Component
         $this->offerId = $id;
         $this->validationNote = '';
         $this->showValidateModal = true;
-         $this->showDetailsModal = false;
-         $this->showRejectModal = false;
-         $this->showDeleteModal = false;
+        $this->showDetailsModal = false;
+        $this->showRejectModal = false;
+        $this->showDeleteModal = false;
     }
 
     public function validateOffer()
@@ -90,7 +90,7 @@ class ModerateOffers extends Component
             DB::beginTransaction();
 
             $offer = Offer::findOrFail($this->offerId);
-            
+
             $offer->update([
                 'statut' => 'validé',
                 'date_validation' => now(),
@@ -99,16 +99,15 @@ class ModerateOffers extends Component
             ]);
 
             // TODO: Envoyer notification au producteur
-            
+
             DB::commit();
 
             $this->showValidateModal = false;
-            
+
             $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => 'Offre validée avec succès ! Le producteur a été notifié.'
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             $this->dispatch('toast', [
@@ -141,7 +140,7 @@ class ModerateOffers extends Component
             DB::beginTransaction();
 
             $offer = Offer::findOrFail($this->offerId);
-            
+
             $offer->update([
                 'statut' => 'rejeté',
                 'date_rejection' => now(),
@@ -150,16 +149,15 @@ class ModerateOffers extends Component
             ]);
 
             // TODO: Envoyer notification au producteur avec la raison
-            
+
             DB::commit();
 
             $this->showRejectModal = false;
-            
+
             $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => 'Offre rejetée. Le producteur a été notifié.'
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             $this->dispatch('toast', [
@@ -176,16 +174,15 @@ class ModerateOffers extends Component
             $offer->update([
                 'is_featured' => !$offer->is_featured
             ]);
-            
-            $message = $offer->is_featured 
-                ? 'Offre mise en avant avec succès' 
+
+            $message = $offer->is_featured
+                ? 'Offre mise en avant avec succès'
                 : 'Offre retirée de la mise en avant';
-            
+
             $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => $message
             ]);
-
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -199,19 +196,18 @@ class ModerateOffers extends Component
         try {
             $offer = Offer::findOrFail($id);
             $offer->update(['statut' => $status]);
-            
+
             $statusLabels = [
                 'actif' => 'active',
                 'expiré' => 'expirée',
                 'suspendue' => 'suspendue',
                 'archivé' => 'archivée'
             ];
-            
+
             $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => 'Statut changé en : ' . ($statusLabels[$status] ?? $status)
             ]);
-
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -233,22 +229,21 @@ class ModerateOffers extends Component
     {
         try {
             $offer = Offer::findOrFail($this->offerId);
-            
+
             // Supprimer les photos associées
             foreach ($offer->photos as $photo) {
                 // TODO: Supprimer les fichiers du storage
                 $photo->delete();
             }
-            
+
             $offer->delete();
-            
+
             $this->showDeleteModal = false;
-            
+
             $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => 'Offre supprimée définitivement'
             ]);
-
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -261,19 +256,18 @@ class ModerateOffers extends Component
     {
         try {
             $producer = User::findOrFail($producerId);
-            
+
             // Suspendre toutes les offres du producteur
             Offer::where('producer_id', $producerId)
                 ->where('statut', '!=', 'suspendue')
                 ->update(['statut' => 'suspendue']);
-            
+
             // TODO: Marquer l'utilisateur comme suspendue
-            
+
             $this->dispatch('toast', [
                 'type' => 'warning',
                 'message' => 'Producteur suspendue. Toutes ses offres ont été désactivées.'
             ]);
-
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -286,7 +280,7 @@ class ModerateOffers extends Component
     {
         try {
             $count = Offer::where('statut', 'en attente')
-                ->when($this->categorieFilter, function($query) {
+                ->when($this->categorieFilter, function ($query) {
                     $query->where('categorie', $this->categorieFilter);
                 })
                 ->update([
@@ -294,12 +288,11 @@ class ModerateOffers extends Component
                     'date_validation' => now(),
                     'validated_by' => Auth::user()->id,
                 ]);
-            
+
             $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => "$count offre(s) validée(s) en masse"
             ]);
-
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -311,58 +304,58 @@ class ModerateOffers extends Component
     public function render()
     {
         $offers = Offer::with(['producer', 'photos'])
-            ->when($this->search, function($query) {
-                $query->where(function($q) {
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
                     $q->where('titre', 'like', '%' . $this->search . '%')
                       ->orWhere('description', 'like', '%' . $this->search . '%')
                       ->orWhere('ville', 'like', '%' . $this->search . '%')
-                      ->orWhereHas('producer', function($producerQuery) {
+                      ->orWhereHas('producer', function ($producerQuery) {
                           $producerQuery->where('name', 'like', '%' . $this->search . '%');
                       });
                 });
             })
-            ->when($this->statusFilter !== 'all', function($query) {
+            ->when($this->statusFilter !== 'all', function ($query) {
                 if ($this->statusFilter === 'pending') {
                     $query->where('statut', 'en attente');
                 } else {
                     $query->where('statut', $this->statusFilter);
                 }
             })
-            ->when($this->categorieFilter, function($query) {
+            ->when($this->categorieFilter, function ($query) {
                 $query->where('categorie', $this->categorieFilter);
             })
-            ->when($this->regionFilter, function($query) {
+            ->when($this->regionFilter, function ($query) {
                 $query->where('region', $this->regionFilter);
             })
-            ->when($this->verifiedFilter !== 'all', function($query) {
+            ->when($this->verifiedFilter !== 'all', function ($query) {
                 if ($this->verifiedFilter === 'verified') {
                     $query->where('statut', 'validé');
                 } else {
                     $query->where('statut', '!=', 'validé');
                 }
             })
-            ->when($this->dateFrom, function($query) {
+            ->when($this->dateFrom, function ($query) {
                 $query->whereDate('date_publication', '>=', $this->dateFrom);
             })
-            ->when($this->dateTo, function($query) {
+            ->when($this->dateTo, function ($query) {
                 $query->whereDate('date_publication', '<=', $this->dateTo);
             })
-            ->when($this->sortBy === 'latest', function($query) {
+            ->when($this->sortBy === 'latest', function ($query) {
                 $query->latest('date_publication');
             })
-            ->when($this->sortBy === 'oldest', function($query) {
+            ->when($this->sortBy === 'oldest', function ($query) {
                 $query->oldest('date_publication');
             })
-            ->when($this->sortBy === 'most_viewed', function($query) {
+            ->when($this->sortBy === 'most_viewed', function ($query) {
                 $query->orderBy('views_count', 'desc');
             })
-            ->when($this->sortBy === 'most_contacted', function($query) {
+            ->when($this->sortBy === 'most_contacted', function ($query) {
                 $query->orderBy('contacts_count', 'desc');
             })
-            ->when($this->sortBy === 'price_high', function($query) {
+            ->when($this->sortBy === 'price_high', function ($query) {
                 $query->orderBy('prix', 'desc');
             })
-            ->when($this->sortBy === 'price_low', function($query) {
+            ->when($this->sortBy === 'price_low', function ($query) {
                 $query->orderBy('prix', 'asc');
             })
             ->paginate(15);

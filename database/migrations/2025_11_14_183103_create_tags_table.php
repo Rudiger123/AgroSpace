@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
         Schema::create('tags', function (Blueprint $table) {
@@ -16,7 +15,7 @@ return new class extends Migration
             $table->string('color', 50)->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-            
+
             $table->index('is_active');
         });
 
@@ -24,7 +23,7 @@ return new class extends Migration
             $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
             $table->foreignId('tag_id')->constrained('tags')->onDelete('cascade');
             $table->timestamps();
-            
+
             $table->primary(['post_id', 'tag_id']);
             $table->index('post_id');
             $table->index('tag_id');

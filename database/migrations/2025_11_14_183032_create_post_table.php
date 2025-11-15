@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
@@ -28,14 +27,13 @@ return new class extends Migration
             $table->integer('reading_time')->default(0);
             $table->enum('status', ['draft', 'published', 'scheduled'])->default('draft');
             $table->timestamps();
-            
+
             $table->index(['published', 'published_at']);
             $table->index('author_id');
             $table->index('category_id');
             $table->index('status');
             $table->fullText(['title', 'content', 'excerpt']);
         });
-
     }
 
     public function down(): void

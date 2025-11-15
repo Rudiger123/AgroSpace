@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
         Schema::create('comment_reports', function (Blueprint $table) {
@@ -17,7 +16,7 @@ return new class extends Migration
             $table->string('ip_address');
             $table->enum('status', ['pending', 'resolved', 'dismissed'])->default('pending');
             $table->timestamps();
-            
+
             $table->index(['comment_id', 'status']);
             $table->index('user_id');
         });

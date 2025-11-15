@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             BlogSeeder::class
         ]);
 
-     
+
 
         User::factory()->hasOffers(10)->create([
             'email' => 'rudi@gmail.com',

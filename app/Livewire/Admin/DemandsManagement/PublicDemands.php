@@ -19,14 +19,14 @@ class PublicDemands extends Component
 
     public $showResponseModal = false;
     public $showDetailsModal = false;
-    
+
     public $selectedDemandId = null;
     public $selectedDemand = null;
     public $message = '';
     public $proposed_price = '';
     public $contact_phone = '';
     public $contact_email = '';
-    
+
     public $search = '';
     public $categoryFilter = '';
     public $regionFilter = '';
@@ -114,14 +114,13 @@ class PublicDemands extends Component
             $demand->incrementContacts();
 
             $this->showResponseModal = false;
-            
+
             $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => 'Votre réponse a été envoyée avec succès !'
             ]);
 
             // TODO: Envoyer une notification au demandeur
-
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -133,7 +132,7 @@ class PublicDemands extends Component
     public function viewDetails($id)
     {
         $demand = Demand::with(['category', 'user'])->findOrFail($id);
-        
+
         // Incrémenter le compteur de vues
         if (!Auth::check() || $demand->user_id !== Auth::user()->id) {
             $demand->incrementViews();
@@ -149,32 +148,32 @@ class PublicDemands extends Component
         $demands = Demand::with(['category', 'user'])
             ->where('status', 'active')
             ->where('user_id', '!=', Auth::user()->id ?? 0)
-            ->when($this->search, function($query) {
-                $query->where(function($q) {
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
                     $q->where('title', 'like', '%' . $this->search . '%')
                       ->orWhere('description', 'like', '%' . $this->search . '%')
                       ->orWhere('city', 'like', '%' . $this->search . '%');
                 });
             })
-            ->when($this->categoryFilter, function($query) {
+            ->when($this->categoryFilter, function ($query) {
                 $query->where('category_id', $this->categoryFilter);
             })
-            ->when($this->regionFilter, function($query) {
+            ->when($this->regionFilter, function ($query) {
                 $query->where('region', $this->regionFilter);
             })
-            ->when($this->urgencyFilter, function($query) {
+            ->when($this->urgencyFilter, function ($query) {
                 $query->where('urgency', $this->urgencyFilter);
             })
-            ->when($this->sortBy === 'latest', function($query) {
+            ->when($this->sortBy === 'latest', function ($query) {
                 $query->latest();
             })
-            ->when($this->sortBy === 'urgent', function($query) {
+            ->when($this->sortBy === 'urgent', function ($query) {
                 $query->orderByRaw("CASE urgency WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 END");
             })
-            ->when($this->sortBy === 'popular', function($query) {
+            ->when($this->sortBy === 'popular', function ($query) {
                 $query->orderBy('views_count', 'desc');
             })
-            ->when($this->sortBy === 'expiring', function($query) {
+            ->when($this->sortBy === 'expiring', function ($query) {
                 $query->orderBy('validity_date', 'asc');
             })
             ->paginate(12);

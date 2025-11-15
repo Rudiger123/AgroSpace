@@ -125,7 +125,7 @@ class BlogSeeder extends Seeder
 
         foreach ($demoPosts as $postData) {
             $category = Category::where('slug', $postData['category'])->first();
-            
+
             $post = Post::create([
                 'title' => $postData['title'],
                 'slug' => Str::slug($postData['title']),

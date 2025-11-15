@@ -13,17 +13,17 @@ use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Ckeditor\CKEditor;
 
 #[Layout('layouts.app')]
 class BlogManager extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithPagination;
+    use WithFileUploads;
 
     // États du formulaire
     public $mode = 'list'; // list, create, edit
     public $selectedPost = null;
-    
+
     // Champs du formulaire
     public $title = '';
     public $slug = '';
@@ -37,7 +37,7 @@ class BlogManager extends Component
     public $published_at = '';
     public $meta_title = '';
     public $meta_description = '';
-    
+
     // Filtres
     public $search = '';
     public $filterCategory = '';
@@ -45,7 +45,7 @@ class BlogManager extends Component
     public $filterAuthor = '';
     public $sortBy = 'published_at';
     public $sortDirection = 'desc';
-    
+
     // Validation
     protected function rules()
     {
@@ -88,7 +88,7 @@ class BlogManager extends Component
             'featured_image', 'existing_image', 'published', 'published_at',
             'meta_title', 'meta_description', 'selectedPost'
         ]);
-        
+
         $this->published_at = now()->format('Y-m-d\TH:i');
     }
 
@@ -106,10 +106,10 @@ class BlogManager extends Component
     {
         $post = Post::findOrFail($postId);
         $this->authorize('update', $post);
-        
+
         $this->selectedPost = $post;
         $this->mode = 'edit';
-        
+
         // Remplir le formulaire
         $this->title = $post->title;
         $this->slug = $post->slug;
@@ -122,7 +122,7 @@ class BlogManager extends Component
         $this->published_at = $post->published_at?->format('Y-m-d\TH:i') ?? '';
         $this->meta_title = $post->meta_title;
         $this->meta_description = $post->meta_description;
-        
+
         $this->dispatch('focus-title');
     }
 
@@ -136,20 +136,20 @@ class BlogManager extends Component
     public function save()
     {
         $this->validate();
-        
+
         try {
             $imagePath = $this->existing_image;
-            
+
             // Gérer l'upload de l'image
             if ($this->featured_image) {
                 // Supprimer l'ancienne image si elle existe
                 if ($this->existing_image) {
                     Storage::disk('public')->delete($this->existing_image);
                 }
-                
+
                 $imagePath = $this->featured_image->store('blog/images', 'public');
             }
-            
+
             $postData = [
                 'title' => $this->title,
                 'slug' => $this->slug,
@@ -163,7 +163,7 @@ class BlogManager extends Component
                 'meta_description' => $this->meta_description ?: Str::limit(strip_tags($this->content), 160),
                 'status' => $this->published ? 'published' : 'draft',
             ];
-            
+
             if ($this->mode === 'create') {
                 $postData['author_id'] = Auth::id();
                 $this->selectedPost = Post::create($postData);
@@ -172,22 +172,21 @@ class BlogManager extends Component
                 $this->selectedPost->update($postData);
                 $message = 'Article mis à jour avec succès !';
             }
-            
+
             // Synchroniser les tags
             if (!empty($this->tags)) {
                 $this->selectedPost->tags()->sync($this->tags);
             }
-            
+
             $this->mode = 'list';
             $this->resetForm();
-            
+
             $this->dispatch('showAlert', [
                 'type' => 'success',
                 'message' => $message
             ]);
-            
+
             $this->dispatch('post-saved');
-            
         } catch (\Exception $e) {
             report($e);
             $this->dispatch('showAlert', [
@@ -202,22 +201,21 @@ class BlogManager extends Component
     {
         $post = Post::findOrFail($postId);
         $this->authorize('delete', $post);
-        
+
         try {
             // Supprimer l'image associée
             if ($post->featured_image) {
                 Storage::disk('public')->delete($post->featured_image);
             }
-            
+
             $post->delete();
-            
+
             $this->dispatch('showAlert', [
                 'type' => 'success',
                 'message' => 'Article supprimé avec succès !'
             ]);
-            
+
             $this->dispatch('post-deleted');
-            
         } catch (\Exception $e) {
             report($e);
             $this->dispatch('showAlert', [
@@ -231,20 +229,19 @@ class BlogManager extends Component
     {
         $post = Post::findOrFail($postId);
         $this->authorize('update', $post);
-        
+
         try {
             $post->published = !$post->published;
             $post->published_at = $post->published ? now() : null;
             $post->status = $post->published ? 'published' : 'draft';
             $post->save();
-            
+
             $message = $post->published ? 'Article publié !' : 'Article dépublié !';
-            
+
             $this->dispatch('showAlert', [
                 'type' => 'success',
                 'message' => $message
             ]);
-            
         } catch (\Exception $e) {
             report($e);
             $this->dispatch('showAlert', [
@@ -264,11 +261,11 @@ class BlogManager extends Component
     {
         $query = Post::with(['author', 'category', 'tags'])
             ->search($this->search);
-            
+
         if ($this->filterCategory) {
             $query->where('category_id', $this->filterCategory);
         }
-        
+
         if ($this->filterStatus) {
             if ($this->filterStatus === 'published') {
                 $query->published();
@@ -278,13 +275,13 @@ class BlogManager extends Component
                 $query->scheduled();
             }
         }
-        
+
         if ($this->filterAuthor && Auth::user()->isAdmin()) {
             $query->where('author_id', $this->filterAuthor);
         } else {
             $query->where('author_id', Auth::id());
         }
-        
+
         return $query->orderBy($this->sortBy, $this->sortDirection)
                     ->paginate(10);
     }

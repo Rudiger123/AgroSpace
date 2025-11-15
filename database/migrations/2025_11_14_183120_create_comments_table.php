@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
         Schema::create('comments', function (Blueprint $table) {
@@ -20,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('likes_count')->default(0);
             $table->bigInteger('reports_count')->default(0);
             $table->timestamps();
-            
+
             $table->index(['post_id', 'status']);
             $table->index('user_id');
             $table->index('parent_id');

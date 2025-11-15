@@ -19,13 +19,13 @@ class DemandFactory extends Factory
         return [
             'category_id' => 1,
             'title' => $this->faker->text,
-            'description'=> $this->faker->text(100),
-            'quantity'=> $this->faker->numberBetween(1,100),
-            'city'=> $this->faker->city,
+            'description' => $this->faker->text(100),
+            'quantity' => $this->faker->numberBetween(1, 100),
+            'city' => $this->faker->city,
             'region' => "Ouest",
-            'validity_date'=> $this->faker->date(),
-            'budget'=> $this->faker->numberBetween(500, 10000),
-            'views_count'=> $this->faker->numberBetween(10,50),
+            'validity_date' => $this->faker->date(),
+            'budget' => $this->faker->numberBetween(500, 10000),
+            'views_count' => $this->faker->numberBetween(10, 50),
         ];
     }
 }
