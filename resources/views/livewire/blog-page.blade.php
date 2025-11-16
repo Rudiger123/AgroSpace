@@ -281,7 +281,7 @@ new #[Layout('layouts.main')] class extends Component {
     <section class="py-20 bg-gradient-to-r from-emerald-400 to-green-600">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-4xl font-bold text-white mb-6">
-                Restez informé des dernières nouvelles
+                📬 Restez informé des dernières nouvelles
             </h2>
             <p class="text-xl text-green-50 mb-8">
                 Recevez les innovations agricoles et les histoires inspirantes directement dans votre boîte mail.
@@ -292,7 +292,7 @@ new #[Layout('layouts.main')] class extends Component {
                     <input type="email" placeholder="Votre adresse email"
                         class="flex-1 px-6 py-4 rounded-xl border-0 focus:ring-2 focus:ring-white focus:outline-none">
                     <button type="submit"
-                        class="bg-white text-[#1B5E20] px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-lg">
+                        class="bg-[#1B5E20] text-primary-100 px-8 py-4 rounded-xl font-bold hover:bg-green-600 transition shadow-lg">
                         S'abonner
                     </button>
                 </div>

@@ -22,6 +22,7 @@ class Post extends Model
         'featured_image',
         'author_id',
         'category_id',
+        'is_featured',
         'published',
         'published_at',
         'meta_title',
@@ -41,6 +42,7 @@ class Post extends Model
         'likes_count' => 'integer',
         'comments_count' => 'integer',
         'shares_count' => 'integer',
+        'is_featured' => 'boolean'
     ];
 
     protected $appends = ['reading_time', 'formatted_published_date'];

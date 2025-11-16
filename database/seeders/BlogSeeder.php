@@ -124,7 +124,6 @@ class BlogSeeder extends Seeder
         ];
 
         foreach ($demoPosts as $postData) {
-            $category = Category::where('slug', $postData['category'])->first();
 
             $post = Post::create([
                 'title' => $postData['title'],
@@ -132,7 +131,7 @@ class BlogSeeder extends Seeder
                 'excerpt' => $postData['excerpt'],
                 'content' => $postData['content'],
                 'author_id' => $author->id,
-                'category_id' => $category?->id,
+                'category_id' => random_int(1,4),
                 'published' => true,
                 'published_at' => now()->subDays(rand(1, 30)),
                 'views_count' => rand(100, 5000),

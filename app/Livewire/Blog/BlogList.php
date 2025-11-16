@@ -7,88 +7,147 @@ use App\Models\Category;
 use App\Models\Tag;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Url;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 
+/**
+ * Composant Livewire - Liste des articles du blog AgroSpace
+ * 
+ * Design moderne avec hero section et filtres dynamiques
+ */
 #[Layout('layouts.main')]
 class BlogList extends Component
 {
     use WithPagination;
 
-    // Filtres et recherche
-    public $search = '';
-    public $category = '';
-    public $tag = '';
-    public $sortBy = 'published_at';
-    public $sortDirection = 'desc';
-    public $perPage = 12;
+    // Propriétés publiques (synchronisées avec l'URL)
+    #[Url(as: 'q')]
+    public string $search = '';
 
-    // Affichage
-    public $viewMode = 'grid'; // grid, list
-    public $featuredPost = null;
+    #[Url(as: 'category')]
+    public ?string $selectedCategory = 'tous';
 
-    public function mount()
+    #[Url(as: 'tag')]
+    public ?string $selectedTag = null;
+
+    #[Url(as: 'sort')]
+    public string $sortBy = 'recent'; // recent, popular, likes
+
+    public int $perPage = 9;
+
+    /**
+     * Réinitialiser la pagination lors des changements
+     */
+    public function updatingSearch()
     {
-        // Récupérer l'article en vedette (le plus récent ou le plus populaire)
-        $this->featuredPost = Post::published()
-            ->with(['author', 'category'])
-            ->orderBy('views_count', 'desc')
-            ->orderBy('published_at', 'desc')
-            ->first();
-    }
-
-    #[On('search-updated')]
-    public function updateSearch($search)
-    {
-        $this->search = $search;
         $this->resetPage();
     }
 
-    #[On('filter-updated')]
-    public function updateFilter($type, $value)
+    public function updatingSelectedCategory()
     {
-        if ($type === 'category') {
-            $this->category = $value;
-        } elseif ($type === 'tag') {
-            $this->tag = $value;
-        }
         $this->resetPage();
     }
 
-    public function clearFilters()
+    public function updatingSelectedTag()
     {
-        $this->reset(['search', 'category', 'tag']);
         $this->resetPage();
     }
 
-    public function setSort($field, $direction)
+    /**
+     * Computed property pour l'article vedette
+     */
+    #[Computed]
+    public function featuredPost()
     {
-        $this->sortBy = $field;
-        $this->sortDirection = $direction;
-        $this->resetPage();
+        return Post::with(['author', 'category', 'tags'])
+            ->published()
+            ->where('is_featured', true)
+            ->latest('published_at')
+            ->first() 
+            ?? Post::with(['author', 'category', 'tags'])
+                ->published()
+                ->orderBy('views_count', 'desc')
+                ->first();
     }
 
-    public function toggleViewMode()
+    /**
+     * Computed property pour les catégories
+     */
+    #[Computed]
+    public function categories()
     {
-        $this->viewMode = $this->viewMode === 'grid' ? 'list' : 'grid';
+        return Category::where('type', 'post')
+            ->where('is_active', true)
+            ->with(['posts' => function ($query) {
+                $query->where('status', 'published')
+                      ->where('published_at', '<=', now());
+            }])
+            ->orderBy('name')
+            ->get();
     }
 
-    public function getPostsProperty()
+    /**
+     * Computed property pour les tags populaires
+     */
+    #[Computed]
+    public function popularTags()
     {
-        $query = Post::published()
-            ->with(['author', 'category', 'tags'])
-            ->search($this->search);
+        $popularTags = Tag::withCount(['posts' => function ($query) {
+            $query->where('status', 'published')
+                  ->where('published_at', '<=', now());
+        }])
+        // ->having('posts_count', '>', 0)
+        ->orderBy('posts_count', 'desc')
+        ->limit(15)
+        ->get();
+        return $popularTags;
+    }
 
-        if ($this->category) {
-            $query->where('category_id', $this->category);
-        }
+    /**
+     * Computed property pour les articles récents (sidebar)
+     */
+    #[Computed]
+    public function recentPosts()
+    {
+        return Post::with('category')
+            ->published()
+            ->latest('published_at')
+            ->limit(5)
+            ->get();
+    }
 
-        if ($this->tag) {
-            $query->whereHas('tags', function ($q) {
-                $q->where('tags.id', $this->tag);
+    /**
+     * Computed property pour les articles
+     */
+    #[Computed]
+    public function posts()
+    {
+        $query = Post::with(['author', 'category', 'tags'])
+            ->published();
+
+        // Recherche
+        if (!empty($this->search)) {
+            $query->where(function ($q) {
+                $q->where('title', 'like', "%{$this->search}%")
+                  ->orWhere('excerpt', 'like', "%{$this->search}%")
+                  ->orWhere('content', 'like', "%{$this->search}%");
             });
         }
 
-        // Trier selon les préférences
+        // Filtre par catégorie
+        if ($this->selectedCategory && $this->selectedCategory !== 'tous') {
+            $query->where('category_id', $this->selectedCategory);
+        }
+
+        // Filtre par tag
+        if ($this->selectedTag) {
+            $query->whereHas('tags', function ($q) {
+                $q->where('tags.id', $this->selectedTag);
+            });
+        }
+
+        // Tri
         switch ($this->sortBy) {
             case 'popular':
                 $query->orderBy('views_count', 'desc');
@@ -96,64 +155,68 @@ class BlogList extends Component
             case 'likes':
                 $query->orderBy('likes_count', 'desc');
                 break;
-            case 'recent':
             default:
-                $query->orderBy('published_at', 'desc');
+                $query->latest('published_at');
                 break;
         }
 
         return $query->paginate($this->perPage);
     }
 
-    public function getCategoriesProperty()
+    /**
+     * Computed property pour les statistiques
+     */
+    #[Computed]
+    public function stats()
     {
-        return Category::where("is_active", true)
-            //->withCount(['posts' => function ($query) {$query->published();}])
-            //->ordered()
-            ->get();
+        return [
+            'total_posts' => Post::published()->count(),
+            'categories_count' => $this->categories->count(),
+            'tags_count' => $this->popularTags->count(),
+        ];
     }
 
-    public function getPopularTagsProperty()
+    /**
+     * Sélectionner une catégorie
+     */
+    public function selectCategory(string $categoryId)
     {
-        return Tag::active()
-            ->withCount(['posts' => function ($query) {
-                $query->published();
-            }])
-            ->orderBy('posts_count', 'desc')
-            ->limit(20)
-            ->get();
+        $this->selectedCategory = $categoryId;
+        $this->selectedTag = null;
+        $this->resetPage();
     }
 
-    public function getRecentPostsProperty()
+    /**
+     * Sélectionner un tag
+     */
+    public function selectTag(int $tagId)
     {
-        return Post::published()
-            ->with('category')
-            ->orderBy('published_at', 'desc')
-            ->limit(5)
-            ->get();
+        $this->selectedTag = $tagId;
+        $this->resetPage();
     }
 
-    public function getPopularPostsProperty()
+    /**
+     * Réinitialiser tous les filtres
+     */
+    public function resetFilters()
     {
-        return Post::published()
-            ->with('category')
-            ->orderBy('views_count', 'desc')
-            ->limit(5)
-            ->get();
+        $this->reset(['search', 'selectedCategory', 'selectedTag', 'sortBy']);
+        $this->selectedCategory = 'tous';
+        $this->resetPage();
     }
 
+    /**
+     * Render du composant
+     */
     public function render()
     {
         return view('livewire.blog.blog-list', [
+            'featuredPost' => $this->featuredPost,
             'posts' => $this->posts,
             'categories' => $this->categories,
             'popularTags' => $this->popularTags,
             'recentPosts' => $this->recentPosts,
-            'popularPosts' => $this->popularPosts,
-        ])
-        ->layout('layouts.main', [
-            'title' => 'Blog - AgroSpace',
-            'description' => 'Découvrez les actualités et innovations du monde agropastoral',
+            'stats' => $this->stats,
         ]);
     }
 }

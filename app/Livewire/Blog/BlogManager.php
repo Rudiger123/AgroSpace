@@ -229,6 +229,7 @@ class BlogManager extends Component
         $this->showEditModal = false;
         $this->showPreviewModal = false;
         $this->selectedPost = null;
+        $this->resetForm();
     }
 
     public function preview($postId)
@@ -249,18 +250,15 @@ class BlogManager extends Component
             $post->save();
 
             $message = $post->published ? 'Article publié !' : 'Article dépublié !';
-            session()->flash('success', $message);
+            $this->dispatch('toast',[
+                'type' => 'success',
+                'message' => $message
+            ]);
 
         } catch (\Exception $e) {
             report($e);
             session()->flash('error', 'Erreur lors de la mise à jour du statut.');
         }
-    }
-
-    public function cancel()
-    {
-        $this->mode = 'list';
-        $this->resetForm();
     }
 
     public function updatedSearch()

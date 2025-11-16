@@ -11,7 +11,7 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'slug', 'icon', 'color', 'description', 'is_active'
+        'name', 'slug', 'icon', 'color', 'description', 'is_active', 'type'
     ];
 
     protected $casts = [
@@ -24,6 +24,10 @@ class Category extends Model
     }
 
     // gestion des categories
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
     
     public function getRouteKeyName()
     {

@@ -16,6 +16,7 @@ return new class () extends Migration {
             $table->string('featured_image')->nullable();
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
+            $table->boolean('is_featured')->default('false');
             $table->boolean('published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->string('meta_title')->nullable();
