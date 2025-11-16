@@ -18,7 +18,8 @@ class BlogManager extends Component
     use WithFileUploads;
 
     // États du composant
-    public $mode = 'list';
+    public $showCreateModal = false;
+    public $showEditModal = false;
     public $selectedPost = null;
     public $showDeleteModal = false;
     public $showPreviewModal = false;
@@ -88,24 +89,23 @@ class BlogManager extends Component
         ]);
 
         $this->published_at = now()->format('Y-m-d\TH:i');
-        $this->mode = 'list';
     }
 
-    public function create()
+    public function openCreateModal()
     {
         $this->authorize('create', Post::class);
-        $this->mode = 'create';
+        $this->showCreateModal = true;
         $this->resetForm();
         $this->dispatch('focus-title');
     }
 
-    public function edit($postId)
+    public function openEditModal($postId)
     {
         $post = Post::findOrFail($postId);
         $this->authorize('update', $post);
 
         $this->selectedPost = $post;
-        $this->mode = 'edit';
+        $this->showEditModal = true;
 
         // Remplir le formulaire
         $this->title = $post->title;
@@ -120,7 +120,6 @@ class BlogManager extends Component
         $this->meta_title = $post->meta_title;
         $this->meta_description = $post->meta_description;
 
-        $this->dispatch('focus-title');
     }
 
     public function generateSlug()
@@ -159,11 +158,12 @@ class BlogManager extends Component
                 'status' => $this->published ? 'published' : 'draft',
             ];
 
-            if ($this->mode === 'create') {
+            if ($this->showCreateModal) {
                 $postData['author_id'] = Auth::id();
                 $this->selectedPost = Post::create($postData);
                 $message = 'Article créé avec succès !';
-            } else {
+            }
+            if($this->showEditModal) {
                 $this->selectedPost->update($postData);
                 $message = 'Article mis à jour avec succès !';
             }
@@ -172,11 +172,13 @@ class BlogManager extends Component
             if (!empty($this->tags)) {
                 $this->selectedPost->tags()->sync($this->tags);
             }
-
-            $this->mode = 'list';
+            $this->closeModals();
             $this->resetForm();
 
-            session()->flash('success', $message);
+            $this->dispatch('toast',[
+                'type' => 'success',
+                'message' => $message
+            ]);
 
         } catch (\Exception $e) {
             report($e);
@@ -204,10 +206,15 @@ class BlogManager extends Component
             }
 
             $this->selectedPost->delete();
-            $this->showDeleteModal = false;
-            $this->selectedPost = null;
+            $this->closeModals();
 
-            session()->flash('success', 'Article supprimé avec succès !');
+            $message ='Article supprimé avec succès !';
+
+            $this->dispatch('toast',[
+                'type' => 'success',
+                'message' => $message
+            ]);
+
 
         } catch (\Exception $e) {
             report($e);
@@ -215,9 +222,12 @@ class BlogManager extends Component
         }
     }
 
-    public function closeDeleteModal()
+    public function closeModals()
     {
         $this->showDeleteModal = false;
+        $this->showCreateModal = false;
+        $this->showEditModal = false;
+        $this->showPreviewModal = false;
         $this->selectedPost = null;
     }
 
@@ -225,12 +235,6 @@ class BlogManager extends Component
     {
         $this->selectedPost = Post::findOrFail($postId);
         $this->showPreviewModal = true;
-    }
-
-    public function closePreviewModal()
-    {
-        $this->showPreviewModal = false;
-        $this->selectedPost = null;
     }
 
     public function togglePublish($postId)

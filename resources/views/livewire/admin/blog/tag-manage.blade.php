@@ -329,7 +329,7 @@
                                 @if($tag->color)
                                     <div class="w-6 h-6 rounded-full border-2 border-agro-white shadow-lg" 
                                          style="background-color: {{ $tag->color }}"></div>
-                                    <span class="text-sm font-mono text-agro-gray font-inter">{{ $tag->color }}</span>
+                                    <span class="text-sm text-agro-gray font-inter">{{ $tag->color }}</span>
                                 @else
                                     <div class="w-6 h-6 rounded-full bg-gradient-to-r from-primary-400 to-primary-600 border-2 border-agro-white shadow-lg"></div>
                                     <span class="text-sm text-primary-500 font-inter">Couleur par défaut</span>
@@ -342,7 +342,7 @@
                             <h3 class="text-xl font-bold text-agro-gray mb-1 font-poppins group-hover:text-agro-green transition-colors duration-300">
                                 {{ $tag->name }}
                             </h3>
-                            <p class="text-sm text-primary-500 font-mono font-inter">{{ $tag->slug }}</p>
+                            <p class="text-sm text-primary-500 font-inter">{{ $tag->slug }}</p>
                         </div>
 
                         <!-- Description -->
@@ -471,7 +471,7 @@
                                 <input type="text" 
                                        wire:model="color" 
                                        placeholder="#22c55e"
-                                       class="flex-1 px-6 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-mono text-lg">
+                                       class="flex-1 px-6 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 text-lg">
                             </div>
                             
                             <!-- Préréglages de couleurs -->
