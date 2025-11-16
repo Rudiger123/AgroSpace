@@ -243,7 +243,7 @@ class OffresList extends Component
                                ->where('is_featured', true)
                                ->take(3)
                                ->get();
-                               
+
         return view('livewire.admin.offers-management.offres-list', [
             'offres' => $offres,
             'featuredOffres' => $featuredOffres,

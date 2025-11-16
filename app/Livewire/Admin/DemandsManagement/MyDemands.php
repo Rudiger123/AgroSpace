@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 
 #[Layout("layouts.app")]

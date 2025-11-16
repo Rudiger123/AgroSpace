@@ -35,7 +35,6 @@ class Demand extends Model
     }
 
     public function responses()
-    
     {
         return $this->hasMany(DemandResponse::class);
     }
@@ -72,7 +71,7 @@ class Demand extends Model
 
     public function getUrgencyBadgeColorAttribute(): string
     {
-        return match($this->urgency) {
+        return match ($this->urgency) {
             'high' => 'bg-red-100 text-red-700',
             'medium' => 'bg-yellow-100 text-yellow-700',
             'low' => 'bg-green-100 text-green-700',
@@ -82,7 +81,7 @@ class Demand extends Model
 
     public function getStatusBadgeColorAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'active' => 'bg-green-100 text-green-700',
             'satisfied' => 'bg-blue-100 text-blue-700',
             'expired' => 'bg-gray-100 text-gray-700',

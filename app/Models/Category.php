@@ -11,7 +11,7 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'slug', 'icon', 'color', 'description', 'is_active'
+        'name', 'slug', 'icon', 'color', 'description', 'is_active', 'type'
     ];
 
     protected $casts = [
@@ -21,5 +21,27 @@ class Category extends Model
     public function demands()
     {
         return $this->hasMany(Demand::class);
+    }
+
+    // gestion des categories
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
     }
 }

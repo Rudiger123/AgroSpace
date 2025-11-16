@@ -779,7 +779,7 @@
                                     </div>
                                 </div>
 
-                                </lab>
+                            </label>
 
                         </div>
 
@@ -1098,7 +1098,7 @@
                                             <!-- Badge statut -->
                                             <div class="absolute top-4 right-4">
 
-                                               @if($selectedOffer->statut === 'vendue')
+                                                @if ($selectedOffer->statut === 'vendue')
                                                     <span
                                                         class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">Vendue</span>
                                                 @elseif($selectedOffer->statut === 'validé')

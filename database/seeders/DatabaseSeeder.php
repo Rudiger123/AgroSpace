@@ -19,9 +19,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             CategorySeeder::class,
+            BlogSeeder::class
         ]);
 
-     
+
 
         User::factory()->hasOffers(10)->create([
             'email' => 'rudi@gmail.com',

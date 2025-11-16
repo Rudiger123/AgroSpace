@@ -30,7 +30,7 @@ class DemandResponse extends Model
 
     public function getStatusBadgeColorAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'accepted' => 'bg-green-100 text-green-700',
             'rejected' => 'bg-red-100 text-red-700',
             'pending' => 'bg-yellow-100 text-yellow-700',
