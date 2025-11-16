@@ -110,9 +110,10 @@
                                     {{ $featuredPost->category->name }}
                                 </span>
                             @endif
-                            <h3 class="text-3xl font-bold text-gray-900 mb-4 group-hover:text-green-600 transition">
+                            <a href="{{ route('blog.show', $featuredPost->slug) }}" wire:navigate
+                             class="text-3xl font-bold text-gray-900 mb-4 group-hover:text-green-600 transition">
                                 {{ $featuredPost->title }}
-                            </h3>
+                            </a>
                             @if($featuredPost->subtitle)
                                 <p class="text-lg text-gray-700 mb-4 font-medium">{{ $featuredPost->subtitle }}</p>
                             @endif
@@ -346,37 +347,37 @@
     <section class="py-20 bg-emerald-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Explorez par thématique</h2>
-                <p class="text-xl text-gray-600">Trouvez les sujets qui vous intéressent</p>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Impact d'AgroSpace</h2>
+                <p class="text-xl text-gray-600">Statistiques de la plateforme</p>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <a href="#"
                     class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2 text-center group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition">🌱</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Agriculture durable</h3>
-                    <p class="text-sm text-gray-600">{{ \App\Models\Post::count() }} articles</p>
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition">📚</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Articles</h3>
+                    <p class="text-3xl font-bold text-[#1B5E20]">{{ $stats['total_posts'] }}</p>
                 </a>
 
                 <a href="#"
                     class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2 text-center group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition">🚜</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Innovation & technologie</h3>
-                    <p class="text-sm text-gray-600">{{ \App\Models\Comment::count() }} Commentaires</p>
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition">💬</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Commentaires</h3>
+                    <p class="text-3xl font-bold text-[#1B5E20]">{{ \App\Models\Comment::count() }}</p>
                 </a>
 
                 <a href="#"
                     class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2 text-center group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition">👩‍🌾</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Témoignages de producteurs</h3>
-                    <p class="text-sm text-gray-600">{{ \App\Models\Post::count() }} likes</p>
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition">👀</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Tags</h3>
+                    <p class="text-3xl font-bold text-[#1B5E20]">{{ $stats['tags_count'] }}</p>
                 </a>
 
                 <a href="#"
                     class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2 text-center group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition">💰</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Financements & subventions</h3>
-                    <p class="text-sm text-gray-600">{{ \App\Models\Post::count() }} views</p>
+                    <div class="text-5xl mb-4 group-hover:scale-110 transition">❤️</div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Categories</h3>
+                    <p class="text-3xl font-bold text-[#1B5E20]">{{ $stats['categories_count'] }}</p>
                 </a>
             </div>
         </div>
