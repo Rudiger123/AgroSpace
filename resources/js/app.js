@@ -2,6 +2,9 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import Swal from 'sweetalert2';
 import persist from '@alpinejs/persist';
+import { Picker } from 'emoji-mart'
+window.EmojiMart = { Picker }
+
 
 // Nous ne devons pas initialiser Alpine ici, Livewire le fera.
 // Mais nous devons enregistrer le plugin lorsque Alpine est disponible.

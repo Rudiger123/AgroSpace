@@ -22,4 +22,22 @@ class Category extends Model
     {
         return $this->hasMany(Demand::class);
     }
+
+    // gestion des categories
+    
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+    }
 }

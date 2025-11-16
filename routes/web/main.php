@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\Admin\Blog\CategoryManage;
+use App\Livewire\Admin\Blog\TagManage;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\DemandsManagement\DemandsManage;
 use App\Livewire\Admin\DemandsManagement\MyDemands;
@@ -40,6 +42,13 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
     // Modération des offres
     Route::get('/offers/moderation', ModerateOffers::class)
     ->name('offers.moderate');
+
+    // Gestion des catégories
+    Route::get('/categories', CategoryManage::class)->name('categories.index');
+
+      // Gestion des tags
+      Route::get('/tags', TagManage::class)->name('tags.index');
+      
 });
 
 /*

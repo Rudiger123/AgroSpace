@@ -8,21 +8,20 @@ use App\Models\Tag;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-#[Layout('layouts.app')]
 class BlogManager extends Component
 {
     use WithPagination;
     use WithFileUploads;
 
-    // États du formulaire
-    public $mode = 'list'; // list, create, edit
+    // États du composant
+    public $mode = 'list';
     public $selectedPost = null;
+    public $showDeleteModal = false;
+    public $showPreviewModal = false;
 
     // Champs du formulaire
     public $title = '';
@@ -46,7 +45,6 @@ class BlogManager extends Component
     public $sortBy = 'published_at';
     public $sortDirection = 'desc';
 
-    // Validation
     protected function rules()
     {
         return [
@@ -90,9 +88,9 @@ class BlogManager extends Component
         ]);
 
         $this->published_at = now()->format('Y-m-d\TH:i');
+        $this->mode = 'list';
     }
 
-    #[On('create-post')]
     public function create()
     {
         $this->authorize('create', Post::class);
@@ -101,7 +99,6 @@ class BlogManager extends Component
         $this->dispatch('focus-title');
     }
 
-    #[On('edit-post')]
     public function edit($postId)
     {
         $post = Post::findOrFail($postId);
@@ -142,11 +139,9 @@ class BlogManager extends Component
 
             // Gérer l'upload de l'image
             if ($this->featured_image) {
-                // Supprimer l'ancienne image si elle existe
                 if ($this->existing_image) {
                     Storage::disk('public')->delete($this->existing_image);
                 }
-
                 $imagePath = $this->featured_image->store('blog/images', 'public');
             }
 
@@ -181,48 +176,61 @@ class BlogManager extends Component
             $this->mode = 'list';
             $this->resetForm();
 
-            $this->dispatch('showAlert', [
-                'type' => 'success',
-                'message' => $message
-            ]);
+            session()->flash('success', $message);
 
-            $this->dispatch('post-saved');
         } catch (\Exception $e) {
             report($e);
-            $this->dispatch('showAlert', [
-                'type' => 'error',
-                'message' => 'Une erreur est survenue. Veuillez réessayer.'
-            ]);
+            session()->flash('error', 'Une erreur est survenue. Veuillez réessayer.');
         }
     }
 
-    #[On('delete-post')]
-    public function delete($postId)
+    public function confirmDelete($postId)
     {
-        $post = Post::findOrFail($postId);
-        $this->authorize('delete', $post);
+        $this->selectedPost = Post::findOrFail($postId);
+        $this->showDeleteModal = true;
+    }
+
+    public function delete()
+    {
+        if (!$this->selectedPost) {
+            return;
+        }
+
+        $this->authorize('delete', $this->selectedPost);
 
         try {
-            // Supprimer l'image associée
-            if ($post->featured_image) {
-                Storage::disk('public')->delete($post->featured_image);
+            if ($this->selectedPost->featured_image) {
+                Storage::disk('public')->delete($this->selectedPost->featured_image);
             }
 
-            $post->delete();
+            $this->selectedPost->delete();
+            $this->showDeleteModal = false;
+            $this->selectedPost = null;
 
-            $this->dispatch('showAlert', [
-                'type' => 'success',
-                'message' => 'Article supprimé avec succès !'
-            ]);
+            session()->flash('success', 'Article supprimé avec succès !');
 
-            $this->dispatch('post-deleted');
         } catch (\Exception $e) {
             report($e);
-            $this->dispatch('showAlert', [
-                'type' => 'error',
-                'message' => 'Erreur lors de la suppression de l\'article.'
-            ]);
+            session()->flash('error', 'Erreur lors de la suppression de l\'article.');
         }
+    }
+
+    public function closeDeleteModal()
+    {
+        $this->showDeleteModal = false;
+        $this->selectedPost = null;
+    }
+
+    public function preview($postId)
+    {
+        $this->selectedPost = Post::findOrFail($postId);
+        $this->showPreviewModal = true;
+    }
+
+    public function closePreviewModal()
+    {
+        $this->showPreviewModal = false;
+        $this->selectedPost = null;
     }
 
     public function togglePublish($postId)
@@ -237,17 +245,11 @@ class BlogManager extends Component
             $post->save();
 
             $message = $post->published ? 'Article publié !' : 'Article dépublié !';
+            session()->flash('success', $message);
 
-            $this->dispatch('showAlert', [
-                'type' => 'success',
-                'message' => $message
-            ]);
         } catch (\Exception $e) {
             report($e);
-            $this->dispatch('showAlert', [
-                'type' => 'error',
-                'message' => 'Erreur lors de la mise à jour du statut.'
-            ]);
+            session()->flash('error', 'Erreur lors de la mise à jour du statut.');
         }
     }
 
@@ -257,28 +259,71 @@ class BlogManager extends Component
         $this->resetForm();
     }
 
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedFilterCategory()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedFilterStatus()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedFilterAuthor()
+    {
+        $this->resetPage();
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sortBy === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+        }
+
+        $this->sortBy = $field;
+    }
+
     public function getPostsProperty()
     {
-        $query = Post::with(['author', 'category', 'tags'])
-            ->search($this->search);
+        $query = Post::with(['author', 'category', 'tags']);
 
+        // Recherche
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('title', 'like', '%' . $this->search . '%')
+                  ->orWhere('content', 'like', '%' . $this->search . '%')
+                  ->orWhere('excerpt', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        // Filtre par catégorie
         if ($this->filterCategory) {
             $query->where('category_id', $this->filterCategory);
         }
 
+        // Filtre par statut
         if ($this->filterStatus) {
             if ($this->filterStatus === 'published') {
-                $query->published();
+                $query->where('published', true);
             } elseif ($this->filterStatus === 'draft') {
-                $query->draft();
+                $query->where('published', false);
             } elseif ($this->filterStatus === 'scheduled') {
-                $query->scheduled();
+                $query->where('published_at', '>', now());
             }
         }
 
+        // Filtre par auteur
         if ($this->filterAuthor && Auth::user()->isAdmin()) {
             $query->where('author_id', $this->filterAuthor);
-        } else {
+        } elseif (!Auth::user()->isAdmin()) {
+            // Les non-admins ne voient que leurs propres articles
             $query->where('author_id', Auth::id());
         }
 
@@ -293,7 +338,7 @@ class BlogManager extends Component
 
     public function getAllTagsProperty()
     {
-        return Tag::active()->popular()->get();
+        return Tag::where('is_active', true)->orderBy('name')->get();
     }
 
     public function getAuthorsProperty()
@@ -311,8 +356,7 @@ class BlogManager extends Component
             'categories' => $this->categories,
             'allTags' => $this->allTags,
             'authors' => $this->authors,
-        ])
-        ->layout('layouts.app', [
+        ])->layout('layouts.app', [
             'title' => 'Gestion du Blog',
             'description' => 'Gérez vos articles de blog',
         ]);

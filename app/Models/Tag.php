@@ -61,4 +61,22 @@ class Tag extends Model
     {
         return $this->color ?? 'bg-blue-500';
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+    }
+
+    // Générer automatiquement le slug
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
+    }
 }
