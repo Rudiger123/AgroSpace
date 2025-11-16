@@ -260,16 +260,22 @@
                                 </svg>
                                 {{ $post->published ? 'Publié' : 'Brouillon' }}
                             </span>
+                            @if ($post->is_featured)
+                                <span class="inline-block  px-4 py-2">
+                                    ⭐
+                                </span>
+                            @endif
                         </div>
                     </div>
 
                     <!-- Contenu -->
                     <div class="p-6">
                         <div class="mb-4">
-                            <h3
+                            <a href="{{ route('blog.show', $post->slug) }}" wire:navigate
                                 class="text-xl font-bold text-agro-gray mb-2 font-poppins group-hover:text-agro-green transition-colors duration-300">
                                 {{ $post->title }}
-                            </h3>
+                            </a>
+
                             <p class="text-agro-gray text-sm font-inter line-clamp-2">
                                 {{ $post->excerpt ?: Str::limit(strip_tags($post->content), 120) }}
                             </p>
@@ -360,6 +366,18 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                 </button>
+                                @can('update', $post)
+                                    <button wire:click="toggleFeatured({{ $post->id }})"
+                                        class="p-2 {{ $post->is_featured ? 'text-yellow-600 bg-yellow-50' : 'text-gray-600 hover:bg-gray-50' }} rounded-lg transition"
+                                        title="{{ $post->is_featured ? 'Retirer de la vedette' : 'Mettre en vedette' }}">
+                                        <svg class="w-5 h-5" fill="{{ $post->is_featured ? 'currentColor' : 'none' }}"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                @endcan
                                 @can('delete', $post)
                                     <button wire:click="confirmDelete({{ $post->id }})"
                                         class="w-8 h-8 rounded-full flex items-center justify-center bg-red-100 text-red-600 hover:bg-red-200 transition-all duration-300 transform hover:scale-110"
@@ -403,7 +421,7 @@
                         <p class="text-agro-gray mb-8 font-inter">
                             Commencez votre aventure blogging en créant votre premier article magnifique.
                         </p>
-                        <button wire:click="create"
+                        <button wire:click="openCreateModal"
                             class="group bg-gradient-to-r from-agro-green to-primary-700 hover:from-primary-700 hover:to-base text-agro-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-agro-green focus:ring-opacity-50 font-poppins">
                             <svg class="inline-block w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300"
                                 fill="currentColor" viewBox="0 0 20 20">

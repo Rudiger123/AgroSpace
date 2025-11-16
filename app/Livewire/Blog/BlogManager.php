@@ -119,7 +119,6 @@ class BlogManager extends Component
         $this->published_at = $post->published_at?->format('Y-m-d\TH:i') ?? '';
         $this->meta_title = $post->meta_title;
         $this->meta_description = $post->meta_description;
-
     }
 
     public function generateSlug()
@@ -163,7 +162,7 @@ class BlogManager extends Component
                 $this->selectedPost = Post::create($postData);
                 $message = 'Article créé avec succès !';
             }
-            if($this->showEditModal) {
+            if ($this->showEditModal) {
                 $this->selectedPost->update($postData);
                 $message = 'Article mis à jour avec succès !';
             }
@@ -175,11 +174,10 @@ class BlogManager extends Component
             $this->closeModals();
             $this->resetForm();
 
-            $this->dispatch('toast',[
+            $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => $message
             ]);
-
         } catch (\Exception $e) {
             report($e);
             session()->flash('error', 'Une erreur est survenue. Veuillez réessayer.');
@@ -208,14 +206,12 @@ class BlogManager extends Component
             $this->selectedPost->delete();
             $this->closeModals();
 
-            $message ='Article supprimé avec succès !';
+            $message = 'Article supprimé avec succès !';
 
-            $this->dispatch('toast',[
+            $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => $message
             ]);
-
-
         } catch (\Exception $e) {
             report($e);
             session()->flash('error', 'Erreur lors de la suppression de l\'article.');
@@ -250,14 +246,37 @@ class BlogManager extends Component
             $post->save();
 
             $message = $post->published ? 'Article publié !' : 'Article dépublié !';
-            $this->dispatch('toast',[
+            $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => $message
             ]);
-
         } catch (\Exception $e) {
             report($e);
             session()->flash('error', 'Erreur lors de la mise à jour du statut.');
+        }
+    }
+
+    public function toggleFeatured($id)
+    {
+        try {
+            $post = Post::findOrFail($id);
+            $post->update([
+                'is_featured' => !$post->is_featured
+            ]);
+
+            $message = $post->is_featured
+                ? 'Article mise en avant avec succès'
+                : 'Article retirée de la mise en avant';
+
+            $this->dispatch('toast', [
+                'type' => 'success',
+                'message' => $message
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('toast', [
+                'type' => 'error',
+                'message' => 'Erreur lors de l\'opération'
+            ]);
         }
     }
 

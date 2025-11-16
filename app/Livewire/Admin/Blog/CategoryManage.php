@@ -103,12 +103,13 @@ class CategoryManage extends Component
 
         if ($this->categoryId) {
             Category::find($this->categoryId)->update($data);
-            session()->flash('message', 'Catégorie mise à jour avec succès.');
+            $message = 'Catégorie mise à jour avec succès.';
         } else {
             Category::create($data);
-            session()->flash('message', 'Catégorie créée avec succès.');
+            $message = 'Catégorie créée avec succès.';
         }
 
+        $this->message($message);
         $this->closeModal();
         $this->resetInputFields();
     }
@@ -122,7 +123,8 @@ class CategoryManage extends Component
     public function delete()
     {
         Category::find($this->categoryId)->delete();
-        session()->flash('message', 'Catégorie supprimée avec succès.');
+        $message = 'Catégorie supprimée avec succès.';
+        $this->message($message);
         $this->closeDeleteModal();
     }
 
@@ -131,8 +133,17 @@ class CategoryManage extends Component
         $category = Category::find($id);
         $category->is_active = !$category->is_active;
         $category->save();
-        
-        session()->flash('message', 'Statut de la catégorie mis à jour.');
+
+        $message =  'Statut de la catégorie mis à jour.';
+        $this->message($message);
+    }
+
+    public function message($message)
+    {
+        $this->dispatch('toast', [
+            'type' => 'success',
+            'message' => $message
+        ]);
     }
 
     private function resetInputFields()
@@ -158,9 +169,11 @@ class CategoryManage extends Component
 
     public function render()
     {
-        $categories = Category::search($this->search)
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(10);
+        $query = Category::orderBy($this->sortField, $this->sortDirection);
+        if ($this->search) {
+            $query->search($this->search);
+        }
+        $categories = $query->paginate(12);
 
         return view('livewire.admin.blog.category-manage', [
             'categories' => $categories,

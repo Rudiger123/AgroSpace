@@ -88,9 +88,8 @@
                 <div class="bg-white rounded-3xl shadow-2xl overflow-hidden hover:shadow-3xl transition-all duration-300 group">
                     <div class="grid md:grid-cols-2 gap-0">
                         <div class="relative h-64 md:h-full overflow-hidden">
-                            @if($featuredPost->cover_image)
-                                <img src="{{ $featuredPost->cover_image_url }}" 
-                                     alt="{{ $featuredPost->title }}"
+                             @if($featuredPost->featured_image)
+                                   <img src="{{ Storage::url($featuredPost->featured_image) }}" alt="{{ $featuredPost->title }}"
                                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                             @else
                                 <div class="w-full h-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
@@ -233,9 +232,8 @@
                     <article class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group">
                         <a href="{{ route('blog.show', $post->slug) }}" wire:navigate>
                             <div class="relative h-48 overflow-hidden">
-                                @if($post->cover_image)
-                                    <img src="{{ $post->cover_image_url }}" 
-                                         alt="{{ $post->title }}"
+                                @if($post->featured_image)
+                                   <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}"
                                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                 @else
                                     <div class="w-full h-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
@@ -421,7 +419,7 @@
             <p class="text-xl text-green-100 mb-8">
                 C'est une communauté agricole qui avance ensemble vers un avenir durable et prospère.
             </p>
-            <a href="/inscription"
+            <a href="{{ route('register') }}"
                 class="inline-block bg-white text-[#1B5E20] px-10 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-xl transform hover:-translate-y-1">
                 Rejoindre la communauté
             </a>

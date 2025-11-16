@@ -1,126 +1,67 @@
-<div class="min-h-screen bg-gradient-to-br from-agro-beige via-agro-white to-primary-50" x-data="tagManager()">
-    <!-- Notifications -->
-    <div x-data="{ notifications: [] }" 
-         @notify.window="notifications.push({type: $event.detail.type, message: $event.detail.message, icon: $event.detail.icon}); setTimeout(() => notifications.shift(), 5000)"
-         class="fixed top-4 right-4 z-50 space-y-2">
-        <template x-for="(notification, index) in notifications" :key="index">
-            <div x-show="notification" 
-                 x-transition:enter="transform ease-out duration-300 transition"
-                 x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
-                 x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
-                 x-transition:leave="transition ease-in duration-100"
-                 x-transition:leave-start="opacity-100"
-                 x-transition:leave-end="opacity-0"
-                 :class="{
-                     'bg-agro-green': notification.type === 'success',
-                     'bg-red-600': notification.type === 'error',
-                     'bg-primary-600': notification.type === 'info',
-                 }"
-                 class="max-w-sm w-full shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
-                <div class="p-4">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0">
-                            <svg class="w-5 h-5 text-agro-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <template x-if="notification.type === 'success'">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </template>
-                                <template x-if="notification.type === 'error'">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </template>
-                                <template x-if="notification.type === 'info'">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </template>
-                            </svg>
-                        </div>
-                        <div class="ml-3 w-0 flex-1 pt-0.5">
-                            <p class="text-sm font-medium text-agro-white font-inter" x-text="notification.message"></p>
-                        </div>
-                        <div class="ml-4 flex-shrink-0 flex">
-                            <button @click="notifications.splice(index, 1)" class="rounded-md inline-flex text-agro-white hover:text-agro-beige focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </template>
-    </div>
+<div x-data="tagManager()">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Header avec animations -->
-        <div class="relative overflow-hidden bg-gradient-to-r from-agro-green via-primary-700 to-base rounded-2xl shadow-2xl mb-8">
-            <div class="absolute inset-0 bg-black opacity-10"></div>
-            <div class="relative px-8 py-12">
-                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                    <div class="mb-6 lg:mb-0">
-                        <h1 class="text-4xl lg:text-5xl font-bold text-agro-white mb-4 font-poppins animate-slide-up flex items-center">
-                            <!-- SVG Hashtag -->
-                            <svg class="w-10 h-10 mr-4 text-agro-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+         <!-- Header -->
+         <div class="bg-agro-white rounded-xl shadow-lg p-6 mb-6 border border-primary-100">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-agro-green font-poppins"># Gestion des Tags</h1>
+                    <p class="text-agro-gray mt-2 font-inter">Organisez et catégorisez vos contenus avec style</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4 animate-slide-up animation-delay-400">
+                    <button wire:click="create" 
+                            class="group bg-gradient-to-br from-agro-green to-primary-700 hover:to-yellow-500 text-primary-100 px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-agro-yellow focus:ring-opacity-50 font-poppins flex items-center">
+                        <!-- SVG Plus -->
+                        <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Nouveau Tag
+                    </button>
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" 
+                                class="bg-gradient-to-br from-earth-500 to-earth-600 bg-opacity-20 hover:bg-opacity-30 text-agro-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-agro-white focus:ring-opacity-50 font-poppins flex items-center">
+                            <!-- SVG Ellipsis Vertical -->
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
                             </svg>
-                            Gestion des Tags
-                        </h1>
-                        <p class="text-agro-beige text-lg font-inter opacity-90 animate-slide-up animation-delay-200">
-                            Organisez et catégorisez vos contenus avec style
-                        </p>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-4 animate-slide-up animation-delay-400">
-                        <button wire:click="create" 
-                                class="group bg-agro-yellow hover:bg-yellow-500 text-agro-green px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-agro-yellow focus:ring-opacity-50 font-poppins flex items-center">
-                            <!-- SVG Plus -->
-                            <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                            Nouveau Tag
+                            Plus d'actions
                         </button>
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" 
-                                    class="bg-agro-white bg-opacity-20 hover:bg-opacity-30 text-agro-white px-6 py-4 rounded-xl font-semibold transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-agro-white focus:ring-opacity-50 font-poppins flex items-center">
-                                <!-- SVG Ellipsis Vertical -->
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                                </svg>
-                                Plus d'actions
-                            </button>
-                            <div x-show="open" 
-                                 @click.away="open = false"
-                                 x-transition:enter="transition ease-out duration-200"
-                                 x-transition:enter-start="transform opacity-0 scale-95"
-                                 x-transition:enter-end="transform opacity-100 scale-100"
-                                 x-transition:leave="transition ease-in duration-75"
-                                 x-transition:leave-start="transform opacity-100 scale-100"
-                                 x-transition:leave-end="transform opacity-0 scale-95"
-                                 class="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-agro-white ring-1 ring-black ring-opacity-5 z-50">
-                                <div class="py-1">
-                                    <button wire:click="export" 
-                                            class="group flex items-center px-4 py-3 text-sm text-agro-gray hover:bg-primary-50 w-full text-left transition-colors duration-200">
-                                        <!-- SVG Download -->
-                                        <svg class="w-4 h-4 mr-3 text-primary-600 group-hover:text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        <div x-show="open" 
+                             @click.away="open = false"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="transform opacity-0 scale-95"
+                             x-transition:enter-end="transform opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="transform opacity-100 scale-100"
+                             x-transition:leave-end="transform opacity-0 scale-95"
+                             class="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-agro-white ring-1 ring-black ring-opacity-5 z-50">
+                            <div class="py-1">
+                                <button wire:click="export" 
+                                        class="group flex items-center px-4 py-3 text-sm text-agro-gray hover:bg-primary-50 w-full text-left transition-colors duration-200">
+                                    <!-- SVG Download -->
+                                    <svg class="w-4 h-4 mr-3 text-primary-600 group-hover:text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                    Exporter CSV
+                                </button>
+                                <button wire:click="$set('showImportModal', true)" 
+                                        class="group flex items-center px-4 py-3 text-sm text-agro-gray hover:bg-primary-50 w-full text-left transition-colors duration-200">
+                                    <!-- SVG Upload -->
+                                    <svg class="w-4 h-4 mr-3 text-primary-600 group-hover:text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                    </svg>
+                                    Importer CSV
+                                </button>
+                                @if(count($selectedTags) > 0)
+                                    <button wire:click="$set('showBulkModal', true)" 
+                                            class="group flex items-center px-4 py-3 text-sm text-red-600 hover:bg-red-50 w-full text-left transition-colors duration-200">
+                                        <!-- SVG Trash -->
+                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                         </svg>
-                                        Exporter CSV
+                                        Supprimer la sélection ({{ count($selectedTags) }})
                                     </button>
-                                    <button wire:click="$set('showImportModal', true)" 
-                                            class="group flex items-center px-4 py-3 text-sm text-agro-gray hover:bg-primary-50 w-full text-left transition-colors duration-200">
-                                        <!-- SVG Upload -->
-                                        <svg class="w-4 h-4 mr-3 text-primary-600 group-hover:text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                                        </svg>
-                                        Importer CSV
-                                    </button>
-                                    @if(count($selectedTags) > 0)
-                                        <button wire:click="$set('showBulkModal', true)" 
-                                                class="group flex items-center px-4 py-3 text-sm text-red-600 hover:bg-red-50 w-full text-left transition-colors duration-200">
-                                            <!-- SVG Trash -->
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                            </svg>
-                                            Supprimer la sélection ({{ count($selectedTags) }})
-                                        </button>
-                                    @endif
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -138,7 +79,7 @@
                             <input type="text" 
                                    wire:model.debounce.500ms="search" 
                                    placeholder="Rechercher un tag..."
-                                   class="w-full pl-12 pr-4 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg">
+                                   class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
                             <!-- SVG Search -->
                             <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -158,7 +99,7 @@
                     <!-- Tri -->
                     <div>
                         <select wire:model="sortField" 
-                                class="w-full px-4 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter">
+                        class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
                             <option value="name">Trier par nom</option>
                             <option value="created_at">Date de création</option>
                             <option value="color">Couleur</option>
@@ -169,7 +110,7 @@
                     <!-- Direction du tri -->
                     <div>
                         <button wire:click="sortBy('{{ $sortField }}')" 
-                                class="w-full px-4 py-4 bg-primary-100 hover:bg-primary-200 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 font-inter font-medium">
+                                class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 bg-primary-100 hover:bg-primary-200 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 font-inter font-medium">
                             <span>Ordre</span>
                             <!-- SVG Sort -->
                             <svg class="w-5 h-5 text-agro-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">

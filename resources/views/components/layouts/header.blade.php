@@ -20,7 +20,7 @@
                     class="text-gray-700 hover:text-primary transition-colors font-medium">Consommateurs</a>
                 <a href="{{ route('about.page') }}" wire:navigate
                     class="text-gray-700 hover:text-primary transition-colors font-medium">À propos</a>
-                <a href="{{ route('blog.page') }}" wire:navigate
+                <a href="{{ route('blog.index') }}" wire:navigate
                     class="text-gray-700 hover:text-primary transition-colors font-medium">Blog</a>
 
                 <!-- Authentication Section -->
@@ -323,7 +323,7 @@
                 class="block text-gray-700 hover:text-primary font-medium py-2">Consommateurs</a>
             <a href="{{ route('about.page') }}" @click="mobileMenuOpen = false" wire:navigate
                 class="block text-gray-700 hover:text-primary font-medium py-2">À propos</a>
-            <a href="{{ route('blog.page') }}" @click="mobileMenuOpen = false" wire:navigate
+            <a href="{{ route('blog.index') }}" @click="mobileMenuOpen = false" wire:navigate
                 class="block text-gray-700 hover:text-primary font-medium py-2">Blog</a>
 
             @auth
@@ -352,13 +352,6 @@
                         class="block text-gray-700 hover:text-primary font-medium py-2">💬 Messages</a>
                     <a href="{{ route('profile') }}" @click="mobileMenuOpen = false" wire:navigate
                         class="block text-gray-700 hover:text-primary font-medium py-2">⚙️ Paramètres</a>
-
-                    <form class="mt-3">
-                        @csrf
-                        <button type="submit" class="w-full text-left text-red-600 hover:text-red-700 font-medium py-2">
-                            🚪 Déconnexion
-                        </button>
-                    </form>
                 </div>
             @else
                 <div class="border-t border-gray-200 pt-3 mt-3 space-y-2">
@@ -374,6 +367,7 @@
                         </svg>
                         <span>Connexion</span>
                     </a>
+
 
                     <a href="{{ route('register') }}" wire:navigate
                         class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold 

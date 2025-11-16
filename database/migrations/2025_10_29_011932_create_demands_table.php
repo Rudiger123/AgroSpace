@@ -11,7 +11,7 @@ return new class () extends Migration {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->enum('type',['post','offer','demand'])->default('post');
+            $table->enum('type', ['post','offer','demand'])->default('post');
             $table->string('icon')->nullable();
             $table->string('color')->default('#22c55e');
             $table->text('description')->nullable();

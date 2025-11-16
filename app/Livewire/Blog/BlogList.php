@@ -13,7 +13,7 @@ use Livewire\Attributes\Layout;
 
 /**
  * Composant Livewire - Liste des articles du blog AgroSpace
- * 
+ *
  * Design moderne avec hero section et filtres dynamiques
  */
 #[Layout('layouts.main')]
@@ -64,10 +64,9 @@ class BlogList extends Component
             ->published()
             ->where('is_featured', true)
             ->latest('published_at')
-            ->first() 
+            ->first()
             ?? Post::with(['author', 'category', 'tags'])
                 ->published()
-                ->orderBy('views_count', 'desc')
                 ->first();
     }
 

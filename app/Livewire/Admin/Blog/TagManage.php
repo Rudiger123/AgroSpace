@@ -14,7 +14,8 @@ use Livewire\Attributes\Title;
 #[Title('Gestion des Tags')]
 class TagManage extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithPagination;
+    use WithFileUploads;
 
     // Propriétés pour le formulaire
     public $showModal = false;
@@ -26,7 +27,7 @@ class TagManage extends Component
     public $description;
     public $color;
     public $is_active = true;
-    
+
     // Propriétés pour la recherche et filtrage
     public $search = '';
     public $sortField = 'created_at';
@@ -34,11 +35,11 @@ class TagManage extends Component
     public $perPage = 12;
     public $selectedTags = [];
     public $selectAll = false;
-    
+
     // Propriétés pour l'import/export
     public $importFile;
     public $showImportModal = false;
-    
+
     // Préréglages de couleurs
     public $colorPresets = [
         '#22c55e', '#16a34a', '#15803d', '#166534', '#14532d',
@@ -132,14 +133,14 @@ class TagManage extends Component
 
         if ($this->tagId) {
             Tag::find($this->tagId)->update($data);
-            $this->dispatch('notify', [
+            $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => 'Tag mis à jour avec succès !',
                 'icon' => 'check-circle'
             ]);
         } else {
             Tag::create($data);
-            $this->dispatch('notify', [
+            $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => 'Tag créé avec succès !',
                 'icon' => 'plus-circle'
@@ -159,7 +160,7 @@ class TagManage extends Component
     public function delete()
     {
         Tag::find($this->tagId)->delete();
-        $this->dispatch('notify', [
+        $this->dispatch('toast', [
             'type' => 'error',
             'message' => 'Tag supprimé avec succès !',
             'icon' => 'trash'
@@ -170,7 +171,7 @@ class TagManage extends Component
     public function bulkDelete()
     {
         Tag::whereIn('id', $this->selectedTags)->delete();
-        $this->dispatch('notify', [
+        $this->dispatch('toast', [
             'type' => 'error',
             'message' => count($this->selectedTags) . ' tags supprimés avec succès !',
             'icon' => 'trash'
@@ -185,8 +186,8 @@ class TagManage extends Component
         $tag = Tag::find($id);
         $tag->is_active = !$tag->is_active;
         $tag->save();
-        
-        $this->dispatch('notify', [
+
+        $this->dispatch('toast', [
             'type' => 'success',
             'message' => 'Statut du tag mis à jour !',
             'icon' => 'toggle-on'
@@ -201,7 +202,7 @@ class TagManage extends Component
         $newTag->slug = Str::slug($newTag->name);
         $newTag->save();
 
-        $this->dispatch('notify', [
+        $this->dispatch('toast', [
             'type' => 'info',
             'message' => 'Tag dupliqué avec succès !',
             'icon' => 'copy'
@@ -212,7 +213,7 @@ class TagManage extends Component
     {
         $tags = Tag::all();
         $csv = "Nom,Slug,Description,Couleur,Statut\n";
-        
+
         foreach ($tags as $tag) {
             $csv .= "{$tag->name},{$tag->slug},\"{$tag->description}\",{$tag->color}," . ($tag->is_active ? 'Actif' : 'Inactif') . "\n";
         }
@@ -237,7 +238,7 @@ class TagManage extends Component
 
         $file = fopen($this->importFile->getRealPath(), 'r');
         $header = fgetcsv($file); // Skip header
-        
+
         $imported = 0;
         while ($row = fgetcsv($file)) {
             Tag::create([
@@ -249,10 +250,10 @@ class TagManage extends Component
             ]);
             $imported++;
         }
-        
+
         fclose($file);
 
-        $this->dispatch('notify', [
+        $this->dispatch('toast', [
             'type' => 'success',
             'message' => "{$imported} tags importés avec succès !",
             'icon' => 'upload'

@@ -1,5 +1,5 @@
 <div>
-    <div class="p-6 bg-agro-beige min-h-screen">
+    <div class="p-6">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <div class="bg-agro-white rounded-xl shadow-lg p-6 mb-6 border border-primary-100">
