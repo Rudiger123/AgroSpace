@@ -344,44 +344,261 @@
     </section>
 
     <!-- Thématiques populaires -->
-    <section class="py-20 bg-emerald-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Impact d'AgroSpace</h2>
-                <p class="text-xl text-gray-600">Statistiques de la plateforme</p>
+    <section class="py-20 bg-gradient-to-br from-green-50 via-emerald-50 to-yellow-50 relative overflow-hidden">
+        <!-- Decorative Background Elements -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-72 h-72 bg-green-400 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-yellow-400 rounded-full blur-3xl"></div>
+        </div>
+    
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Header -->
+            <div class="text-center mb-16 animate-fade-in-up">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl mb-6 shadow-2xl transform hover:scale-110 transition-transform">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">
+                    L'Impact d'<span class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-700">AgroSpace</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                    Une communauté dynamique qui partage, apprend et grandit ensemble
+                </p>
             </div>
-
+    
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Stat 1: Articles Publiés -->
+                <div class="group">
+                    <a href="{{ route('blog.index') }}"
+                       class="block bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 border-2 border-transparent hover:border-green-200 overflow-hidden relative">
+                        <!-- Gradient Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-green-500/5 to-green-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="relative">
+                            <!-- Icon -->
+                            <div class="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
+                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                </svg>
+                            </div>
+                            
+                            <!-- Label -->
+                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">Articles Publiés</h3>
+                            
+                            <!-- Value -->
+                            <p class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-700 mb-2">
+                                {{ number_format($stats['total_posts'] ?? 0) }}
+                            </p>
+                            
+                            <!-- Additional Info -->
+                            <div class="flex items-center space-x-2 text-sm text-green-600">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="font-semibold">+{{ $stats['posts_this_month'] ?? 0 }} ce mois</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+    
+                <!-- Stat 2: Vues Totales -->
+                <div class="group">
+                    <div class="bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 border-2 border-transparent hover:border-blue-200 overflow-hidden relative cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="relative">
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
+                                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                            </div>
+                            
+                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">Vues Totales</h3>
+                            
+                            <p class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700 mb-2">
+                                {{ number_format($stats['total_views'] ?? 0) }}
+                            </p>
+                            
+                            <div class="flex items-center space-x-2 text-sm text-blue-600">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="font-semibold">Aujourd'hui: {{ number_format($stats['views_today'] ?? 0) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Stat 3: Commentaires -->
+                <div class="group">
+                    <a href="{{ route('blog.index') }}#comments"
+                       class="block bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 border-2 border-transparent hover:border-purple-200 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="relative">
+                            <div class="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
+                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                </svg>
+                            </div>
+                            
+                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">Commentaires</h3>
+                            
+                            <p class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-purple-700 mb-2">
+                                {{ number_format($stats['total_comments'] ?? 0) }}
+                            </p>
+                            
+                            <div class="flex items-center space-x-2 text-sm text-purple-600">
+                                <svg class="w-4 h-4 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"></path>
+                                    <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"></path>
+                                </svg>
+                                <span class="font-semibold">{{ $stats['approved_comments'] ?? 0 }} approuvés</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+    
+                <!-- Stat 4: Réactions (Likes) -->
+                <div class="group">
+                    <div class="bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 border-2 border-transparent hover:border-red-200 overflow-hidden relative cursor-pointer">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-500/5 to-pink-600/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="relative">
+                            <div class="w-16 h-16 bg-gradient-to-br from-red-100 to-pink-200 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
+                                <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            
+                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">Réactions</h3>
+                            
+                            <p class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-pink-600 mb-2">
+                                {{ number_format($stats['total_likes'] ?? 0) }}
+                            </p>
+                            
+                            <div class="flex items-center space-x-2 text-sm text-red-600">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path>
+                                </svg>
+                                <span class="font-semibold">Articles appréciés</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Secondary Stats Row -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <a href="#"
-                    class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2 text-center group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition">📚</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Articles</h3>
-                    <p class="text-3xl font-bold text-[#1B5E20]">{{ $stats['total_posts'] }}</p>
-                </a>
-
-                <a href="#"
-                    class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2 text-center group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition">💬</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Commentaires</h3>
-                    <p class="text-3xl font-bold text-[#1B5E20]">{{ \App\Models\Comment::count() }}</p>
-                </a>
-
-                <a href="#"
-                    class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2 text-center group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition">👀</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Tags</h3>
-                    <p class="text-3xl font-bold text-[#1B5E20]">{{ $stats['tags_count'] }}</p>
-                </a>
-
-                <a href="#"
-                    class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2 text-center group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition">❤️</div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Categories</h3>
-                    <p class="text-3xl font-bold text-[#1B5E20]">{{ $stats['categories_count'] }}</p>
-                </a>
+                <!-- Partages -->
+                <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-md hover:shadow-lg transition-all border border-gray-100">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-teal-100 to-teal-200 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 font-semibold uppercase">Partages</p>
+                            <p class="text-2xl font-black text-teal-600">{{ number_format($stats['total_shares'] ?? 0) }}</p>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Tags -->
+                <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-md hover:shadow-lg transition-all border border-gray-100">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-yellow-100 to-orange-200 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 font-semibold uppercase">Tags</p>
+                            <p class="text-2xl font-black text-yellow-600">{{ number_format($stats['tags_count'] ?? 0) }}</p>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Catégories -->
+                <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-md hover:shadow-lg transition-all border border-gray-100">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 font-semibold uppercase">Catégories</p>
+                            <p class="text-2xl font-black text-indigo-600">{{ number_format($stats['categories_count'] ?? 0) }}</p>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Auteurs Actifs -->
+                <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-md hover:shadow-lg transition-all border border-gray-100">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 font-semibold uppercase">Auteurs</p>
+                            <p class="text-2xl font-black text-pink-600">{{ number_format($stats['active_authors'] ?? 0) }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+    
+            <!-- Call to Action -->
+            {{-- <div class="mt-12 bg-gradient-to-r from-green-600 via-green-500 to-yellow-500 rounded-3xl p-8 md:p-12 shadow-2xl text-center text-white relative overflow-hidden">
+                <div class="absolute inset-0 bg-black/10"></div>
+                <div class="relative z-10">
+                    <h3 class="text-3xl md:text-4xl font-black mb-4">Rejoignez Notre Communauté</h3>
+                    <p class="text-lg text-green-100 mb-8 max-w-2xl mx-auto">
+                        Partagez vos connaissances, apprenez des experts et participez à la révolution agricole
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center gap-4">
+                        <a href="{{ route('register') }}" 
+                           class="px-8 py-4 bg-white text-green-600 rounded-xl font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                            <span>Créer un Compte</span>
+                        </a>
+                        <a href="{{ route('blog.index') }}" 
+                           class="px-8 py-4 bg-green-800 text-white rounded-xl font-bold hover:bg-green-900 transition-all transform hover:scale-105 shadow-lg flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                            <span>Explorer les Articles</span>
+                        </a>
+                    </div>
+                </div>
+            </div> --}}
         </div>
     </section>
+    
+    <style>
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    
+        .animate-fade-in-up {
+            animation: fade-in-up 0.6s ease-out;
+        }
+    </style>
 
     <!-- Newsletter -->
     <section class="py-20 bg-gradient-to-r from-emerald-500 via-green-600 to-green-700">

@@ -588,7 +588,7 @@
 
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="bg-green-50 rounded-xl p-4 text-center">
-                            <div class="text-2xl font-bold text-green-600">{{ $authorPostsCount ?? 0 }}</div>
+                            <div class="text-2xl font-bold text-green-600">{{ $post->author->posts()->count() ?? 0 }}</div>
                             <div class="text-sm text-gray-600">Articles publiés</div>
                         </div>
                         <div class="bg-blue-50 rounded-xl p-4 text-center">

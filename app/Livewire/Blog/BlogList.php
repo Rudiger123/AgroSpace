@@ -4,7 +4,9 @@ namespace App\Livewire\Blog;
 
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Tag;
+use App\Models\View;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
@@ -20,6 +22,8 @@ use Livewire\Attributes\Layout;
 class BlogList extends Component
 {
     use WithPagination;
+
+    protected $paginationTheme = 'agrospace-pagination';
 
     // Propriétés publiques (synchronisées avec l'URL)
     #[Url(as: 'q')]
@@ -172,6 +176,35 @@ class BlogList extends Component
             'total_posts' => Post::published()->count(),
             'categories_count' => $this->categories->count(),
             'tags_count' => $this->popularTags->count(),
+            // Articles
+            'total_posts' => Post::where('published', true)->count(),
+            'posts_this_month' => Post::where('published', true)
+                ->whereMonth('published_at', now()->month)
+                ->whereYear('published_at', now()->year)
+                ->count(),
+            
+            // Vues
+            'total_views' => Post::sum('views_count'),
+            'views_today' => View::whereDate('created_at', today())->count(),
+            
+            // Commentaires
+            'total_comments' => Comment::count(),
+            'approved_comments' => Comment::where('status', 'approved')->count(),
+            
+            // Réactions (Likes)
+            'total_likes' => Post::sum('likes_count'),
+            
+            // Partages
+            'total_shares' => Post::sum('shares_count'),
+            
+            // Tags et Catégories
+            'tags_count' => Tag::where('is_active', true)->count(),
+            'categories_count' => Category::where('is_active', true)->count(),
+            
+            // Auteurs actifs (ayant publié au moins 1 article)
+            'active_authors' => Post::where('published', true)
+                ->distinct('author_id')
+                ->count('author_id'),
         ];
     }
 

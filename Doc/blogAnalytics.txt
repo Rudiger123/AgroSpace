@@ -1,0 +1,1881 @@
+Je vais générer tous les fichiers nécessaires pour le module d'analyse du blog et de gestion des commentaires pour AgroSpace.
+
+---
+
+**--- FILE: app/Http/Livewire/Admin/BlogAnalytics.php ---**
+
+```php
+<?php
+
+namespace App\Http\Livewire\Admin;
+
+use App\Models\Post;
+use App\Models\Comment;
+use App\Models\View;
+use App\Models\Reaction;
+use App\Models\Share;
+use Carbon\Carbon;
+use Livewire\Component;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+
+class BlogAnalytics extends Component
+{
+    public $dateFrom;
+    public $dateTo;
+    public $selectedPost = null;
+    public $selectedAuthor = null;
+    public $statusFilter = 'all';
+    
+    public $stats = [];
+    public $chartData = [];
+    public $topPosts = [];
+    public $reactionBreakdown = [];
+    public $sharesPlatform = [];
+
+    protected $queryString = ['dateFrom', 'dateTo', 'selectedPost', 'selectedAuthor', 'statusFilter'];
+
+    public function mount()
+    {
+        $this->dateFrom = Carbon::now()->subDays(30)->format('Y-m-d');
+        $this->dateTo = Carbon::now()->format('Y-m-d');
+        $this->loadStats();
+    }
+
+    public function render()
+    {
+        return view('livewire.admin.blog-analytics', [
+            'posts' => Post::select('id', 'title')->get(),
+            'authors' => \App\Models\User::whereHas('posts')->select('id', 'name')->get()
+        ])->layout('layouts.admin');
+    }
+
+    public function loadStats()
+    {
+        $cacheKey = "blog_analytics_{$this->dateFrom}_{$this->dateTo}_{$this->selectedPost}_{$this->selectedAuthor}_{$this->statusFilter}";
+        
+        $data = Cache::remember($cacheKey, 60, function () {
+            $from = Carbon::parse($this->dateFrom)->startOfDay();
+            $to = Carbon::parse($this->dateTo)->endOfDay();
+
+            // Base queries
+            $postsQuery = Post::whereBetween('created_at', [$from, $to]);
+            $commentsQuery = Comment::whereBetween('created_at', [$from, $to]);
+            $viewsQuery = View::whereBetween('created_at', [$from, $to]);
+            $reactionsQuery = Reaction::whereBetween('created_at', [$from, $to]);
+            $sharesQuery = Share::whereBetween('created_at', [$from, $to]);
+
+            // Apply filters
+            if ($this->selectedPost) {
+                $commentsQuery->where('post_id', $this->selectedPost);
+                $viewsQuery->where('viewable_id', $this->selectedPost)->where('viewable_type', Post::class);
+                $reactionsQuery->where('reactable_id', $this->selectedPost)->where('reactable_type', Post::class);
+                $sharesQuery->where('shareable_id', $this->selectedPost)->where('shareable_type', Post::class);
+            }
+
+            if ($this->selectedAuthor) {
+                $postIds = Post::where('user_id', $this->selectedAuthor)->pluck('id');
+                $commentsQuery->whereIn('post_id', $postIds);
+            }
+
+            if ($this->statusFilter !== 'all') {
+                $commentsQuery->where('status', $this->statusFilter);
+            }
+
+            // Aggregate stats
+            $stats = [
+                'total_posts' => $postsQuery->count(),
+                'total_comments' => $commentsQuery->count(),
+                'pending_comments' => Comment::whereBetween('created_at', [$from, $to])->pending()->count(),
+                'total_views' => $viewsQuery->count(),
+                'total_reactions' => $reactionsQuery->count(),
+                'total_shares' => $sharesQuery->count(),
+            ];
+
+            // Daily views for chart
+            $viewsDaily = View::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+                ->whereBetween('created_at', [$from, $to])
+                ->where('viewable_type', Post::class)
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+
+            $chartData = [
+                'dates' => $viewsDaily->pluck('date')->map(fn($d) => Carbon::parse($d)->format('d/m'))->toArray(),
+                'views' => $viewsDaily->pluck('count')->toArray(),
+            ];
+
+            // Top 5 posts
+            $topPosts = Post::withCount(['views', 'comments', 'reactions'])
+                ->whereBetween('created_at', [$from, $to])
+                ->orderBy('views_count', 'desc')
+                ->take(5)
+                ->get()
+                ->map(function ($post) {
+                    return [
+                        'title' => $post->title,
+                        'views' => $post->views_count,
+                        'comments' => $post->comments_count,
+                        'reactions' => $post->reactions_count,
+                    ];
+                });
+
+            // Reactions breakdown
+            $reactionBreakdown = Reaction::selectRaw('type, COUNT(*) as count')
+                ->whereBetween('created_at', [$from, $to])
+                ->where('reactable_type', Post::class)
+                ->groupBy('type')
+                ->get()
+                ->mapWithKeys(fn($r) => [$r->type => $r->count]);
+
+            // Shares by platform
+            $sharesPlatform = Share::selectRaw('platform, COUNT(*) as count')
+                ->whereBetween('created_at', [$from, $to])
+                ->groupBy('platform')
+                ->get()
+                ->mapWithKeys(fn($s) => [$s->platform => $s->count]);
+
+            return [
+                'stats' => $stats,
+                'chartData' => $chartData,
+                'topPosts' => $topPosts,
+                'reactionBreakdown' => $reactionBreakdown,
+                'sharesPlatform' => $sharesPlatform,
+            ];
+        });
+
+        $this->stats = $data['stats'];
+        $this->chartData = $data['chartData'];
+        $this->topPosts = $data['topPosts'];
+        $this->reactionBreakdown = $data['reactionBreakdown'];
+        $this->sharesPlatform = $data['sharesPlatform'];
+    }
+
+    public function refreshStats()
+    {
+        Cache::forget("blog_analytics_{$this->dateFrom}_{$this->dateTo}_{$this->selectedPost}_{$this->selectedAuthor}_{$this->statusFilter}");
+        $this->loadStats();
+        $this->dispatchBrowserEvent('stats-refreshed');
+    }
+
+    public function exportCsv()
+    {
+        return redirect()->route('admin.analytics.export', [
+            'from' => $this->dateFrom,
+            'to' => $this->dateTo,
+            'post' => $this->selectedPost,
+            'author' => $this->selectedAuthor,
+            'status' => $this->statusFilter,
+        ]);
+    }
+
+    public function updatedDateFrom()
+    {
+        $this->loadStats();
+    }
+
+    public function updatedDateTo()
+    {
+        $this->loadStats();
+    }
+
+    public function updatedSelectedPost()
+    {
+        $this->loadStats();
+    }
+
+    public function updatedSelectedAuthor()
+    {
+        $this->loadStats();
+    }
+
+    public function updatedStatusFilter()
+    {
+        $this->loadStats();
+    }
+}
+```
+
+---
+
+**--- FILE: resources/views/livewire/admin/blog-analytics.blade.php ---**
+
+```blade
+<div class="p-6 space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">Statistiques du Blog</h1>
+            <p class="text-sm text-gray-500 mt-1">Analyse des performances et engagement</p>
+        </div>
+        <div class="flex space-x-3">
+            <button wire:click="refreshStats" class="flex items-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                <span>Actualiser</span>
+            </button>
+            <button wire:click="exportCsv" class="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <span>Exporter CSV</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-xl shadow-sm p-4 grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Date de début</label>
+            <input type="date" wire:model="dateFrom" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Date de fin</label>
+            <input type="date" wire:model="dateTo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Article</label>
+            <select wire:model="selectedPost" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <option value="">Tous les articles</option>
+                @foreach($posts as $post)
+                    <option value="{{ $post->id }}">{{ $post->title }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Auteur</label>
+            <select wire:model="selectedAuthor" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <option value="">Tous les auteurs</option>
+                @foreach($authors as $author)
+                    <option value="{{ $author->id }}">{{ $author->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Statut commentaires</label>
+            <select wire:model="statusFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <option value="all">Tous</option>
+                <option value="pending">En attente</option>
+                <option value="approved">Approuvés</option>
+                <option value="rejected">Rejetés</option>
+                <option value="spam">Spam</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-primary-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 font-medium">Articles publiés</p>
+                    <p class="text-3xl font-bold text-gray-800 mt-2">{{ number_format($stats['total_posts'] ?? 0) }}</p>
+                </div>
+                <div class="bg-primary-100 p-3 rounded-lg">
+                    <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 font-medium">Commentaires</p>
+                    <p class="text-3xl font-bold text-gray-800 mt-2">{{ number_format($stats['total_comments'] ?? 0) }}</p>
+                    <p class="text-xs text-blue-600 mt-1">{{ $stats['pending_comments'] ?? 0 }} en attente</p>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-lg">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 font-medium">Vues totales</p>
+                    <p class="text-3xl font-bold text-gray-800 mt-2">{{ number_format($stats['total_views'] ?? 0) }}</p>
+                </div>
+                <div class="bg-purple-100 p-3 rounded-lg">
+                    <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-pink-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 font-medium">Réactions</p>
+                    <p class="text-3xl font-bold text-gray-800 mt-2">{{ number_format($stats['total_reactions'] ?? 0) }}</p>
+                    <p class="text-xs text-pink-600 mt-1">{{ $stats['total_shares'] ?? 0 }} partages</p>
+                </div>
+                <div class="bg-pink-100 p-3 rounded-lg">
+                    <svg class="w-8 h-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Views Chart -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Vues quotidiennes</h3>
+            <div id="viewsChart" style="height: 300px;"></div>
+        </div>
+
+        <!-- Reactions Breakdown -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Répartition des réactions</h3>
+            <div id="reactionsChart" style="height: 300px;"></div>
+        </div>
+    </div>
+
+    <!-- Top Posts Table -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Top 5 des articles</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b">
+                        <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Article</th>
+                        <th class="text-center py-3 px-4 text-sm font-semibold text-gray-700">Vues</th>
+                        <th class="text-center py-3 px-4 text-sm font-semibold text-gray-700">Commentaires</th>
+                        <th class="text-center py-3 px-4 text-sm font-semibold text-gray-700">Réactions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($topPosts as $post)
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm text-gray-800">{{ $post['title'] }}</td>
+                            <td class="py-3 px-4 text-sm text-center font-semibold text-purple-600">{{ number_format($post['views']) }}</td>
+                            <td class="py-3 px-4 text-sm text-center font-semibold text-blue-600">{{ number_format($post['comments']) }}</td>
+                            <td class="py-3 px-4 text-sm text-center font-semibold text-pink-600">{{ number_format($post['reactions']) }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="py-8 text-center text-gray-500">Aucun article trouvé</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Shares by Platform -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Partages par plateforme</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            @foreach($sharesPlatform as $platform => $count)
+                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                    <p class="text-2xl font-bold text-gray-800">{{ number_format($count) }}</p>
+                    <p class="text-sm text-gray-600 capitalize mt-1">{{ $platform }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- Chart Data JSON -->
+    <script type="application/json" id="stats-data">
+        {!! json_encode([
+            'views' => [
+                'dates' => $chartData['dates'] ?? [],
+                'values' => $chartData['views'] ?? []
+            ],
+            'reactions' => [
+                'labels' => array_keys($reactionBreakdown->toArray()),
+                'values' => array_values($reactionBreakdown->toArray())
+            ]
+        ]) !!}
+    </script>
+</div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const statsData = JSON.parse(document.getElementById('stats-data').textContent);
+    
+    // Views Chart
+    const viewsOptions = {
+        series: [{
+            name: 'Vues',
+            data: statsData.views.values
+        }],
+        chart: {
+            type: 'area',
+            height: 300,
+            toolbar: { show: false }
+        },
+        colors: ['#22c55e'],
+        dataLabels: { enabled: false },
+        stroke: { curve: 'smooth', width: 2 },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.4,
+                opacityTo: 0.1,
+            }
+        },
+        xaxis: {
+            categories: statsData.views.dates,
+            labels: { style: { fontSize: '12px' } }
+        },
+        yaxis: {
+            labels: { style: { fontSize: '12px' } }
+        },
+        tooltip: {
+            y: { formatter: (val) => val + ' vues' }
+        }
+    };
+    new ApexCharts(document.querySelector("#viewsChart"), viewsOptions).render();
+
+    // Reactions Chart
+    const reactionsOptions = {
+        series: statsData.reactions.values,
+        chart: {
+            type: 'donut',
+            height: 300
+        },
+        labels: statsData.reactions.labels,
+        colors: ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'],
+        legend: {
+            position: 'bottom',
+            fontSize: '12px'
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return Math.round(val) + '%'
+            }
+        },
+        tooltip: {
+            y: { formatter: (val) => val + ' réactions' }
+        }
+    };
+    new ApexCharts(document.querySelector("#reactionsChart"), reactionsOptions).render();
+});
+
+window.addEventListener('stats-refreshed', () => {
+    location.reload();
+});
+</script>
+@endpush
+```
+
+---
+
+**--- FILE: app/Http/Livewire/Admin/CommentManagement.php ---**
+
+```php
+<?php
+
+namespace App\Http\Livewire\Admin;
+
+use App\Models\Comment;
+use App\Models\Post;
+use Livewire\Component;
+use Livewire\WithPagination;
+
+class CommentManagement extends Component
+{
+    use WithPagination;
+
+    public $search = '';
+    public $status = 'all';
+    public $post_id = '';
+    public $sortField = 'created_at';
+    public $sortDirection = 'desc';
+    public $perPage = 15;
+    public $selected = [];
+    public $selectAll = false;
+
+    protected $queryString = ['search', 'status', 'post_id', 'sortField', 'sortDirection'];
+    protected $paginationTheme = 'tailwind';
+
+    public function render()
+    {
+        $comments = Comment::with(['post:id,title', 'user:id,name,email'])
+            ->when($this->search, fn($q) => $q->search($this->search))
+            ->when($this->status !== 'all', fn($q) => $q->where('status', $this->status))
+            ->when($this->post_id, fn($q) => $q->where('post_id', $this->post_id))
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate($this->perPage);
+
+        return view('livewire.admin.comment-management', [
+            'comments' => $comments,
+            'posts' => Post::select('id', 'title')->get()
+        ])->layout('layouts.admin');
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingStatus()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPostId()
+    {
+        $this->resetPage();
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+    }
+
+    public function approve($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->update(['status' => 'approved', 'moderated_at' => now(), 'moderated_by' => auth()->id()]);
+        $this->dispatchBrowserEvent('comment-approved', ['message' => 'Commentaire approuvé avec succès']);
+    }
+
+    public function reject($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->update(['status' => 'rejected', 'moderated_at' => now(), 'moderated_by' => auth()->id()]);
+        $this->dispatchBrowserEvent('comment-rejected', ['message' => 'Commentaire rejeté']);
+    }
+
+    public function markSpam($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->update(['status' => 'spam', 'moderated_at' => now(), 'moderated_by' => auth()->id()]);
+        $this->dispatchBrowserEvent('comment-spam', ['message' => 'Commentaire marqué comme spam']);
+    }
+
+    public function delete($id)
+    {
+        $this->dispatchBrowserEvent('confirm-delete', ['id' => $id]);
+    }
+
+    public function confirmDelete($id)
+    {
+        Comment::findOrFail($id)->delete();
+        $this->dispatchBrowserEvent('comment-deleted', ['message' => 'Commentaire supprimé']);
+    }
+
+    public function openDetails($id)
+    {
+        $this->emit('openCommentDrawer', $id);
+    }
+
+    public function bulkDelete()
+    {
+        if (empty($this->selected)) {
+            $this->dispatchBrowserEvent('alert', ['message' => 'Aucun commentaire sélectionné']);
+            return;
+        }
+
+        $this->dispatchBrowserEvent('confirm-bulk-delete');
+    }
+
+    public function confirmBulkDelete()
+    {
+        Comment::whereIn('id', $this->selected)->delete();
+        $this->selected = [];
+        $this->selectAll = false;
+        $this->dispatchBrowserEvent('comments-deleted', ['message' => count($this->selected) . ' commentaires supprimés']);
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selected = Comment::when($this->search, fn($q) => $q->search($this->search))
+                ->when($this->status !== 'all', fn($q) => $q->where('status', $this->status))
+                ->when($this->post_id, fn($q) => $q->where('post_id', $this->post_id))
+                ->pluck('id')
+                ->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+}
+```
+
+---
+
+**--- FILE: resources/views/livewire/admin/comment-management.blade.php ---**
+
+```blade
+<div class="p-6 space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">Gestion des Commentaires</h1>
+            <p class="text-sm text-gray-500 mt-1">Modérez et gérez tous les commentaires du blog</p>
+        </div>
+        @if(count($selected) > 0)
+            <button wire:click="bulkDelete" class="flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+                <span>Supprimer ({{count($selected) }})</span>
+            </button>
+        @endif
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="bg-white rounded-xl shadow-sm p-4">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Rechercher</label>
+                <input type="text" wire:model.debounce.300ms="search" placeholder="Rechercher par contenu, auteur..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Statut</label>
+                <select wire:model="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                    <option value="all">Tous</option>
+                    <option value="pending">En attente</option>
+                    <option value="approved">Approuvés</option>
+                    <option value="rejected">Rejetés</option>
+                    <option value="spam">Spam</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Article</label>
+                <select wire:model="post_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                    <option value="">Tous les articles</option>
+                    @foreach($posts as $post)
+                        <option value="{{ $post->id }}">{{ $post->title }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Par page</label>
+                <select wire:model="perPage" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Table -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50 border-b">
+                    <tr>
+                        <th class="px-4 py-3 text-left">
+                            <input type="checkbox" wire:model="selectAll" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                        </th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Commentaire</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 cursor-pointer" wire:click="sortBy('post_id')">
+                            Article
+                            @if($sortField === 'post_id')
+                                <span class="ml-1">{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                            @endif
+                        </th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Auteur</th>
+                        <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700 cursor-pointer" wire:click="sortBy('status')">
+                            Statut
+                            @if($sortField === 'status')
+                                <span class="ml-1">{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                            @endif
+                        </th>
+                        <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Likes</th>
+                        <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Signalements</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">IP</th>
+                        <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 cursor-pointer" wire:click="sortBy('created_at')">
+                            Date
+                            @if($sortField === 'created_at')
+                                <span class="ml-1">{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
+                            @endif
+                        </th>
+                        <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @forelse($comments as $comment)
+                        <tr class="hover:bg-gray-50 transition" wire:key="comment-{{ $comment->id }}">
+                            <td class="px-4 py-3">
+                                <input type="checkbox" wire:model="selected" value="{{ $comment->id }}" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                            </td>
+                            <td class="px-4 py-3">
+                                <p class="text-sm text-gray-800 line-clamp-2">{{ Str::limit($comment->content, 80) }}</p>
+                            </td>
+                            <td class="px-4 py-3">
+                                <p class="text-sm text-gray-700 font-medium">{{ $comment->post?->title ?? 'N/A' }}</p>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">{{ $comment->user?->name ?? $comment->author_name ?? 'Anonyme' }}</p>
+                                    <p class="text-xs text-gray-500">{{ $comment->user?->email ?? $comment->author_email ?? 'N/A' }}</p>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                @if($comment->status === 'pending')
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">En attente</span>
+                                @elseif($comment->status === 'approved')
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Approuvé</span>
+                                @elseif($comment->status === 'rejected')
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Rejeté</span>
+                                @elseif($comment->status === 'spam')
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">Spam</span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                <span class="text-sm font-semibold text-pink-600">{{ $comment->likes_count ?? 0 }}</span>
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                <span class="text-sm font-semibold {{ ($comment->reports_count ?? 0) > 0 ? 'text-red-600' : 'text-gray-400' }}">
+                                    {{ $comment->reports_count ?? 0 }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <span class="text-xs text-gray-600 font-mono">{{ $comment->ip_address ?? 'N/A' }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <p class="text-xs text-gray-600">{{ $comment->created_at->locale('fr')->format('d/m/Y') }}</p>
+                                <p class="text-xs text-gray-400">{{ $comment->created_at->format('H:i') }}</p>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <button wire:click="openDetails({{ $comment->id }})" title="Détails" class="text-blue-600 hover:text-blue-800">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                    @if($comment->status !== 'approved')
+                                        <button wire:click="approve({{ $comment->id }})" title="Approuver" class="text-green-600 hover:text-green-800">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </button>
+                                    @endif
+                                    @if($comment->status !== 'rejected')
+                                        <button wire:click="reject({{ $comment->id }})" title="Rejeter" class="text-red-600 hover:text-red-800">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                            </svg>
+                                        </button>
+                                    @endif
+                                    <button wire:click="markSpam({{ $comment->id }})" title="Spam" class="text-gray-600 hover:text-gray-800">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                        </svg>
+                                    </button>
+                                    <button wire:click="delete({{ $comment->id }})" title="Supprimer" class="text-red-600 hover:text-red-800">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="10" class="px-4 py-12 text-center">
+                                <div class="flex flex-col items-center justify-center">
+                                    <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                    </svg>
+                                    <p class="text-gray-500 text-lg">Aucun commentaire trouvé</p>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="px-4 py-3 border-t">
+            {{ $comments->links() }}
+        </div>
+    </div>
+
+    @livewire('admin.comment-drawer')
+</div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+window.addEventListener('confirm-delete', event => {
+    Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: "Cette action est irréversible !",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            @this.call('confirmDelete', event.detail.id);
+        }
+    });
+});
+
+window.addEventListener('confirm-bulk-delete', () => {
+    Swal.fire({
+        title: 'Supprimer les commentaires sélectionnés ?',
+        text: "Cette action est irréversible !",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Oui, supprimer tout',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            @this.call('confirmBulkDelete');
+        }
+    });
+});
+
+window.addEventListener('comment-approved', event => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Approuvé',
+        text: event.detail.message,
+        timer: 2000,
+        showConfirmButton: false
+    });
+});
+
+window.addEventListener('comment-rejected', event => {
+    Swal.fire({
+        icon: 'info',
+        title: 'Rejeté',
+        text: event.detail.message,
+        timer: 2000,
+        showConfirmButton: false
+    });
+});
+
+window.addEventListener('comment-spam', event => {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Spam',
+        text: event.detail.message,
+        timer: 2000,
+        showConfirmButton: false
+    });
+});
+
+window.addEventListener('comment-deleted', event => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Supprimé',
+        text: event.detail.message,
+        timer: 2000,
+        showConfirmButton: false
+    });
+});
+
+window.addEventListener('comments-deleted', event => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Supprimés',
+        text: event.detail.message,
+        timer: 2000,
+        showConfirmButton: false
+    });
+});
+</script>
+@endpush
+```
+
+---
+
+**--- FILE: app/Http/Livewire/Admin/CommentDrawer.php ---**
+
+```php
+<?php
+
+namespace App\Http\Livewire\Admin;
+
+use App\Models\Comment;
+use Livewire\Component;
+
+class CommentDrawer extends Component
+{
+    public $isOpen = false;
+    public $comment = null;
+    public $replyContent = '';
+
+    protected $listeners = ['openCommentDrawer' => 'open'];
+
+    public function render()
+    {
+        return view('livewire.admin.comment-drawer');
+    }
+
+    public function open($commentId)
+    {
+        $this->comment = Comment::with(['post:id,title', 'user:id,name,email,avatar', 'replies.user', 'parent', 'moderator'])
+            ->withCount(['likes', 'reports'])
+            ->findOrFail($commentId);
+        $this->isOpen = true;
+    }
+
+    public function close()
+    {
+        $this->isOpen = false;
+        $this->comment = null;
+        $this->replyContent = '';
+    }
+
+    public function reply()
+    {
+        $this->validate([
+            'replyContent' => 'required|min:3|max:1000'
+        ], [
+            'replyContent.required' => 'La réponse ne peut pas être vide',
+            'replyContent.min' => 'La réponse doit contenir au moins 3 caractères',
+            'replyContent.max' => 'La réponse ne peut pas dépasser 1000 caractères'
+        ]);
+
+        Comment::create([
+            'post_id' => $this->comment->post_id,
+            'user_id' => auth()->id(),
+            'parent_id' => $this->comment->id,
+            'content' => $this->replyContent,
+            'status' => 'approved',
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent()
+        ]);
+
+        $this->replyContent = '';
+        $this->open($this->comment->id);
+        $this->dispatchBrowserEvent('reply-sent', ['message' => 'Réponse envoyée avec succès']);
+    }
+
+    public function approve()
+    {
+        $this->comment->update(['status' => 'approved', 'moderated_at' => now(), 'moderated_by' => auth()->id()]);
+        $this->open($this->comment->id);
+        $this->emit('$refresh');
+    }
+
+    public function reject()
+    {
+        $this->comment->update(['status' => 'rejected', 'moderated_at' => now(), 'moderated_by' => auth()->id()]);
+        $this->open($this->comment->id);
+        $this->emit('$refresh');
+    }
+
+    public function markSpam()
+    {
+        $this->comment->update(['status' => 'spam', 'moderated_at' => now(), 'moderated_by' => auth()->id()]);
+        $this->open($this->comment->id);
+        $this->emit('$refresh');
+    }
+
+    public function delete()
+    {
+        $this->comment->delete();
+        $this->close();
+        $this->emit('$refresh');
+        $this->dispatchBrowserEvent('comment-deleted-drawer', ['message' => 'Commentaire supprimé']);
+    }
+}
+```
+
+---
+
+**--- FILE: resources/views/livewire/admin/comment-drawer.blade.php ---**
+
+```blade
+<div>
+    @if($isOpen && $comment)
+        <div class="fixed inset-0 z-50 overflow-hidden" x-data="{ show: @entangle('isOpen') }" x-show="show" style="display: none;">
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-gray-900 bg-opacity-50 transition-opacity" 
+                 x-show="show" 
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 wire:click="close"></div>
+
+            <!-- Drawer -->
+            <div class="fixed inset-y-0 right-0 flex max-w-full pl-10">
+                <div class="w-screen max-w-2xl"
+                     x-show="show"
+                     x-transition:enter="transform transition ease-in-out duration-300"
+                     x-transition:enter-start="translate-x-full"
+                     x-transition:enter-end="translate-x-0"
+                     x-transition:leave="transform transition ease-in-out duration-300"
+                     x-transition:leave-start="translate-x-0"
+                     x-transition:leave-end="translate-x-full">
+                    
+                    <div class="flex h-full flex-col bg-white shadow-xl overflow-y-scroll">
+                        <!-- Header -->
+                        <div class="bg-primary-600 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+                            <h2 class="text-lg font-semibold text-white">Détails du commentaire</h2>
+                            <button wire:click="close" class="text-white hover:text-gray-200 transition">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="flex-1 px-6 py-6 space-y-6">
+                            <!-- Status Badge -->
+                            <div class="flex items-center space-x-3">
+                                @if($comment->status === 'pending')
+                                    <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-yellow-100 text-yellow-800">En attente</span>
+                                @elseif($comment->status === 'approved')
+                                    <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">Approuvé</span>
+                                @elseif($comment->status === 'rejected')
+                                    <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-red-100 text-red-800">Rejeté</span>
+                                @elseif($comment->status === 'spam')
+                                    <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">Spam</span>
+                                @endif
+
+                                <div class="flex items-center space-x-2 text-sm text-gray-600">
+                                    <svg class="w-4 h-4 text-pink-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>{{ $comment->likes_count }} likes</span>
+                                </div>
+
+                                @if($comment->reports_count > 0)
+                                    <div class="flex items-center space-x-2 text-sm text-red-600">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>{{ $comment->reports_count }} signalements</span>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Article Info -->
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-xs text-gray-500 mb-1">Article</p>
+                                <p class="text-sm font-semibold text-gray-800">{{ $comment->post->title }}</p>
+                            </div>
+
+                            <!-- Author Info -->
+                            <div class="flex items-start space-x-4">
+                                <img src="{{ $comment->user?->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($comment->author_name ?? 'Anonyme') . '&background=22c55e&color=fff' }}" 
+                                     class="w-12 h-12 rounded-full" 
+                                     alt="Avatar">
+                                <div class="flex-1">
+                                    <p class="font-semibold text-gray-800">{{ $comment->user?->name ?? $comment->author_name ?? 'Anonyme' }}</p>
+                                    <p class="text-sm text-gray-600">{{ $comment->user?->email ?? $comment->author_email ?? 'N/A' }}</p>
+                                    <p class="text-xs text-gray-400 mt-1">{{ $comment->created_at->locale('fr')->diffForHumans() }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Comment Content -->
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <p class="text-gray-800 leading-relaxed">{{ $comment->content }}</p>
+                            </div>
+
+                            <!-- Metadata -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-gray-50 rounded-lg p-3">
+                                    <p class="text-xs text-gray-500 mb-1">Adresse IP</p>
+                                    <p class="text-sm font-mono text-gray-800">{{ $comment->ip_address ?? 'N/A' }}</p>
+                                </div>
+                                <div class="bg-gray-50 rounded-lg p-3">
+                                    <p class="text-xs text-gray-500 mb-1">Navigateur</p>
+                                    <p class="text-sm text-gray-800 truncate" title="{{ $comment->user_agent ?? 'N/A' }}">
+                                        {{ Str::limit($comment->user_agent ?? 'N/A', 30) }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Moderation Info -->
+                            @if($comment->moderated_at)
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                    <p class="text-sm text-blue-800">
+                                        <strong>Modéré par:</strong> {{ $comment->moderator?->name ?? 'N/A' }}
+                                    </p>
+                                    <p class="text-xs text-blue-600 mt-1">
+                                        {{ $comment->moderated_at->locale('fr')->format('d/m/Y à H:i') }}
+                                    </p>
+                                </div>
+                            @endif
+
+                            <!-- Parent Comment -->
+                            @if($comment->parent)
+                                <div class="border-l-4 border-gray-300 pl-4">
+                                    <p class="text-xs text-gray-500 mb-2">En réponse à:</p>
+                                    <div class="bg-gray-50 rounded p-3">
+                                        <p class="text-sm font-medium text-gray-700 mb-1">{{ $comment->parent->user?->name ?? 'Anonyme' }}</p>
+                                        <p class="text-sm text-gray-600">{{ Str::limit($comment->parent->content, 100) }}</p>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Replies -->
+                            @if($comment->replies->count() > 0)
+                                <div>
+                                    <h3 class="text-sm font-semibold text-gray-800 mb-3">Réponses ({{ $comment->replies->count() }})</h3>
+                                    <div class="space-y-3">
+                                        @foreach($comment->replies as $reply)
+                                            <div class="bg-gray-50 rounded-lg p-3 border-l-2 border-primary-500">
+                                                <div class="flex items-start space-x-3">
+                                                    <img src="{{ $reply->user?->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($reply->user?->name ?? 'Anonyme') . '&background=22c55e&color=fff' }}" 
+                                                         class="w-8 h-8 rounded-full" 
+                                                         alt="Avatar">
+                                                    <div class="flex-1">
+                                                        <p class="text-sm font-medium text-gray-800">{{ $reply->user?->name ?? 'Anonyme' }}</p><p class="text-xs text-gray-500">{{ $reply->created_at->locale('fr')->diffForHumans() }}</p>
+                                                        <p class="text-sm text-gray-700 mt-1">{{ $reply->content }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Reply Form -->
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Répondre au commentaire</label>
+                                <textarea wire:model.defer="replyContent" 
+                                          rows="3" 
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
+                                          placeholder="Votre réponse..."></textarea>
+                                @error('replyContent')
+                                    <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                                <button wire:click="reply" 
+                                        class="mt-2 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition">
+                                    Envoyer la réponse
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="bg-gray-50 px-6 py-4 border-t flex items-center justify-between">
+                            <div class="flex space-x-2">
+                                @if($comment->status !== 'approved')
+                                    <button wire:click="approve" class="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <span>Approuver</span>
+                                    </button>
+                                @endif
+                                @if($comment->status !== 'rejected')
+                                    <button wire:click="reject" class="flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                        <span>Rejeter</span>
+                                    </button>
+                                @endif
+                                <button wire:click="markSpam" class="flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <span>Spam</span>
+                                </button>
+                            </div>
+                            <button wire:click="delete" class="flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                <span>Supprimer</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>
+
+@push('scripts')
+<script>
+window.addEventListener('reply-sent', event => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Envoyé',
+        text: event.detail.message,
+        timer: 2000,
+        showConfirmButton: false
+    });
+});
+
+window.addEventListener('comment-deleted-drawer', event => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Supprimé',
+        text: event.detail.message,
+        timer: 2000,
+        showConfirmButton: false
+    });
+});
+</script>
+@endpush
+```
+
+---
+
+**--- FILE: app/Models/Comment.php ---**
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Comment extends Model
+{
+    use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'post_id',
+        'user_id',
+        'parent_id',
+        'content',
+        'author_name',
+        'author_email',
+        'status',
+        'ip_address',
+        'user_agent',
+        'moderated_at',
+        'moderated_by'
+    ];
+
+    protected $casts = [
+        'moderated_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
+    protected $with = [];
+
+    // Relationships
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_id')->latest();
+    }
+
+    public function moderator()
+    {
+        return $this->belongsTo(User::class, 'moderated_by');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(Reaction::class, 'reactable')->where('type', 'like');
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(CommentReport::class);
+    }
+
+    // Scopes
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->where('status', 'rejected');
+    }
+
+    public function scopeSpam($query)
+    {
+        return $query->where('status', 'spam');
+    }
+
+    public function scopeByPost($query, $postId)
+    {
+        return $query->where('post_id', $postId);
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        return $query->where(function ($q) use ($term) {
+            $q->where('content', 'ILIKE', "%{$term}%")
+              ->orWhere('author_name', 'ILIKE', "%{$term}%")
+              ->orWhere('author_email', 'ILIKE', "%{$term}%")
+              ->orWhereHas('user', function ($userQuery) use ($term) {
+                  $userQuery->where('name', 'ILIKE', "%{$term}%")
+                            ->orWhere('email', 'ILIKE', "%{$term}%");
+              });
+        });
+    }
+
+    public function scopeWithCounts($query)
+    {
+        return $query->withCount(['likes', 'reports']);
+    }
+}
+```
+
+---
+
+**--- FILE: app/Models/View.php ---**
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class View extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'viewable_type',
+        'viewable_id',
+        'user_id',
+        'ip_address',
+        'user_agent',
+        'referer'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
+    public function viewable()
+    {
+        return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+```
+
+---
+
+**--- FILE: app/Models/Reaction.php ---**
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Reaction extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'reactable_type',
+        'reactable_id',
+        'user_id',
+        'type'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
+    public function reactable()
+    {
+        return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+```
+
+---
+
+**--- FILE: app/Models/Share.php ---**
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Share extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'shareable_type',
+        'shareable_id',
+        'user_id',
+        'platform'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
+    public function shareable()
+    {
+        return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
+```
+
+---
+
+**--- FILE: database/factories/CommentFactory.php ---**
+
+```php
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Comment;
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class CommentFactory extends Factory
+{
+    protected $model = Comment::class;
+
+    public function definition()
+    {
+        return [
+            'post_id' => Post::factory(),
+            'user_id' => User::factory(),
+            'parent_id' => null,
+            'content' => $this->faker->paragraph(3),
+            'author_name' => null,
+            'author_email' => null,
+            'status' => $this->faker->randomElement(['pending', 'approved', 'rejected', 'spam']),
+            'ip_address' => $this->faker->ipv4,
+            'user_agent' => $this->faker->userAgent,
+            'moderated_at' => $this->faker->boolean(60) ? $this->faker->dateTimeBetween('-30 days', 'now') : null,
+            'moderated_by' => $this->faker->boolean(60) ? User::factory() : null,
+        ];
+    }
+
+    public function pending()
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'pending',
+            'moderated_at' => null,
+            'moderated_by' => null
+        ]);
+    }
+
+    public function approved()
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'approved',
+            'moderated_at' => $this->faker->dateTimeBetween('-30 days', 'now'),
+            'moderated_by' => User::factory()
+        ]);
+    }
+
+    public function spam()
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 'spam',
+            'moderated_at' => $this->faker->dateTimeBetween('-30 days', 'now'),
+            'moderated_by' => User::factory()
+        ]);
+    }
+}
+```
+
+---
+
+**--- FILE: database/seeders/CommentSeeder.php ---**
+
+```php
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Comment;
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Reaction;
+use App\Models\CommentReport;
+use Illuminate\Database\Seeder;
+
+class CommentSeeder extends Seeder
+{
+    public function run()
+    {
+        $posts = Post::all();
+        $users = User::all();
+
+        if ($posts->isEmpty() || $users->isEmpty()) {
+            $this->command->warn('Please seed Posts and Users first.');
+            return;
+        }
+
+        // Create 100 comments
+        Comment::factory()
+            ->count(100)
+            ->create([
+                'post_id' => fn() => $posts->random()->id,
+                'user_id' => fn() => $users->random()->id,
+            ])
+            ->each(function ($comment) use ($users) {
+                // Add likes (reactions)
+                $likeCount = rand(0, 20);
+                for ($i = 0; $i < $likeCount; $i++) {
+                    Reaction::create([
+                        'reactable_type' => Comment::class,
+                        'reactable_id' => $comment->id,
+                        'user_id' => $users->random()->id,
+                        'type' => 'like'
+                    ]);
+                }
+
+                // Add reports for some comments
+                if (rand(1, 10) > 7) {
+                    $reportCount = rand(1, 5);
+                    for ($i = 0; $i < $reportCount; $i++) {
+                        CommentReport::create([
+                            'comment_id' => $comment->id,
+                            'user_id' => $users->random()->id,
+                            'reason' => collect(['spam', 'inappropriate', 'offensive', 'other'])->random(),
+                            'description' => 'Test report ' . rand(1, 1000)
+                        ]);
+                    }
+                }
+
+                // Add replies to some comments
+                if (rand(1, 10) > 6) {
+                    Comment::factory()
+                        ->count(rand(1, 3))
+                        ->create([
+                            'post_id' => $comment->post_id,
+                            'parent_id' => $comment->id,
+                            'user_id' => $users->random()->id,
+                            'status' => 'approved'
+                        ]);
+                }
+            });
+
+        $this->command->info('Comments seeded successfully with likes, reports, and replies!');
+    }
+}
+```
+
+---
+
+**--- FILE: routes/web.php ---**
+
+```php
+<?php
+
+use App\Http\Livewire\Admin\BlogAnalytics;
+use App\Http\Livewire\Admin\CommentManagement;
+use App\Http\Controllers\Admin\ExportController;
+use Illuminate\Support\Facades\Route;
+
+// Admin routes
+Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group(function () {
+    
+    // Blog Analytics
+    Route::get('/blog/analytics', BlogAnalytics::class)->name('blog.analytics');
+    
+    // Comment Management
+    Route::get('/comments', CommentManagement::class)->name('comments.index');
+    
+    // Export
+    Route::get('/analytics/export', [ExportController::class, 'exportAnalytics'])->name('analytics.export');
+});
+```
+
+---
+
+**--- FILE: app/Http/Controllers/Admin/ExportController.php ---**
+
+```php
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Post;
+use App\Models\Comment;
+use App\Models\View;
+use App\Models\Reaction;
+use App\Models\Share;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+
+class ExportController extends Controller
+{
+    public function exportAnalytics(Request $request)
+    {
+        $from = Carbon::parse($request->get('from', Carbon::now()->subDays(30)))->startOfDay();
+        $to = Carbon::parse($request->get('to', Carbon::now()))->endOfDay();
+        $postId = $request->get('post');
+        $authorId = $request->get('author');
+        $status = $request->get('status', 'all');
+
+        $data = [];
+        $data[] = ['Statistiques du Blog AgroSpace'];
+        $data[] = ['Période', $from->format('d/m/Y'), 'au', $to->format('d/m/Y')];
+        $data[] = [];
+
+        // Summary stats
+        $data[] = ['Résumé'];
+        $data[] = ['Métrique', 'Valeur'];
+        
+        $postsCount = Post::whereBetween('created_at', [$from, $to])->count();
+        $commentsCount = Comment::whereBetween('created_at', [$from, $to])->count();
+        $viewsCount = View::whereBetween('created_at', [$from, $to])->where('viewable_type', Post::class)->count();
+        $reactionsCount = Reaction::whereBetween('created_at', [$from, $to])->where('reactable_type', Post::class)->count();
+        $sharesCount = Share::whereBetween('created_at', [$from, $to])->where('shareable_type', Post::class)->count();
+
+        $data[] = ['Articles publiés', $postsCount];
+        $data[] = ['Commentaires', $commentsCount];
+        $data[] = ['Vues totales', $viewsCount];
+        $data[] = ['Réactions', $reactionsCount];
+        $data[] = ['Partages', $sharesCount];
+        $data[] = [];
+
+        // Top posts
+        $data[] = ['Top 10 des Articles'];
+        $data[] = ['Titre', 'Vues', 'Commentaires', 'Réactions'];
+        
+        $topPosts = Post::withCount(['views', 'comments', 'reactions'])
+            ->whereBetween('created_at', [$from, $to])
+            ->orderBy('views_count', 'desc')
+            ->take(10)
+            ->get();
+
+        foreach ($topPosts as $post) {
+            $data[] = [
+                $post->title,
+                $post->views_count,
+                $post->comments_count,
+                $post->reactions_count
+            ];
+        }
+
+        $filename = 'blog_analytics_' . $from->format('Y-m-d') . '_' . $to->format('Y-m-d') . '.csv';
+        
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0'
+        ];
+
+        $callback = function() use ($data) {
+            $file = fopen('php://output', 'w');
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF)); // UTF-8 BOM
+            
+            foreach ($data as $row) {
+                fputcsv($file, $row, ';');
+            }
+            
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+}
+```
+
+---
+
+**--- FILE: tests/Feature/AdminBlogAnalyticsTest.php ---**
+
+```php
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\User;
+use App\Models\Post;
+use App\Models\Comment;
+use App\Models\View;
+use App\Models\Reaction;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use Livewire\Livewire;
+use App\Http\Livewire\Admin\BlogAnalytics;
+
+class AdminBlogAnalyticsTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected $admin;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        
+        $this->admin = User::factory()->create(['role' => 'admin']);
+        
+        // Seed test data
+        Post::factory()->count(5)->create()->each(function ($post) {
+            Comment::factory()->count(3)->create(['post_id' => $post->id]);
+            
+            for ($i = 0; $i < 10; $i++) {
+                View::create([
+                    'viewable_type' => Post::class,
+                    'viewable_id' => $post->id,
+                    'ip_address' => '127.0.0.1',
+                    'user_agent' => 'Test'
+                ]);
+            }
+            
+            for ($i = 0; $i < 5; $i++) {
+                Reaction::create([
+                    'reactable_type' => Post::class,
+                    'reactable_id' => $post->id,
+                    'user_id' => User::factory()->create()->id,
+                    'type' => 'like'
+                ]);
+            }
+        });
+    }
+
+    public function test_analytics_page_loads_successfully()
+    {
+        $response = $this->actingAs($this->admin)->get(route('admin.blog.analytics'));
+        
+        $response->assertStatus(200);
+        $response->assertSeeLivewire('admin.blog-analytics');
+    }
+
+    public function test_analytics_displays_correct_stats()
+    {
+        Livewire::actingAs($this->admin)
+            ->test(BlogAnalytics::class)
+            ->assertSet('stats.total_posts', 5)
+            ->assertSet('stats.total_comments', 15)
+            ->assertSet('stats.total_views', 50)
+            ->assertSet('stats.total_reactions', 25);
+    }
+
+    public function test_analytics_can_filter_by_date()
+    {
+        Livewire::actingAs($this->admin)
+            ->test(BlogAnalytics::class)
+            ->set('dateFrom', now()->subDays(7)->format('Y-m-d'))
+            ->set('dateTo', now()->format('Y-m-d'))
+            ->assertEmitted('$refresh');
+    }
+
+    public function test_analytics_can_refresh_stats()
+    {
+        Livewire::actingAs($this->admin)
+            ->test(BlogAnalytics::class)
+            ->call('refreshStats')
+            ->assertDispatched('stats-refreshed');
+    }
+}
+```
+
+---
+
+## 📋 INSTALLATION CHECKLIST
+
+```bash
+# 1. Place all files in their respective directories
+# 2. Install dependencies (if not already installed)
+composer require spatie/laravel-permission
+npm install apexcharts sweetalert2
+
+# 3. Create missing migrations (if tables don't exist)
+php artisan make:migration create_comments_table
+php artisan make:migration create_views_table
+php artisan make:migration create_reactions_table
+php artisan make:migration create_shares_table
+php artisan make:migration create_comment_reports_table
+
+# 4. Run migrations
+php artisan migrate
+
+# 5. Seed test data
+php artisan db:seed --class=CommentSeeder
+
+# 6. Clear cache
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+# 7. Register routes (already in routes/web.php)
+
+# 8. Run tests
+php artisan test --filter=AdminBlogAnalyticsTest
+
+# 9. Access the pages
+# Analytics: /admin/blog/analytics
+# Comments: /admin/comments
+
+# 10. Ensure admin middleware exists and user has 'admin' role
+```
+
+**Notes:** 
+- CommentReport model needs to be created if not exists
+- Ensure Post model has views, comments, reactions relationships
+- Alpine.js is used for drawer transitions
+- ApexCharts CDN is loaded via Blade @push('scripts')
