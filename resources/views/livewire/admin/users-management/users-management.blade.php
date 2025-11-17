@@ -215,7 +215,7 @@
                             {{ count($selectedUsers) }} utilisateur(s) sélectionné(s)
                         </p>
                         <div class="flex flex-wrap gap-1 sm:gap-2">
-                            <button wire:click="bulkSendEmail"
+                            <button wire:click="confirmBulkSendEmail"
                                 class="px-2 py-1.5 bg-white border border-blue-300 text-blue-700 rounded-lg text-xs sm:text-sm font-medium hover:bg-blue-50 transition flex items-center gap-1">
                                 <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">

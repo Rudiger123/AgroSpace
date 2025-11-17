@@ -37,7 +37,6 @@ class CommentManagement extends Component
             ->when($this->post_id, fn($q) => $q->where('post_id', $this->post_id))
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
-        dump($this->search);
 
         return view('livewire.blog.comment-management', [
             'comments' => $comments,

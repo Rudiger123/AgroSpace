@@ -105,4 +105,14 @@ function initLivewireEvents() {
             }
         });
     });
+
+    // Global SweetAlert2 configuration
+    Swal.mixin({
+        customClass: {
+            popup: 'rounded-lg shadow-lg',
+            confirmButton: 'bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200',
+            cancelButton: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-md transition duration-200'
+        },
+        buttonsStyling: false
+    });
 }

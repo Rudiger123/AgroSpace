@@ -17,6 +17,10 @@ use App\Livewire\Blog\BlogList;
 use App\Livewire\Blog\BlogManager;
 use App\Livewire\Blog\BlogShowEnhanced;
 use App\Livewire\Blog\CommentManagement;
+use App\Livewire\Newsletter\AdminNewsletterList;
+use App\Livewire\Newsletter\AdminNewsletterSend;
+use App\Livewire\Newsletter\NewsletterSubscriptionForm;
+use App\Livewire\Newsletter\UnsubscribeConfirmation;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -79,6 +83,16 @@ Route::prefix('admin/blog')->name('admin.blog.')->middleware(['auth', 'verified'
 
     // Comment Management
     Route::get('/comments', CommentManagement::class)->name('comments.index');
+});
+
+// Public Newsletter Routes
+Route::get('/newsletter/unsubscribe/{token}', UnsubscribeConfirmation::class)
+    ->name('newsletter.unsubscribe');
+
+// Protected Admin Routes
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/newsletter/subscribers', AdminNewsletterList::class)
+        ->name('admin.newsletter.list');
 });
 
 /**

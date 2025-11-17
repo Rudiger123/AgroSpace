@@ -119,14 +119,14 @@ class SendEmailModal extends Component
         );
     }
 
-    public function previewEmail()
-    {
-        $this->dispatch('showPreview', [
-            'subject' => $this->subject,
-            'message' => $this->message,
-            'recipient' => $this->recipients->first()
-        ]);
-    }
+    // public function previewEmail()
+    // {
+    //     $this->dispatch('showPreview', [
+    //         'subject' => $this->subject,
+    //         'message' => $this->message,
+    //         'recipient' => $this->recipients->first()
+    //     ]);
+    // }
 
     public function saveDraft()
     {
