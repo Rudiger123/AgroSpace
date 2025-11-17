@@ -50,26 +50,26 @@ new class extends Component {
 
         $this->replyContent = '';
         $this->open($this->comment->id);
-        $this->dispatchBrowserEvent('reply-sent', ['message' => 'Réponse envoyée avec succès']);
+        $this->dispatch('reply-sent', ['message' => 'Réponse envoyée avec succès']);
     }
 
     public function approve()
     {
-        $this->comment->update(['status' => 'approved', 'moderated_at' => now(), 'moderated_by' => auth()->id()]);
+        $this->comment->update(['status' => 'approved']);
         $this->open($this->comment->id);
         $this->dispatch('$refresh');
     }
 
     public function reject()
     {
-        $this->comment->update(['status' => 'rejected', 'moderated_at' => now(), 'moderated_by' => auth()->id()]);
+        $this->comment->update(['status' => 'rejected']);
         $this->open($this->comment->id);
         $this->dispatch('$refresh');
     }
 
     public function markSpam()
     {
-        $this->comment->update(['status' => 'spam', 'moderated_at' => now(), 'moderated_by' => auth()->id()]);
+        $this->comment->update(['status' => 'spam']);
         $this->open($this->comment->id);
         $this->dispatch('$refresh');
     }
@@ -79,7 +79,7 @@ new class extends Component {
         $this->comment->delete();
         $this->close();
         $this->dispatch('$refresh');
-        $this->dispatchBrowserEvent('comment-deleted-drawer', ['message' => 'Commentaire supprimé']);
+        $this->dispatch('comment-deleted-drawer', ['message' => 'Commentaire supprimé']);
     }
 }; ?>
 

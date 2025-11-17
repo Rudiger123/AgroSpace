@@ -43,7 +43,7 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
 
     // Modération des offres
     Route::get('/offers/moderation', ModerateOffers::class)
-    ->name('offers.moderate');
+        ->name('offers.moderate');
 
     // Gestion des catégories
     Route::get('/categories', CategoryManage::class)->name('categories.index');
@@ -74,12 +74,11 @@ Route::prefix('admin/blog')->name('admin.blog.')->middleware(['auth', 'verified'
     // Gestion principale des articles
     Route::get('/', BlogManager::class)->name('index');
 
-     // Blog Analytics
-     Route::get('/analytics', BlogAnalytics::class)->name('blog.analytics');
-    
-     // Comment Management
-     Route::get('/comments', CommentManagement::class)->name('comments.index');
- 
+    // Blog Analytics
+    Route::get('/analytics', BlogAnalytics::class)->name('blog.analytics');
+
+    // Comment Management
+    Route::get('/comments', CommentManagement::class)->name('comments.index');
 });
 
 /**

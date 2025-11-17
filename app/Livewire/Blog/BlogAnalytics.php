@@ -152,19 +152,23 @@ class BlogAnalytics extends Component
     {
         Cache::forget("blog_analytics_{$this->dateFrom}_{$this->dateTo}_{$this->selectedPost}_{$this->selectedAuthor}_{$this->statusFilter}");
         $this->loadStats();
-        $this->dispatchBrowserEvent('stats-refreshed');
+        $this->dispatch('stats-refreshed');
     }
 
     public function exportCsv()
     {
-        return 'export csv';
-        // return redirect()->route('admin.analytics.export', [
-        //     'from' => $this->dateFrom,
-        //     'to' => $this->dateTo,
-        //     'post' => $this->selectedPost,
-        //     'author' => $this->selectedAuthor,
-        //     'status' => $this->statusFilter,
-        // ]);
+        $csv = "Statistiques du blog du {$this->dateFrom} au {$this->dateTo}\n";
+        $csv .= "Articles,Commentaires,Commentaires en attente,J'aime\n";
+        $csv .= "{$this->stats['total_posts']},{$this->stats['total_comments']},{$this->stats['pending_comments']},{$this->stats['total_reactions']}\n";
+
+        return response()->stream(
+            function () use ($csv) { echo $csv; },
+            200,
+            [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="blog_analytics.csv"',
+            ]
+        );
     }
 
     public function updatedDateFrom()

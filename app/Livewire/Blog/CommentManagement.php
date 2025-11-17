@@ -22,7 +22,7 @@ class CommentManagement extends Component
     public $post_id = '';
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
-    public $perPage = 15;
+    public $perPage = 10;
     public $selected = [];
     public $selectAll = false;
 
@@ -37,6 +37,7 @@ class CommentManagement extends Component
             ->when($this->post_id, fn($q) => $q->where('post_id', $this->post_id))
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
+        dump($this->search);
 
         return view('livewire.blog.comment-management', [
             'comments' => $comments,
@@ -125,7 +126,7 @@ class CommentManagement extends Component
     }
 
     public function updatedSelectAll($value)
-    {
+    { 
         if ($value) {
             $this->selected = Comment::when($this->search, fn($q) => $q->search($this->search))
                 ->when($this->status !== 'all', fn($q) => $q->where('status', $this->status))
