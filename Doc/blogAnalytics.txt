@@ -26,7 +26,7 @@ class BlogAnalytics extends Component
     public $selectedPost = null;
     public $selectedAuthor = null;
     public $statusFilter = 'all';
-    
+     
     public $stats = [];
     public $chartData = [];
     public $topPosts = [];

@@ -3,7 +3,10 @@ import Alpine from 'alpinejs';
 import Swal from 'sweetalert2';
 import persist from '@alpinejs/persist';
 import { Picker } from 'emoji-mart'
+import ApexCharts from 'apexcharts';
+window.ApexCharts = ApexCharts;
 window.EmojiMart = { Picker }
+
 
 
 // Nous ne devons pas initialiser Alpine ici, Livewire le fera.
