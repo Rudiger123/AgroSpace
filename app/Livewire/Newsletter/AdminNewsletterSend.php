@@ -8,7 +8,6 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-#[Layout('layouts.app')]
 class AdminNewsletterSend extends Component
 {
     public $subject = '';
@@ -24,7 +23,7 @@ class AdminNewsletterSend extends Component
     ];
 
     protected $messages = [
-        'subject.required' => 'L\'objet est obligatoire',
+        'subject.required' => "L'objet est obligatoire",
         'message.required' => 'Le message est obligatoire',
         'message.min' => 'Le message doit contenir au moins 10 caractères',
     ];
@@ -32,31 +31,11 @@ class AdminNewsletterSend extends Component
     protected $templates = [
         'welcome' => [
             'subject' => '🎉 Bienvenue sur Agrospace !',
-            'message' => "Bonjour {nom},\n\nNous sommes ravis de vous accueillir sur Agrospace, la plateforme qui connecte les producteurs et consommateurs du secteur agropastoral au Cameroun.\n\nVotre compte {role} est maintenant actif. Vous pouvez dès maintenant :\n• Explorer les offres et demandes\n• Publier vos propres annonces\n• Échanger avec la communauté\n• Accéder à nos ressources et actualités\n\nBesoin d'aide ? Notre équipe est là pour vous accompagner.\n\nCordialement,\nL'équipe Agrospace 🌾",
+            'message' => "\n\nNous sommes ravis de vous accueillir sur Agrospace, la plateforme qui connecte les producteurs et consommateurs du secteur agropastoral au Cameroun.\n\nVotre compte {role} est maintenant actif. Vous pouvez dès maintenant :\n• Explorer les offres et demandes\n• Publier vos propres annonces\n• Échanger avec la communauté\n• Accéder à nos ressources et actualités\n\nBesoin d'aide ? Notre équipe est là pour vous accompagner.\n\nCordialement,\nL'équipe Agrospace 🌾",
         ],
-        'verification' => [
-            'subject' => '✅ Vérification de votre compte Agrospace',
-            'message' => "Bonjour {nom},\n\nFélicitations ! Votre compte Agrospace a été vérifié avec succès.\n\nVous bénéficiez maintenant de tous les avantages :\n✓ Badge vérifié sur votre profil\n✓ Visibilité accrue\n✓ Accès prioritaire aux fonctionnalités\n\nContinuez à développer votre activité sur Agrospace !\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'offer_approved' => [
-            'subject' => '📦 Votre offre a été approuvée !',
-            'message' => "Bonjour {nom},\n\nBonne nouvelle ! Votre offre vient d'être approuvée et est maintenant visible par tous les utilisateurs d'Agrospace.\n\nConsultez les statistiques de votre offre depuis votre tableau de bord pour suivre son évolution.\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'offer_rejected' => [
-            'subject' => '❌ Votre offre nécessite des modifications',
-            'message' => "Bonjour {nom},\n\nNous avons examiné votre offre et elle nécessite quelques ajustements avant d'être publiée.\n\nMotif : [À compléter]\n\nVeuillez apporter les modifications nécessaires et soumettre à nouveau votre offre.\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'account_suspended' => [
-            'subject' => '⏸ Suspension temporaire de votre compte',
-            'message' => "Bonjour {nom},\n\nVotre compte Agrospace a été temporairement suspendu suite à [raison].\n\nPour réactiver votre compte, veuillez nous contacter à support@agrospace.cm.\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'newsletter' => [
-            'subject' => '📰 Newsletter Agrospace - [Mois Année]',
-            'message' => "Bonjour {nom},\n\nDécouvrez les actualités du mois :\n\n• Nouveauté 1\n• Nouveauté 2\n• Nouveauté 3\n\nRestez connecté avec Agrospace !\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'promotion' => [
-            'subject' => '🎁 Offre spéciale Agrospace',
-            'message' => "Bonjour {nom},\n\nProfitez de notre offre spéciale !\n\n[Détails de la promotion]\n\nValable jusqu'au [date]\n\nCordialement,\nL'équipe Agrospace 🌾",
+        'special_offer' => [
+           'subject' => '🎁 Offre spéciale Agrospace',
+            'message' => "\n\nProfitez de notre offre spéciale ! Le meilleur de l'agropastoralisme est là.\n\n[Détails de la promotion]\n\nValable jusqu'au [date]\n\nCordialement,\nL'équipe Agrospace 🌾",
         ],
     ];
 
@@ -67,10 +46,11 @@ class AdminNewsletterSend extends Component
         $activeSubscribers = NewsletterSubscriber::active()->get();
 
         foreach ($activeSubscribers as $subscriber) {
-            SendNewsletterJob::dispatch($subscriber, $this->subject, $this->message);
+            // NOTE: Assurez-vous que le SendNewsletterJob existe et fonctionne
+             SendNewsletterJob::dispatch($subscriber, $this->subject, $this->message);
         }
 
-        $this->reset(['subject', 'message']);
+        $this->reset(['subject', 'message', 'selectedTemplate']);
         $this->close();
 
         $this->dispatch('toast', [
@@ -83,6 +63,7 @@ class AdminNewsletterSend extends Component
     #[On('openEmailModal')]
     public function open()
     {
+        // On cible tous les abonnés actifs pour l'envoi en masse
         $this->recipients = NewsletterSubscriber::active()->get();
         $this->show = true;
     }
@@ -97,7 +78,8 @@ class AdminNewsletterSend extends Component
 
     public function close()
     {
-        $this->reset();
+        $this->resetValidation();
+        $this->reset(['subject', 'message', 'selectedTemplate']);
         $this->show = false;
     }
 

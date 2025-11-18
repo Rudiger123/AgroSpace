@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
+// Note: Assurez-vous d'avoir les modèles View, Reaction et Share configurés.
+// Pour cet exemple, nous supposons qu'ils existent et gèrent le polymorphisme.
+
 #[Layout('layouts.app')]
 #[Title('Blog Analytics')]
 class BlogAnalytics extends Component
@@ -22,20 +25,35 @@ class BlogAnalytics extends Component
     public $dateTo;
     public $selectedPost = null;
     public $selectedAuthor = null;
-    public $statusFilter = 'all';
+    public $statusFilter = 'all'; // Statut de commentaire
      
     public $stats = [];
-    public $chartData = [];
+    public $chartData = [
+        'labels' => [], // Dates for X-axis
+        'views' => [],  // Views data
+        'comments' => [] // Comments data
+    ];
     public $topPosts = [];
-    public $reactionBreakdown = [];
-    public $sharesPlatform = [];
+    public $reactionBreakdown = [
+        'labels' => [],
+        'values' => []
+    ];
+    public $sharesPlatform = [
+        'labels' => [],
+        'values' => []
+    ];
 
     protected $queryString = ['dateFrom', 'dateTo', 'selectedPost', 'selectedAuthor', 'statusFilter'];
 
     public function mount()
     {
-        $this->dateFrom = Carbon::now()->subDays(30)->format('Y-m-d');
-        $this->dateTo = Carbon::now()->format('Y-m-d');
+        // Initialisation par défaut sur les 30 derniers jours
+        if (empty($this->dateFrom)) {
+            $this->dateFrom = Carbon::now()->subDays(30)->format('Y-m-d');
+        }
+        if (empty($this->dateTo)) {
+            $this->dateTo = Carbon::now()->format('Y-m-d');
+        }
         $this->loadStats();
     }
 
@@ -43,102 +61,138 @@ class BlogAnalytics extends Component
     {
         return view('livewire.blog.blog-analytics', [
             'posts' => Post::select('id', 'title')->get(),
-            'authors' => \App\Models\User::whereHas('posts')->select('id', 'name')->get()
+            // Assurez-vous que le modèle User existe et a des posts
+            'authors' => \App\Models\User::whereHas('posts')->select('id', 'name')->get() 
         ]);
     }
 
     public function loadStats()
     {
-        $cacheKey = "blog_analytics_{$this->dateFrom}_{$this->dateTo}_{$this->selectedPost}_{$this->selectedAuthor}_{$this->statusFilter}";
-        
-        $data = Cache::remember($cacheKey, 60, function () {
-            $from = Carbon::parse($this->dateFrom)->startOfDay();
-            $to = Carbon::parse($this->dateTo)->endOfDay();
+        // Clé de cache dynamique incluant tous les filtres
+        $cacheKey = "blog_analytics_" . implode('_', [
+            $this->dateFrom,
+            $this->dateTo,
+            $this->selectedPost ?? 'all',
+            $this->selectedAuthor ?? 'all',
+            $this->statusFilter,
+        ]);
 
-            // Base queries
-            $postsQuery = Post::whereBetween('created_at', [$from, $to]);
-            $commentsQuery = Comment::whereBetween('created_at', [$from, $to]);
-            $viewsQuery = View::whereBetween('created_at', [$from, $to]);
-            $reactionsQuery = Reaction::whereBetween('created_at', [$from, $to]);
-            $sharesQuery = Share::whereBetween('created_at', [$from, $to]);
+        $data = Cache::remember($cacheKey, now()->addMinutes(30), function () {
+            $start = Carbon::parse($this->dateFrom)->startOfDay();
+            $end = Carbon::parse($this->dateTo)->endOfDay();
 
-            // Apply filters
-            if ($this->selectedPost) {
-                $commentsQuery->where('post_id', $this->selectedPost);
-                $viewsQuery->where('viewable_id', $this->selectedPost)->where('viewable_type', Post::class);
-                $reactionsQuery->where('reactable_id', $this->selectedPost)->where('reactable_type', Post::class);
-                $sharesQuery->where('shareable_id', $this->selectedPost)->where('shareable_type', Post::class);
-            }
+            // 1. Base Query for Posts (to filter Views, Reactions, Shares)
+            $postQuery = Post::query()
+                ->when($this->selectedPost, fn($q) => $q->where('id', $this->selectedPost))
+                ->when($this->selectedAuthor, fn($q) => $q->where('author_id', $this->selectedAuthor));
 
-            if ($this->selectedAuthor) {
-                $postIds = Post::where('user_id', $this->selectedAuthor)->pluck('id');
-                $commentsQuery->whereIn('post_id', $postIds);
-            }
+            $postIds = $postQuery->pluck('id');
 
-            if ($this->statusFilter !== 'all') {
-                $commentsQuery->where('status', $this->statusFilter);
-            }
+            // 2. Comments Base Query (Filtered by date, post/author, and status)
+            $commentsQuery = Comment::query()
+                ->whereBetween('created_at', [$start, $end])
+                ->whereIn('post_id', $postIds)
+                ->when($this->statusFilter !== 'all', fn($q) => $q->where('status', $this->statusFilter));
 
-            // Aggregate stats
+            // 3. Main Stats
             $stats = [
-                'total_posts' => $postsQuery->count(),
+                'total_posts' => $postQuery->count(),
                 'total_comments' => $commentsQuery->count(),
-                'pending_comments' => Comment::whereBetween('created_at', [$from, $to])->pending()->count(),
-                'total_views' => $viewsQuery->count(),
-                'total_reactions' => $reactionsQuery->count(),
-                'total_shares' => $sharesQuery->count(),
+                'pending_comments' => $commentsQuery->clone()->where('status', 'pending')->count(),
+                'total_reactions' => Reaction::whereIn('reactable_id', $postIds)
+                    ->where('reactable_type', Post::class)
+                    ->whereBetween('created_at', [$start, $end])
+                    ->count(),
+                'total_views' => View::whereIn('viewable_id', $postIds)
+                    ->where('viewable_type', Post::class)
+                    ->whereBetween('created_at', [$start, $end])
+                    ->count(),
+                'total_shares' => Share::whereBetween('created_at', [$start, $end])
+                    ->count(),
             ];
 
-            // Daily views for chart
-            $viewsDaily = View::selectRaw('DATE(created_at) as date, COUNT(*) as count')
-                ->whereBetween('created_at', [$from, $to])
+            // 4. Chart Data (Views/Comments Over Time)
+            $dateRange = collect(Carbon::parse($this->dateFrom)->daysUntil(Carbon::parse($this->dateTo)->addDay()));
+            $allDates = $dateRange->map(fn($date) => $date->format('Y-m-d'))->toArray();
+
+            // Fetch views trend
+            $viewsData = View::select(
+                    DB::raw('DATE(created_at) as date'),
+                    DB::raw('COUNT(*) as count')
+                )
+                ->whereIn('viewable_id', $postIds)
                 ->where('viewable_type', Post::class)
+                ->whereBetween('created_at', [$start, $end])
                 ->groupBy('date')
                 ->orderBy('date')
-                ->get();
+                ->get()
+                ->keyBy('date');
+            
+            // Fetch comments trend
+            $commentsData = Comment::select(
+                    DB::raw('DATE(created_at) as date'),
+                    DB::raw('COUNT(*) as count')
+                )
+                ->whereIn('post_id', $postIds)
+                ->when($this->statusFilter !== 'all', fn($q) => $q->where('status', $this->statusFilter))
+                ->whereBetween('created_at', [$start, $end])
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get()
+                ->keyBy('date');
+
+            $chartViews = [];
+            $chartComments = [];
+            foreach ($allDates as $date) {
+                $chartViews[] = $viewsData->get($date)['count'] ?? 0;
+                $chartComments[] = $commentsData->get($date)['count'] ?? 0;
+            }
+
 
             $chartData = [
-                'dates' => $viewsDaily->pluck('date')->map(fn($d) => Carbon::parse($d)->format('d/m'))->toArray(),
-                'views' => $viewsDaily->pluck('count')->toArray(),
+                'labels' => $allDates,
+                'views' => $chartViews,
+                'comments' => $chartComments,
             ];
 
-            // Top 5 posts
-            $topPosts = Post::withCount(['views', 'comments', 'reactions'])
-                ->whereBetween('created_at', [$from, $to])
-                //->orderBy('views_count', 'desc')
+            // 5. Top Posts by Engagement (Comments and Views)
+            $topPosts = Post::select('id', 'title')
+                ->withCount([
+                    'comments' => fn($q) => $q->whereBetween('created_at', [$start, $end]),
+                    'views' => fn($q) => $q->whereBetween('created_at', [$start, $end]),
+                ])
+                ->whereIn('id', $postIds)
+                ->orderByDesc('comments_count')
                 ->take(5)
-                ->get()
-                ->map(function ($post) {
-                    return [
-                        'title' => $post->title,
-                        'views' => $post->views_count,
-                        'comments' => $post->comments_count,
-                        'reactions' => $post->reactions_count,
-                    ];
-                });
+                ->get();
 
-            // Reactions breakdown
-            $reactionBreakdown = Reaction::selectRaw('type, COUNT(*) as count')
-                ->whereBetween('created_at', [$from, $to])
+
+            // 6. Reaction Breakdown (Donut Chart Data)
+            $reactionRaw = Reaction::select('type', DB::raw('COUNT(*) as count'))
+                ->whereIn('reactable_id', $postIds)
                 ->where('reactable_type', Post::class)
+                ->whereBetween('created_at', [$start, $end])
                 ->groupBy('type')
-                ->get()
-                ->mapWithKeys(fn($r) => [$r->type => $r->count]);
+                ->get();
 
-            // Shares by platform
-            $sharesPlatform = Share::selectRaw('platform, COUNT(*) as count')
-                ->whereBetween('created_at', [$from, $to])
-                ->groupBy('platform')
-                ->get()
-                ->mapWithKeys(fn($s) => [$s->platform => $s->count]);
-
-            return [
-                'stats' => $stats,
-                'chartData' => $chartData,
-                'topPosts' => $topPosts,
-                'reactionBreakdown' => $reactionBreakdown,
-                'sharesPlatform' => $sharesPlatform,
+            $reactionBreakdown = [
+                'labels' => $reactionRaw->pluck('type')->toArray(),
+                'values' => $reactionRaw->pluck('count')->toArray(),
             ];
+            
+            // 7. Shares by Platform
+            $sharesPlatformRaw = Share::select('platform', DB::raw('COUNT(*) as count'))
+                ->whereBetween('created_at', [$start, $end])
+                ->groupBy('platform')
+                ->get();
+
+            $sharesPlatform = [
+                'labels' => $sharesPlatformRaw->pluck('platform')->toArray(),
+                'values' => $sharesPlatformRaw->pluck('count')->toArray(),
+            ];
+
+
+            return compact('stats', 'chartData', 'topPosts', 'reactionBreakdown', 'sharesPlatform');
         });
 
         $this->stats = $data['stats'];
@@ -150,49 +204,53 @@ class BlogAnalytics extends Component
 
     public function refreshStats()
     {
-        Cache::forget("blog_analytics_{$this->dateFrom}_{$this->dateTo}_{$this->selectedPost}_{$this->selectedAuthor}_{$this->statusFilter}");
+        // Oublie la clé de cache pour forcer le recalcul
+        Cache::forget("blog_analytics_" . implode('_', [
+            $this->dateFrom,
+            $this->dateTo,
+            $this->selectedPost ?? 'all',
+            $this->selectedAuthor ?? 'all',
+            $this->statusFilter,
+        ]));
         $this->loadStats();
-        $this->dispatch('stats-refreshed');
+        // Le dispatch va recharger les scripts pour mettre à jour les graphiques
+        $this->dispatch('stats-updated', ['statsData' => [
+            'chartData' => $this->chartData,
+            'reactionBreakdown' => $this->reactionBreakdown,
+            'sharesPlatform' => $this->sharesPlatform,
+        ]]);
+    }
+
+    // Les méthodes updated* déclenchent la mise à jour des stats et des graphiques
+    public function updatedDateFrom() { $this->loadStats(); $this->dispatchStatsUpdated(); }
+    public function updatedDateTo() { $this->loadStats(); $this->dispatchStatsUpdated(); }
+    public function updatedSelectedPost() { $this->loadStats(); $this->dispatchStatsUpdated(); }
+    public function updatedSelectedAuthor() { $this->loadStats(); $this->dispatchStatsUpdated(); }
+    public function updatedStatusFilter() { $this->loadStats(); $this->dispatchStatsUpdated(); }
+
+    private function dispatchStatsUpdated()
+    {
+        $this->dispatch('stats-updated', ['statsData' => [
+            'chartData' => $this->chartData,
+            'reactionBreakdown' => $this->reactionBreakdown,
+            'sharesPlatform' => $this->sharesPlatform,
+        ]]);
     }
 
     public function exportCsv()
     {
+        // Logique d'exportation simple (peut être améliorée pour inclure plus de données)
         $csv = "Statistiques du blog du {$this->dateFrom} au {$this->dateTo}\n";
-        $csv .= "Articles,Commentaires,Commentaires en attente,J'aime\n";
-        $csv .= "{$this->stats['total_posts']},{$this->stats['total_comments']},{$this->stats['pending_comments']},{$this->stats['total_reactions']}\n";
+        $csv .= "Articles,Commentaires,Commentaires en attente,Vues,J'aime,Partages\n";
+        $csv .= "{$this->stats['total_posts']},{$this->stats['total_comments']},{$this->stats['pending_comments']},{$this->stats['total_views']},{$this->stats['total_reactions']},{$this->stats['total_shares']}\n";
 
         return response()->stream(
             function () use ($csv) { echo $csv; },
             200,
             [
                 'Content-Type' => 'text/csv',
-                'Content-Disposition' => 'attachment; filename="blog_analytics.csv"',
+                'Content-Disposition' => 'attachment; filename="blog_analytics_' . now()->format('Ymd') . '.csv"',
             ]
         );
-    }
-
-    public function updatedDateFrom()
-    {
-        $this->loadStats();
-    }
-
-    public function updatedDateTo()
-    {
-        $this->loadStats();
-    }
-
-    public function updatedSelectedPost()
-    {
-        $this->loadStats();
-    }
-
-    public function updatedSelectedAuthor()
-    {
-        $this->loadStats();
-    }
-
-    public function updatedStatusFilter()
-    {
-        $this->loadStats();
     }
 }

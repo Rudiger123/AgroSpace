@@ -15,25 +15,29 @@ class UnsubscribeConfirmation extends Component
     public function mount($token)
     {
         $this->token = $token;
+        // Assurez-vous que le modèle NewsletterSubscriber a bien un champ `unsubscribe_token`
         $this->subscriber = NewsletterSubscriber::where('unsubscribe_token', $token)->first();
 
         if (!$this->subscriber) {
-            abort(404, 'Lien de désinscription invalide.');
+            // Pas d'abort 404 pour une meilleure UX, on laisse la vue gérer l'état
         }
     }
 
     public function unsubscribe()
     {
-        if ($this->subscriber->isActive()) {
+        if ($this->subscriber && $this->subscriber->isActive() ) {
             $this->subscriber->markAsUnsubscribed();
-
-            $this->dispatch('swal:success', [
+            $this->dispatch('show-toast', [
                 'title' => 'Désabonnement réussi',
-                'text' => 'Vous avez été désabonné avec succès.',
-                'icon' => 'success',
+                'message' => "Vous avez été désabonné avec succès de la newsletter d'Agrospace.",
+                'type' => 'success',
             ]);
+           
         } else {
-            session()->flash('error', 'Vous êtes déjà désabonné.');
+            $this->dispatch('show-toast', [
+                'message' => "Vous êtes déjà désabonné.",
+                'type' => 'error',
+            ]);
         }
     }
 

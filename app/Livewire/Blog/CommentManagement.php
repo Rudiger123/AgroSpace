@@ -31,6 +31,8 @@ class CommentManagement extends Component
 
     public function render()
     {
+        // J'utilise la nouvelle scopeSearch ici.
+        // Je m'assure également que la relation 'user' charge le nom et l'email pour la recherche.
         $comments = Comment::with(['post:id,title', 'user:id,name,email'])
             ->when($this->search, fn($q) => $q->search($this->search))
             ->when($this->status !== 'all', fn($q) => $q->where('status', $this->status))
@@ -127,6 +129,8 @@ class CommentManagement extends Component
     public function updatedSelectAll($value)
     { 
         if ($value) {
+            // J'ajoute l'utilisation de la scopeSearch ici pour que la sélection de masse
+            // respecte les filtres actifs, y compris la recherche.
             $this->selected = Comment::when($this->search, fn($q) => $q->search($this->search))
                 ->when($this->status !== 'all', fn($q) => $q->where('status', $this->status))
                 ->when($this->post_id, fn($q) => $q->where('post_id', $this->post_id))

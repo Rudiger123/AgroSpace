@@ -17,8 +17,8 @@ class NewsletterSubscriptionForm extends Component
 
     protected $messages = [
         'name.required' => 'Le nom est obligatoire.',
-        'email.required' => 'L\'email est obligatoire.',
-        'email.email' => 'L\'email doit être une adresse valide.',
+        'email.required' => "L'email est obligatoire.",
+        'email.email' => "L'email doit être une adresse valide.",
         'email.unique' => 'Cet email est déjà inscrit à la newsletter.',
     ];
 
@@ -26,6 +26,7 @@ class NewsletterSubscriptionForm extends Component
     {
         $this->validate();
 
+        // Assurez-vous que le modèle a bien une colonne 'status' par défaut à 'active'
         $newsletter = new NewsletterSubscriber();
         $newsletter->name = $this->name;
         $newsletter->email =  $this->email;
@@ -33,13 +34,16 @@ class NewsletterSubscriptionForm extends Component
     
         $this->reset(['name', 'email']);
 
-        $this->dispatch('show-toast',[
+        // Utilisation de la session pour afficher le message après redirection ou refresh
+        session()->flash('toast', [
             'type' => 'success',
-            'message' => 'Merci de vous être abonné à notre newsletter.',
+            'message' => 'Merci de vous être abonné à notre newsletter. Bienvenue chez Agrospace !',
         ]);
-        session()->flash('toast',[
+        
+        // Dispatch pour le cas où le composant est utilisé sur la même page
+        $this->dispatch('show-toast', [
             'type' => 'success',
-            'message' => 'Merci de vous être abonné à notre newsletter.',
+            'message' => 'Merci de vous être abonné à notre newsletter. Bienvenue chez Agrospace !',
         ]);
     }
     
