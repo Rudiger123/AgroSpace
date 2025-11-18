@@ -12,10 +12,11 @@ use App\Models\NewsletterSubscriber;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
+use phpDocumentor\Reflection\Types\This;
 
 class GlobalSearch extends Component
 {
-    public $query = 'hello';
+    public $query = '';
     public $results = [];
     public $isOpen = false;
     public $selectedIndex = -1;
@@ -23,11 +24,10 @@ class GlobalSearch extends Component
 
     protected $listeners = ['openSearch' => 'open', 'closeSearch' => 'close'];
 
-    protected $queryString = [];
-
     public function mount()
     {
         $this->results = [];
+        $this->query = '';
     }
 
     public function render()
@@ -50,46 +50,50 @@ class GlobalSearch extends Component
 
     public function search()
     {
-        $cacheKey = 'global_search_' . md5($this->query . auth()->id() . (Auth::user()->role_id ?? 'guest'));
+        $cacheKey = 'global_search_' . md5($this->query . Auth::id() . (Auth::user()->role_id ?? 'guest'));
         
         $this->results = Cache::remember($cacheKey, 60, function () {
             $searchResults = [];
             $user = Auth::user();
-            $isAdmin = $user && $user->isAdmin();
-            $isProducer = $user && $user->isProducer();
-            $isConsumer = $user && $user->isConsumer();
+            
+            if (!$user) {
+                return [];
+            }
+            
+            $user = User::findOrFail($user->id);
+            $isAdmin = $user->isAdmin();
+            $isProducer = $user->isProducer();
+            $isConsumer = $user->isConsumer();
 
             // 1. Search Posts (Articles) - Visible to all authenticated users
-            if ($user) {
-                $posts = Post::published()
-                    ->where(function ($q) {
-                        $q->where('title', 'ILIKE', "%{$this->query}%")
-                          ->orWhere('content', 'ILIKE', "%{$this->query}%")
-                          ->orWhere('excerpt', 'ILIKE', "%{$this->query}%");
-                    })
-                    ->with('author', 'category')
-                    ->latest()
-                    ->take(5)
-                    ->get()
-                    ->map(function ($post) {
-                        return [
-                            'type' => 'post',
-                            'id' => $post->id,
-                            'title' => $post->title,
-                            'excerpt' => $this->getExcerpt($post->excerpt ?? strip_tags($post->content), 80),
-                            'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>',
-                            'color' => 'text-purple-600 bg-purple-100',
-                            'label' => 'Article',
-                            'url' => route('blog.show', $post->slug),
-                            'author' => $post->author->name ?? 'N/A',
-                            'date' => $post->created_at->format('d/m/Y'),
-                            'status' => null,
-                        ];
-                    })
-                    ->toArray();
-                
-                $searchResults = array_merge($searchResults, $posts);
-            }
+            $posts = Post::published()
+                ->where(function ($q) {
+                    $q->where('title', 'ILIKE', "%{$this->query}%")
+                      ->orWhere('content', 'ILIKE', "%{$this->query}%")
+                      ->orWhere('excerpt', 'ILIKE', "%{$this->query}%");
+                })
+                ->with('author', 'category')
+                ->latest()
+                ->take(5)
+                ->get()
+                ->map(function ($post) {
+                    return [
+                        'type' => 'post',
+                        'id' => $post->id,
+                        'title' => $post->title,
+                        'excerpt' => $this->getExcerpt($post->excerpt ?? strip_tags($post->content), 80),
+                        'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>',
+                        'color' => 'text-purple-600 bg-purple-100',
+                        'label' => 'Article',
+                        'url' => route('blog.show', $post->slug),
+                        'author' => $post->author->name ?? 'N/A',
+                        'date' => $post->created_at->format('d/m/Y'),
+                        'status' => null,
+                    ];
+                })
+                ->toArray();
+            
+            $searchResults = array_merge($searchResults, $posts);
 
             // 2. Search Offers - Admin sees all, Producer sees own, Consumer sees public
             if ($isAdmin || $isProducer || $isConsumer) {
@@ -118,7 +122,7 @@ class GlobalSearch extends Component
                             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>',
                             'color' => 'text-green-600 bg-green-100',
                             'label' => 'Offre',
-                            'url' => route('offers', $offer->id),
+                            'url' => route('offers-management', ['search' => $offer->titre]),
                             'author' => $offer->producer->name ?? 'N/A',
                             'date' => $offer->created_at->format('d/m/Y'),
                             'status' => $offer->statut,
@@ -156,7 +160,7 @@ class GlobalSearch extends Component
                             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>',
                             'color' => 'text-orange-600 bg-orange-100',
                             'label' => 'Demande',
-                            'url' => route('demands.show', $demand->id),
+                            'url' => route('demands-management', ['search' => $demand->title]),
                             'author' => $demand->user->name ?? 'N/A',
                             'date' => $demand->created_at->format('d/m/Y'),
                             'status' => $demand->status,
@@ -182,7 +186,7 @@ class GlobalSearch extends Component
                             'icon' => $category->icon ?? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>',
                             'color' => 'text-blue-600 bg-blue-100',
                             'label' => 'Catégorie',
-                            'url' => route('admin.categories.edit', $category->id),
+                            'url' => route('categories.index', ['search' => $category->name]),
                             'author' => 'Système',
                             'date' => $category->created_at->format('d/m/Y'),
                             'status' => $category->is_active ? 'active' : 'inactive',
@@ -218,7 +222,7 @@ class GlobalSearch extends Component
                             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>',
                             'color' => 'text-indigo-600 bg-indigo-100',
                             'label' => $roleLabels[$user->role_id] ?? 'Utilisateur',
-                            'url' => route('admin.users.show', $user->id),
+                            'url' => route('users-management', ['search' => $user->name]),
                             'author' => $roleLabels[$user->role_id] ?? 'Utilisateur',
                             'date' => $user->created_at->format('d/m/Y'),
                             'status' => $user->status,
@@ -245,7 +249,7 @@ class GlobalSearch extends Component
                             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>',
                             'color' => 'text-pink-600 bg-pink-100',
                             'label' => 'Commentaire',
-                            'url' => route('admin.comments.index') . '?search=' . $comment->id,
+                            'url' => route('admin.blog.comments.index') . '?search=' . $comment->id,
                             'author' => $comment->user->name ?? 'Anonyme',
                             'date' => $comment->created_at->format('d/m/Y'),
                             'status' => $comment->status,
@@ -274,7 +278,7 @@ class GlobalSearch extends Component
                             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>',
                             'color' => 'text-teal-600 bg-teal-100',
                             'label' => 'Newsletter',
-                            'url' => route('admin.newsletter.index') . '?search=' . $subscriber->email,
+                            'url' => route('admin.newsletter.list') . '?search=' . $subscriber->email,
                             'author' => 'Abonné',
                             'date' => $subscriber->created_at->format('d/m/Y'),
                             'status' => $subscriber->isActive() ? 'active' : 'unsubscribed',
@@ -352,7 +356,7 @@ class GlobalSearch extends Component
     public function goToResult($index)
     {
         if (isset($this->results[$index])) {
-            return redirect($this->results[$index]['url']);
+            $this->redirect($this->results[$index]['url'], navigate: true);
         }
     }
 }
