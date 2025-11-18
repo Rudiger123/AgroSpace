@@ -124,4 +124,20 @@ class Comment extends Model
 
         return $depth;
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where(function ($q) use ($search) {
+            $q->where('content', 'like', '%' . $search . '%')
+                // Recherche par nom ou email de l'utilisateur associé
+                ->orWhereHas('user', function ($q_user) use ($search) {
+                    $q_user->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%');
+                })
+                // Recherche par nom ou email de l'auteur non-utilisateur (si ces colonnes existent)
+                ->orWhere('author_name', 'like', '%' . $search . '%')
+                ->orWhere('author_email', 'like', '%' . $search . '%');
+        });
+    }
+
 }

@@ -39,26 +39,13 @@
 
         // Écouteur pour les notifications toast
         window.addEventListener('show-toast', event => {
-            const {
-                type,
-                message
-            } = event.detail;
-
-            const Toast = Swal.mixin({
+            Swal.fire({
+                icon: event.detail[0].type || 'info',
+                title: event.detail[0].message || 'Opération effectuée 1',
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            });
-
-            Toast.fire({
-                icon: type || 'info',
-                title: message || 'Opération effectuée'
+                timer: 3000
             });
         });
     </script>

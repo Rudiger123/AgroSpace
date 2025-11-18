@@ -18,10 +18,11 @@
                     class="text-gray-700 hover:text-primary transition-colors font-medium">Producteurs</a>
                 <a href="{{ route('consumer.page') }}" wire:navigate
                     class="text-gray-700 hover:text-primary transition-colors font-medium">Consommateurs</a>
+                    <a href="{{ route('blog.index') }}" wire:navigate
+                    class="text-gray-700 hover:text-primary transition-colors font-medium">Blog</a>
                 <a href="{{ route('about.page') }}" wire:navigate
                     class="text-gray-700 hover:text-primary transition-colors font-medium">À propos</a>
-                <a href="{{ route('blog.index') }}" wire:navigate
-                    class="text-gray-700 hover:text-primary transition-colors font-medium">Blog</a>
+                
 
                 <!-- Authentication Section -->
                 @auth

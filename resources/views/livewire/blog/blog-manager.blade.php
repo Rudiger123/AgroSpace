@@ -20,13 +20,36 @@
                     </h1>
                     <p class="text-gray-500 mt-1"> Créez, éditez et gérez vos articles avec style</p>
                 </div>
-                <button wire:click="openCreateModal"
-                    class="bg-primary-500 text-white px-6 py-3 rounded-xl hover:bg-primary-600 transition shadow-lg hover:shadow-xl flex items-center space-x-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                    <span>Nouvel Article</span>
-                </button>
+
+
+                <!-- Actions -->
+                <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                    <button wire:click="openCreateModal"
+                        class="bg-primary-500 text-white px-6 py-3 rounded-xl hover:bg-primary-600 transition shadow-lg hover:shadow-xl flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
+                            </path>
+                        </svg>
+                        <span>Nouvel Article</span>
+                    </button>
+                    <!-- comments manager -->
+                    <a href="{{ route('admin.blog.comments.index') }}" wire:navigate
+                        class="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-300 text-white rounded-lg font-medium hover:shadow-lg transition-all text-sm sm:text-base flex-1 sm:flex-none justify-center">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                    </a>
+
+                    <!-- analytics -->
+                    <a href="{{ route('admin.blog.blog.analytics') }}"
+                        class="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white rounded-lg font-medium hover:shadow-lg transition-all text-sm sm:text-base flex-1 sm:flex-none justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <span class="hidden xs:inline">Analytics</span>
+                    </a>
+
+                </div>
             </div>
         </div>
 
@@ -447,50 +470,63 @@
     </div>
 
     <!-- Modal Créer/Éditer Offre -->
+    <!-- Modal Créer/Éditer Article -->
     <div x-show="$wire.showCreateModal || $wire.showEditModal" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-cloak
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+        class="fixed inset-0 bg-gradient-to-br from-black/60 via-black/50 to-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
 
         <div x-show="$wire.showCreateModal || $wire.showEditModal"
             x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 transform scale-90"
-            x-transition:enter-end="opacity-100 transform scale-100"
-            class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8"
+            x-transition:enter-start="opacity-0 transform scale-95 -translate-y-4"
+            x-transition:enter-end="opacity-100 transform scale-100 translate-y-0"
+            class="bg-white rounded-3xl shadow-2xl max-w-6xl w-full max-h-[95vh] overflow-hidden my-8 border border-gray-100"
             @click.away="$wire.closeModals()">
 
-            <!-- Modal Header with Gradient -->
-            <div class="relative bg-gradient-to-r from-primary-600 via-primary-500 to-earth-500 px-8 py-6">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-3">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                </path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-2xl font-bold text-white"
-                                x-text="$wire.showCreateModal ? '➕ Créer une nouvel Article' : '✏️ Modifier l\'article'">
-                            </h3>
-                            <p class="text-primary-100 text-sm mt-1">
-                                {{ $showEditModal ? 'Mettez à jour les informations de l\'article' : 'Publiez votre article' }}
-                            </p>
-                        </div>
+            <!-- Modal Header avec Design Moderne -->
+            <div class="relative overflow-hidden">
+                <!-- Gradient Background avec Pattern -->
+                <div class="absolute inset-0 bg-gradient-to-br from-green-600 via-green-500 to-yellow-500">
+                    <div class="absolute inset-0 opacity-20"
+                        style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.4&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
                     </div>
-                    <button wire:click="closeModals"
-                        class="text-white/80 hover:text-white hover:bg-white/20 rounded-xl p-2 transition-all duration-200">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
+                </div>
+
+                <div class="relative px-8 py-8">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start space-x-5">
+                            <!-- Icon avec Animation -->
+                            <div
+                                class="bg-white/20 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-white/30 transform hover:scale-110 transition-transform duration-300">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div class="pt-1">
+                                <h3 class="text-3xl font-black text-white mb-2 tracking-tight"
+                                    x-text="$wire.showCreateModal ? '✨ Créer un Nouvel Article' : '✏️ Modifier l\'Article'">
+                                </h3>
+                                {{-- <p class="text-green-100 text-base font-medium max-w-md leading-relaxed">
+                                    {{ $showEditModal ? 'Mettez à jour les informations de votre article pour tenir votre communauté informée' : 'Partagez vos connaissances et inspirez la communauté AgroSpace' }}
+                                </p> --}}
+                            </div>
+                        </div>
+                        <button wire:click="closeModals"
+                            class="text-white/90 hover:text-white hover:bg-white/20 backdrop-blur-sm rounded-xl p-3 transition-all duration-200 transform hover:scale-110 hover:rotate-90 group">
+                            <svg class="w-6 h-6 transition-transform" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Decorative Wave -->
                 <div class="absolute bottom-0 left-0 right-0">
-                    <svg class="w-full h-4 text-white" preserveAspectRatio="none" viewBox="0 0 1200 120"
+                    <svg class="w-full h-6 text-white" preserveAspectRatio="none" viewBox="0 0 1200 120"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
@@ -500,250 +536,839 @@
             </div>
 
             <form wire:submit="save" @submit.prevent>
+                <!-- Body avec Scrollbar Personnalisée -->
+                <div class="overflow-y-auto max-h-[calc(95vh-250px)] px-8 py-8 space-y-8 custom-scrollbar">
 
-                <!-- Body -->
-                <div class="p-6 space-y-6">
-
-                    <!-- Titre et Slug -->
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="title" class="block text-sm font-bold text-agro-gray mb-3 font-inter">
-                                Titre <span class="text-red-500">*</span>
-                            </label>
-                            <div class="relative">
-                                <input type="text" wire:model="title" id="title" wire:blur="generateSlug"
-                                    class="w-full pl-12 pr-4 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg bg-primary-50 focus:bg-white"
-                                    placeholder="Titre de l'article">
-                                <i
-                                    class="fas fa-heading absolute left-4 top-1/2 transform -translate-y-1/2 text-primary-400"></i>
+                    <!-- Section 1: Informations Principales -->
+                    <div
+                        class="bg-gradient-to-br from-green-50 via-white to-yellow-50 rounded-2xl p-8 border-2 border-green-100 shadow-lg">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-3 shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
                             </div>
-                            @error('title')
-                                <p class="mt-2 text-sm text-red-600 font-inter">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label for="slug" class="block text-sm font-bold text-agro-gray mb-3 font-inter">
-                                Slug <span class="text-red-500">*</span>
-                            </label>
-                            <div class="relative">
-                                <input type="text" wire:model="slug" id="slug"
-                                    class="w-full pl-12 pr-4 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg bg-primary-50 focus:bg-white"
-                                    placeholder="slug-de-l-article">
-                                <i
-                                    class="fas fa-link absolute left-4 top-1/2 transform -translate-y-1/2 text-primary-400"></i>
-                            </div>
-                            @error('slug')
-                                <p class="mt-2 text-sm text-red-600 font-inter">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- Catégorie et Tags -->
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="category_id" class="block text-sm font-bold text-agro-gray mb-3 font-inter">
-                                Catégorie
-                            </label>
-                            <select wire:model="category_id" id="category_id"
-                                class="w-full px-4 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg">
-                                <option value="">Sélectionner une catégorie</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('category_id')
-                                <p class="mt-2 text-sm text-red-600 font-inter">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div>
-                            <label for="tags" class="block text-sm font-bold text-agro-gray mb-3 font-inter">
-                                Tags
-                            </label>
-                            <div class="relative">
-                                <select wire:model="tags" id="tags" multiple
-                                    class="w-full px-4 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg bg-primary-50 focus:bg-white">
-                                    @foreach ($allTags as $tag)
-                                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                                    @endforeach
-                                </select>
-                                <i class="fas fa-tags absolute left-4 top-4 text-primary-400 pointer-events-none"></i>
-                            </div>
-                            <p class="mt-2 text-sm text-primary-500 font-inter">Maintenez Ctrl pour sélectionner
-                                plusieurs tags</p>
-                            @error('tags')
-                                <p class="mt-2 text-sm text-red-600 font-inter">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- Image de couverture -->
-                    <div>
-                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">
-                            Image de couverture
-                        </label>
-                        <div class="flex items-center gap-6">
-                            @if ($existing_image)
-                                <div class="relative group">
-                                    <img src="{{ Storage::url($existing_image) }}" alt="Image actuelle"
-                                        class="w-24 h-24 rounded-xl object-cover shadow-lg">
-                                    <button type="button" wire:click="$set('existing_image', '')"
-                                        class="absolute -top-2 -right-2 w-8 h-8 bg-red-500 text-agro-white rounded-full flex items-center justify-center text-sm hover:bg-red-600 transition-all duration-300 transform hover:scale-110 opacity-0 group-hover:opacity-100">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            @endif
-                            <div class="flex-1">
-                                <div class="relative">
-                                    <input type="file" wire:model="featured_image" accept="image/*"
-                                        class="w-full px-4 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg bg-primary-50 focus:bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-agro-green file:text-agro-white hover:file:bg-green-700">
-                                    <i
-                                        class="fas fa-image absolute left-4 top-1/2 transform -translate-y-1/2 text-primary-400 pointer-events-none"></i>
-                                </div>
-                                <p class="mt-2 text-sm text-primary-500 font-inter">PNG, JPG, GIF jusqu'à 2MB</p>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">Informations Principales</h4>
+                                <p class="text-sm text-gray-600">Les détails essentiels de votre article</p>
                             </div>
                         </div>
-                        @error('featured_image')
-                            <p class="mt-2 text-sm text-red-600 font-inter">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Résumé -->
-                    <div>
-                        <label for="excerpt" class="block text-sm font-bold text-agro-gray mb-3 font-inter">
-                            Résumé
-                        </label>
-                        <textarea wire:model="excerpt" id="excerpt" rows="3"
-                            class="w-full px-6 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg resize-none"
-                            placeholder="Résumé de l'article (optionnel, généré automatiquement si vide)"></textarea>
-                        @error('excerpt')
-                            <p class="mt-2 text-sm text-red-600 font-inter">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Contenu -->
-                    <div>
-                        <label for="content" class="block text-sm font-bold text-agro-gray mb-3 font-inter">
-                            Contenu <span class="text-red-500">*</span>
-                        </label>
-                        <div wire:ignore>
-                            <textarea wire:model="content" id="content" rows="12"
-                                class="w-full px-6 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg resize-none"
-                                placeholder="Contenu de l'article"></textarea>
-                        </div>
-                        @error('content')
-                            <p class="mt-2 text-sm text-red-600 font-inter">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Options de publication -->
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <label class="flex items-center cursor-pointer select-none space-x-3">
-
-                            <span class="text-gray-800 font-medium">
-                                Publier maintenant
-                            </span>
-
-                            <div class="relative">
-                                <input type="checkbox" wire:model= "published" class="peer sr-only"
-                                    name="is_published" id="is_published">
-
-                                <!-- Background -->
-                                <div
-                                    class="w-12 h-6 rounded-full bg-gray-300 peer-checked:bg-green-600 transition-colors">
-                                </div>
-
-                                <!-- Circle -->
-                                <div
-                                    class="absolute top-0.5 left-0.5 h-5 w-5 bg-white rounded-full shadow
-                                                transition-all peer-checked:translate-x-6">
-                                </div>
-                            </div>
-
-                        </label>
-
-                        <div>
-                            <label for="published_at" class="block text-sm font-bold text-agro-gray mb-3 font-inter">
-                                Date de publication
-                            </label>
-                            <div class="relative">
-                                <input type="datetime-local" wire:model="published_at" id="published_at"
-                                    class="w-full pl-12 pr-4 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg bg-primary-50 focus:bg-white">
-                                <i
-                                    class="fas fa-calendar absolute left-4 top-1/2 transform -translate-y-1/2 text-primary-400"></i>
-                            </div>
-                            @error('published_at')
-                                <p class="mt-2 text-sm text-red-600 font-inter">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- SEO -->
-                    <div class="border-t-2 border-primary-200 pt-8">
-                        <h3 class="text-xl font-bold text-agro-gray mb-6 font-poppins flex items-center gap-3">
-                            <i class="fas fa-search text-agro-green"></i>
-                            Optimisation SEO
-                        </h3>
 
                         <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="meta_title"
-                                    class="block text-sm font-bold text-agro-gray mb-3 font-inter">
-                                    Meta Title
+                            <!-- Titre -->
+                            <div class="group">
+                                <label for="title"
+                                    class="flex items-center space-x-2 text-sm font-bold text-gray-700 mb-3">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
+                                        </path>
+                                    </svg>
+                                    <span>Titre de l'Article</span>
+                                    <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" wire:model="meta_title" id="meta_title"
-                                    class="w-full px-6 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg bg-primary-50 focus:bg-white"
-                                    placeholder="Titre pour les moteurs de recherche">
-                                @error('meta_title')
-                                    <p class="mt-2 text-sm text-red-600 font-inter">{{ $message }}</p>
+                                <div class="relative">
+                                    <input type="text" wire:model.live="title" id="title"
+                                        wire:blur="generateSlug"
+                                        class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-green-100 focus:border-green-500 transition-all duration-300 text-base bg-white hover:border-green-300 group-hover:shadow-lg placeholder-gray-400"
+                                        placeholder="Ex: Les meilleures techniques de culture du maïs">
+                                    <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-green-500 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <!-- Character Counter -->
+                                    <div class="absolute right-4 top-1/2 transform -translate-y-1/2 text-xs text-gray-400"
+                                        x-data="{ length: $wire.entangle('title').length }">
+                                        <span x-text="length"></span>/100
+                                    </div>
+                                </div>
+                                @error('title')
+                                    <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>{{ $message }}</span>
+                                    </p>
                                 @enderror
                             </div>
 
-                            <div>
-                                <label for="meta_description"
-                                    class="block text-sm font-bold text-agro-gray mb-3 font-inter">
-                                    Meta Description
+                            <!-- Slug -->
+                            <div class="group">
+                                <label for="slug"
+                                    class="flex items-center space-x-2 text-sm font-bold text-gray-700 mb-3">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
+                                        </path>
+                                    </svg>
+                                    <span>URL (Slug)</span>
+                                    <span class="text-red-500">*</span>
                                 </label>
-                                <textarea wire:model="meta_description" id="meta_description" rows="3"
-                                    class="w-full px-6 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg resize-none bg-primary-50 focus:bg-white"
-                                    placeholder="Description pour les moteurs de recherche"></textarea>
-                                @error('meta_description')
-                                    <p class="mt-2 text-sm text-red-600 font-inter">{{ $message }}</p>
+                                <div class="relative">
+                                    <input type="text" wire:model="slug" id="slug"
+                                        class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-green-100 focus:border-green-500 transition-all duration-300 text-base bg-white hover:border-green-300 group-hover:shadow-lg placeholder-gray-400"
+                                        placeholder="les-meilleures-techniques-culture-mais">
+                                    <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-green-500 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-xs text-gray-500 flex items-center space-x-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Généré automatiquement à partir du titre</span>
+                                </p>
+                                @error('slug')
+                                    <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>{{ $message }}</span>
+                                    </p>
                                 @enderror
                             </div>
                         </div>
                     </div>
 
+                    <!-- Section 2: Classification -->
+                    <div
+                        class="bg-gradient-to-br from-blue-50 via-white to-indigo-50 rounded-2xl p-8 border-2 border-blue-100 shadow-lg">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl p-3 shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">Classification</h4>
+                                <p class="text-sm text-gray-600">Catégorie et tags pour organiser votre contenu</p>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Catégorie -->
+                            <div class="group">
+                                <label for="category_id"
+                                    class="flex items-center space-x-2 text-sm font-bold text-gray-700 mb-3">
+                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                        </path>
+                                    </svg>
+                                    <span>Catégorie</span>
+                                </label>
+                                <div class="relative">
+                                    <select wire:model="category_id" id="category_id"
+                                        class="w-full pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-300 text-base bg-white hover:border-blue-300 group-hover:shadow-lg appearance-none cursor-pointer">
+                                        <option value="">🗂️ Sélectionner une catégorie</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->icon ?? '📁' }}
+                                                {{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div
+                                        class="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div
+                                        class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                @error('category_id')
+                                    <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <!-- Tags -->
+                            <div class="group">
+                                <label for="tags"
+                                    class="flex items-center space-x-2 text-sm font-bold text-gray-700 mb-3">
+                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                                        </path>
+                                    </svg>
+                                    <span>Tags</span>
+                                </label>
+                                <div class="relative">
+                                    <select wire:model="tags" id="tags" multiple
+                                        class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-300 text-base bg-white hover:border-blue-300 group-hover:shadow-lg">
+                                        @foreach ($allTags as $tag)
+                                            <option value="{{ $tag->id }}">{{ $tag->icon ?? '🏷️' }}
+                                                {{ $tag->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="absolute left-4 top-4 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-xs text-gray-500 flex items-center space-x-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Maintenez Ctrl (Cmd sur Mac) pour sélectionner plusieurs tags</span>
+                                </p>
+                                @error('tags')
+                                    <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Image de Couverture -->
+                    <div
+                        class="bg-gradient-to-br from-purple-50 via-white to-pink-50 rounded-2xl p-8 border-2 border-purple-100 shadow-lg">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl p-3 shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">Image de Couverture</h4>
+                                <p class="text-sm text-gray-600">Choisissez une image attractive pour votre article</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            @if ($existing_image)
+                                <div class="relative group inline-block">
+                                    <img src="{{ Storage::url($existing_image) }}" alt="Image actuelle"
+                                        class="w-40 h-40 rounded-2xl object-cover shadow-2xl border-4 border-white ring-2 ring-purple-200 transform transition-transform group-hover:scale-105">
+                                    <button type="button" wire:click="$set('existing_image', '')"
+                                        class="absolute -top-3 -right-3 w-10 h-10 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 opacity-0 group-hover:opacity-100">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                    <div
+                                        class="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <p class="text-white font-semibold text-sm">Supprimer</p>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <div
+                                class="border-2 border-dashed border-purple-300 rounded-2xl p-8 hover:border-purple-500 transition-all duration-300 bg-white/50 hover:bg-white/80 cursor-pointer group">
+                                <label for="featured_image" class="cursor-pointer block">
+                                    <div class="flex flex-col items-center space-y-4">
+                                        <div
+                                            class="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                                            <svg class="w-10 h-10 text-purple-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="text-base font-bold text-gray-900 mb-1">Cliquez pour télécharger
+                                                ou
+                                                glissez-déposez</p>
+                                            <p class="text-sm text-gray-500">PNG, JPG, GIF jusqu'à 2MB</p>
+                                        </div>
+                                        <input type="file" wire:model="featured_image" id="featured_image"
+                                            accept="image/*" class="hidden">
+                                    </div>
+                                </label>
+                            </div>
+                            @error('featured_image')
+                                <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>{{ $message }}</span>
+                                </p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Résumé -->
+                    <div
+                        class="bg-gradient-to-br from-yellow-50 via-white to-orange-50 rounded-2xl p-8 border-2 border-yellow-100 shadow-lg">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl p-3 shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">Résumé</h4>
+                                <p class="text-sm text-gray-600">Un aperçu concis de votre article</p>
+                            </div>
+                        </div>
+
+                        <div class="group">
+                            <label for="excerpt"
+                                class="flex items-center space-x-2 text-sm font-bold text-gray-700 mb-3">
+                                <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                                </svg>
+                                <span>Description Courte</span>
+                            </label>
+                            <div class="relative">
+                                <textarea wire:model="excerpt" id="excerpt" rows="4"
+                                    class="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-yellow-100 focus:border-yellow-500 transition-all duration-300 text-base resize-none bg-white hover:border-yellow-300 group-hover:shadow-lg placeholder-gray-400"
+                                    placeholder="Rédigez un résumé captivant de votre article (optionnel, généré automatiquement si vide)..."></textarea>
+                                <div class="absolute bottom-4 right-4 text-xs text-gray-400 bg-white px-2 py-1 rounded-lg"
+                                    x-data="{ length: $wire.entangle('excerpt').length }">
+                                    <span x-text="length"></span>/200
+                                </div>
+                            </div>
+                            <p class="mt-2 text-xs text-gray-500 flex items-center space-x-1">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                <span>Sera généré automatiquement depuis le contenu si laissé vide</span>
+                            </p>
+                            @error('excerpt')
+                                <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>{{ $message }}</span>
+                                </p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Contenu Principal -->
+                    <div
+                        class="bg-gradient-to-br from-gray-50 via-white to-slate-50 rounded-2xl p-8 border-2 border-gray-200 shadow-lg">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="bg-gradient-to-br from-gray-700 to-gray-900 rounded-xl p-3 shadow-lg">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-gray-900">Contenu de l'Article</h4>
+                                    <p class="text-sm text-gray-600">Rédigez le corps de votre article</p>
+                                </div>
+                            </div>
+                            <!-- Toolbar Preview -->
+                            <div class="flex items-center space-x-2 bg-gray-100 rounded-lg px-4 py-2">
+                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
+                                    </path>
+                                </svg>
+                                <span class="text-xs font-medium text-gray-600">Markdown supporté</span>
+                            </div>
+                        </div>
+
+                        <div class="group">
+                            <label for="content"
+                                class="flex items-center space-x-2 text-sm font-bold text-gray-700 mb-3">
+                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                <span>Texte Principal</span>
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <div wire:ignore>
+                                <textarea wire:model="content" id="content" rows="16"
+                                    class="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-gray-100 focus:border-gray-500 transition-all duration-300 text-base resize-none bg-white hover:border-gray-300 group-hover:shadow-lg placeholder-gray-400 font-mono"
+                                    placeholder="Rédigez votre article ici...
+
+# Titre Principal
+## Sous-titre
+
+Votre contenu en **gras** ou *italique*
+
+- Liste à puces
+- Élément 2
+
+1. Liste numérotée
+2. Élément 2"></textarea>
+                            </div>
+                            <div class="flex items-center justify-between mt-3">
+                                <p class="text-xs text-gray-500 flex items-center space-x-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Utilisez le format Markdown pour le formatage</span>
+                                </p>
+                                <div class="text-xs text-gray-400" x-data="{ length: $wire.entangle('content').length }">
+                                    <span x-text="length"></span> caractères
+                                </div>
+                            </div>
+                            @error('content')
+                                <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>{{ $message }}</span>
+                                </p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Section 6: Options de Publication -->
+                    <div
+                        class="bg-gradient-to-br from-teal-50 via-white to-cyan-50 rounded-2xl p-8 border-2 border-teal-100 shadow-lg">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl p-3 shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">Options de Publication</h4>
+                                <p class="text-sm text-gray-600">Planifiez la publication de votre article</p>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- Toggle Publier -->
+                            <div
+                                class="bg-white rounded-xl p-6 border-2 border-teal-100 hover:border-teal-300 transition-all">
+                                <label class="flex items-center justify-between cursor-pointer group">
+                                    <div class="flex items-center space-x-3">
+                                        <div
+                                            class="w-12 h-12 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-base font-bold text-gray-900">Publier maintenant</p>
+                                            <p class="text-xs text-gray-500">L'article sera visible immédiatement</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="checkbox" wire:model="published" class="peer sr-only"
+                                            name="is_published" id="is_published">
+                                        <div
+                                            class="w-14 h-7 rounded-full bg-gray-300 peer-checked:bg-gradient-to-r peer-checked:from-teal-500 peer-checked:to-cyan-500 transition-all shadow-inner">
+                                        </div>
+                                        <div
+                                            class="absolute top-0.5 left-0.5 h-6 w-6 bg-white rounded-full shadow-lg transition-all peer-checked:translate-x-7 flex items-center justify-center">
+                                            <svg class="w-3 h-3 text-gray-400 peer-checked:text-teal-500 hidden peer-checked:block"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Date de publication -->
+                            <div class="group">
+                                <label for="published_at"
+                                    class="flex items-center space-x-2 text-sm font-bold text-gray-700 mb-3">
+                                    <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                    <span>Date et Heure de Publication</span>
+                                </label>
+                                <div class="relative">
+                                    <input type="datetime-local" wire:model="published_at" id="published_at"
+                                        class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-teal-100 focus:border-teal-500 transition-all duration-300 text-base bg-white hover:border-teal-300 group-hover:shadow-lg">
+                                    <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-teal-500 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-xs text-gray-500 flex items-center space-x-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Laissez vide pour publication immédiate</span>
+                                </p>
+                                @error('published_at')
+                                    <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 7: SEO (Optimisation) -->
+                    <div
+                        class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 rounded-2xl p-8 border-2 border-indigo-100 shadow-lg">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-3 shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-900">Optimisation SEO</h4>
+                                <p class="text-sm text-gray-600">Améliorez votre visibilité sur les moteurs de
+                                    recherche
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <!-- Meta Title -->
+                            <div class="group">
+                                <label for="meta_title"
+                                    class="flex items-center space-x-2 text-sm font-bold text-gray-700 mb-3">
+                                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
+                                        </path>
+                                    </svg>
+                                    <span>Meta Title</span>
+                                </label>
+                                <div class="relative">
+                                    <input type="text" wire:model="meta_title" id="meta_title"
+                                        class="w-full pl-12 pr-20 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition-all duration-300 text-base bg-white hover:border-indigo-300 group-hover:shadow-lg placeholder-gray-400"
+                                        placeholder="Titre optimisé pour les moteurs de recherche">
+                                    <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-indigo-500 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div class="absolute right-4 top-1/2 transform -translate-y-1/2 text-xs"
+                                        x-data="{ length: $wire.entangle('meta_title').length }">
+                                        <span :class="length > 60 ? 'text-green-600' : 'text-gray-400'"
+                                            x-text="length"></span>
+                                        <span class="text-gray-400">/60</span>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-xs text-gray-500 flex items-center space-x-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Idéalement entre 50-60 caractères</span>
+                                </p>
+                                @error('meta_title')
+                                    <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <!-- Meta Description -->
+                            <div class="group">
+                                <label for="meta_description"
+                                    class="flex items-center space-x-2 text-sm font-bold text-gray-700 mb-3">
+                                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                                    </svg>
+                                    <span>Meta Description</span>
+                                </label>
+                                <div class="relative">
+                                    <textarea wire:model="meta_description" id="meta_description" rows="3"
+                                        class="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition-all duration-300 text-base resize-none bg-white hover:border-indigo-300 group-hover:shadow-lg placeholder-gray-400"
+                                        placeholder="Description concise pour les résultats de recherche (150-160 caractères recommandés)"></textarea>
+                                    <div class="absolute bottom-4 right-4 text-xs bg-white px-2 py-1 rounded-lg"
+                                        x-data="{ length: $wire.entangle('meta_description').length }">
+                                        <span
+                                            :class="length >= 150 && length <= 160 ? 'text-green-600' : 'text-gray-400'"
+                                            x-text="length"></span>
+                                        <span class="text-gray-400">/160</span>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-xs text-gray-500 flex items-center space-x-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>Optimal entre 150-160 caractères pour un affichage complet</span>
+                                </p>
+                                @error('meta_description')
+                                    <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 
-                <!-- Footer -->
+                <!-- Footer Sticky avec Actions -->
                 <div
-                    class="sticky bottom-0 bg-white border-t px-6 py-4 flex items-center justify-end space-x-3 rounded-b-2xl">
-                    <button type="button" wire:click="closeModals"
-                        class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-medium">
-                        Annuler
-                    </button>
-                    <button type="submit" wire:loading.attr="disabled"
-                        class="px-6 py-3 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition font-medium shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2">
-                        <span wire:loading.remove
-                            x-text="$wire.showCreateModal ? 'Créer l\'offre' : 'Mettre à jour'"></span>
-                        <span wire:loading class="flex items-center">
-                            <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10"
-                                    stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                </path>
-                            </svg>
-                            Traitement...
-                        </span>
-                    </button>
+                    class="sticky bottom-0 bg-gradient-to-r from-white via-gray-50 to-white border-t-2 border-gray-200 px-8 py-6 rounded-b-3xl shadow-2xl backdrop-blur-lg">
+                    <div class="flex items-center justify-between">
+                        <!-- Info Section -->
+                        <div class="flex items-center space-x-4">
+                            <div
+                                class="hidden md:flex items-center space-x-3 bg-blue-50 px-4 py-3 rounded-xl border border-blue-200">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <div>
+                                    <p class="text-xs font-semibold text-blue-900">Sauvegarde automatique</p>
+                                    <p class="text-xs text-blue-600">Vos modifications sont enregistrées</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex items-center space-x-3">
+                            <button type="button" wire:click="closeModals"
+                                class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all font-semibold flex items-center space-x-2 group">
+                                <svg class="w-5 h-5 group-hover:rotate-90 transition-transform" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                <span>Annuler</span>
+                            </button>
+
+                            <button type="submit" wire:loading.attr="disabled"
+                                class="relative px-6 py-3 bg-gradient-to-r from-green-500 via-green-600 to-green-700 text-white rounded-xl hover:from-green-600 hover:via-green-700 hover:to-green-800 transition-all font-bold shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 flex items-center space-x-3 overflow-hidden group">
+                                <!-- Animated Background -->
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-green-400 to-yellow-400 opacity-0 group-hover:opacity-20 transition-opacity">
+                                </div>
+
+                                <!-- Icon and Text -->
+                                <div class="relative flex items-center space-x-3">
+                                    <svg wire:loading.remove wire:target="save"
+                                        class="w-6 h-6 group-hover:rotate-12 transition-transform" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <svg wire:loading wire:target="save" class="w-6 h-6 animate-spin" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+
+                                    <span wire:loading.remove wire:target="save" class="text-lg">
+                                        <span
+                                            x-text="$wire.showCreateModal ? '✨ Créer l\'Article' : '💾 Mettre à Jour'"></span>
+                                    </span>
+                                    <span wire:loading wire:target="save" class="text-lg">
+                                        Enregistrement en cours...
+                                    </span>
+                                </div>
+
+                                <!-- Shine Effect -->
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 group-hover:translate-x-full transition-all duration-1000">
+                                </div>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
+
+    <!-- Custom Scrollbar Styles -->
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #22c55e, #16a34a);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #16a34a, #15803d);
+        }
+
+        /* Animation pour le champ de saisie */
+        @keyframes pulse-border {
+
+            0%,
+            100% {
+                border-color: rgba(34, 197, 94, 0.3);
+            }
+
+            50% {
+                border-color: rgba(34, 197, 94, 0.6);
+            }
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+
+        /* Animation pour les icônes */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* .group:hover svg {
+            animation: float 2s ease-in-out infinite;
+        } */
+
+        /* Gradient Animation */
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* File Upload Hover Effect */
+        input[type="file"]:hover {
+            cursor: pointer;
+        }
+
+        /* Smooth transitions for all interactive elements */
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
 
 
 
@@ -791,67 +1416,341 @@
 
     <!-- Preview Modal -->
     @if ($showPreviewModal)
-        <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-bold text-agro-gray font-poppins">Prévisualisation</h2>
-                        <button wire:click="closeModals"
-                            class="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200 rounded-lg hover:bg-gray-100">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
+        <div x-data="{ scrollProgress: 0 }" x-init="$watch('scrollProgress', value => {
+            const modal = $el.querySelector('.modal-content');
+            modal.addEventListener('scroll', () => {
+                const winScroll = modal.scrollTop;
+                const height = modal.scrollHeight - modal.clientHeight;
+                scrollProgress = (winScroll / height) * 100;
+            });
+        })"
+            class="fixed inset-0 bg-gradient-to-br from-black/70 via-black/60 to-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4"
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100">
+
+            <div class="bg-white rounded-3xl shadow-2xl max-w-5xl w-full max-h-[95vh] overflow-hidden border border-gray-100 transform"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-95 -translate-y-4"
+                x-transition:enter-end="opacity-100 scale-100 translate-y-0">
+
+                <!-- Header avec Gradient et Barre de Progression -->
+                <div class="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-lg">
+                    <!-- Progress Bar -->
+                    <div class="h-1 bg-gray-200">
+                        <div class="h-full bg-gradient-to-r from-green-500 via-green-600 to-yellow-500 transition-all duration-300 shadow-lg"
+                            :style="`width: ${scrollProgress}%`"></div>
                     </div>
 
-                    <div class="prose max-w-none">
-                        @if ($selectedPost)
-                            <article class="bg-white rounded-lg">
+                    <!-- Header Content -->
+                    <div class="relative bg-gradient-to-r from-green-600 via-green-500 to-yellow-500 px-8 py-6">
+                        <div class="absolute inset-0 opacity-20"
+                            style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.4&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+                        </div>
+
+                        <div class="relative flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div
+                                    class="bg-white/20 backdrop-blur-md rounded-2xl p-3 shadow-2xl border border-white/30">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2
+                                        class="text-2xl font-black text-white tracking-tight flex items-center space-x-2">
+                                        <span>✨ Prévisualisation</span>
+                                    </h2>
+                                    <p class="text-green-100 text-sm font-medium">Aperçu de votre article avant
+                                        publication</p>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="flex items-center space-x-3">
+                                <!-- Bouton Plein Écran -->
+                                <button onclick="document.querySelector('.modal-content').requestFullscreen()"
+                                    class="p-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-xl transition-all transform hover:scale-110">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4">
+                                        </path>
+                                    </svg>
+                                </button>
+
+                                <!-- Bouton Fermer -->
+                                <button wire:click="closeModals"
+                                    class="p-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-xl transition-all transform hover:scale-110 hover:rotate-90 group">
+                                    <svg class="w-6 h-6 transition-transform" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs Navigation -->
+                    <div class="bg-white px-8 py-3 border-b border-gray-100 flex items-center space-x-2">
+                        <button
+                            class="px-4 py-2 bg-green-100 text-green-700 rounded-lg font-semibold text-sm flex items-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <span>Vue Bureau</span>
+                        </button>
+                        {{-- <button
+                            class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-semibold text-sm flex items-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <span>Vue Mobile</span>
+                        </button> --}}
+                    </div>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-content overflow-y-auto max-h-[calc(95vh-160px)] bg-gray-50 custom-scrollbar">
+                    @if ($selectedPost)
+                        <div class="max-w-4xl mx-auto px-6 py-12">
+                            <!-- Article Header -->
+                            <article class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+
+                                <!-- Featured Image -->
                                 @if ($selectedPost->featured_image)
-                                    <img src="{{ Storage::url($selectedPost->featured_image) }}"
-                                        alt="{{ $selectedPost->title }}"
-                                        class="w-full h-64 object-cover rounded-lg mb-6">
-                                @endif
-
-                                <h1 class="text-3xl font-bold text-agro-gray mb-4 font-poppins">
-                                    {{ $selectedPost->title }}
-                                </h1>
-
-                                <div class="flex items-center space-x-4 text-sm text-gray-600 mb-6 font-inter">
-                                    <span>Par {{ $selectedPost->author->name }}</span>
-                                    <span>•</span>
-                                    <span>{{ $selectedPost->published_at?->format('d F Y') ?? 'Non publié' }}</span>
-                                    @if ($selectedPost->category)
-                                        <span>•</span>
-                                        <span class="px-2 py-1 bg-agro-green text-white rounded-full text-xs">
-                                            {{ $selectedPost->category->name }}
-                                        </span>
-                                    @endif
-                                </div>
-
-                                <div class="text-gray-700 leading-relaxed font-inter">
-                                    {!! $selectedPost->content !!}
-                                </div>
-
-                                @if ($selectedPost->tags->count() > 0)
-                                    <div class="mt-8 pt-6 border-t border-gray-200">
-                                        <div class="flex flex-wrap gap-2">
-                                            @foreach ($selectedPost->tags as $tag)
-                                                <span
-                                                    class="px-3 py-1 bg-earth-100 text-earth-800 rounded-full text-sm font-inter">
-                                                    #{{ $tag->name }}
-                                                </span>
-                                            @endforeach
+                                    <div class="relative h-96 overflow-hidden group">
+                                        <img src="{{ Storage::url($selectedPost->featured_image) }}"
+                                            alt="{{ $selectedPost->title }}"
+                                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
                                         </div>
+
+                                        <!-- Category Badge on Image -->
+                                        @if ($selectedPost->category)
+                                            <div class="absolute top-6 left-6">
+                                                <span
+                                                    class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-green-500/90 backdrop-blur-sm border border-white/30 text-white font-semibold text-sm shadow-xl">
+                                                    <span
+                                                        class="text-lg">{{ $selectedPost->category->icon ?? '📁' }}</span>
+                                                    <span>{{ $selectedPost->category->name }}</span>
+                                                </span>
+                                            </div>
+                                        @endif
                                     </div>
                                 @endif
+
+                                <!-- Article Content -->
+                                <div class="p-8 md:p-12">
+                                    <!-- Title -->
+                                    <h1 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
+                                        {{ $selectedPost->title }}
+                                    </h1>
+
+                                    <!-- Meta Info -->
+                                    <div
+                                        class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-8 pb-8 border-b-2 border-gray-100">
+                                        <!-- Author -->
+                                        <div class="flex items-center space-x-3">
+                                            <img src="{{ $selectedPost->author->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($selectedPost->author->name) . '&background=22c55e&color=fff' }}"
+                                                alt="{{ $selectedPost->author->name }}"
+                                                class="w-12 h-12 rounded-full ring-2 ring-green-500">
+                                            <div>
+                                                <p class="font-bold text-gray-900">{{ $selectedPost->author->name }}
+                                                </p>
+                                                <p class="text-xs text-gray-500">
+                                                    {{ $selectedPost->author->role->name ?? 'Auteur' }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center space-x-4 text-gray-500">
+                                            <!-- Date -->
+                                            <div class="flex items-center space-x-2">
+                                                <svg class="w-5 h-5 text-green-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                    </path>
+                                                </svg>
+                                                <span
+                                                    class="font-medium">{{ $selectedPost->published_at?->format('d F Y') ?? 'Non publié' }}</span>
+                                            </div>
+
+                                            <!-- Reading Time -->
+                                            <div class="flex items-center space-x-2">
+                                                <svg class="w-5 h-5 text-green-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                <span class="font-medium">{{ $selectedPost->reading_time ?? 5 }}
+                                                    min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Excerpt -->
+                                    @if ($selectedPost->excerpt)
+                                        <div
+                                            class="bg-gradient-to-r from-green-50 to-yellow-50 border-l-4 border-green-500 rounded-r-2xl p-6 mb-8">
+                                            <p class="text-lg text-gray-700 leading-relaxed italic">
+                                                {{ $selectedPost->excerpt }}
+                                            </p>
+                                        </div>
+                                    @endif
+
+                                    <!-- Main Content -->
+                                    <div
+                                        class="prose prose-lg prose-green max-w-none
+                                       prose-headings:font-bold prose-headings:text-gray-900
+                                       prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b-4 prose-h2:border-green-500
+                                       prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-h3:text-green-700
+                                       prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6
+                                       prose-a:text-green-600 prose-a:no-underline hover:prose-a:underline prose-a:font-semibold
+                                       prose-strong:text-gray-900 prose-strong:font-bold
+                                       prose-ul:my-6 prose-li:my-2 prose-li:text-gray-700
+                                       prose-img:rounded-2xl prose-img:shadow-2xl prose-img:my-8 prose-img:border-4 prose-img:border-green-100
+                                       prose-blockquote:border-l-4 prose-blockquote:border-green-500 prose-blockquote:bg-green-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-xl prose-blockquote:italic prose-blockquote:text-gray-700
+                                       prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:text-green-600">
+                                        {!! $selectedPost->content !!}
+                                    </div>
+
+                                    <!-- Tags Section -->
+                                    @if ($selectedPost->tags && $selectedPost->tags->count() > 0)
+                                        <div class="mt-12 pt-8 border-t-2 border-gray-100">
+                                            <div class="flex items-center space-x-3 mb-4">
+                                                <svg class="w-6 h-6 text-green-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                                                    </path>
+                                                </svg>
+                                                <h3 class="text-xl font-bold text-gray-900">Tags</h3>
+                                            </div>
+                                            <div class="flex flex-wrap gap-3">
+                                                @foreach ($selectedPost->tags as $tag)
+                                                    <span
+                                                        class="inline-flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-100 to-orange-100 border border-yellow-200 text-yellow-800 rounded-xl font-semibold text-sm hover:shadow-lg transition-all transform hover:scale-105">
+                                                        <span>🏷️</span>
+                                                        <span>#{{ $tag->name }}</span>
+                                                    </span>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <!-- Social Share Section -->
+                                    <div class="mt-12 pt-8 border-t-2 border-gray-100">
+                                        <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8">
+                                            <div
+                                                class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+                                                <div class="flex items-center space-x-4">
+                                                    <div
+                                                        class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
+                                                        <svg class="w-8 h-8 text-white" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="text-xl font-bold text-gray-900">Partagez cet
+                                                            article</h4>
+                                                        <p class="text-sm text-gray-600">Faites découvrir ce contenu à
+                                                            votre communauté</p>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center space-x-3">
+                                                    <button
+                                                        class="w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-xl flex items-center justify-center text-white transition-all transform hover:scale-110 shadow-lg">
+                                                        <svg class="w-6 h-6" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path
+                                                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                                                        </svg>
+                                                    </button>
+                                                    <button
+                                                        class="w-12 h-12 bg-sky-500 hover:bg-sky-600 rounded-xl flex items-center justify-center text-white transition-all transform hover:scale-110 shadow-lg">
+                                                        <svg class="w-6 h-6" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path
+                                                                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                                                        </svg>
+                                                    </button>
+                                                    <button
+                                                        class="w-12 h-12 bg-green-600 hover:bg-green-700 rounded-xl flex items-center justify-center text-white transition-all transform hover:scale-110 shadow-lg">
+                                                        <svg class="w-6 h-6" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path
+                                                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+                                                        </svg>
+                                                    </button>
+                                                    <button
+                                                        class="w-12 h-12 bg-blue-700 hover:bg-blue-800 rounded-xl flex items-center justify-center text-white transition-all transform hover:scale-110 shadow-lg">
+                                                        <svg class="w-6 h-6" fill="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path
+                                                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </article>
-                        @endif
-                    </div>
+
+                            <!-- Call to Action -->
+                            <div
+                                class="mt-8 bg-gradient-to-r from-green-600 via-green-500 to-yellow-500 rounded-3xl p-8 shadow-2xl text-center text-white">
+                                <h3 class="text-2xl font-black mb-3">Prêt à publier votre article ?</h3>
+                                <p class="text-green-100 mb-6">Partagez vos connaissances avec la communauté AgroSpace
+                                </p>
+                                <button wire:click="closeModals"
+                                    class="px-8 py-4 bg-white text-green-600 rounded-xl font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg">
+                                    Retour à l'édition
+                                </button>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
+
+        <!-- Custom Scrollbar Styles -->
+        <style>
+            .custom-scrollbar::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            .custom-scrollbar::-webkit-scrollbar-track {
+                background: #f1f5f9;
+                border-radius: 10px;
+            }
+
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: linear-gradient(to bottom, #22c55e, #16a34a);
+                border-radius: 10px;
+            }
+
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(to bottom, #16a34a, #15803d);
+            }
+        </style>
     @endif
 
     <style>

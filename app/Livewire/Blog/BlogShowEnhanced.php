@@ -177,10 +177,10 @@ class BlogShowEnhanced extends Component
 
             $this->reset(['commentContent', 'replyingTo']);
 
-            $this->dispatch('showAlert', [
-                'type' => 'success',
-                'message' => 'Commentaire ajouté avec succès !'
-            ]);
+            // $this->dispatch('showAlert', [
+            //     'type' => 'success',
+            //     'message' => 'Commentaire ajouté avec succès !'
+            // ]);
 
             $this->dispatch('comment-added');
         } catch (\Exception $e) {
@@ -228,10 +228,10 @@ class BlogShowEnhanced extends Component
             $this->isLiked = !$this->isLiked;
             $this->likesCount = $this->isLiked ? $this->likesCount + 1 : $this->likesCount - 1;
 
-            $this->dispatch('showAlert', [
-                'type' => 'success',
-                'message' => $this->isLiked ? 'Article aimé !' : 'Like retiré.'
-            ]);
+            // $this->dispatch('showAlert', [
+            //     'type' => 'success',
+            //     'message' => $this->isLiked ? 'Article aimé !' : 'Like retiré.'
+            // ]);
         } catch (\Exception $e) {
             report($e);
             $this->dispatch('showAlert', [

@@ -12,9 +12,15 @@ use App\Livewire\Admin\OffersManagement\OffresList;
 use App\Livewire\Admin\ProfileManagement\ProfileManagement;
 use App\Livewire\Admin\UsersManagement\UsersManagement;
 use App\Livewire\Auth\TwoFactorChallenge;
+use App\Livewire\Blog\BlogAnalytics;
 use App\Livewire\Blog\BlogList;
 use App\Livewire\Blog\BlogManager;
 use App\Livewire\Blog\BlogShowEnhanced;
+use App\Livewire\Blog\CommentManagement;
+use App\Livewire\Newsletter\AdminNewsletterList;
+use App\Livewire\Newsletter\AdminNewsletterSend;
+use App\Livewire\Newsletter\NewsletterSubscriptionForm;
+use App\Livewire\Newsletter\UnsubscribeConfirmation;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -41,7 +47,7 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
 
     // Modération des offres
     Route::get('/offers/moderation', ModerateOffers::class)
-    ->name('offers.moderate');
+        ->name('offers.moderate');
 
     // Gestion des catégories
     Route::get('/categories', CategoryManage::class)->name('categories.index');
@@ -71,6 +77,22 @@ Route::prefix('blog')->name('blog.')->group(function () {
 Route::prefix('admin/blog')->name('admin.blog.')->middleware(['auth', 'verified'])->group(function () {
     // Gestion principale des articles
     Route::get('/', BlogManager::class)->name('index');
+
+    // Blog Analytics
+    Route::get('/analytics', BlogAnalytics::class)->name('blog.analytics');
+
+    // Comment Management
+    Route::get('/comments', CommentManagement::class)->name('comments.index');
+});
+
+// Public Newsletter Routes
+Route::get('/newsletter/unsubscribe/{token}', UnsubscribeConfirmation::class)
+    ->name('newsletter.unsubscribe');
+
+// Protected Admin Routes
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/newsletter/subscribers', AdminNewsletterList::class)
+        ->name('admin.newsletter.list');
 });
 
 /**

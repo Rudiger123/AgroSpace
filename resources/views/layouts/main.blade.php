@@ -234,26 +234,28 @@
 
         // Écouteur pour les notifications toast
         window.addEventListener('show-toast', event => {
-            const {
-                type,
-                message
-            } = event.detail;
-
-            const Toast = Swal.mixin({
+            Swal.fire({
+                icon: event.detail[0].type || 'info',
+                title: event.detail[0].message || 'Opération effectuée 1',
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
+                timer: 3000
             });
+        });
 
-            Toast.fire({
-                icon: type || 'info',
-                title: message || 'Opération effectuée'
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('swal:success', (event) => {
+                Swal.fire({
+                    title: event.title,
+                    text: event.text,
+                    icon: event.icon,
+                    confirmButtonColor: '#1B5E20',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        popup: 'rounded-lg'
+                    }
+                });
             });
         });
     </script>
