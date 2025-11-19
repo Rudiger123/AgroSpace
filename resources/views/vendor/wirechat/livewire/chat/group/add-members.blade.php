@@ -7,7 +7,7 @@
         <button 
             class="p-2 ml-0 text-gray-600  hover:bg-[var(--wc-light-secondary)] rounded-full hover:text-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class=" w-5 w-5">
+                stroke="currentColor" class="w-5">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
@@ -47,7 +47,7 @@
     <section class="flex flex-wrap items-center px-0 border-b border-[var(--wc-light-secondary)]">
         <input type="search" id="users-search-field" wire:model.live.debounce='search' autocomplete="off"
             placeholder="{{ __('wirechat::chat.group.add_members.inputs.search.placeholder') }}"
-            class=" w-full border-0 w-auto outline-hidden focus:outline-hidden bg-none rounded-lg focus:ring-0 hover:ring-0">
+            class="w-full border-0 sm:w-auto outline-hidden focus:outline-hidden bg-none rounded-lg focus:ring-0 hover:ring-0">
     </section>
 
 

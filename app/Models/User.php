@@ -96,6 +96,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Demand::class);
     }
 
+    //Preference sur le systeme de notification
+    public function preferences()
+    {
+        return $this->hasOne(UserPreference::class);
+    }
+
+
     // Accessors pour chiffrer/déchiffrer automatiquement
     public function setTwoFactorSecretAttribute($value)
     {
@@ -144,7 +151,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeByRole($query, $role = null)
     {
         return $role
-            ? $query->whereHas('role', fn ($q) => $q->where('name', $role))
+            ? $query->whereHas('role', fn($q) => $q->where('name', $role))
             : $query;
     }
 
@@ -212,7 +219,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function verified(): Attribute
     {
         return Attribute::make(
-            get: fn () => !is_null($this->email_verified_at)
+            get: fn() => !is_null($this->email_verified_at)
         );
     }
 

@@ -405,6 +405,11 @@
                         </div>
                     </div>  --}}
 
+                    <!-- Notification Bell -->
+                    @auth
+                        @livewire('notifications.notification-bell')
+                    @endauth
+
                     {{-- Notifications Dropdown --}}
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open"
