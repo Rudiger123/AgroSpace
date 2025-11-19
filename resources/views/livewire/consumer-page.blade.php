@@ -2,17 +2,63 @@
 
 use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
+use App\Helpers\SEO;             // déjà créé
 
-new #[Layout('layouts.main')] class extends Component {
-    //
+new #[Layout('layouts.main')] class extends Component
+{
+    public function mount()
+    {
+        SEO::setTitle('Espace Consommateurs - AgroSpace Cameroun | Produits Agricoles Locaux');
+        SEO::setDescription('Rejoignez AgroSpace en tant que consommateur : accédez à des offres agricoles locales, contactez directement les producteurs, soutenez l’agriculture de proximité. Inscription 100 % gratuite.');
+        SEO::setKeywords('consommateur agricole Cameroun, produits locaux, circuits courts, achat direct producteur, AgroSpace consommateur, marché local');
+        SEO::setCanonical(url()->current());
+        SEO::setImage(asset('images/agrospace-consumer-og.jpg')); // 1200×630
+        SEO::setType('website');
+    }
 }; ?>
+
+@push('meta')
+    {{-- Primary Meta Tags --}}
+    <title>Espace Consommateurs - AgroSpace Cameroun | Produits Agricoles Locaux</title>
+    <meta name="title" content="Espace Consommateurs - AgroSpace Cameroun | Produits Agricoles Locaux">
+    <meta name="description" content="Rejoignez AgroSpace en tant que consommateur : accédez à des offres agricoles locales, contactez directement les producteurs, soutenez l’agriculture de proximité. Inscription 100 % gratuite.">
+    <meta name="keywords" content="consommateur agricole Cameroun, produits locaux, circuits courts, achat direct producteur, AgroSpace consommateur, marché local">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="fr">
+    <meta name="author" content="AgroSpace">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Espace Consommateurs - AgroSpace Cameroun | Produits Agricoles Locaux">
+    <meta property="og:description" content="Accédez à des offres agricoles locales, contactez directement les producteurs, soutenez l’agriculture de proximité. Inscription 100 % gratuite.">
+    <meta property="og:image" content="{{ asset('images/agrospace-consumer-og.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="AgroSpace">
+    <meta property="og:locale" content="fr_CM">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="Espace Consommateurs - AgroSpace Cameroun | Produits Agricoles Locaux">
+    <meta name="twitter:description" content="Accédez à des offres agricoles locales, contactez directement les producteurs, soutenez l’agriculture de proximité.">
+    <meta name="twitter:image" content="{{ asset('images/agrospace-consumer-og.jpg') }}">
+
+    {{-- Geo-tags --}}
+    <meta name="geo.region" content="CM">
+    <meta name="geo.placename" content="Cameroun">
+    <meta name="geo.position" content="3.848;11.5021">
+    <meta name="ICBM" content="3.848, 11.5021">
+@endpush
 
 <div>
     <!-- Header Navigation -->
     <x-layouts.header />
 
     <!-- Hero Section -->
-    <section class="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden gradient-bg">
+    <section class="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden gradient-bg" itemscope itemtype="https://schema.org/WPHeader">
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <!-- Left Content -->
@@ -21,7 +67,7 @@ new #[Layout('layouts.main')] class extends Component {
                         🛒 Espace Consommateurs
                     </div>
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-50 leading-tight">
-                        Trouvez facilement les <span class="text-base">producteurs agricoles</span> près de chez vous
+                        Trouvez facilement les <span class="text-[#1B5E20]">producteurs agricoles</span> près de chez vous
                     </h1>
                     <p class="text-lg md:text-xl text-gray-50 leading-relaxed">
                         Accédez à des offres vérifiées, contactez directement les producteurs et soutenez l'agriculture

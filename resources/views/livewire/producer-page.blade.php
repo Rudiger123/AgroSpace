@@ -2,19 +2,66 @@
 
 use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
+use App\Helpers\SEO;             // <-- helper already created
 
-new #[Layout('layouts.main')] class extends Component {
-    //
+new #[Layout('layouts.main')] class extends Component
+{
+    public function mount()
+    {
+        /* ----------  SEO  ---------- */
+        SEO::setTitle('Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles');
+        SEO::setDescription('Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.');
+        SEO::setKeywords('producteur agricole Cameroun, AgroSpace producteur, vendre produits agricoles, plateforme producteurs, agriculture locale Cameroun, sans intermédiaire');
+        SEO::setCanonical(url()->current());
+        SEO::setImage(asset('images/agrospace-producer-og.jpg'));   // 1200×630
+        SEO::setType('website');
+    }
 }; ?>
 
-<div>
+@push('meta')
+    {{-- Primary Meta Tags --}}
+    <title>Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles</title>
+    <meta name="title" content="Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles">
+    <meta name="description" content="Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.">
+    <meta name="keywords" content="producteur agricole Cameroun, AgroSpace producteur, vendre produits agricoles, plateforme producteurs, agriculture locale Cameroun, sans intermédiaire">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="fr">
+    <meta name="author" content="AgroSpace">
+    <link rel="canonical" href="{{ url()->current() }}">
 
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles">
+    <meta property="og:description" content="Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.">
+    <meta property="og:image" content="{{ asset('images/agrospace-producer-og.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="AgroSpace">
+    <meta property="og:locale" content="fr_CM">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles">
+    <meta name="twitter:description" content="Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.">
+    <meta name="twitter:image" content="{{ asset('images/agrospace-producer-og.jpg') }}">
+
+    {{-- Geo-tags --}}
+    <meta name="geo.region" content="CM">
+    <meta name="geo.placename" content="Cameroun">
+    <meta name="geo.position" content="3.848;11.5021">
+    <meta name="ICBM" content="3.848, 11.5021">
+@endpush
+
+<div>
     <x-layouts.header/>
 
-     <!-- Hero Section -->
-     <section class="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden gradient-bg">
-        <div class="absolute inset-0 opacity-10 pointer-events-none">
-            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <!-- HERO SECTION -->
+    <section id="producer-hero" class="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden gradient-bg"
+             itemscope itemtype="https://schema.org/WPHeader">
+        <div class="absolute inset-0 opacity-10 pointer-events-none" aria-hidden="true">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.2\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
         </div>
         
         <div class="container mx-auto px-4">
@@ -24,17 +71,22 @@ new #[Layout('layouts.main')] class extends Component {
                     <div class="inline-block bg-white/20 px-4 py-2 rounded-full text-sm font-semibold mb-4">
                         🌾 Espace Producteurs
                     </div>
+                    {{-- SEO : only H1 of the page --}}
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                        Vous produisez, <span class="text-yellow-300">Agrospace</span> vous connecte à vos futurs clients
+                        Vous produisez, <span class="text-yellow-300">AgroSpace</span> vous connecte à vos futurs clients
                     </h1>
                     <p class="text-lg md:text-xl text-green-50 leading-relaxed">
                         Valorisez vos produits agricoles, gagnez en visibilité et trouvez de nouvelles opportunités sans intermédiaires.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                        <a href="/register?type=producteur" class="bg-white text-base px-8 py-4 rounded-lg font-bold hover:bg-yellow-300 hover:text-base transition-all shadow-xl hover:shadow-2xl text-center text-lg">
-                            Devenir Producteur sur Agrospace
+                        <a href="{{ route('register', ['type' => 'producteur']) }}"
+                           title="Devenir Producteur sur AgroSpace - Inscription gratuite"
+                           class="bg-white text-base px-8 py-4 rounded-lg font-bold hover:bg-yellow-300 hover:text-base transition-all shadow-xl hover:shadow-2xl text-center text-lg">
+                            Devenir Producteur sur AgroSpace
                         </a>
-                        <a href="/fonctionnalites" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-base transition-all text-center">
+                        <a href="{{ route('features') }}"
+                           title="Découvrir la plateforme AgroSpace"
+                           class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-base transition-all text-center">
                             Découvrir la plateforme
                         </a>
                     </div>
@@ -78,103 +130,66 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- Avantages Section -->
-    <section class="py-20 bg-white">
+    <!-- AVANTAGES SECTION -->
+    <section class="py-20 bg-white" itemscope itemtype="https://schema.org/ItemList">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
+            <header class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">Les avantages pour les producteurs agricoles</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Agrospace vous donne tous les outils pour faire grandir votre activité et toucher de nouveaux clients
+                    AgroSpace vous donne tous les outils pour faire grandir votre activité et toucher de nouveaux clients
                 </p>
-            </div>
+            </header>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Avantage 1 -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-base group">
+                @foreach([
+                    ['emoji' => '👁️', 'title' => 'Visibilité régionale et nationale', 'text' => 'Soyez découvert par de nouveaux clients dans votre région et au-delà grâce à notre plateforme.'],
+                    ['emoji' => '⚙️', 'title' => 'Gestion simple de vos offres', 'text' => 'Créez, modifiez ou supprimez vos annonces facilement depuis votre tableau de bord.'],
+                    ['emoji' => '💬', 'title' => 'Communication directe', 'text' => 'Discutez, négociez et construisez des relations durables avec vos clients via la messagerie intégrée.'],
+                    ['emoji' => '📊', 'title' => 'Analysez vos statistiques', 'text' => 'Tableau de bord détaillé pour suivre vos performances et optimiser votre visibilité.']
+                ] as $avantage)
+                <article class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-base group"
+                         itemprop="itemListElement" itemscope itemtype="https://schema.org/Service">
                     <div class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                        <span class="text-3xl" aria-hidden="true">{{ $avantage['emoji'] }}</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Visibilité régionale et nationale</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Soyez découvert par de nouveaux clients dans votre région et au-delà grâce à notre plateforme.
-                    </p>
-                </div>
-
-                <!-- Avantage 2 -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-secondary group">
-                    <div class="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Gestion simple de vos offres</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Créez, modifiez ou supprimez vos annonces facilement depuis votre tableau de bord.
-                    </p>
-                </div>
-
-                <!-- Avantage 3 -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-base group">
-                    <div class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Communication directe</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Discutez, négociez et construisez des relations durables avec vos clients via la messagerie intégrée.
-                    </p>
-                </div>
-
-                <!-- Avantage 4 -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-secondary group">
-                    <div class="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">Tableau de bord intuitif</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Suivez vos activités, vos vues et vos messages en un coup d'œil avec des statistiques claires.
-                    </p>
-                </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3" itemprop="name">{{ $avantage['title'] }}</h3>
+                    <p class="text-gray-600 leading-relaxed" itemprop="description">{{ $avantage['text'] }}</p>
+                </article>
+                @endforeach
             </div>
         </div>
     </section>
 
-    <!-- Témoignages Section -->
+    <!-- TÉMOIGNAGES SECTION -->
     <section class="py-20 bg-emerald-50">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Ils font déjà confiance à Agrospace</h2>
+            <header class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Ils font déjà confiance à AgroSpace</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
                     Découvrez les témoignages de producteurs qui ont transformé leur activité grâce à notre plateforme
                 </p>
-            </div>
+            </header>
 
             <div class="max-w-5xl mx-auto" x-data="{
                 testimonials: [
                     {
                         name: 'Marie Kouam',
                         location: 'Productrice Bio - Bafoussam',
-                        text: 'Grâce à Agrospace, j\'ai trouvé un partenaire en 3 jours ! Mes légumes bio sont maintenant distribués dans 5 restaurants de la région. La plateforme est simple et les clients sont sérieux.',
+                        text: 'Grâce à AgroSpace, j\'ai trouvé un partenaire en 3 jours ! Mes légumes bio sont maintenant distribués dans 5 restaurants de la région. La plateforme est simple et les clients sont sérieux.',
                         avatar: '👩🏾‍🌾',
                         rating: 5
                     },
                     {
                         name: 'Jean Nkeng',
                         location: 'Éleveur de volailles - Douala',
-                        text: 'Avant Agrospace, je perdais beaucoup de temps à chercher des clients. Maintenant, ce sont eux qui me contactent directement. J\'ai augmenté mes ventes de 40% en 2 mois !',
+                        text: 'Avant AgroSpace, je perdais beaucoup de temps à chercher des clients. Maintenant, ce sont eux qui me contactent directement. J\'ai augmenté mes ventes de 40% en 2 mois !',
                         avatar: '👨🏾‍🌾',
                         rating: 5
                     },
                     {
                         name: 'Aïcha Mohamadou',
                         location: 'Coopérative laitière - Maroua',
-                        text: 'Nous avons multiplié nos ventes par 3 en 6 mois. Agrospace nous a permis d\'atteindre de nouveaux marchés sans frais d\'intermédiaires. C\'est révolutionnaire pour nous !',
+                        text: 'Nous avons multiplié nos ventes par 3 en 6 mois. AgroSpace nous a permis d\'atteindre de nouveaux marchés sans frais d\'intermédiaires. C\'est révolutionnaire pour nous !',
                         avatar: '👩🏾‍💼',
                         rating: 5
                     }
@@ -188,33 +203,36 @@ new #[Layout('layouts.main')] class extends Component {
                              x-transition:enter="transition ease-out duration-500"
                              x-transition:enter-start="opacity-0 transform scale-95"
                              x-transition:enter-end="opacity-100 transform scale-100"
-                             class="bg-white p-12 rounded-3xl shadow-2xl">
+                             class="bg-white p-12 rounded-3xl shadow-2xl"
+                             itemprop="review" itemscope itemtype="https://schema.org/Review">
                             
                             <div class="flex flex-col md:flex-row items-center gap-8">
                                 <!-- Avatar -->
                                 <div class="flex-shrink-0">
                                     <div class="w-32 h-32 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center text-6xl shadow-xl">
-                                        <span x-text="testimonial.avatar"></span>
+                                        <span x-text="testimonial.avatar" aria-hidden="true"></span>
                                     </div>
                                 </div>
 
                                 <!-- Content -->
                                 <div class="flex-1 text-center md:text-left">
                                     <!-- Stars -->
-                                    <div class="flex justify-center md:justify-start gap-1 mb-4">
+                                    <div class="flex justify-center md:justify-start gap-1 mb-4" itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
                                         <template x-for="i in 5">
                                             <svg class="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                             </svg>
                                         </template>
+                                        <meta itemprop="ratingValue" content="5">
+                                        <meta itemprop="bestRating" content="5">
                                     </div>
 
                                     <!-- Quote -->
-                                    <p class="text-xl text-gray-700 leading-relaxed mb-6 italic" x-text="'« ' + testimonial.text + ' »'"></p>
+                                    <p class="text-xl text-gray-700 leading-relaxed mb-6 italic" x-text="'« ' + testimonial.text + ' »'" itemprop="reviewBody"></p>
 
                                     <!-- Author -->
                                     <div>
-                                        <h4 class="text-xl font-bold text-gray-900" x-text="testimonial.name"></h4>
+                                        <h4 class="text-xl font-bold text-gray-900" x-text="testimonial.name" itemprop="author"></h4>
                                         <p class="text-base font-medium" x-text="testimonial.location"></p>
                                     </div>
                                 </div>
@@ -227,93 +245,55 @@ new #[Layout('layouts.main')] class extends Component {
                         <template x-for="(testimonial, index) in testimonials" :key="index">
                             <button @click="currentIndex = index" 
                                     :class="currentIndex === index ? 'bg-base w-12' : 'bg-gray-300 w-3'"
-                                    class="h-3 rounded-full transition-all duration-300"></button>
+                                    class="h-3 rounded-full transition-all duration-300"
+                                    :aria-label="'Témoignage ' + (index + 1)"></button>
                         </template>
                     </div>
                 </div>
             </div>
 
             <div class="text-center mt-12">
-                <a href="/register?type=producteur" class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
-                    Rejoindre Agrospace maintenant
+                <a href="{{ route('register', ['type' => 'producteur']) }}"
+                   title="Rejoindre AgroSpace maintenant - Inscription gratuite"
+                   class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                    Rejoindre AgroSpace maintenant
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Fonctionnalités Section -->
+    <!-- FONCTIONNALITÉS SECTION -->
     <section class="py-20 bg-white">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
+            <header class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">Tout ce dont vous avez besoin pour développer votre activité</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
                     Des outils simples et puissants pour gérer votre présence en ligne et connecter avec vos clients
                 </p>
-            </div>
+            </header>
 
             <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
                 <!-- Features List -->
                 <div class="space-y-6">
+                    @foreach([
+                        ['icon' => 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', 'title' => '📦 Créez vos offres facilement', 'text' => 'Publiez vos produits en quelques clics avec photos et descriptions détaillées.'],
+                        ['icon' => 'M12 6v6m0 0v6m0-6h6m-6 0H6', 'title' => '🖼️ Ajoutez photos et descriptions', 'text' => 'Mettez en valeur vos produits avec des visuels attrayants et des informations complètes.'],
+                        ['icon' => 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z', 'title' => '🧭 Indiquez votre localisation', 'text' => 'Les clients locaux vous trouvent facilement grâce à la carte interactive.'],
+                        ['icon' => 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z', 'title' => '💬 Échangez directement', 'text' => 'Messagerie instantanée pour négocier et construire des relations durables.'],
+                        ['icon' => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', 'title' => '📊 Analysez vos statistiques', 'text' => 'Tableau de bord détaillé pour suivre vos performances et optimiser votre visibilité.']
+                    ] as $feature)
                     <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
                         <div class="flex-shrink-0 w-12 h-12 bg-base/10 rounded-lg flex items-center justify-center">
                             <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $feature['icon'] }}"/>
                             </svg>
                         </div>
                         <div>
-                            <h4 class="font-bold text-gray-900 text-lg mb-2">📦 Créez vos offres facilement</h4>
-                            <p class="text-gray-600">Publiez vos produits en quelques clics avec photos et descriptions détaillées.</p>
+                            <h4 class="font-bold text-gray-900 text-lg mb-2">{{ $feature['title'] }}</h4>
+                            <p class="text-gray-600">{{ $feature['text'] }}</p>
                         </div>
                     </div>
-
-                    <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
-                        <div class="flex-shrink-0 w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-lg mb-2">🖼️ Ajoutez photos et descriptions</h4>
-                            <p class="text-gray-600">Mettez en valeur vos produits avec des visuels attrayants et des informations complètes.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
-                        <div class="flex-shrink-0 w-12 h-12 bg-base/10 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-lg mb-2">🧭 Indiquez votre localisation</h4>
-                            <p class="text-gray-600">Les clients locaux vous trouvent facilement grâce à la carte interactive.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
-                        <div class="flex-shrink-0 w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-lg mb-2">💬 Échangez directement</h4>
-                            <p class="text-gray-600">Messagerie instantanée pour négocier et construire des relations durables.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
-                        <div class="flex-shrink-0 w-12 h-12 bg-base/10 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-lg mb-2">📊 Analysez vos statistiques</h4>
-                            <p class="text-gray-600">Tableau de bord détaillé pour suivre vos performances et optimiser votre visibilité.</p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
                 <!-- Dashboard Mockup -->
@@ -373,92 +353,53 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- Parcours Section -->
+    <!-- PARCOURS SECTION -->
     <section class="py-20 bg-[#FAF7F0]">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
+            <header class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">Comment ça marche ?</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Rejoignez Agrospace en 3 étapes simples et commencez à développer votre activité dès aujourd'hui
+                    Rejoignez AgroSpace en 3 étapes simples et commencez à développer votre activité dès aujourd'hui
                 </p>
-            </div>
+            </header>
 
             <div class="grid md:grid-cols-3 gap-8 mb-12">
-                <!-- Étape 1 -->
+                @foreach([
+                    ['step' => 1, 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', 'title' => 'Créez votre compte producteur', 'text' => 'Inscrivez-vous gratuitement, renseignez vos informations et ajoutez votre photo de profil.'],
+                    ['step' => 2, 'icon' => 'M12 6v6m0 0v6m0-6h6m-6 0H6', 'title' => 'Publiez votre première offre', 'text' => 'Ajoutez vos produits, prix indicatifs, photos et localisation en quelques clics.'],
+                    ['step' => 3, 'icon' => 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z', 'title' => 'Recevez vos premiers contacts', 'text' => 'Discutez directement via la messagerie intégrée et finalisez vos ventes.']
+                ] as $step)
                 <div class="relative">
                     <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full">
                         <div class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center shadow-xl">
-                            <span class="text-3xl font-bold text-white">1</span>
+                            <span class="text-3xl font-bold text-white">{{ $step['step'] }}</span>
                         </div>
                         <div class="pt-8">
                             <div class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
                                 <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $step['icon'] }}"/>
                                 </svg>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Créez votre compte producteur</h3>
-                            <p class="text-gray-600 text-center leading-relaxed">
-                                Inscrivez-vous gratuitement, renseignez vos informations et ajoutez votre photo de profil.
-                            </p>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">{{ $step['title'] }}</h3>
+                            <p class="text-gray-600 text-center leading-relaxed">{{ $step['text'] }}</p>
                         </div>
                     </div>
+                    @if($step['step'] < 3)
                     <!-- Arrow -->
                     <div class="hidden md:block absolute top-12 -right-4 text-secondary animate-pulse-slow">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                         </svg>
                     </div>
+                    @endif
                 </div>
-
-                <!-- Étape 2 -->
-                <div class="relative">
-                    <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full">
-                        <div class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center shadow-xl">
-                            <span class="text-3xl font-bold text-white">2</span>
-                        </div>
-                        <div class="pt-8">
-                            <div class="w-16 h-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                                <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Publiez votre première offre</h3>
-                            <p class="text-gray-600 text-center leading-relaxed">
-                                Ajoutez vos produits, prix indicatifs, photos et localisation en quelques clics.
-                            </p>
-                        </div>
-                    </div>
-                    <!-- Arrow -->
-                    <div class="hidden md:block absolute top-12 -right-4 text-secondary animate-pulse-slow">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <!-- Étape 3 -->
-                <div class="relative">
-                    <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full">
-                        <div class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center shadow-xl">
-                            <span class="text-3xl font-bold text-white">3</span>
-                        </div>
-                        <div class="pt-8">
-                            <div class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                                <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Recevez vos premiers contacts</h3>
-                            <p class="text-gray-600 text-center leading-relaxed">
-                                Discutez directement via la messagerie intégrée et finalisez vos ventes.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
 
             <div class="text-center">
-                <a href="/register?type=producteur" class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
+                <a href="{{ route('register', ['type' => 'producteur']) }}"
+                   title="Commencer gratuitement sur AgroSpace"
+                   class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Commencer gratuitement
                 </a>
                 <p class="text-sm text-gray-600 mt-4">✓ Aucune carte bancaire requise • ✓ Inscription en 2 minutes</p>
@@ -466,52 +407,34 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- Chiffres & Impact Section -->
+    <!-- CHIFFRES & IMPACT SECTION -->
     <section class="py-20 bg-gradient-to-br from-secondary/20 to-green-100">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
+            <header class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">Une communauté agricole en pleine croissance</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
                     Des chiffres qui témoignent de la confiance des producteurs africains
                 </p>
-            </div>
+            </header>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Stat 1 -->
-                <div class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center">
-                    <div class="w-20 h-20 bg-base/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-                        </svg>
-                    </div>
-                    <p class="text-5xl font-bold text-green-700 mb-3">+500</p>
-                    <p class="text-xl text-gray-700 font-semibold">Producteurs inscrits</p>
-                    <p class="text-sm text-gray-500 mt-2">Et le nombre ne cesse de croître chaque jour</p>
-                </div>
-
-                <!-- Stat 2 -->
-                <div class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center">
-                    <div class="w-20 h-20 bg-secondary/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                    </div>
-                    <p class="text-5xl font-bold text-green-700 mb-3">+1,200</p>
-                    <p class="text-xl text-gray-700 font-semibold">Connexions créées</p>
-                    <p class="text-sm text-gray-500 mt-2">Entre producteurs et consommateurs locaux</p>
-                </div>
-
-                <!-- Stat 3 -->
-                <div class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center">
+                @foreach([
+                    ['value' => '+500', 'label' => 'Producteurs inscrits', 'desc' => 'Et le nombre ne cesse de croître chaque jour'],
+                    ['value' => '+1,200', 'label' => 'Connexions créées', 'desc' => 'Entre producteurs et consommateurs locaux'],
+                    ['value' => '+30', 'label' => 'Régions couvertes', 'desc' => 'À travers tout le Cameroun et au-delà']
+                ] as $stat)
+                <article class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center"
+                         itemscope itemtype="https://schema.org/Number">
                     <div class="w-20 h-20 bg-base/10 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-10 h-10 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
-                    <p class="text-5xl font-bold text-green-700 mb-3">+30</p>
-                    <p class="text-xl text-gray-700 font-semibold">Régions couvertes</p>
-                    <p class="text-sm text-gray-500 mt-2">À travers tout le Cameroun et au-delà</p>
-                </div>
+                    <p class="text-5xl font-bold text-green-700 mb-3" itemprop="value">{{ $stat['value'] }}</p>
+                    <p class="text-xl text-gray-700 font-semibold">{{ $stat['label'] }}</p>
+                    <p class="text-sm text-gray-500 mt-2">{{ $stat['desc'] }}</p>
+                </article>
+                @endforeach
             </div>
 
             <!-- Trust badges -->
@@ -535,24 +458,28 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- CTA Final Section -->
+    <!-- CTA FINAL SECTION -->
     <section class="py-20 gradient-cta text-white relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0 opacity-10" aria-hidden="true">
             <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
         </div>
         
         <div class="container mx-auto px-4 text-center relative z-10">
             <h2 class="text-4xl md:text-5xl font-bold mb-6">
-                Rejoignez la communauté Agrospace et valorisez vos produits agricoles dès aujourd'hui
+                Rejoignez la communauté AgroSpace et valorisez vos produits agricoles dès aujourd'hui
             </h2>
             <p class="text-xl md:text-2xl text-green-50 mb-10 max-w-3xl mx-auto">
-                Des milliers de producteurs ont déjà choisi Agrospace pour développer leur activité. Pourquoi pas vous ?
+                Des milliers de producteurs ont déjà choisi AgroSpace pour développer leur activité. Pourquoi pas vous ?
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="/register?type=producteur" class="bg-white text-base px-12 py-6 rounded-lg font-bold text-xl hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105">
+                <a href="{{ route('register', ['type' => 'producteur']) }}"
+                   title="S'inscrire comme Producteur sur AgroSpace - Inscription gratuite"
+                   class="bg-white text-base px-12 py-6 rounded-lg font-bold text-xl hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105">
                     S'inscrire comme Producteur
                 </a>
-                <a href="/offres" class="bg-transparent border-2 border-white text-white px-12 py-6 rounded-lg font-bold text-xl hover:bg-white hover:text-base transition-all">
+                <a href="{{ route('offers-list') }}"
+                   title="Découvrir les offres agricoles sur AgroSpace"
+                   class="bg-transparent border-2 border-white text-white px-12 py-6 rounded-lg font-bold text-xl hover:bg-white hover:text-base transition-all">
                     Découvrir les offres
                 </a>
             </div>
@@ -562,5 +489,6 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
+    <!-- FOOTER -->
     <x-layouts.footer/>
 </div>

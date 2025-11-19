@@ -1,9 +1,11 @@
 import './bootstrap';
+import './seo-jsonld';
 import Alpine from 'alpinejs';
 import Swal from 'sweetalert2';
 import persist from '@alpinejs/persist';
 import { Picker } from 'emoji-mart'
 import ApexCharts from 'apexcharts';
+
 window.ApexCharts = ApexCharts;
 window.EmojiMart = { Picker }
 
