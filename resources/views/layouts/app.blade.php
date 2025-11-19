@@ -120,7 +120,7 @@
 <body class="bg-gradient-to-br from-green-50 via-white to-amber-50 font-sans antialiased">
 
     {{-- Sidebar avec son propre x-data --}}
-    <aside x-data="{}"
+    <aside x-data="{ open: false }"
         x-bind:class="$store.sidebar.open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
         class="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-green-800 to-green-900 text-white shadow-2xl z-50 transition-transform duration-300">
 
@@ -343,19 +343,18 @@
         </div>
     </aside>
 
-    {{-- Main Content Area - SANS x-data parent --}}
     <div class="lg:ml-72 transition-all duration-300">
 
         {{-- Mobile Overlay --}}
-        <div x-data="{}" x-show="$store.sidebar.open" @click="$store.sidebar.close()"
+        <div x-show="$store.sidebar.open" @click="$store.sidebar.close()"
             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
             class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden" x-cloak>
         </div>
 
-        {{-- Header avec son propre x-data --}}
-        <header class="bg-white shadow-sm sticky top-0 z-30 glass-effect">
+        {{-- Header --}}
+        <header class="bg-primary-50 shadow-sm sticky top-0 z-30">
             <div class="px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     {{-- Bouton mobile --}}
@@ -384,7 +383,10 @@
 
                 <div class="flex items-center space-x-3">
                     {{-- Search Bar --}}
-                    <div class="flex-1 max-w-xl mx-6">
+                    <div class="max-w-md">
+                        @livewire('admin.global-search')
+                    </div>
+                    {{-- <div class="flex-1 max-w-xl mx-6">
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="w-5 h-5 text-[#37474F]/40" fill="none" stroke="currentColor"
@@ -401,7 +403,12 @@
 
 
                         </div>
-                    </div>
+                    </div>  --}}
+
+                    <!-- Notification Bell -->
+                    @auth
+                        @livewire('notifications.notification-bell')
+                    @endauth
 
                     {{-- Notifications Dropdown --}}
                     <div class="relative" x-data="{ open: false }">
@@ -551,6 +558,9 @@
 
         {{-- Main Content Area - SANS x-data parent pour Livewire --}}
         <main class="p-4 sm:p-6 lg:p-8">
+            {{-- <div class="max-w-xl mx-6">
+                @livewire('admin.global-search')
+            </div> --}}
             {{ $slot }}
         </main>
 
@@ -708,6 +718,12 @@
                     }
                 });
             });
+        });
+
+        // Additional keyboard shortcut handling
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ctrl+K or Cmd+K is already handled in the component
+            console.log('Global Search: Raccourci clavier Ctrl+K / Cmd+K activé');
         });
     </script>
 

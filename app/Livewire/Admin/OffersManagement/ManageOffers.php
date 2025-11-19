@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\OffersManagement;
 
+use App\Events\Notifications\NewOfferCreated;
 use App\Models\Category;
 use App\Models\Offer;
 use App\Models\OfferPhoto;
@@ -181,7 +182,10 @@ class ManageOffers extends Component
                 'published' => $this->published
             ];
 
-            $service->createOffer($data, $this->photos);
+            $offer = $service->createOffer($data, $this->photos);
+
+            // Déclencher l'événement de notification
+            event(new NewOfferCreated($offer, Auth::user()));
 
             $this->showCreateModal = false;
             $this->resetForm();

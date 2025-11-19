@@ -7,6 +7,28 @@ import ApexCharts from 'apexcharts';
 window.ApexCharts = ApexCharts;
 window.EmojiMart = { Picker }
 
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'reverb',
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsPort: import.meta.env.VITE_REVERB_PORT,
+    forceTLS: false,
+    disableStats: true,
+});
+
+window.Echo.channel('notifications')
+    .listen('NewOfferCreated', (e) => {
+        // Jouer le son
+        const audio = new Audio('/sounds/notification.mp3');
+        audio.play();
+
+        // Afficher la notification visuelle
+        alert(`Nouvelle offre: ${e.offer.title}`);
+    });
 
 
 // Nous ne devons pas initialiser Alpine ici, Livewire le fera.
