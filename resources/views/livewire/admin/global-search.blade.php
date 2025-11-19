@@ -53,15 +53,15 @@ window.addEventListener('keydown', (e) => {
     </button>
 
     <!-- Search Modal (Responsive) -->
-    <div x-show="open" x-cloak class="fixed inset-0 z-[999] bg-black/50 backdrop-blur-sm overflow-y-auto"
+    <div x-show="open" x-cloak class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm overflow-y-auto"
         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
         <!-- Background Overlay -->
-        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" @click="@this.call('close')"></div>
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" @click="@this.call('close')"></div>
 
-        <!-- Modal Content (Responsive) -->
+        <!-- Modal Content (Responsive) --> 
         <div class="flex min-h-screen items-start justify-center p-2 sm:p-4 pt-4 sm:pt-20">
             <div x-show="open" x-transition:enter="ease-out duration-300"
                 x-transition:enter-start="opacity-0 translate-y-4 scale-95"

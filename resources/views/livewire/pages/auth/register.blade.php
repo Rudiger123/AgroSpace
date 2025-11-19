@@ -9,35 +9,91 @@ use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
 new #[Layout('layouts.guest')] class extends Component {
+    // Étape 1 : Infos Personnelles
     public string $name = '';
     public string $email = '';
-    public string $password = '';
-    public string $password_confirmation = '';
     public $role_id = '';
     public bool $terms = false;
+
+    // Étape 2 : Mot de passe
+    public string $password = '';
+    public string $password_confirmation = '';
+
+    // État du formulaire
+    public int $currentStep = 1;
+    private int $totalSteps = 3;
+
+    // Règle de validation par étape
+    public function getValidationRules($step)
+    {
+        return match ($step) {
+            1 => [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+                'role_id' => ['required', 'exists:roles,id'],
+            ],
+            2 => [
+                'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            ],
+            3 => [
+                'terms' => ['accepted'],
+            ],
+            default => [],
+        };
+    }
+
+    /**
+     * Valide et passe à l'étape suivante.
+     */
+    public function nextStep()
+    {
+        // 1. Valider l'étape actuelle
+        $this->validate($this->getValidationRules($this->currentStep));
+
+        // 2. Passer à l'étape suivante si elle existe
+        if ($this->currentStep < $this->totalSteps) {
+            $this->currentStep++;
+        }
+    }
+
+    /**
+     * Revenir à l'étape précédente.
+     */
+    public function previousStep()
+    {
+        if ($this->currentStep > 1) {
+            $this->currentStep--;
+        }
+    }
 
     /**
      * Handle an incoming registration request.
      */
     public function register(): void
     {
-        $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-            'role_id' => ['required', 'exists:roles,id'],
-            'terms' => ['accepted'],
-        ]);
+        // 1. Valider l'étape finale (termes)
+        $this->validate($this->getValidationRules(3));
 
-        $validated['password'] = Hash::make($validated['password']);
+        // 2. Valider toutes les étapes (pour garantir que l'utilisateur n'a pas bypassé la validation)
+        $this->validate($this->getValidationRules(1));
+        $this->validate($this->getValidationRules(2));
 
-        event(new Registered(($user = User::create($validated))));
+        // Données complètes
+        $validatedData = [
+            'name' => $this->name,
+            'email' => $this->email,
+            'role_id' => $this->role_id,
+            'password' => Hash::make($this->password),
+        ];
+
+        event(new Registered(($user = User::create($validatedData))));
 
         Auth::login($user);
 
         $this->redirect(route('dashboard', absolute: false), navigate: true);
     }
 }; ?>
+
 <div>
     <div
         class="min-h-screen bg-gradient-to-br from-[#F9F6F1] to-[#E8F5E9] flex items-center justify-center overflow-hidden">
@@ -48,11 +104,7 @@ new #[Layout('layouts.guest')] class extends Component {
                 <div class="w-full max-w-md">
                     <!-- Logo -->
                     <div class="flex items-center gap-2 mb-8">
-                        <svg class="w-10 h-10 text-[#16a34a]" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-4 0-7-3-7-7V8.3l7-3.5 7 3.5V13c0 4-3 7-7 7z" />
-                            <circle cx="12" cy="12" r="3" />
-                        </svg>
+                        <img src="/images/logo.png" alt="Agrospace" class="w-10 h-10 text-[#16a34a]">
                         <span class="text-2xl font-bold text-[#16a34a]">Agrospace</span>
                     </div>
 
@@ -67,108 +119,78 @@ new #[Layout('layouts.guest')] class extends Component {
                         </p>
                     </div>
 
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-semibold"
+                                :class="{ 'text-primary-600': $wire.currentStep === 1 }">1. Infos Personnelles</span>
+                            <span class="text-sm font-semibold"
+                                :class="{ 'text-primary-600': $wire.currentStep === 2 }">2. Mot de passe</span>
+                            <span class="text-sm font-semibold"
+                                :class="{ 'text-primary-600': $wire.currentStep === 3 }">3. Confirmation</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-primary-600 h-2.5 rounded-full transition-all duration-500"
+                                :style="`width: ${($wire.currentStep / $wire.totalSteps) * 100}%`">
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Formulaire -->
-                    <form wire:submit="register" class="space-y-5">
-                        <!-- Name -->
-                        <div>
-                            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
-                                Nom complet
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                </div>
-                                <input type="text" id="name" wire:model="name" placeholder="Jean Dupont"
-                                    class="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#16a34a] focus:border-transparent transition"
-                                    required />
-                            </div>
-                            @error('name')
-                                <p class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ $message }}
-                                </p>
-                            @enderror
-                        </div>
+                    <form wire:submit="register">
 
-                        <!-- Email -->
-                        <div>
-                            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-                                Adresse email
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                                    </svg>
-                                </div>
-                                <input type="email" id="email" wire:model="email" placeholder="votre@email.com"
-                                    class="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#16a34a] focus:border-transparent transition"
-                                    required />
-                            </div>
-                            @error('email')
-                                <p class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ $message }}
-                                </p>
-                            @enderror
-                        </div>
+                        <div x-show="$wire.currentStep === 1" x-transition:enter.duration.500ms>
+                            <h3 class="text-xl font-bold mb-4">Étape 1/3 : Qui êtes-vous ?</h3>
 
-                        <!-- Role -->
-                        <div>
-                            <label for="role_id" class="block text-sm font-semibold text-gray-700 mb-2">
-                                Vous êtes un...
-                            </label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                    </svg>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-gray-700">Nom
+                                        complet</label>
+                                    <input id="name" type="text" wire:model="name" autofocus
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                    @error('name')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
                                 </div>
-                                <select wire:model="role_id" id="role_id"
-                                    class="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#16a34a] focus:border-transparent transition appearance-none cursor-pointer"
-                                    required>
-                                    <option value="">Sélectionnez votre profil</option>
-                                    @foreach (App\Models\Role::where('name','!=','admin')->get() as $role)
-                                        <option value="{{ $role->id }}">{{ ucfirst($role->name) }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 9l-7 7-7-7" />
-                                    </svg>
+
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700">Adresse
+                                        email</label>
+                                    <input id="email" type="email" wire:model="email"
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                    @error('email')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <label for="role_id" class="block text-sm font-medium text-gray-700">Je suis
+                                        un/une</label>
+                                    <select id="role_id" wire:model="role_id"
+                                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                        <option value="">Sélectionnez votre rôle</option>
+                                        @foreach (App\Models\Role::where('name', '!=', 'admin')->get() as $role)
+                                            <option value="{{ $role->id }}">{{ ucfirst($role->name) }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('role_id')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
-                            @error('role_id')
-                                <p class="text-red-500 text-sm mt-2 flex items-center gap-1">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ $message }}
-                                </p>
-                            @enderror
+
+                            <div class="mt-6 flex justify-end">
+                                <button type="button" wire:click="nextStep"
+                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-6 rounded-md transition duration-200">
+                                    Suivant &rarr;
+                                </button>
+                            </div>
                         </div>
 
-                        <!-- Password -->
+                        <div x-show="$wire.currentStep === 2" x-transition:enter.duration.500ms>
+                            <h3 class="text-xl font-bold mb-4">Étape 2/3 : Sécurisez votre compte</h3>
+
+                            <div class="space-y-4">
+                                 <!-- Password -->
                         <div x-data.ignore="{ showPassword: false }">
                             <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
                                 Mot de passe
@@ -247,49 +269,57 @@ new #[Layout('layouts.guest')] class extends Component {
                                 </button>
                             </div>
                         </div>
+                            </div>
 
-                        <!-- Terms & Conditions -->
-                        <div>
-                            <label class="flex items-start cursor-pointer group">
-                                <input type="checkbox" wire:model="terms"
-                                    class="w-5 h-5 text-[#16a34a] border-gray-300 rounded focus:ring-[#16a34a] focus:ring-2 transition-all cursor-pointer mt-0.5" />
-                                <span class="ml-3 text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
-                                    J'accepte les
-                                    <a href="/terms" class="text-[#16a34a] font-semibold hover:underline">conditions
-                                        d'utilisation</a>
-                                    et la
-                                    <a href="/privacy" class="text-[#16a34a] font-semibold hover:underline">politique
-                                        de
-                                        confidentialité</a>
-                                </span>
-                            </label>
-                            @error('terms')
-                                <p class="text-red-500 text-sm mt-2 ml-8 flex items-center gap-1">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{ $message }}
-                                </p>
-                            @enderror
+                            <div class="mt-6 flex justify-between">
+                                <button type="button" wire:click="previousStep"
+                                    class="border border-gray-300 text-gray-700 font-semibold py-2 px-6 rounded-md transition duration-200 hover:bg-gray-50">
+                                    &larr; Précédent
+                                </button>
+                                <button type="button" wire:click="nextStep"
+                                    class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-6 rounded-md transition duration-200">
+                                    Suivant &rarr;
+                                </button>
+                            </div>
                         </div>
 
-                        <!-- Submit Button -->
-                        <button type="submit" wire:loading.attr="disabled"
-                            class="w-full bg-[#16a34a] hover:bg-[#15803d] text-white py-4 rounded-xl font-semibold transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                            <span wire:loading.remove>Créer mon compte</span>
-                            <span wire:loading class="flex items-center gap-2">
-                                <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                    </path>
-                                </svg>
-                                Création en cours...
-                            </span>
-                        </button>
+                        <div x-show="$wire.currentStep === 3" x-transition:enter.duration.500ms>
+                            <h3 class="text-xl font-bold mb-4">Étape 3/3 : Finalisation</h3>
+
+                            <div class="space-y-6">
+                                <div class="bg-gray-50 p-4 rounded-lg border">
+                                    <p class="text-sm font-semibold text-gray-700 mb-2">Vérifiez vos informations :</p>
+                                    <p class="text-sm"><strong>Nom:</strong> {{ $name }}</p>
+                                    <p class="text-sm"><strong>Email:</strong> {{ $email }}</p>
+                                </div>
+
+                                <div class="flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input id="terms" type="checkbox" wire:model="terms"
+                                            class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="terms" class="font-medium text-gray-700">J'accepte les <a
+                                                href="#" class="text-primary-600 hover:underline">Conditions
+                                                Générales d'Utilisation</a>.</label>
+                                    </div>
+                                </div>
+                                @error('terms')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mt-6 flex justify-between">
+                                <button type="button" wire:click="previousStep"
+                                    class="border border-gray-300 text-gray-700 font-semibold py-2 px-6 rounded-md transition duration-200 hover:bg-gray-50">
+                                    &larr; Précédent
+                                </button>
+                                <button type="submit"
+                                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-md transition duration-200">
+                                    S'inscrire
+                                </button>
+                            </div>
+                        </div>
                     </form>
 
                     <!-- Lien connexion -->
