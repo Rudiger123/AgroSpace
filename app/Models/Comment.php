@@ -139,5 +139,4 @@ class Comment extends Model
                 ->orWhere('author_email', 'like', '%' . $search . '%');
         });
     }
-
 }

@@ -26,7 +26,7 @@ class BlogAnalytics extends Component
     public $selectedPost = null;
     public $selectedAuthor = null;
     public $statusFilter = 'all'; // Statut de commentaire
-     
+
     public $stats = [];
     public $chartData = [
         'labels' => [], // Dates for X-axis
@@ -62,7 +62,7 @@ class BlogAnalytics extends Component
         return view('livewire.blog.blog-analytics', [
             'posts' => Post::select('id', 'title')->get(),
             // Assurez-vous que le modèle User existe et a des posts
-            'authors' => \App\Models\User::whereHas('posts')->select('id', 'name')->get() 
+            'authors' => \App\Models\User::whereHas('posts')->select('id', 'name')->get()
         ]);
     }
 
@@ -83,8 +83,8 @@ class BlogAnalytics extends Component
 
             // 1. Base Query for Posts (to filter Views, Reactions, Shares)
             $postQuery = Post::query()
-                ->when($this->selectedPost, fn($q) => $q->where('id', $this->selectedPost))
-                ->when($this->selectedAuthor, fn($q) => $q->where('author_id', $this->selectedAuthor));
+                ->when($this->selectedPost, fn ($q) => $q->where('id', $this->selectedPost))
+                ->when($this->selectedAuthor, fn ($q) => $q->where('author_id', $this->selectedAuthor));
 
             $postIds = $postQuery->pluck('id');
 
@@ -92,7 +92,7 @@ class BlogAnalytics extends Component
             $commentsQuery = Comment::query()
                 ->whereBetween('created_at', [$start, $end])
                 ->whereIn('post_id', $postIds)
-                ->when($this->statusFilter !== 'all', fn($q) => $q->where('status', $this->statusFilter));
+                ->when($this->statusFilter !== 'all', fn ($q) => $q->where('status', $this->statusFilter));
 
             // 3. Main Stats
             $stats = [
@@ -113,13 +113,13 @@ class BlogAnalytics extends Component
 
             // 4. Chart Data (Views/Comments Over Time)
             $dateRange = collect(Carbon::parse($this->dateFrom)->daysUntil(Carbon::parse($this->dateTo)->addDay()));
-            $allDates = $dateRange->map(fn($date) => $date->format('Y-m-d'))->toArray();
+            $allDates = $dateRange->map(fn ($date) => $date->format('Y-m-d'))->toArray();
 
             // Fetch views trend
             $viewsData = View::select(
-                    DB::raw('DATE(created_at) as date'),
-                    DB::raw('COUNT(*) as count')
-                )
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('COUNT(*) as count')
+            )
                 ->whereIn('viewable_id', $postIds)
                 ->where('viewable_type', Post::class)
                 ->whereBetween('created_at', [$start, $end])
@@ -127,14 +127,14 @@ class BlogAnalytics extends Component
                 ->orderBy('date')
                 ->get()
                 ->keyBy('date');
-            
+
             // Fetch comments trend
             $commentsData = Comment::select(
-                    DB::raw('DATE(created_at) as date'),
-                    DB::raw('COUNT(*) as count')
-                )
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('COUNT(*) as count')
+            )
                 ->whereIn('post_id', $postIds)
-                ->when($this->statusFilter !== 'all', fn($q) => $q->where('status', $this->statusFilter))
+                ->when($this->statusFilter !== 'all', fn ($q) => $q->where('status', $this->statusFilter))
                 ->whereBetween('created_at', [$start, $end])
                 ->groupBy('date')
                 ->orderBy('date')
@@ -158,8 +158,8 @@ class BlogAnalytics extends Component
             // 5. Top Posts by Engagement (Comments and Views)
             $topPosts = Post::select('id', 'title')
                 ->withCount([
-                    'comments' => fn($q) => $q->whereBetween('created_at', [$start, $end]),
-                    'views' => fn($q) => $q->whereBetween('created_at', [$start, $end]),
+                    'comments' => fn ($q) => $q->whereBetween('created_at', [$start, $end]),
+                    'views' => fn ($q) => $q->whereBetween('created_at', [$start, $end]),
                 ])
                 ->whereIn('id', $postIds)
                 ->orderByDesc('comments_count')
@@ -179,7 +179,7 @@ class BlogAnalytics extends Component
                 'labels' => $reactionRaw->pluck('type')->toArray(),
                 'values' => $reactionRaw->pluck('count')->toArray(),
             ];
-            
+
             // 7. Shares by Platform
             $sharesPlatformRaw = Share::select('platform', DB::raw('COUNT(*) as count'))
                 ->whereBetween('created_at', [$start, $end])
@@ -222,11 +222,31 @@ class BlogAnalytics extends Component
     }
 
     // Les méthodes updated* déclenchent la mise à jour des stats et des graphiques
-    public function updatedDateFrom() { $this->loadStats(); $this->dispatchStatsUpdated(); }
-    public function updatedDateTo() { $this->loadStats(); $this->dispatchStatsUpdated(); }
-    public function updatedSelectedPost() { $this->loadStats(); $this->dispatchStatsUpdated(); }
-    public function updatedSelectedAuthor() { $this->loadStats(); $this->dispatchStatsUpdated(); }
-    public function updatedStatusFilter() { $this->loadStats(); $this->dispatchStatsUpdated(); }
+    public function updatedDateFrom()
+    {
+        $this->loadStats();
+        $this->dispatchStatsUpdated();
+    }
+    public function updatedDateTo()
+    {
+        $this->loadStats();
+        $this->dispatchStatsUpdated();
+    }
+    public function updatedSelectedPost()
+    {
+        $this->loadStats();
+        $this->dispatchStatsUpdated();
+    }
+    public function updatedSelectedAuthor()
+    {
+        $this->loadStats();
+        $this->dispatchStatsUpdated();
+    }
+    public function updatedStatusFilter()
+    {
+        $this->loadStats();
+        $this->dispatchStatsUpdated();
+    }
 
     private function dispatchStatsUpdated()
     {
@@ -245,7 +265,9 @@ class BlogAnalytics extends Component
         $csv .= "{$this->stats['total_posts']},{$this->stats['total_comments']},{$this->stats['pending_comments']},{$this->stats['total_views']},{$this->stats['total_reactions']},{$this->stats['total_shares']}\n";
 
         return response()->stream(
-            function () use ($csv) { echo $csv; },
+            function () use ($csv) {
+                echo $csv;
+            },
             200,
             [
                 'Content-Type' => 'text/csv',

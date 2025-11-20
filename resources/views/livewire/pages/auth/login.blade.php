@@ -13,35 +13,87 @@ new #[Layout('layouts.guest')] class extends Component {
     /**
      * Handle an incoming authentication request.
      */
+    // public function login()
+    // {
+    //     $this->validate();
+
+    //     $this->form->authenticate(); // Authentifie l'utilisateur
+    //     $user = Auth::user();
+
+    //     Session::regenerate(); // Sécurise la session
+
+    //     // Logger la connexion
+    //     ActivityLog::log('login', 'Tentative de connexion réussie');
+
+    //     // Si 2FA activé, rediriger vers la page 2FA
+    //     if ($user->hasTwoFactorEnabled()) {
+    //         // Stocker l'ID utilisateur pour la page 2FA
+    //         session(['two_factor_user_id' => $user->id]);
+
+    //         // Déconnecter temporairement
+    //         Auth::logout();
+
+    //         return to_route('2fa.challenge');
+    //     }
+
+    //     // Sinon, marquer comme authentifié et rediriger
+    //     session(['two_factor_authenticated' => true]);
+
+    //     $this->dispatch('toast', [
+    //         'type' => 'success',
+    //         'message' => "Bienvenue 2 $user->name",
+    //     ]);
+
+    //     return redirect()->intended($this->redirectPath());
+    // }
+
     public function login()
     {
         $this->validate();
 
-        $this->form->authenticate(); // Authentifie l'utilisateur
+        // 1. Authentification classique
+        $this->form->authenticate();
         $user = Auth::user();
 
-        Session::regenerate(); // Sécurise la session
-
-        // Logger la connexion
-        ActivityLog::log('login', 'Tentative de connexion réussie');
-
-        // Si 2FA activé, rediriger vers la page 2FA
-        if ($user->hasTwoFactorEnabled()) {
-            // Stocker l'ID utilisateur pour la page 2FA
-            session(['two_factor_user_id' => $user->id]);
-
-            // Déconnecter temporairement
+        // 2. Vérification du statut
+        if ($user->isBanned()) {
             Auth::logout();
+            Session::flush();
+            ActivityLog::log('login_banned', "Tentative de connexion bloquée (compte banni) : {$user->email}");
+            $this->dispatch('toast', [
+                'type' => 'error',
+                'message' => 'Votre compte a été définitivement suspendu. Contactez le support.',
+            ]);
+            return;
+        }
 
+        if ($user->isSuspended()) {
+            Auth::logout();
+            Session::flush();
+            ActivityLog::log('login_suspended', "Tentative de connexion bloquée (compte suspendu) : {$user->email}");
+            $this->dispatch('toast', [
+                'type' => 'warning',
+                'message' => 'Votre compte est temporairement suspendu. Vérifiez vos e-mails ou contactez le support.',
+            ]);
+            return;
+        }
+
+        // 3. Si tout est OK on continue
+        Session::regenerate();
+        ActivityLog::log('login', 'Connexion réussie');
+
+        // 4. 2FA éventuel
+        if ($user->hasTwoFactorEnabled()) {
+            session(['two_factor_user_id' => $user->id]);
+            Auth::logout(); // déconnexion temporaire pour le challenge 2FA
             return to_route('2fa.challenge');
         }
 
-        // Sinon, marquer comme authentifié et rediriger
         session(['two_factor_authenticated' => true]);
 
         $this->dispatch('toast', [
             'type' => 'success',
-            'message' => "Bienvenue 2 $user->name",
+            'message' => "Bienvenue {$user->name} !",
         ]);
 
         return redirect()->intended($this->redirectPath());
@@ -200,14 +252,14 @@ new #[Layout('layouts.guest')] class extends Component {
                     </form>
 
                     <!-- Séparateur -->
-                    <div class="flex items-center my-6">
+                    {{-- <div class="flex items-center my-6">
                         <hr class="flex-1 border-gray-300" />
                         <span class="px-3 text-gray-400 text-sm font-medium">OU</span>
                         <hr class="flex-1 border-gray-300" />
-                    </div>
+                    </div> --}}
 
                     <!-- Boutons sociaux -->
-                    <div class="grid grid-cols-2 gap-3">
+                    {{-- <div class="grid grid-cols-2 gap-3">
                         <button type="button"
                             class="flex items-center justify-center gap-2 border-2 border-gray-300 rounded-xl py-3 hover:border-[#16a34a] hover:bg-gray-50 transition-all group">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
@@ -220,7 +272,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                 class="w-5 h-5" alt="Facebook" />
                             <span class="font-medium text-gray-700 group-hover:text-[#16a34a]">Facebook</span>
                         </button>
-                    </div>
+                    </div> --}}
 
                     <!-- Lien inscription -->
                     <p class="text-center text-gray-600 mt-8">

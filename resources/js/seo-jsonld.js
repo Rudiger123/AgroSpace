@@ -1,4 +1,6 @@
-/* AgroSpace JSON-LD – sans @, sans Blade, 100 % JS */
+/* =========================================================
+   AgroSpace – JSON-LD  (sans @, sans Blade, 100 % JS)
+   ========================================================= */
 (function injectJsonLd() {
     /* 1 – Organisation */
     const org = {
@@ -49,8 +51,9 @@
     const webPage = {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        "name": "Accueil - AgroSpace",
-        "description": "Plateforme de connexion entre producteurs et consommateurs agricoles au Cameroun",
+        "name": document.title || "Accueil - AgroSpace",
+        "description": document.querySelector('meta[name="description"]') ||
+            "Plateforme de connexion entre producteurs et consommateurs agricoles au Cameroun",
         "url": window.location.href,
         "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -70,6 +73,7 @@
         }
     };
 
+    /* 4 – FAQ */
     const faq = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -80,82 +84,20 @@
                     "@type": "Answer",
                     "text": "AgroSpace est une plateforme qui connecte producteurs et consommateurs agricoles au Cameroun. Inscrivez-vous gratuitement, créez votre profil, publiez vos offres ou demandes, puis échangez directement avec d'autres membres via la messagerie intégrée."
                 }
-            }, {
+            },
+            {
                 "@type": "Question",
                 "name": "Est-ce que l'inscription sur AgroSpace est gratuite ?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Oui, l'inscription sur AgroSpace est 100% gratuite pour les producteurs comme pour les consommateurs. Aucune carte bancaire n'est requise et vous bénéficiez d'un accès complet aux fonctionnalités de la plateforme."
-                }
-            }, {
-                "@type": "Question",
-                "name": "Qui peut utiliser AgroSpace ?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "AgroSpace s'adresse aux producteurs agricoles (agriculteurs, éleveurs, coopératives), aux consommateurs (restaurateurs, commerçants, particuliers) et à tous les acteurs de la chaîne de valeur agricole au Cameroun."
-                }
-            }, {
-                "@type": "Question",
-                "name": "Dans quelles régions du Cameroun AgroSpace est-il disponible ?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "AgroSpace est disponible dans toutes les régions du Cameroun : Littoral, Centre, Ouest, Nord, Extrême-Nord, Adamaoua, Est, Sud et Sud-Ouest. Nous connectons producteurs et consommateurs à travers tout le pays."
-                }
-            },
-
-            {
-                "@type": "Question",
-                "name": "Comment publier une offre sur AgroSpace ?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Rendez-vous dans votre tableau de bord, cliquez sur « Publier une offre », ajoutez vos photos, description, prix et région, puis validez. Votre offre est immédiatement visible."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "La messagerie est-elle sécurisée ?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Oui, toutes les conversations sont chiffrées et restent privées entre les membres. Aucun tiers ne peut y accéder."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Quelle est la mission d’AgroSpace ?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Faciliter les échanges entre acteurs agricoles et valoriser la production locale grâce au numérique."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Qui peut rejoindre la plateforme ?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Tout producteur, consommateur ou acteur de la chaîne de valeur agricole au Cameroun."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "L'inscription en tant que producteur est-elle gratuite ?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Oui, l'inscription sur AgroSpace est 100% gratuite pour les producteurs. Aucune commission n'est prélevée sur vos ventes."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Puis-je publier autant d'offres que je veux ?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Absolument. Vous pouvez publier un nombre illimité d'offres sur la plateforme, que ce soit pour des produits ou des services agricoles."
+                    "text": "Oui, l'inscription sur AgroSpace est 100 % gratuite pour les producteurs comme pour les consommateurs. Aucune carte bancaire n'est requise et vous bénéficiez d'un accès complet aux fonctionnalités de la plateforme."
                 }
             }
         ]
-    }
+    };
 
-    /* Injection dans le <head> */
-    [org, webSite, webPage].forEach(data => {
+    /* Injection sécurisée dans le <head> */
+    [org, webSite, webPage, faq].forEach(data => {
         const script = document.createElement('script');
         script.type = 'application/ld+json';
         script.textContent = JSON.stringify(data);

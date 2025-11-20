@@ -25,14 +25,13 @@ class UnsubscribeConfirmation extends Component
 
     public function unsubscribe()
     {
-        if ($this->subscriber && $this->subscriber->isActive() ) {
+        if ($this->subscriber && $this->subscriber->isActive()) {
             $this->subscriber->markAsUnsubscribed();
             $this->dispatch('show-toast', [
                 'title' => 'Désabonnement réussi',
                 'message' => "Vous avez été désabonné avec succès de la newsletter d'Agrospace.",
                 'type' => 'success',
             ]);
-           
         } else {
             $this->dispatch('show-toast', [
                 'message' => "Vous êtes déjà désabonné.",

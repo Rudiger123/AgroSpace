@@ -4,8 +4,7 @@ use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
 use App\Helpers\SEO;             // <-- helper already created
 
-new #[Layout('layouts.main')] class extends Component
-{
+new #[Layout('layouts.main')] class extends Component {
     public function mount()
     {
         /* ----------  SEO  ---------- */

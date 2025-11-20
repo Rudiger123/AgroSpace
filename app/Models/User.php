@@ -151,7 +151,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeByRole($query, $role = null)
     {
         return $role
-            ? $query->whereHas('role', fn($q) => $q->where('name', $role))
+            ? $query->whereHas('role', fn ($q) => $q->where('name', $role))
             : $query;
     }
 
@@ -219,7 +219,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function verified(): Attribute
     {
         return Attribute::make(
-            get: fn() => !is_null($this->email_verified_at)
+            get: fn () => !is_null($this->email_verified_at)
         );
     }
 

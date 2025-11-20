@@ -4,15 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         // Add indexes for better search performance
-        
+
         // Posts table
         Schema::table('posts', function (Blueprint $table) {
             $table->index(['title', 'published', 'created_at']);

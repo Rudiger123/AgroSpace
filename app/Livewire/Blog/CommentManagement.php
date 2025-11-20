@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Blog;
 
-
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -34,9 +33,9 @@ class CommentManagement extends Component
         // J'utilise la nouvelle scopeSearch ici.
         // Je m'assure également que la relation 'user' charge le nom et l'email pour la recherche.
         $comments = Comment::with(['post:id,title', 'user:id,name,email'])
-            ->when($this->search, fn($q) => $q->search($this->search))
-            ->when($this->status !== 'all', fn($q) => $q->where('status', $this->status))
-            ->when($this->post_id, fn($q) => $q->where('post_id', $this->post_id))
+            ->when($this->search, fn ($q) => $q->search($this->search))
+            ->when($this->status !== 'all', fn ($q) => $q->where('status', $this->status))
+            ->when($this->post_id, fn ($q) => $q->where('post_id', $this->post_id))
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
 
@@ -127,13 +126,13 @@ class CommentManagement extends Component
     }
 
     public function updatedSelectAll($value)
-    { 
+    {
         if ($value) {
             // J'ajoute l'utilisation de la scopeSearch ici pour que la sélection de masse
             // respecte les filtres actifs, y compris la recherche.
-            $this->selected = Comment::when($this->search, fn($q) => $q->search($this->search))
-                ->when($this->status !== 'all', fn($q) => $q->where('status', $this->status))
-                ->when($this->post_id, fn($q) => $q->where('post_id', $this->post_id))
+            $this->selected = Comment::when($this->search, fn ($q) => $q->search($this->search))
+                ->when($this->status !== 'all', fn ($q) => $q->where('status', $this->status))
+                ->when($this->post_id, fn ($q) => $q->where('post_id', $this->post_id))
                 ->pluck('id')
                 ->toArray();
         } else {

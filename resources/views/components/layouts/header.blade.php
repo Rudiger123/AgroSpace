@@ -10,19 +10,97 @@
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
-                <a href="{{ route('home') }}" wire:navigate
-                    class="text-gray-700 hover:text-primary transition-colors font-medium">Accueil</a>
-                <a href="{{ route('features') }}" wire:navigate
-                    class="text-gray-700 hover:text-primary transition-colors font-medium">Fonctionnalités</a>
-                <a href="{{ route('producer.page') }}" wire:navigate
-                    class="text-gray-700 hover:text-primary transition-colors font-medium">Producteurs</a>
-                <a href="{{ route('consumer.page') }}" wire:navigate
-                    class="text-gray-700 hover:text-primary transition-colors font-medium">Consommateurs</a>
+                <nav class="flex items-center space-x-8">
+                    <a href="{{ route('home') }}" wire:navigate
+                        class="nav-link-v4 {{ request()->routeIs('home') ? 'active' : '' }}">
+                        Accueil
+                    </a>
+
+                    <a href="{{ route('features') }}" wire:navigate
+                        class="nav-link-v4 {{ request()->routeIs('features') ? 'active' : '' }}">
+                        Fonctionnalités
+                    </a>
+
+                    <a href="{{ route('producer.page') }}" wire:navigate
+                        class="nav-link-v4 {{ request()->routeIs('producer.page') ? 'active' : '' }}">
+                        Producteurs
+                    </a>
+
+                    <a href="{{ route('consumer.page') }}" wire:navigate
+                        class="nav-link-v4 {{ request()->routeIs('consumer.page') ? 'active' : '' }}">
+                        Consommateurs
+                    </a>
+
                     <a href="{{ route('blog.index') }}" wire:navigate
-                    class="text-gray-700 hover:text-primary transition-colors font-medium">Blog</a>
-                <a href="{{ route('about.page') }}" wire:navigate
-                    class="text-gray-700 hover:text-primary transition-colors font-medium">À propos</a>
-                
+                        class="nav-link-v4 {{ request()->routeIs('blog.*') ? 'active' : '' }}">
+                        Blog
+                    </a>
+
+                    <a href="{{ route('about.page') }}" wire:navigate
+                        class="nav-link-v4 {{ request()->routeIs('about.page') ? 'active' : '' }}">
+                        À propos
+                    </a>
+                </nav>
+
+                <style>
+                    /* ==========================================
+                       VERSION 4 : Optimisée avec transform/scale
+                       Plus fluide, meilleure performance GPU
+                       ========================================== */
+
+                    .nav-link-v4 {
+                        position: relative;
+                        color: #374151;
+                        font-weight: 500;
+                        text-decoration: none;
+                        padding-bottom: 6px;
+                        transition: color 0.3s ease;
+                        display: inline-block;
+                    }
+
+                    .nav-link-v4:hover {
+                        color: #16a34a;
+                    }
+
+                    /* Trait avec scaleX pour meilleures performances */
+                    .nav-link-v4::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 2px;
+                        background-color: #16a34a;
+                        transform: scaleX(0);
+                        transform-origin: left;
+                        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    }
+
+                    /* Hover : scale de 0 à 1 depuis la gauche */
+                    .nav-link-v4:hover::after {
+                        transform: scaleX(1);
+                        transform-origin: left;
+                    }
+
+                    /* Unhover : scale de 1 à 0 depuis la droite */
+                    .nav-link-v4:not(:hover):not(.active)::after {
+                        transform: scaleX(0);
+                        transform-origin: right;
+                    }
+
+                    /* Lien actif */
+                    .nav-link-v4.active {
+                        color: #16a34a;
+                        font-weight: 600;
+                    }
+
+                    .nav-link-v4.active::after {
+                        transform: scaleX(1);
+                        transform-origin: left;
+                    }
+                </style>
+
+
 
                 <!-- Authentication Section -->
                 @auth
@@ -314,75 +392,232 @@
             x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 -translate-y-2" class="md:hidden mt-4 pb-4 space-y-3">
-            <a href="{{ route('home') }}" @click="mobileMenuOpen = false" wire:navigate
-                class="block text-gray-700 hover:text-primary font-medium py-2">Accueil</a>
-            <a href="{{ route('features') }}" @click="mobileMenuOpen = false" wire:navigate
-                class="block text-gray-700 hover:text-primary font-medium py-2">Fonctionnalités</a>
-            <a href="{{ route('producer.page') }}" @click="mobileMenuOpen = false" wire:navigate
-                class="block text-gray-700 hover:text-primary font-medium py-2">Producteurs</a>
-            <a href="{{ route('consumer.page') }}" @click="mobileMenuOpen = false" wire:navigate
-                class="block text-gray-700 hover:text-primary font-medium py-2">Consommateurs</a>
-            <a href="{{ route('about.page') }}" @click="mobileMenuOpen = false" wire:navigate
-                class="block text-gray-700 hover:text-primary font-medium py-2">À propos</a>
-            <a href="{{ route('blog.index') }}" @click="mobileMenuOpen = false" wire:navigate
-                class="block text-gray-700 hover:text-primary font-medium py-2">Blog</a>
+
+            {{-- Navigation Links --}}
+            <nav class="space-y-1">
+                <a href="{{ route('home') }}" @click="mobileMenuOpen = false" wire:navigate
+                    class="mobile-nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
+                    Accueil
+                </a>
+
+                <a href="{{ route('features') }}" @click="mobileMenuOpen = false" wire:navigate
+                    class="mobile-nav-link {{ request()->routeIs('features') ? 'active' : '' }}">
+                    Fonctionnalités
+                </a>
+
+                <a href="{{ route('producer.page') }}" @click="mobileMenuOpen = false" wire:navigate
+                    class="mobile-nav-link {{ request()->routeIs('producer.page') ? 'active' : '' }}">
+                    Producteurs
+                </a>
+
+                <a href="{{ route('consumer.page') }}" @click="mobileMenuOpen = false" wire:navigate
+                    class="mobile-nav-link {{ request()->routeIs('consumer.page') ? 'active' : '' }}">
+                    Consommateurs
+                </a>
+
+                <a href="{{ route('about.page') }}" @click="mobileMenuOpen = false" wire:navigate
+                    class="mobile-nav-link {{ request()->routeIs('about.page') ? 'active' : '' }}">
+                    À propos
+                </a>
+
+                <a href="{{ route('blog.index') }}" @click="mobileMenuOpen = false" wire:navigate
+                    class="mobile-nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}">
+                    Blog
+                </a>
+            </nav>
 
             @auth
-                <div class="border-t border-gray-200 pt-3 mt-3">
-                    <div class="flex items-center space-x-3 px-2 py-2 bg-gray-50 rounded-lg mb-3">
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    {{-- User Info Card --}}
+                    <div
+                        class="flex items-center space-x-3 px-3 py-3 bg-gradient-to-r from-gray-50 to-green-50 rounded-lg mb-4 shadow-sm">
                         @if (auth()->user()->avatar)
-                            <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="Avatar"
-                                class="w-10 h-10 rounded-full ring-2 ring-[#2E7D32]/20 group-hover:ring-[#2E7D32]/40 transition-all">
+                            <img src="{{ Storage::url(auth()->user()->avatar) }}"
+                                alt="Avatar de {{ auth()->user()->name }}"
+                                class="w-12 h-12 rounded-full ring-2 ring-green-200 object-cover">
                         @else
                             <div
-                                class="w-10 h-10 rounded-full bg-gradient-to-br from-agro-green to-primary flex items-center justify-center text-white font-semibold text-sm border-2 border-agro-green">
-                                {{ substr(auth()->user()->name, 0, 1) }}
+                                class="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-500 flex items-center justify-center text-white font-bold text-lg border-2 border-green-400 shadow-md">
+                                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                             </div>
                         @endif
-                        <div>
-                            <p class="text-sm font-semibold text-gray-800">{{ auth()->user()->name }}</p>
-                            <p class="text-xs text-gray-500">{{ auth()->user()->email }}</p>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold text-gray-800 truncate">
+                                {{ auth()->user()->name }}
+                            </p>
+                            <p class="text-xs text-gray-500 truncate">
+                                {{ auth()->user()->email }}
+                            </p>
                         </div>
                     </div>
 
-                    <a href="{{ route('dashboard') }}" @click="mobileMenuOpen = false" wire:navigate
-                        class="block text-gray-700 hover:text-primary font-medium py-2">📊 Tableau de bord</a>
-                    <a href="{{ route('profile') }}" @click="mobileMenuOpen = false" wire:navigate
-                        class="block text-gray-700 hover:text-primary font-medium py-2">👤 Mon Profil</a>
-                    <a href="{{ route('dashboard') }}" @click="mobileMenuOpen = false" wire:navigate
-                        class="block text-gray-700 hover:text-primary font-medium py-2">💬 Messages</a>
-                    <a href="{{ route('profile') }}" @click="mobileMenuOpen = false" wire:navigate
-                        class="block text-gray-700 hover:text-primary font-medium py-2">⚙️ Paramètres</a>
+                    {{-- Authenticated User Links --}}
+                    <nav class="space-y-1">
+                        <a href="{{ route('dashboard') }}" @click="mobileMenuOpen = false" wire:navigate
+                            class="mobile-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <span class="mr-2">📊</span>
+                            <span>Tableau de bord</span>
+                        </a>
+
+                        <a href="{{ route('profile') }}" @click="mobileMenuOpen = false" wire:navigate
+                            class="mobile-nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">
+                            <span class="mr-2">👤</span>
+                            <span>Mon Profil</span>
+                        </a>
+
+                        <a href="{{ route('chats') }}" @click="mobileMenuOpen = false" wire:navigate
+                            class="mobile-nav-link {{ request()->routeIs('chats') ? 'active' : '' }}">
+                            <span class="mr-2">💬</span>
+                            <span>Messages</span>
+                        </a>
+
+                        <a href="{{ route('profile') }}" @click="mobileMenuOpen = false" wire:navigate
+                            class="mobile-nav-link {{ request()->routeIs('settings') ? 'active' : '' }}">
+                            <span class="mr-2">⚙️</span>
+                            <span>Paramètres</span>
+                        </a>
+                    </nav>
                 </div>
             @else
-                <div class="border-t border-gray-200 pt-3 mt-3 space-y-2">
+                <div class="border-t border-gray-200 pt-4 mt-4 space-y-3">
+                    {{-- Login Button --}}
                     <a href="{{ route('login') }}" wire:navigate
-                        class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold 
-                        text-white bg-gradient-to-r from-green-600 to-emerald-500 
-                        hover:from-green-700 hover:to-emerald-600 transition-all duration-300 
-                        shadow-md hover:shadow-xl text-sm w-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        class="flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold 
+                            text-white bg-gradient-to-r from-green-600 to-emerald-500 
+                            hover:from-green-700 hover:to-emerald-600 
+                            active:scale-95
+                            transition-all duration-300 
+                            shadow-md hover:shadow-xl text-sm w-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.632 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                         </svg>
                         <span>Connexion</span>
                     </a>
 
-
+                    {{-- Register Button --}}
                     <a href="{{ route('register') }}" wire:navigate
-                        class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold 
-                        text-green-700 border-2 border-green-600 
-                        hover:bg-green-600 hover:text-white transition-all duration-300 
-                        shadow-sm hover:shadow-lg text-sm w-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        class="flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold 
+                            text-green-700 border-2 border-green-600 bg-white
+                            hover:bg-green-600 hover:text-white 
+                            active:scale-95
+                            transition-all duration-300 
+                            shadow-sm hover:shadow-lg text-sm w-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                         </svg>
-                        <span>Inscription</span>
+                        <span>Créer un compte</span>
                     </a>
                 </div>
             @endauth
+
+
+            <style>
+                /* ==========================================
+                   MOBILE NAVIGATION STYLES
+                   Animation de soulignement optimisée
+                   ========================================== */
+
+                .mobile-nav-link {
+                    display: flex;
+                    align-items: center;
+                    position: relative;
+                    color: #374151;
+                    /* text-gray-700 */
+                    font-weight: 500;
+                    padding: 12px 16px;
+                    border-radius: 8px;
+                    text-decoration: none;
+                    transition: all 0.3s ease;
+                    overflow: hidden;
+                }
+
+                /* Hover effect - Background color */
+                .mobile-nav-link:hover {
+                    color: #16a34a;
+                    /* text-primary */
+                    background-color: rgba(22, 163, 74, 0.05);
+                }
+
+                /* Active state effect */
+                .mobile-nav-link:active {
+                    transform: scale(0.98);
+                }
+
+                /* Underline animation element */
+                .mobile-nav-link::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 8px;
+                    left: 16px;
+                    width: calc(100% - 32px);
+                    height: 2px;
+                    background-color: #16a34a;
+                    transform: scaleX(0);
+                    transform-origin: left;
+                    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    border-radius: 2px;
+                }
+
+                /* Hover animation: left to right */
+                .mobile-nav-link:hover::after {
+                    transform: scaleX(1);
+                    transform-origin: left;
+                }
+
+                /* Unhover animation: right to left */
+                .mobile-nav-link:not(:hover):not(.active)::after {
+                    transform: scaleX(0);
+                    transform-origin: right;
+                }
+
+                /* Active link (current page) */
+                .mobile-nav-link.active {
+                    color: #16a34a;
+                    font-weight: 600;
+                    background-color: rgba(22, 163, 74, 0.1);
+                }
+
+                .mobile-nav-link.active::after {
+                    transform: scaleX(1);
+                    transform-origin: left;
+                }
+
+                /* Left border indicator for active link */
+                .mobile-nav-link.active::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 8px;
+                    bottom: 8px;
+                    width: 4px;
+                    background: linear-gradient(180deg, #16a34a, #10b981);
+                    border-radius: 0 4px 4px 0;
+                    animation: slideIn 0.3s ease-out;
+                }
+
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(-100%);
+                        opacity: 0;
+                    }
+
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+
+                /* Icon spacing for authenticated links */
+                .mobile-nav-link span:first-child {
+                    flex-shrink: 0;
+                }
+            </style>
+
+
         </div>
     </nav>
 </header>

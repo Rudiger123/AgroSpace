@@ -721,20 +721,25 @@
                     </button>
                 </div>
 
-                <div class="relative">
-                    <input type="text" value="{{ url()->current() }}"
-                        class="w-full px-4 py-3 pr-12 bg-gray-100 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                        readonly>
-                    <button onclick="navigator.clipboard.writeText('{{ url()->current() }}')"
-                        class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-gray-600 hover:text-green-600 transition-colors">
+                <div class="relative" x-data="{ pageUrl: '' }" x-init="pageUrl = window.location.href">
+                    <input type="text" x-model="pageUrl"
+                           class="w-full px-4 py-3 pr-12 bg-gray-100 border border-gray-200 rounded-xl text-sm
+                                  focus:ring-2 focus:ring-green-500 focus:border-transparent" readonly>
+                    <button @click="navigator.clipboard.writeText(pageUrl);
+                                   $dispatch('toast',{type:'success',message:'Lien copié !'})"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-gray-600
+                                   hover:text-green-600 transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
+                                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div x-data
+     @open-share-window.window="if($event.detail.url){ window.open($event.detail.url,'_blank','noopener,noreferrer'); }">
+</div>
 </div>

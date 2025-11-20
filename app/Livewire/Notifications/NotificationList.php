@@ -99,7 +99,7 @@ class NotificationList extends Component
 
         Auth::user()->unreadNotifications->markAsRead();
         $this->dispatch('allNotificationsRead');
-        
+
         $this->dispatch('showToast', [
             'type' => 'success',
             'message' => 'Toutes les notifications ont été marquées comme lues',
@@ -128,9 +128,9 @@ class NotificationList extends Component
             if (!$notification->read_at) {
                 $this->dispatch('notificationRead');
             }
-            
+
             $notification->delete();
-            
+
             $this->dispatch('showToast', [
                 'type' => 'success',
                 'message' => 'Notification supprimée',
@@ -184,7 +184,7 @@ class NotificationList extends Component
         return $svgs[$type] ?? $svgs['default'];
     }
 
-    public function getIconConfig(string $type,string $color)
+    public function getIconConfig(string $type, string $color)
     {
         $icons = [
             'offer' => 'fa-solid fa-tag text-green-500',
