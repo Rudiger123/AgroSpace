@@ -19,6 +19,7 @@ use App\Livewire\Blog\BlogShowEnhanced;
 use App\Livewire\Blog\CommentManagement;
 use App\Livewire\Newsletter\AdminNewsletterList;
 use App\Livewire\Newsletter\UnsubscribeConfirmation;
+use App\Livewire\Notifications\NotificationsPage;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -34,6 +35,8 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
     Route::get('/offers', OffresList::class)->name('offers-list');
 
     Route::get('/demands', PublicDemands::class)->name('demands-list');
+
+    Route::get('/notifications', NotificationsPage::class)->name('notifications.index');
 
     Route::prefix('/admin')->middleware('role:admin')->group(function () {
         //Gestion des Utilisateurs
@@ -64,7 +67,6 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
             // Comment Management
             Route::get('/comments', CommentManagement::class)->name('comments.index');
         });
-
 
         // Protected Admin Routes
         Route::get('/newsletter/subscribers', AdminNewsletterList::class)
