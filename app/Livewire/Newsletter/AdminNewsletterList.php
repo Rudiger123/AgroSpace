@@ -25,7 +25,7 @@ class AdminNewsletterList extends Component
     public $selectedSubscribers = [];
     public $selectAll = false;
     public $dateRange = '30_days'; // 7_days, 30_days, 90_days, all_time
-    
+
     // Data for dashboard
     public $stats = [];
     public $chartData = [
@@ -52,7 +52,7 @@ class AdminNewsletterList extends Component
         // Chargement initial des statistiques
         $this->loadStats();
     }
-    
+
     public function loadStats()
     {
         $startDate = match ($this->dateRange) {
@@ -66,14 +66,14 @@ class AdminNewsletterList extends Component
         $totalSubscribers = NewsletterSubscriber::count();
         $activeSubscribers = NewsletterSubscriber::active()->count();
         $unsubscribed = $totalSubscribers - $activeSubscribers;
-        
+
         $this->stats = [
             'total' => number_format($totalSubscribers, 0, ',', ' '),
             'active' => number_format($activeSubscribers, 0, ',', ' '),
             'unsubscribed' => number_format($unsubscribed, 0, ',', ' '),
             'active_percentage' => $totalSubscribers > 0 ? round(($activeSubscribers / $totalSubscribers) * 100) : 0,
         ];
-        
+
         $this->statusBreakdown['values'] = [$activeSubscribers, $unsubscribed];
 
         if (!$startDate) {
@@ -85,24 +85,24 @@ class AdminNewsletterList extends Component
 
         // 2. Trend Chart Data (Subscriptions/Unsubscriptions Over Time)
         $dateRangeCollection = collect(Carbon::parse($startDate)->daysUntil(Carbon::now()->addDay()));
-        $allDates = $dateRangeCollection->map(fn($date) => $date->format('Y-m-d'))->toArray();
+        $allDates = $dateRangeCollection->map(fn ($date) => $date->format('Y-m-d'))->toArray();
 
         // Fetch subscriptions trend
         $subscriptionsData = NewsletterSubscriber::select(
-                DB::raw('DATE(created_at) as date'),
-                DB::raw('COUNT(*) as count')
-            )
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('COUNT(*) as count')
+        )
             ->where('created_at', '>=', $startDate)
             ->groupBy('date')
             ->orderBy('date')
             ->get()
             ->keyBy('date');
-        
+
         // Fetch unsubscriptions trend (Using 'updated_at' when status is 'unsubscribed')
         $unsubscriptionsData = NewsletterSubscriber::select(
-                DB::raw('DATE(updated_at) as date'),
-                DB::raw('COUNT(*) as count')
-            )
+            DB::raw('DATE(updated_at) as date'),
+            DB::raw('COUNT(*) as count')
+        )
             ->unsubscribed()
             ->where('updated_at', '>=', $startDate)
             ->whereRaw('DATE(created_at) != DATE(updated_at)') // Exclure l'inscription/désinscription immédiate
@@ -123,10 +123,10 @@ class AdminNewsletterList extends Component
             'subscriptions' => $chartSubscriptions,
             'unsubscriptions' => $chartUnsubscriptions,
         ];
-        
+
         // Dispatch event to update Alpine.js charts
         $this->dispatch('stats-updated', ['statsData' => [
-            'chartData' => $this->chartData, 
+            'chartData' => $this->chartData,
             'statusBreakdown' => $this->statusBreakdown
         ]]);
     }
@@ -164,9 +164,9 @@ class AdminNewsletterList extends Component
     }
 
     public function updatedSelectAll($value)
-    { 
+    {
         if ($value) {
-            $this->selectedSubscribers = $this->subscribers->pluck('id')->map(fn($id) => (string) $id)->toArray();
+            $this->selectedSubscribers = $this->subscribers->pluck('id')->map(fn ($id) => (string) $id)->toArray();
         } else {
             $this->selectedSubscribers = [];
         }
@@ -219,7 +219,7 @@ class AdminNewsletterList extends Component
 
     #[On('bulkDelete')]
     public function bulkDelete()
-    { 
+    {
         $count = NewsletterSubscriber::whereIn('id', $this->selectedSubscribers)->delete();
         $this->selectedSubscribers = [];
         $this->selectAll = false;
@@ -236,11 +236,11 @@ class AdminNewsletterList extends Component
         $query = NewsletterSubscriber::query();
 
         if ($this->search) {
-            $query->where(fn($q) => $q->where('name', 'like', "%{$this->search}%")
+            $query->where(fn ($q) => $q->where('name', 'like', "%{$this->search}%")
                                       ->orWhere('email', 'like', "%{$this->search}%"));
         }
 
-        match($this->filter) {
+        match ($this->filter) {
             'active' => $query->whereNull('unsubscribed_at'),
             'unsubscribed' => $query->whereNotNull('unsubscribed_at'),
             default => $query
@@ -249,7 +249,7 @@ class AdminNewsletterList extends Component
         return $query->orderBy($this->sortField, $this->sortDirection)
                     ->paginate(10);
     }
-    
+
     public function render()
     {
         return view('livewire.newsletter.admin-newsletter-list');

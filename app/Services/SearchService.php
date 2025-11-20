@@ -9,7 +9,6 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\NewsletterSubscriber;
-use Illuminate\Support\Collection;
 
 class SearchService
 {
@@ -214,9 +213,9 @@ class SearchService
     private function searchUsers(string $query, int $limit): array
     {
         return User::where(function ($q) use ($query) {
-                $q->where('name', 'ILIKE', "%{$query}%")
-                  ->orWhere('email', 'ILIKE', "%{$query}%");
-            })
+            $q->where('name', 'ILIKE', "%{$query}%")
+              ->orWhere('email', 'ILIKE', "%{$query}%");
+        })
             ->with('role')
             ->latest()
             ->take($limit)
@@ -227,7 +226,7 @@ class SearchService
                     2 => 'Producteur',
                     3 => 'Consommateur',
                 ];
-                
+
                 return [
                     'type' => 'user',
                     'id' => $user->id,
@@ -279,9 +278,9 @@ class SearchService
     private function searchNewsletterSubscribers(string $query, int $limit): array
     {
         return NewsletterSubscriber::where(function ($q) use ($query) {
-                $q->where('email', 'ILIKE', "%{$query}%")
-                  ->orWhere('name', 'ILIKE', "%{$query}%");
-            })
+            $q->where('email', 'ILIKE', "%{$query}%")
+              ->orWhere('name', 'ILIKE', "%{$query}%");
+        })
             ->latest()
             ->take($limit)
             ->get()
@@ -311,11 +310,11 @@ class SearchService
         $text = strip_tags($text);
         $text = preg_replace('/\s+/', ' ', $text);
         $text = trim($text);
-        
+
         if (strlen($text) <= $length) {
             return $text;
         }
-        
+
         return substr($text, 0, $length) . '...';
     }
 

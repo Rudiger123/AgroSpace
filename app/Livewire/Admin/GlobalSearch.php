@@ -12,7 +12,6 @@ use App\Models\NewsletterSubscriber;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
-use phpDocumentor\Reflection\Types\This;
 
 class GlobalSearch extends Component
 {
@@ -38,7 +37,7 @@ class GlobalSearch extends Component
     public function updatedQuery()
     {
         $this->selectedIndex = -1;
-        
+
         if (strlen($this->query) < 2) {
             $this->results = [];
             $this->totalResults = 0;
@@ -51,15 +50,15 @@ class GlobalSearch extends Component
     public function search()
     {
         $cacheKey = 'global_search_' . md5($this->query . Auth::id() . (Auth::user()->role_id ?? 'guest'));
-        
+
         $this->results = Cache::remember($cacheKey, 60, function () {
             $searchResults = [];
             $user = Auth::user();
-            
+
             if (!$user) {
                 return [];
             }
-            
+
             $user = User::findOrFail($user->id);
             $isAdmin = $user->isAdmin();
             $isProducer = $user->isProducer();
@@ -92,7 +91,7 @@ class GlobalSearch extends Component
                     ];
                 })
                 ->toArray();
-            
+
             $searchResults = array_merge($searchResults, $posts);
 
             // 2. Search Offers - Admin sees all, Producer sees own, Consumer sees public
@@ -129,7 +128,7 @@ class GlobalSearch extends Component
                         ];
                     })
                     ->toArray();
-                
+
                 $searchResults = array_merge($searchResults, $offers);
             }
 
@@ -167,7 +166,7 @@ class GlobalSearch extends Component
                         ];
                     })
                     ->toArray();
-                
+
                 $searchResults = array_merge($searchResults, $demands);
             }
 
@@ -193,16 +192,16 @@ class GlobalSearch extends Component
                         ];
                     })
                     ->toArray();
-                
+
                 $searchResults = array_merge($searchResults, $categories);
             }
 
             // 5. Search Users - Admin only
             if ($isAdmin) {
                 $users = User::where(function ($q) {
-                        $q->where('name', 'ILIKE', "%{$this->query}%")
-                          ->orWhere('email', 'ILIKE', "%{$this->query}%");
-                    })
+                    $q->where('name', 'ILIKE', "%{$this->query}%")
+                      ->orWhere('email', 'ILIKE', "%{$this->query}%");
+                })
                     ->with('role')
                     ->latest()
                     ->take(5)
@@ -213,7 +212,7 @@ class GlobalSearch extends Component
                             2 => 'Producteur',
                             3 => 'Consommateur',
                         ];
-                        
+
                         return [
                             'type' => 'user',
                             'id' => $user->id,
@@ -229,7 +228,7 @@ class GlobalSearch extends Component
                         ];
                     })
                     ->toArray();
-                
+
                 $searchResults = array_merge($searchResults, $users);
             }
 
@@ -256,16 +255,16 @@ class GlobalSearch extends Component
                         ];
                     })
                     ->toArray();
-                
+
                 $searchResults = array_merge($searchResults, $comments);
             }
 
             // 7. Search Newsletter Subscribers - Admin only
             if ($isAdmin) {
                 $subscribers = NewsletterSubscriber::where(function ($q) {
-                        $q->where('email', 'ILIKE', "%{$this->query}%")
-                          ->orWhere('name', 'ILIKE', "%{$this->query}%");
-                    })
+                    $q->where('email', 'ILIKE', "%{$this->query}%")
+                      ->orWhere('name', 'ILIKE', "%{$this->query}%");
+                })
                     ->latest()
                     ->take(3)
                     ->get()
@@ -285,7 +284,7 @@ class GlobalSearch extends Component
                         ];
                     })
                     ->toArray();
-                
+
                 $searchResults = array_merge($searchResults, $subscribers);
             }
 
@@ -305,11 +304,11 @@ class GlobalSearch extends Component
         $text = strip_tags($text);
         $text = preg_replace('/\s+/', ' ', $text);
         $text = trim($text);
-        
+
         if (strlen($text) <= $length) {
             return $text;
         }
-        
+
         return substr($text, 0, $length) . '...';
     }
 
@@ -339,8 +338,8 @@ class GlobalSearch extends Component
     public function selectPrevious()
     {
         if ($this->totalResults > 0) {
-            $this->selectedIndex = $this->selectedIndex <= 0 
-                ? $this->totalResults - 1 
+            $this->selectedIndex = $this->selectedIndex <= 0
+                ? $this->totalResults - 1
                 : $this->selectedIndex - 1;
         }
     }

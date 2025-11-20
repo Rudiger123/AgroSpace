@@ -56,7 +56,7 @@ class ArticlePublishedNotification extends Notification implements ShouldQueue
     {
         $recipientName = $notifiable->name ?? 'Cher(e) abonné(e)';
 
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Nouvel article : ' . $this->article->title)
             ->greeting('Bonjour ' . $recipientName . ',')
             ->line('Un nouvel article vient d\'être publié sur le blog AgroSpace.')

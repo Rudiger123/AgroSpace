@@ -182,25 +182,25 @@ class BlogList extends Component
                 ->whereMonth('published_at', now()->month)
                 ->whereYear('published_at', now()->year)
                 ->count(),
-            
+
             // Vues
             'total_views' => Post::sum('views_count'),
             'views_today' => View::whereDate('created_at', today())->count(),
-            
+
             // Commentaires
             'total_comments' => Comment::count(),
             'approved_comments' => Comment::where('status', 'approved')->count(),
-            
+
             // Réactions (Likes)
             'total_likes' => Post::sum('likes_count'),
-            
+
             // Partages
             'total_shares' => Post::sum('shares_count'),
-            
+
             // Tags et Catégories
             'tags_count' => Tag::where('is_active', true)->count(),
             'categories_count' => Category::where('is_active', true)->count(),
-            
+
             // Auteurs actifs (ayant publié au moins 1 article)
             'active_authors' => Post::where('published', true)
                 ->distinct('author_id')

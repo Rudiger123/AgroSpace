@@ -4,7 +4,6 @@ namespace App\Livewire\Newsletter;
 
 use App\Jobs\SendNewsletterJob;
 use App\Models\NewsletterSubscriber;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -47,7 +46,7 @@ class AdminNewsletterSend extends Component
 
         foreach ($activeSubscribers as $subscriber) {
             // NOTE: Assurez-vous que le SendNewsletterJob existe et fonctionne
-             SendNewsletterJob::dispatch($subscriber, $this->subject, $this->message);
+            SendNewsletterJob::dispatch($subscriber, $this->subject, $this->message);
         }
 
         $this->reset(['subject', 'message', 'selectedTemplate']);

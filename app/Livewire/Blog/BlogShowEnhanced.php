@@ -250,19 +250,38 @@ class BlogShowEnhanced extends Component
         }
 
         try {
+            /* 1  –  comptabiliser */
             $this->post->recordShare($platform, Auth::user());
             $this->sharesCount++;
 
-            $this->dispatch('showAlert', [
-                'type' => 'success',
-                'message' => 'Merci d\'avoir partagé cet article !'
-            ]);
+            /* 2  –  construire l’URL de partage */
+            $postUrl   = route('blog.show', $this->post->slug, true);
+            $postTitle = $this->post->title;
+
+            $shareLinks = [
+                'facebook'  => 'https://www.facebook.com/sharer/sharer.php?u='.urlencode($postUrl),
+                'twitter'   => 'https://twitter.com/intent/tweet?url='.urlencode($postUrl).'&text='.urlencode($postTitle),
+                'linkedin'  => 'https://www.linkedin.com/sharing/share-offsite/?url='.urlencode($postUrl),
+                'whatsapp'  => 'https://wa.me/?text='.urlencode($postTitle.' '.$postUrl),
+                'email'     => 'mailto:?subject='.urlencode($postTitle).'&body='.urlencode($postUrl),
+            ];
+
+            /* 3  –  demander au navigateur d’ouvrir le lien */
+            $this->dispatch('openShareWindow', url: $shareLinks[$platform]);
+
+            /* 4  –  feedback */
+            $this->dispatch(
+                'toast',
+                type: 'success',
+                message: 'Merci d’avoir partagé cet article !'
+            );
         } catch (\Exception $e) {
             report($e);
-            $this->dispatch('showAlert', [
-                'type' => 'error',
-                'message' => 'Erreur lors du partage.'
-            ]);
+            $this->dispatch(
+                'toast',
+                type: 'error',
+                message: 'Erreur lors du partage.'
+            );
         }
     }
 

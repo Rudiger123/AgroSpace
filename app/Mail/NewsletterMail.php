@@ -10,13 +10,15 @@ use App\Models\NewsletterSubscriber;
 
 class NewsletterMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(
         public NewsletterSubscriber $subscriber,
         public string $newsletterSubject,
         public string $newsletterMessage
-    ) {}
+    ) {
+    }
 
     public function build()
     {

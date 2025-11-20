@@ -59,7 +59,7 @@ class NewOfferNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Nouvelle offre disponible - ' . $this->offer->titre)
             ->greeting('Bonjour ' . $notifiable->name . ',')
             ->line('Une nouvelle offre vient d\'être publiée sur AgroSpace.')

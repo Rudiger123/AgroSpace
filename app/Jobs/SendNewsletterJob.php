@@ -12,20 +12,24 @@ use App\Mail\NewsletterMail;
 
 class SendNewsletterJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(
         public $subscriber,
         public string $subject,
         public string $message
-    ) {}
+    ) {
+    }
 
     public function handle()
-    { 
+    {
         $subscriberUrl = route('newsletter.unsubscribe', [
             'token' => $this->subscriber->unsubscribe_token
         ]);
-        
+
         Mail::to($this->subscriber->email)->send(
             new NewsletterMail($this->subscriber, $this->subject, $this->message)
         );

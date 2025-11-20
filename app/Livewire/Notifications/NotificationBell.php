@@ -91,7 +91,7 @@ class NotificationBell extends Component
     public function toggleDropdown(): void
     {
         $this->showDropdown = !$this->showDropdown;
-        
+
         if ($this->showDropdown) {
             $this->dispatch('dropdownOpened');
         }
@@ -106,7 +106,7 @@ class NotificationBell extends Component
     public function handleBroadcastNotification(array $notification): void
     {
         $this->incrementUnreadCount();
-        
+
         // Show toast notification
         $this->dispatch('showToast', [
             'type' => 'info',

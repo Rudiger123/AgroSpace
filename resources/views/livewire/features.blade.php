@@ -2,21 +2,68 @@
 
 use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
+use App\Helpers\SEO;             // <-- helper already created
 
-new #[Layout('layouts.main')] class extends Component {
-    //
+new #[Layout('layouts.main')] class extends Component
+{
+    public function mount()
+    {
+        /* ----------  SEO  ---------- */
+        SEO::setTitle('Fonctionnalités AgroSpace - Plateforme Agricole Cameroun | Outils Producteurs & Consommateurs');
+        SEO::setDescription('Découvrez toutes les fonctionnalités d\'AgroSpace : publication d\'offres, gestion des demandes, messagerie instantanée, carte interactive, tableau de bord, blog. Inscription gratuite.');
+        SEO::setKeywords('AgroSpace, fonctionnalités, plateforme agricole, outils producteurs, gestion offres, messagerie agricole, carte interactive, Cameroun, agriculture locale');
+        SEO::setCanonical(url()->current());
+        SEO::setImage(asset('images/agrospace-features-og.jpg'));   // 1200×630
+        SEO::setType('website');
+    }
 }; ?>
+
+@push('meta')
+    {{-- Primary Meta Tags --}}
+    <title>Fonctionnalités AgroSpace - Plateforme Agricole Cameroun | Outils Producteurs & Consommateurs</title>
+    <meta name="title" content="Fonctionnalités AgroSpace - Plateforme Agricole Cameroun | Outils Producteurs & Consommateurs">
+    <meta name="description" content="Découvrez toutes les fonctionnalités d'AgroSpace : publication d'offres, gestion des demandes, messagerie instantanée, carte interactive, tableau de bord, blog. Inscription gratuite.">
+    <meta name="keywords" content="AgroSpace, fonctionnalités, plateforme agricole, outils producteurs, gestion offres, messagerie agricole, carte interactive, Cameroun, agriculture locale">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="fr">
+    <meta name="author" content="AgroSpace">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Fonctionnalités AgroSpace - Plateforme Agricole Cameroun">
+    <meta property="og:description" content="Découvrez toutes les fonctionnalités d'AgroSpace : publication d'offres, gestion des demandes, messagerie instantanée, carte interactive, tableau de bord, blog.">
+    <meta property="og:image" content="{{ asset('images/agrospace-features-og.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="AgroSpace">
+    <meta property="og:locale" content="fr_CM">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="Fonctionnalités AgroSpace - Plateforme Agricole Cameroun">
+    <meta name="twitter:description" content="Découvrez toutes les fonctionnalités d'AgroSpace : publication d'offres, gestion des demandes, messagerie instantanée, carte interactive, tableau de bord, blog.">
+    <meta name="twitter:image" content="{{ asset('images/agrospace-features-og.jpg') }}">
+
+    {{-- Geo-tags --}}
+    <meta name="geo.region" content="CM">
+    <meta name="geo.placename" content="Cameroun">
+    <meta name="geo.position" content="3.848;11.5021">
+    <meta name="ICBM" content="3.848, 11.5021">
+@endpush
+
 <div>
-    
 <body class="font-sans antialiased bg-white" x-data="{ mobileMenuOpen: false }">
 
     <x-layouts.header />
 
-    <!-- Hero Section -->
-    <section class="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden gradient-bg">
-        <div class="absolute inset-0 opacity-10 pointer-events-none">
-            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\" 60\ " height=\"60\ " viewBox=\"0 0 60 60\ " xmlns=\"http://www.w3.org/2000/svg\ "%3E%3Cg fill=\"none\ " fill-rule=\"evenodd\ "%3E%3Cg fill=\"%23ffffff\
-                " fill-opacity=\"0.4\ "%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\ "/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    <!-- HERO SECTION -->
+    <section id="features-hero" class="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden gradient-bg"
+             itemscope itemtype="https://schema.org/WPHeader">
+        <div class="absolute inset-0 opacity-10 pointer-events-none" aria-hidden="true">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.2\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
         </div>
 
         <div class="container mx-auto px-4">
@@ -26,17 +73,22 @@ new #[Layout('layouts.main')] class extends Component {
                     <div class="inline-block bg-white/20 px-4 py-2 rounded-full text-sm font-semibold mb-4">
                         🚀 Plateforme complète
                     </div>
+                    {{-- SEO : only H1 of the page --}}
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                         Toutes les fonctionnalités pour <span class="text-white">dynamiser</span> le monde agropastoral
                     </h1>
                     <p class="text-lg md:text-xl text-green-50 leading-relaxed">
-                        Découvrez comment Agrospace facilite la connexion entre producteurs et consommateurs agricoles grâce à des outils simples et puissants.
+                        Découvrez comment AgroSpace facilite la connexion entre producteurs et consommateurs agricoles grâce à des outils simples et puissants.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                        <a href="#" class="bg-white text-base px-8 py-4 rounded-lg font-semibold hover:bg-accent transition-all shadow-xl hover:shadow-2xl text-center">
+                        <a href="{{ route('register') }}"
+                           title="Créer un compte gratuit sur AgroSpace - Inscription producteur ou consommateur"
+                           class="bg-white text-base px-8 py-4 rounded-lg font-semibold hover:bg-accent transition-all shadow-xl hover:shadow-2xl text-center">
                             Créer mon compte gratuitement
                         </a>
-                        <a href="#offres" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-base transition-all text-center">
+                        <a href="#offres"
+                           title="Découvrir les fonctionnalités de la plateforme AgroSpace"
+                           class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-base transition-all text-center">
                             Découvrir les fonctionnalités
                         </a>
                     </div>
@@ -60,8 +112,8 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- Section 1 - Gestion des Offres -->
-    <section id="offres" class="py-20 bg-white">
+    <!-- SECTION 1 - GESTION DES OFFRES -->
+    <section id="offres" class="py-20 bg-white" itemscope itemtype="https://schema.org/ItemList">
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <!-- Text Content -->
@@ -107,7 +159,9 @@ new #[Layout('layouts.main')] class extends Component {
                     </ul>
 
                     <div class="pt-4">
-                        <a href="#" class="inline-flex items-center text-base font-semibold hover:underline">
+                        <a href="{{ route('register') }}"
+                           title="Créer ma première offre sur AgroSpace"
+                           class="inline-flex items-center text-base font-semibold hover:underline">
                             Créer ma première offre
                             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -135,7 +189,7 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- Section 2 - Gestion des Demandes -->
+    <!-- SECTION 2 - GESTION DES DEMANDES -->
     <section class="py-20 bg-gray-50">
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -171,7 +225,7 @@ new #[Layout('layouts.main')] class extends Component {
                         Trouvez ce que vous recherchez, simplement
                     </h2>
                     <p class="text-lg text-gray-600 leading-relaxed">
-                        Les consommateurs peuvent publier leurs besoins spécifiques, comme "Je cherche 50 poulets à Douala", et recevoir des propositions des producteurs locaux.
+                        Les consommateurs peuvent publier leurs besoins spécifiques, comme « Je cherche 50 poulets à Douala », et recevoir des propositions des producteurs locaux.
                     </p>
 
                     <ul class="space-y-4">
@@ -195,7 +249,7 @@ new #[Layout('layouts.main')] class extends Component {
                         </li>
                         <li class="flex items-start space-x-3">
                             <svg class="w-6 h-6 text-base flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                             </svg>
                             <div>
                                 <h4 class="font-semibold text-gray-900">Alertes en temps réel</h4>
@@ -205,7 +259,9 @@ new #[Layout('layouts.main')] class extends Component {
                     </ul>
 
                     <div class="pt-4">
-                        <a href="#" class="inline-flex items-center text-base font-semibold hover:underline">
+                        <a href="{{ route('register') }}"
+                           title="Publier une demande sur AgroSpace"
+                           class="inline-flex items-center text-base font-semibold hover:underline">
                             Publier une demande
                             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -217,7 +273,7 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- Section 3 - Messagerie -->
+    <!-- SECTION 3 - MESSAGERIE -->
     <section class="py-20 bg-emerald-50">
         <div class="container mx-auto px-4">
             <div class="max-w-5xl mx-auto text-center mb-16">
@@ -234,7 +290,7 @@ new #[Layout('layouts.main')] class extends Component {
 
             <div class="grid md:grid-cols-3 gap-8 mb-12">
                 <!-- Feature 1 -->
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all">
+                <article class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all">
                     <div class="w-16 h-16 bg-base/10 rounded-full flex items-center justify-center mb-6">
                         <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
@@ -242,10 +298,10 @@ new #[Layout('layouts.main')] class extends Component {
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Interface intuitive</h3>
                     <p class="text-gray-600">Design type WhatsApp, familier et facile à utiliser</p>
-                </div>
+                </article>
 
                 <!-- Feature 2 -->
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all">
+                <article class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all">
                     <div class="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mb-6">
                         <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
@@ -253,10 +309,10 @@ new #[Layout('layouts.main')] class extends Component {
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Notifications instantanées</h3>
                     <p class="text-gray-600">Ne ratez aucun message important</p>
-                </div>
+                </article>
 
                 <!-- Feature 3 -->
-                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all">
+                <article class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all">
                     <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mb-6">
                         <svg class="w-8 h-8 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
@@ -264,7 +320,7 @@ new #[Layout('layouts.main')] class extends Component {
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-3">Sécurité garantie</h3>
                     <p class="text-gray-600">Vos conversations restent privées et sécurisées</p>
-                </div>
+                </article>
             </div>
 
             <!-- Chat Mockup with Animation -->
@@ -289,7 +345,7 @@ new #[Layout('layouts.main')] class extends Component {
                     <div class="p-6 space-y-4 h-64 overflow-y-auto bg-gray-50">
                         <template x-for="(message, index) in visibleMessages" :key="index">
                             <div :class="message.sender === 'me' ? 'flex justify-end' : 'flex justify-start'" x-transition>
-                                <div :class="message.sender === 'me' ? 'bg-base text-white' : 'bg-white'" 
+                                <div :class="message.sender === 'me' ? 'bg-base text-white' : 'bg-white'"
                                      class="max-w-xs px-4 py-3 rounded-2xl shadow">
                                     <p x-text="message.text"></p>
                                 </div>
@@ -311,7 +367,7 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- Section 4 - Carte Interactive -->
+    <!-- SECTION 4 - CARTE INTERACTIVE -->
     <section class="py-20 bg-[#FAF7F0]">
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -359,7 +415,9 @@ new #[Layout('layouts.main')] class extends Component {
                     </ul>
 
                     <div class="pt-4">
-                        <a href="#" class="inline-flex items-center text-base font-semibold hover:underline">
+                        <a href="{{ route('register') }}"
+                           title="Explorer la carte interactive d'AgroSpace"
+                           class="inline-flex items-center text-base font-semibold hover:underline">
                             Explorer la carte
                             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
@@ -402,7 +460,7 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- Section 5 - Tableau de bord -->
+    <!-- SECTION 5 - TABLEAU DE BORD -->
     <section class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <div class="max-w-5xl mx-auto text-center mb-16">
@@ -522,10 +580,10 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- Section 6 - Blog & Ressources -->
-    <section id="blog" class="py-20 bg-gray-50">
+    <!-- SECTION 6 - BLOG & RESSOURCES -->
+    <section id="blog" class="py-20 bg-gray-50" itemscope itemtype="https://schema.org/Blog">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
+            <header class="text-center mb-16">
                 <div class="inline-block bg-base/10 px-4 py-2 rounded-full text-base font-semibold text-sm mb-4">
                     📰 Blog & Ressources
                 </div>
@@ -533,21 +591,35 @@ new #[Layout('layouts.main')] class extends Component {
                     Restez informé des dernières actualités agricoles
                 </h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Agrospace vous connecte aussi à l'information : innovations, subventions, formations et témoignages inspirants.
+                    AgroSpace vous connecte aussi à l'information : innovations, subventions, formations et témoignages inspirants.
                 </p>
-            </div>
+            </header>
 
             <div class="grid md:grid-cols-3 gap-8 mb-12">
                 <!-- Article 1 -->
-                <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group">
-                    <div class="h-48 bg-gradient-to-br from-base to-secondary"></div>
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group"
+                         itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+                    <img src="{{ asset('images/blog/agriculture-digitale-cameroun.jpg') }}"
+                         alt="Agriculture digitale au Cameroun - Innovation technologique agricole"
+                         class="h-48 w-full object-cover"
+                         width="400" height="192" loading="lazy" itemprop="image">
                     <div class="p-6">
-                        <span class="text-sm text-base font-semibold">💡 Innovation</span>
-                        <h3 class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-base transition-colors">
-                            Les nouvelles technologies au service de l'agriculture
+                        <span class="text-sm text-base font-semibold" itemprop="keywords">💡 Innovation</span>
+                        <h3 class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-base transition-colors" itemprop="headline">
+                            <a href="{{ route('blog.show', 'agriculture-digitale-cameroun') }}"
+                               title="Lire l'article sur l'agriculture digitale au Cameroun"
+                               itemprop="url">
+                                Les nouvelles technologies au service de l'agriculture
+                            </a>
                         </h3>
-                        <p class="text-gray-600 mb-4">Comment les outils numériques transforment le secteur agricole camerounais...</p>
-                        <a href="#" class="text-base font-semibold hover:underline inline-flex items-center">
+                        <p class="text-gray-600 mb-4" itemprop="description">
+                            Comment les outils numériques transforment le secteur agricole camerounais...
+                        </p>
+                        <meta itemprop="datePublished" content="2025-01-15">
+                        <meta itemprop="author" content="AgroSpace">
+                        <a href="{{ route('blog.show', 'agriculture-digitale-cameroun') }}"
+                           title="Lire l'article complet sur l'agriculture digitale"
+                           class="text-base font-semibold hover:underline inline-flex items-center">
                             Lire l'article
                             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -557,15 +629,29 @@ new #[Layout('layouts.main')] class extends Component {
                 </article>
 
                 <!-- Article 2 -->
-                <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group">
-                    <div class="h-48 bg-gradient-to-br from-secondary to-green-300"></div>
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group"
+                         itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+                    <img src="{{ asset('images/blog/subventions-agricoles-2025.jpg') }}"
+                         alt="Subventions agricoles 2025 Cameroun - Aides producteurs"
+                         class="h-48 w-full object-cover"
+                         width="400" height="192" loading="lazy" itemprop="image">
                     <div class="p-6">
-                        <span class="text-sm text-base font-semibold">💰 Financement</span>
-                        <h3 class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-base transition-colors">
-                            Subventions agricoles 2025 : comment en bénéficier
+                        <span class="text-sm text-base font-semibold" itemprop="keywords">💰 Financement</span>
+                        <h3 class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-base transition-colors" itemprop="headline">
+                            <a href="{{ route('blog.show', 'subventions-agricoles-2025') }}"
+                               title="Guide subventions agricoles 2025 Cameroun"
+                               itemprop="url">
+                                Subventions agricoles 2025 : comment en bénéficier
+                            </a>
                         </h3>
-                        <p class="text-gray-600 mb-4">Guide complet des aides disponibles pour les producteurs agricoles...</p>
-                        <a href="#" class="text-base font-semibold hover:underline inline-flex items-center">
+                        <p class="text-gray-600 mb-4" itemprop="description">
+                            Guide complet des aides disponibles pour les producteurs agricoles...
+                        </p>
+                        <meta itemprop="datePublished" content="2025-01-10">
+                        <meta itemprop="author" content="AgroSpace">
+                        <a href="{{ route('blog.show', 'subventions-agricoles-2025') }}"
+                           title="Lire le guide complet sur les subventions agricoles"
+                           class="text-base font-semibold hover:underline inline-flex items-center">
                             Lire l'article
                             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -575,15 +661,29 @@ new #[Layout('layouts.main')] class extends Component {
                 </article>
 
                 <!-- Article 3 -->
-                <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group">
-                    <div class="h-48 bg-gradient-to-br from-green-600 to-base"></div>
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group"
+                         itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+                    <img src="{{ asset('images/blog/formation-agriculture-bio-cameroun.jpg') }}"
+                         alt="Formation agriculture biologique Cameroun - Certification bio"
+                         class="h-48 w-full object-cover"
+                         width="400" height="192" loading="lazy" itemprop="image">
                     <div class="p-6">
-                        <span class="text-sm text-base font-semibold">🎓 Formation</span>
-                        <h3 class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-base transition-colors">
-                            Formation gratuite : agriculture biologique
+                        <span class="text-sm text-base font-semibold" itemprop="keywords">🎓 Formation</span>
+                        <h3 class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-base transition-colors" itemprop="headline">
+                            <a href="{{ route('blog.show', 'formation-agriculture-bio') }}"
+                               title="Formation agriculture biologique gratuite Cameroun"
+                               itemprop="url">
+                                Formation gratuite : agriculture biologique
+                            </a>
                         </h3>
-                        <p class="text-gray-600 mb-4">Inscrivez-vous à notre prochaine session de formation aux pratiques bio...</p>
-                        <a href="#" class="text-base font-semibold hover:underline inline-flex items-center">
+                        <p class="text-gray-600 mb-4" itemprop="description">
+                            Inscrivez-vous à notre prochaine session de formation aux pratiques bio...
+                        </p>
+                        <meta itemprop="datePublished" content="2025-01-05">
+                        <meta itemprop="author" content="AgroSpace">
+                        <a href="{{ route('blog.show', 'formation-agriculture-bio') }}"
+                           title="Lire l'article complet sur la formation bio"
+                           class="text-base font-semibold hover:underline inline-flex items-center">
                             Lire l'article
                             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -594,14 +694,16 @@ new #[Layout('layouts.main')] class extends Component {
             </div>
 
             <div class="text-center">
-                <a href="#" class="inline-block border-2 border-base text-base px-8 py-4 rounded-lg font-semibold hover:bg-base hover:text-white transition-all">
+                <a href="{{ route('blog.index') }}"
+                   title="Voir tous les articles du blog agriculture Cameroun"
+                   class="inline-block border-2 border-base text-base px-8 py-4 rounded-lg font-semibold hover:bg-base hover:text-white transition-all">
                     Voir tous les articles du blog
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Section 7 - Sécurité & Fiabilité -->
+    <!-- SECTION 7 - SÉCURITÉ & FIABILITÉ -->
     <section class="py-20 bg-green-700 text-white">
         <div class="container mx-auto px-4">
             <div class="max-w-5xl mx-auto text-center mb-12">
@@ -653,22 +755,23 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- CTA Final Section -->
+    <!-- CTA FINAL SECTION -->
     <section class="py-20 gradient-cta text-white relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\" 60\ " height=\"60\ " viewBox=\"0 0 60 60\ " xmlns=\"http://www.w3.org/2000/svg\ "%3E%3Cg fill=\"none\ " fill-rule=\"evenodd\ "%3E%3Cg fill=\"%23ffffff\
-                " fill-opacity=\"0.4\ "%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\ "/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+        <div class="absolute inset-0 opacity-10" aria-hidden="true">
+            <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
         </div>
 
         <div class="container mx-auto px-4 text-center relative z-10">
             <h2 class="text-4xl md:text-5xl font-bold mb-6">
-                Rejoignez la communauté Agrospace dès aujourd'hui
+                Rejoignez la communauté AgroSpace dès aujourd'hui
             </h2>
             <p class="text-xl md:text-2xl text-green-50 mb-8 max-w-3xl mx-auto">
                 et développez vos activités agricoles grâce à des outils modernes et une communauté engagée
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#" class="bg-white text-base px-10 py-5 rounded-lg font-bold text-lg hover:bg-accent transition-all shadow-2xl hover:scale-105">
+                <a href="{{ route('register') }}"
+                   title="Créer un compte AgroSpace gratuitement - Inscription rapide"
+                   class="bg-white text-base px-10 py-5 rounded-lg font-bold text-lg hover:bg-accent transition-all shadow-2xl hover:scale-105">
                     Créer un compte maintenant
                 </a>
             </div>
@@ -678,11 +781,17 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <x-layouts.footer />
 
     <!-- Scroll to top button -->
-    <button x-data="{ showButton: false }" x-init="window.addEventListener('scroll', () => { showButton = window.pageYOffset > 300 })" x-show="showButton" x-cloak @click="window.scrollTo({ top: 0, behavior: 'smooth' })" class="fixed bottom-8 right-8 bg-base text-white w-12 h-12 rounded-full shadow-2xl hover:bg-green-800 transition-all hover:scale-110 flex items-center justify-center z-40">
+    <button x-data="{ showButton: false }"
+            x-init="window.addEventListener('scroll', () => { showButton = window.pageYOffset > 300 })"
+            x-show="showButton" x-cloak
+            @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+            class="fixed bottom-8 right-8 bg-base text-white w-12 h-12 rounded-full shadow-2xl hover:bg-green-800 transition-all hover:scale-110 flex items-center justify-center z-40"
+            aria-label="Retour en haut de la page"
+            title="Retour en haut">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
         </svg>
@@ -690,3 +799,4 @@ new #[Layout('layouts.main')] class extends Component {
 
 </body>
 </div>
+
