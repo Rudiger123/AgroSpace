@@ -153,8 +153,7 @@
 <body class="bg-gradient-to-br from-green-50 via-white to-amber-50 font-sans antialiased">
 
     {{-- Sidebar avec son propre x-data --}}
-    {{-- Sidebar avec son propre x-data --}}
-    <aside x-data="{}"
+    <aside x-data="{ open: false }"
         x-bind:class="$store.sidebar.open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
         class="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-green-800 to-green-900 text-white shadow-2xl z-50 transition-transform duration-300">
 
@@ -194,28 +193,117 @@
                 <span class="font-medium">Dashboard</span>
             </a>
 
-            <a href="{{ route('users-management') }}" wire:navigate
-                class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('users-management') ? 'bg-green-700 shadow-lg' : '' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
-                    </path>
-                </svg>
-                <span class="font-medium">Utilisateurs</span>
-                <span
-                    class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">247</span>
-            </a>
+            @if (auth()->user()->isAdmin())
+                <a href="{{ route('users-management') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('users-management') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                    <span class="font-medium">Utilisateurs</span>
+                    <span
+                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">
+                        {{ \App\Models\User::count() }}
+                    </span>
+                </a>
 
-            <a href="{{ route('offers-management') }}" wire:navigate
-                class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('offers-management') ? 'bg-green-700 shadow-lg' : '' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                </svg>
-                <span class="font-medium">Mes Offres</span>
-                <span
-                    class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">156</span>
-            </a>
+                <a href="{{ route('demands.index') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('demands.index') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                        </path>
+                    </svg>
+                    <span class="font-medium">Gestion Demandes</span>
+                </a>
+
+                <a href="{{ route('offers.moderate') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('offers.moderate') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                        </path>
+                    </svg>
+                    <span class="font-medium">Gestion des Offres</span>
+                </a>
+
+                <a href="{{ route('admin.blog.index') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('admin.blog.*') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+                        </path>
+                    </svg>
+                    <span class="font-medium">Blog</span>
+                </a>
+
+                <a href="{{ route('categories.index') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('categories.*') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+                        </path>
+                    </svg>
+                    <span class="font-medium">Catégories</span>
+                </a>
+
+                <a href="{{ route('tags.index') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('tags.*') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+                        </path>
+                    </svg>
+                    <span class="font-medium">Tags</span>
+                </a>
+
+                <a href="{{ route('admin.newsletter.list') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('admin.newsletter.list') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+                        </path>
+                    </svg>
+                    <span class="font-medium">Newsletters</span>
+                </a>
+
+                <a href="{{ route('notifications.index') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('notifications.index') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+                        </path>
+                    </svg>
+                    <span class="font-medium">Notifications</span>
+                </a>
+
+            @elseif (auth()->user()->isProducer())
+
+                <a href="{{ route('offers-management') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('offers-management') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                    <span class="font-medium">Mes Offres</span>
+                    <span
+                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">156</span>
+                </a>
+            @else
+                <a href="{{ route('demands-management') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('demands-management') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                        </path>
+                    </svg>
+                    <span class="font-medium">Mes Demandes</span>
+                    <span
+                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
+                </a>
+            @endif
+
 
             <a href="{{ route('offers-list') }}" wire:navigate
                 class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('offers-list') ? 'bg-green-700 shadow-lg' : '' }}">
@@ -228,17 +316,6 @@
                     class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">156</span>
             </a>
 
-            <a href="{{ route('demands-management') }}" wire:navigate
-                class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('demands-management') ? 'bg-green-700 shadow-lg' : '' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                    </path>
-                </svg>
-                <span class="font-medium">Mes Demandes</span>
-                <span class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
-            </a>
-
             <a href="{{ route('demands-list') }}" wire:navigate
                 class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('demands-list') ? 'bg-green-700 shadow-lg' : '' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -246,18 +323,9 @@
                         d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
                     </path>
                 </svg>
-                <span class="font-medium">Liste des Demandes</span>
-                <span class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
-            </a>
-
-            <a href="{{ route('demands.index') }}" wire:navigate
-                class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('demands.index') ? 'bg-green-700 shadow-lg' : '' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                    </path>
-                </svg>
-                <span class="font-medium">Gestion Demandes</span>
+                <span class="font-medium">Demandes Publiques</span>
+                <span
+                    class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
             </a>
 
             <a href="/chats" wire:navigate
@@ -272,22 +340,12 @@
                     class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">12</span>
             </a>
 
-            <a href="#" wire:navigate
-                class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('admin.blog.*') ? 'bg-green-700 shadow-lg' : '' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
-                    </path>
-                </svg>
-                <span class="font-medium">Blog</span>
-            </a>
-
-            <a href="#" wire:navigate
+            {{-- <a href="#" wire:navigate
                 class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('admin.map') ? 'bg-green-700 shadow-lg' : '' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7">
-                    </path> {{-- Alpine.js Persist Plugin --}}
+                    </path>
 
 
                 </svg>
@@ -312,7 +370,7 @@
                     </path>
                 </svg>
                 <span class="font-medium">Paramètres</span>
-            </a>
+            </a> --}}
         </nav>
 
         {{-- User Profile --}}
@@ -336,19 +394,18 @@
         </div>
     </aside>
 
-    {{-- Main Content Area - SANS x-data parent --}}
     <div class="lg:ml-72 transition-all duration-300">
 
         {{-- Mobile Overlay --}}
-        <div x-data="{}" x-show="$store.sidebar.open" @click="$store.sidebar.close()"
+        <div x-show="$store.sidebar.open" @click="$store.sidebar.close()"
             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
             class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden" x-cloak>
         </div>
 
-        {{-- Header avec son propre x-data --}}
-        <header class="bg-white shadow-sm sticky top-0 z-30 glass-effect">
+        {{-- Header --}}
+        <header class="bg-primary-50 shadow-sm sticky top-0 z-30">
             <div class="px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     {{-- Bouton mobile --}}
@@ -377,82 +434,15 @@
 
                 <div class="flex items-center space-x-3">
                     {{-- Search Bar --}}
-                    <div class="flex-1 max-w-xl mx-6">
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="w-5 h-5 text-[#37474F]/40" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </div>
-
-                            <input type="text" placeholder="Rechercher des offres, utilisateurs, projets..."
-                                class="w-full pl-10 pr-4 py-2.5 bg-[#F9F6EE] border border-transparent rounded-xl
-                               focus:outline-none focus:ring-2 focus:ring-[#2E7D32]/30 focus:bg-white focus:border-[#2E7D32]
-                               transition-all duration-200 placeholder-[#37474F]/40">
-
-
-                        </div>
+                    <div class="max-w-md">
+                        @livewire('admin.global-search')
                     </div>
 
-                    {{-- Notifications Dropdown --}}
-                    <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open"
-                            class="relative p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group">
-                            <svg class="w-6 h-6 text-gray-600 group-hover:text-green-600 transition" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                                </path>
-                            </svg>
-                            <span
-                                class="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">3</span>
-                        </button>
+                    <!-- Notification Bell -->
+                    @auth
+                        @livewire('notifications.notification-bell')
+                    @endauth
 
-                        {{-- Notifications Dropdown Menu --}}
-                        <div x-show="open" @click.away="open = false"
-                            x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 scale-95"
-                            x-transition:enter-end="opacity-100 scale-100" x-cloak
-                            class="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
-                            <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-                                <div class="flex items-center justify-between">
-                                    <h3 class="text-white font-bold text-lg">Notifications</h3>
-                                    <span class="bg-white text-green-600 text-xs font-bold px-2.5 py-1 rounded-full">3
-                                        nouvelles</span>
-                                </div>
-                            </div>
-                            <div class="max-h-96 overflow-y-auto p-2">
-                                {{-- Notification items --}}
-                                <div class="px-4 py-3 hover:bg-gray-50 transition cursor-pointer rounded-lg">
-                                    <div class="flex items-start space-x-3">
-                                        <div
-                                            class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path
-                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-sm font-semibold text-gray-800">Nouvelle offre disponible
-                                            </p>
-                                            <p class="text-xs text-gray-500">Maïs bio disponible à Douala</p>
-                                            <p class="text-xs text-gray-400 mt-1">Il y a 5 min</p>
-                                        </div>
-                                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full flex-shrink-0 mt-1"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="px-6 py-3 bg-gray-50 border-t border-gray-100">
-                                <a href="#"
-                                    class="text-green-600 hover:text-green-700 font-semibold text-sm block text-center">
-                                    Voir toutes les notifications
-                                </a>
-                            </div>
-                        </div>
-                    </div>
 
                     {{-- User Profile Dropdown --}}
                     <div class="relative" x-data="{ open: false }">

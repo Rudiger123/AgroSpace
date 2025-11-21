@@ -117,7 +117,7 @@
     </script>
 </head>
 
-<body class="bg-gradient-to-br from-green-50 via-white to-amber-50 font-sans antialiased">
+<body class=" bg-accent font-sans antialiased">
 
     {{-- Sidebar avec son propre x-data --}}
     <aside x-data="{ open: false }"
@@ -170,7 +170,9 @@
                     </svg>
                     <span class="font-medium">Utilisateurs</span>
                     <span
-                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">247</span>
+                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">
+                        {{ \App\Models\User::count() }}
+                    </span>
                 </a>
 
                 <a href="{{ route('demands.index') }}" wire:navigate
@@ -232,7 +234,19 @@
                     </svg>
                     <span class="font-medium">Newsletters</span>
                 </a>
+
+                <a href="{{ route('notifications.index') }}" wire:navigate
+                    class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('notifications.index') ? 'bg-green-700 shadow-lg' : '' }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
+                        </path>
+                    </svg>
+                    <span class="font-medium">Notifications</span>
+                </a>
+
             @elseif (auth()->user()->isProducer())
+
                 <a href="{{ route('offers-management') }}" wire:navigate
                     class="flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-green-700 {{ request()->routeIs('offers-management') ? 'bg-green-700 shadow-lg' : '' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -390,87 +404,12 @@
                     <div class="max-w-md">
                         @livewire('admin.global-search')
                     </div>
-                    {{-- <div class="flex-1 max-w-xl mx-6">
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="w-5 h-5 text-[#37474F]/40" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </div>
-
-                            <input type="text" placeholder="Rechercher des offres, utilisateurs, projets..."
-                                class="w-full pl-10 pr-4 py-2.5 bg-[#F9F6EE] border border-transparent rounded-xl
-                               focus:outline-none focus:ring-2 focus:ring-[#2E7D32]/30 focus:bg-white focus:border-[#2E7D32]
-                               transition-all duration-200 placeholder-[#37474F]/40">
-
-
-                        </div>
-                    </div>  --}}
 
                     <!-- Notification Bell -->
                     @auth
                         @livewire('notifications.notification-bell')
                     @endauth
 
-                    {{-- Notifications Dropdown --}}
-                    <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open"
-                            class="relative p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group">
-                            <svg class="w-6 h-6 text-gray-600 group-hover:text-green-600 transition" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                                </path>
-                            </svg>
-                            <span
-                                class="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">3</span>
-                        </button>
-
-                        {{-- Notifications Dropdown Menu --}}
-                        <div x-show="open" @click.away="open = false"
-                            x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 scale-95"
-                            x-transition:enter-end="opacity-100 scale-100" x-cloak
-                            class="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
-                            <div class="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-                                <div class="flex items-center justify-between">
-                                    <h3 class="text-white font-bold text-lg">Notifications</h3>
-                                    <span class="bg-white text-green-600 text-xs font-bold px-2.5 py-1 rounded-full">3
-                                        nouvelles</span>
-                                </div>
-                            </div>
-                            <div class="max-h-96 overflow-y-auto p-2">
-                                {{-- Notification items --}}
-                                <div class="px-4 py-3 hover:bg-gray-50 transition cursor-pointer rounded-lg">
-                                    <div class="flex items-start space-x-3">
-                                        <div
-                                            class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                <path
-                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="text-sm font-semibold text-gray-800">Nouvelle offre disponible
-                                            </p>
-                                            <p class="text-xs text-gray-500">Maïs bio disponible à Douala</p>
-                                            <p class="text-xs text-gray-400 mt-1">Il y a 5 min</p>
-                                        </div>
-                                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full flex-shrink-0 mt-1"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="px-6 py-3 bg-gray-50 border-t border-gray-100">
-                                <a href="#"
-                                    class="text-green-600 hover:text-green-700 font-semibold text-sm block text-center">
-                                    Voir toutes les notifications
-                                </a>
-                            </div>
-                        </div>
-                    </div>
 
                     {{-- User Profile Dropdown --}}
                     <div class="relative" x-data="{ open: false }">

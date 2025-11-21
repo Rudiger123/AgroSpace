@@ -592,7 +592,7 @@
                             <div class="text-sm text-gray-600">Articles publiés</div>
                         </div>
                         <div class="bg-blue-50 rounded-xl p-4 text-center">
-                            <div class="text-2xl font-bold text-blue-600">{{ $authorFollowersCount ?? 0 }}</div>
+                            <div class="text-2xl font-bold text-blue-600">{{ \App\Models\NewsletterSubscriber::count() }}</div>
                             <div class="text-sm text-gray-600">Abonnés</div>
                         </div>
                     </div>
