@@ -123,11 +123,8 @@ new #[Layout('layouts.guest')] class extends Component {
                 <div class="w-full max-w-md">
                     <!-- Logo -->
                     <div class="flex items-center gap-2 mb-8">
-                        <svg class="w-10 h-10 text-[#16a34a]" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-4 0-7-3-7-7V8.3l7-3.5 7 3.5V13c0 4-3 7-7 7z" />
-                            <circle cx="12" cy="12" r="3" />
-                        </svg>
+                        <img src="{{ asset('images/logo.png') }}" class="h-10 w-10"
+                            alt="Agrospace la plateforme de mise en relation des acteurs du secteur agropastorale">
                         <span class="text-2xl font-bold text-[#16a34a]">Agrospace</span>
                     </div>
 
