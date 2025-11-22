@@ -297,7 +297,7 @@
                                                         {{ $offer->title }}</p>
                                                     <p class="text-xs text-gray-500">
                                                         {{ $offer->created_at->format('d/m/Y') }} •
-                                                        {{ $offer->category }}</p>
+                                                        {{ $offer->category->name ?? 'Non renseigné' }}
                                                 </div>
                                                 <div class="text-right">
                                                     <span
@@ -333,7 +333,7 @@
                                                         {{ $demand->title }}</p>
                                                     <p class="text-xs text-gray-500">
                                                         {{ $demand->created_at->format('d/m/Y') }} •
-                                                        {{ $demand->category }}</p>
+                                                        {{ $demand->category->name ?? 'Non renseigné' }}
                                                 </div>
                                                 <div class="text-right">
                                                     <span

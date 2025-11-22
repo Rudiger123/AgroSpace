@@ -37,7 +37,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'two_factor_secret',
         'two_factor_recovery_codes',
         'two_factor_confirmed_at',
-        'last_active_at'
+        'last_active_at',
+        'last_login_at',
+        'suspended_at',
+        'suspended_by',
+        'reactivated_at',
+        'reactivated_by'
     ];
 
     protected $hidden = [
@@ -327,15 +332,15 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $badges = [
             '2' => [
-                'class' => 'bg-green-100 text-green-700',
+                'class' => 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border border-green-200',
                 'label' => '👨‍🌾 producer',
             ],
             '3' => [
-                'class' => 'bg-blue-100 text-blue-700',
+                'class' => 'bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 border border-blue-200',
                 'label' => '🛒 Consommateur',
             ],
             '1' => [
-                'class' => 'bg-purple-100 text-purple-700',
+                'class' => 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border border-purple-200',
                 'label' => '👨‍💼 Admin',
             ],
         ];

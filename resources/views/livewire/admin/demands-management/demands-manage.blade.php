@@ -1,84 +1,68 @@
-<div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-earth-50 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-gray-50/50 py-8" x-data="demandsManagement()" x-init="initCharts()">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
-        <!-- Header -->
-        <div class="mb-8">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-900">Gestion des Demandes</h1>
-                    <p class="mt-2 text-sm text-gray-600">Modérer et gérer toutes les demandes de la plateforme</p>
-                </div>
-                <div class="mt-4 md:mt-0">
-                    <button wire:click="expireOldDemands"
-                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white font-semibold rounded-xl hover:from-orange-700 hover:to-orange-800 shadow-lg transition">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        Expirer anciennes demandes
-                    </button>
-                </div>
+        <!-- Header & Actions -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Gestion des Demandes</h1>
+                <p class="mt-1 text-sm text-gray-600">Supervision et modération des demandes utilisateurs</p>
             </div>
+            <button wire:click="expireOldDemands"
+                class="inline-flex items-center px-5 py-2.5 bg-white border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 hover:border-orange-300 hover:text-orange-600 shadow-sm transition-all group">
+                <svg class="w-5 h-5 mr-2 text-gray-400 group-hover:text-orange-500" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Nettoyer expirées
+            </button>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">Total Demandes</p>
-                        <p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
-                    </div>
-                    <div class="bg-primary-100 rounded-lg p-3">
-                        <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                            </path>
-                        </svg>
-                    </div>
-                </div>
+        <!-- Section Graphiques & Stats -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Graphique 1: Statuts -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h3 class="text-sm font-bold text-gray-700 mb-4">État des Demandes</h3>
+                <div id="statusChart" class="h-64" wire:ignore></div>
             </div>
 
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">Actives</p>
-                        <p class="text-2xl font-bold text-green-600">{{ $stats['active'] }}</p>
-                    </div>
-                    <div class="bg-green-100 rounded-lg p-3">
-                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                </div>
+            <!-- Graphique 2: Catégories -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h3 class="text-sm font-bold text-gray-700 mb-4">Top Catégories</h3>
+                <div id="categoryChart" class="h-64" wire:ignore></div>
             </div>
 
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">Vérifiées</p>
-                        <p class="text-2xl font-bold text-blue-600">{{ $stats['verified'] }}</p>
-                        <p class="text-xs text-orange-600 mt-1">{{ $stats['pending_verification'] }} en attente</p>
-                    </div>
-                    <div class="bg-blue-100 rounded-lg p-3">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                            </path>
+            <!-- KPI Cards Verticales -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+                <div
+                    class="bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl p-6 text-white shadow-lg shadow-orange-200 relative overflow-hidden">
+                    <div class="absolute right-0 top-0 opacity-10 transform translate-x-2 -translate-y-2">
+                        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
+                    <p class="text-orange-100 text-sm font-medium">Demandes Actives</p>
+                    <p class="text-4xl font-bold mt-2">{{ $stats['active'] }}</p>
+                    <p class="text-xs text-orange-100 mt-1 bg-white/20 inline-block px-2 py-0.5 rounded-lg">
+                        {{ $stats['pending'] }} en attente de vérif.
+                    </p>
                 </div>
-            </div>
 
-            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
+                <div
+                    class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600 mb-1">Réponses Totales</p>
-                        <p class="text-2xl font-bold text-purple-600">{{ $stats['responses'] }}</p>
+                        <p class="text-gray-500 text-sm font-medium">Total Interactions</p>
+                        <p class="text-3xl font-bold text-gray-900 mt-1">{{ $stats['responses'] }}</p>
+                        <p class="text-xs text-green-600 mt-1 flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            Réponses générées
+                        </p>
                     </div>
-                    <div class="bg-purple-100 rounded-lg p-3">
-                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="p-3 bg-blue-50 rounded-xl text-blue-600">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
                             </path>
@@ -88,18 +72,31 @@
             </div>
         </div>
 
-        <!-- Filters -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
-                <div class="md:col-span-2">
-                    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Rechercher..."
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+        <!-- Filtres (Style Uniformisé) -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                <div class="lg:col-span-2 form-group">
+                    <label
+                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">Recherche</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <input type="text" wire:model.live.debounce.300ms="search"
+                            placeholder="Titre, ville, utilisateur..."
+                            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 focus:bg-white transition-all shadow-sm">
+                    </div>
                 </div>
 
-                <div>
+                <div class="form-group">
+                    <label
+                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">Statut</label>
                     <select wire:model.live="statusFilter"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                        <option value="all">Tous statuts</option>
+                        class="w-full py-2.5 px-3 bg-gray-50 border-gray-200 rounded-xl text-gray-700 focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 focus:bg-white transition-all shadow-sm cursor-pointer">
+                        <option value="all">Tous</option>
                         <option value="active">Active</option>
                         <option value="satisfied">Satisfaite</option>
                         <option value="expired">Expirée</option>
@@ -107,107 +104,111 @@
                     </select>
                 </div>
 
-                <div>
+                <div class="form-group">
+                    <label
+                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">Vérification</label>
                     <select wire:model.live="verifiedFilter"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                        class="w-full py-2.5 px-3 bg-gray-50 border-gray-200 rounded-xl text-gray-700 focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 focus:bg-white transition-all shadow-sm cursor-pointer">
                         <option value="all">Toutes</option>
                         <option value="verified">✓ Vérifiées</option>
                         <option value="unverified">⏳ Non vérifiées</option>
                     </select>
                 </div>
 
-                <div>
+                <div class="form-group">
+                    <label
+                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">Catégorie</label>
                     <select wire:model.live="categoryFilter"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                        <option value="">Toutes catégories</option>
+                        class="w-full py-2.5 px-3 bg-gray-50 border-gray-200 rounded-xl text-gray-700 focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 focus:bg-white transition-all shadow-sm cursor-pointer">
+                        <option value="">Toutes</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->icon }} {{ $category->name }}</option>
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
                 </div>
 
-                <div>
+                <div class="form-group">
+                    <label class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">Tri</label>
                     <select wire:model.live="sortBy"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                        <option value="latest">Plus récentes</option>
-                        <option value="oldest">Plus anciennes</option>
-                        <option value="most_viewed">Plus consultées</option>
-                        <option value="most_responses">Plus de réponses</option>
+                        class="w-full py-2.5 px-3 bg-gray-50 border-gray-200 rounded-xl text-gray-700 focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 focus:bg-white transition-all shadow-sm cursor-pointer">
+                        <option value="latest">Récents</option>
+                        <option value="oldest">Anciens</option>
+                        <option value="most_viewed">Populaires</option>
+                        <option value="most_responses">Réponses</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <!-- Demands Table -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <!-- Tableau (Responsive) -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
+                <table class="min-w-full divide-y divide-gray-100">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
                                 Demande</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
                                 Demandeur</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Localisation</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Stats</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                Infos</th>
+                            <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
                                 Statut</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">
                                 Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="bg-white divide-y divide-gray-100">
                         @forelse($demands as $demand)
-                            <tr class="hover:bg-gray-50 transition">
+                            <tr class="hover:bg-orange-50/30 transition-colors duration-150 group">
                                 <td class="px-6 py-4">
-                                    <div class="flex items-start space-x-3">
-                                        <span class="text-2xl flex-shrink-0">{{ $demand->category->icon }}</span>
-                                        <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-semibold text-gray-900 line-clamp-2 truncate">
-                                                {{ Str::words($demand->title,5) }}</p>
-                                            <p class="text-xs text-gray-500 line-clamp-2">{{ Str::words($demand->description, 10) }}
+                                    <div class="flex items-center space-x-4">
+                                        <div
+                                            class="flex-shrink-0 w-10 h-10 bg-orange-100 text-2xl flex items-center justify-center rounded-xl">
+                                            {{ $demand->category->icon }}
+                                        </div>
+                                        <div class="min-w-0">
+                                            <p class="text-sm font-bold text-gray-900 truncate max-w-[200px]"
+                                                title="{{ $demand->title }}">
+                                                {{ $demand->title }}
                                             </p>
-                                            <div class="flex items-center space-x-2 mt-1">
+                                            <div class="flex items-center gap-2 mt-0.5">
                                                 <span
-                                                    class="px-2 py-1 rounded text-xs font-semibold {{ $demand->urgency_badge_color }}">
-                                                    @if ($demand->urgency === 'high')
-                                                        🔴 Urgente
-                                                    @elseif($demand->urgency === 'medium')
-                                                        🟡 Moyenne
-                                                    @else
-                                                        🟢 Normal
-                                                    @endif
-                                                </span>
-                                                @if ($demand->is_verified)
-                                                    <span
-                                                        class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold">✓
-                                                        Vérifié</span>
+                                                    class="text-xs text-gray-500">{{ $demand->category->name }}</span>
+                                                @if ($demand->urgency === 'high')
+                                                    <span class="w-2 h-2 rounded-full bg-red-500"
+                                                        title="Urgente"></span>
                                                 @endif
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="flex items-center space-x-2">
-                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($demand->user->name) }}&background=random"
-                                            class="w-8 h-8 rounded-full" alt="{{ $demand->user->name }}">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($demand->user->name) }}&background=random&size=32"
+                                            class="w-8 h-8 rounded-full ring-2 ring-white" alt="">
                                         <div>
                                             <p class="text-sm font-medium text-gray-900">{{ $demand->user->name }}</p>
-                                            <p class="text-xs text-gray-500">
+                                            <p class="text-xs text-gray-400">
                                                 {{ $demand->created_at->format('d/m/Y') }}</p>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm text-gray-900">{{ $demand->city }}</div>
-                                    <div class="text-xs text-gray-500">{{ $demand->region }}</div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="text-xs text-gray-600 space-y-1">
-                                        <div class="flex items-center">
-                                            <svg class="w-4 h-4 mr-1 text-gray-400" fill="none"
+                                    <div class="flex flex-col gap-1">
+                                        <div class="flex items-center text-xs text-gray-600">
+                                            <svg class="w-3.5 h-3.5 mr-1.5 text-gray-400" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                                </path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            </svg>
+                                            {{ $demand->city }}
+                                        </div>
+                                        <div class="flex items-center text-xs text-gray-500">
+                                            <svg class="w-3.5 h-3.5 mr-1.5 text-gray-400" fill="none"
                                                 stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -215,35 +216,45 @@
                                                     d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
                                                 </path>
                                             </svg>
-                                            {{ $demand->views_count }} vues
-                                        </div>
-                                        <div class="flex items-center">
-                                            <svg class="w-4 h-4 mr-1 text-gray-400" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
-                                                </path>
-                                            </svg>
-                                            {{ $demand->responses->count() }} réponses
+                                            {{ $demand->views_count }} •
+                                            {{ $demand->responses_count ?? $demand->responses->count() }} rép.
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-col space-y-2">
+                                <td class="px-6 py-4 text-center">
+                                    <div class="flex flex-col items-center gap-1">
+                                        @php
+                                            $statusClasses = [
+                                                'active' => 'bg-green-100 text-green-700 border-green-200',
+                                                'satisfied' => 'bg-blue-100 text-blue-700 border-blue-200',
+                                                'expired' => 'bg-gray-100 text-gray-700 border-gray-200',
+                                                'cancelled' => 'bg-red-100 text-red-700 border-red-200',
+                                            ];
+                                            $statusClass =
+                                                $statusClasses[$demand->status] ?? 'bg-gray-100 text-gray-700';
+                                        @endphp
                                         <span
-                                            class="px-3 py-1 rounded-full text-xs font-semibold {{ $demand->status_badge_color }} inline-block text-center">
+                                            class="px-2.5 py-0.5 rounded-full text-xs font-bold border {{ $statusClass }}">
                                             {{ ucfirst($demand->status) }}
                                         </span>
-                                        <span class="text-xs text-gray-500">
-                                            Expire: {{ $demand->validity_date->format('d/m') }}
-                                        </span>
+                                        @if ($demand->is_verified)
+                                            <span class="text-[10px] font-semibold text-blue-600 flex items-center">
+                                                <svg class="w-3 h-3 mr-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                                Vérifié
+                                            </span>
+                                        @endif
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center space-x-2">
+                                <td class="px-6 py-4 text-right">
+                                    <div
+                                        class="flex items-center justify-end space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                         <button wire:click="viewDetails({{ $demand->id }})"
-                                            class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
-                                            title="Voir détails">
+                                            class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                                            title="Détails">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -254,34 +265,9 @@
                                             </svg>
                                         </button>
 
-                                        @if (!$demand->is_verified)
-                                            <button wire:click="openVerifyModal({{ $demand->id }})"
-                                                class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition"
-                                                title="Vérifier">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                                    </path>
-                                                </svg>
-                                            </button>
-                                        @else
-                                            <button wire:click="unverifyDemand({{ $demand->id }})"
-                                                class="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition"
-                                                title="Retirer vérification">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                </svg>
-                                            </button>
-                                        @endif
-
-                                        <div x-data="{ open: false }" class="relative" x-cloak>
+                                        <div x-data="{ open: false }" class="relative">
                                             <button @click="open = !open"
-                                                class="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition"
-                                                title="Plus d'actions">
+                                                class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -290,53 +276,32 @@
                                                     </path>
                                                 </svg>
                                             </button>
-
-                                            <div x-show="open" @click.away="open = false" x-transition
-                                                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                                            <div x-show="open" @click.away="open = false"
+                                                class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 z-50 py-1"
+                                                x-cloak>
+                                                @if (!$demand->is_verified)
+                                                    <button wire:click="openVerifyModal({{ $demand->id }})"
+                                                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 flex items-center">
+                                                        Vérifier
+                                                    </button>
+                                                @else
+                                                    <button wire:click="unverifyDemand({{ $demand->id }})"
+                                                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-700 flex items-center">
+                                                        Retirer vérification
+                                                    </button>
+                                                @endif
+                                                <div class="border-t border-gray-100 my-1"></div>
                                                 <button wire:click="updateStatus({{ $demand->id }}, 'active')"
-                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-                                                    <svg class="w-4 h-4 mr-2 text-green-600" fill="none"
-                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                    </svg>
-                                                    Marquer active
-                                                </button>
+                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">Marquer
+                                                    Active</button>
                                                 <button wire:click="updateStatus({{ $demand->id }}, 'satisfied')"
-                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-                                                    <svg class="w-4 h-4 mr-2 text-blue-600" fill="none"
-                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5">
-                                                        </path>
-                                                    </svg>
-                                                    Marquer satisfaite
-                                                </button>
+                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Marquer
+                                                    Satisfaite</button>
                                                 <button wire:click="updateStatus({{ $demand->id }}, 'cancelled')"
-                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-                                                    <svg class="w-4 h-4 mr-2 text-orange-600" fill="none"
-                                                        stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
-                                                        </path>
-                                                    </svg>
-                                                    Annuler
-                                                </button>
-                                                <hr class="my-1">
+                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-700">Annuler</button>
+                                                <div class="border-t border-gray-100 my-1"></div>
                                                 <button wire:click="confirmDelete({{ $demand->id }})"
-                                                    class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center">
-                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                        </path>
-                                                    </svg>
-                                                    Supprimer
-                                                </button>
+                                                    class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Supprimer</button>
                                             </div>
                                         </div>
                                     </div>
@@ -344,15 +309,18 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-12 text-center">
-                                    <svg class="w-12 h-12 mx-auto text-gray-400 mb-4" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                        </path>
-                                    </svg>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Aucune demande trouvée</h3>
-                                    <p class="text-gray-600">Essayez de modifier vos critères de recherche</p>
+                                <td colspan="5" class="px-6 py-16 text-center">
+                                    <div
+                                        class="bg-orange-50 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
+                                        <svg class="w-10 h-10 text-orange-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900">Aucune demande trouvée</h3>
+                                    <p class="text-gray-500 mt-1">Essayez de modifier vos filtres de recherche.</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -361,235 +329,158 @@
             </div>
         </div>
 
-        <!-- Pagination -->
         <div class="mt-6">
             {{ $demands->links() }}
         </div>
     </div>
 
-    <!-- Details Modal -->
+    {{-- Details Modal (Redesign) --}}
     @if ($showDetailsModal && $selectedDemand)
         <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ show: @entangle('showDetailsModal') }">
-            <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-                <div x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
-                    x-transition:enter-end="opacity-100"
-                    class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+                @click="$wire.set('showDetailsModal', false)"></div>
 
-                <div x-show="show" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0 translate-y-4 sm:scale-95"
-                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                    class="inline-block w-full max-w-4xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-2xl rounded-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex min-h-screen items-center justify-center p-4">
+                <div
+                    class="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl transform transition-all overflow-hidden">
 
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-bold text-gray-900">Détails de la demande</h3>
-                        <button wire:click="$set('showDetailsModal', false)"
-                            class="text-gray-400 hover:text-gray-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="space-y-6">
-                        <!-- Header -->
-                        <div class="bg-gradient-to-r from-primary-50 to-earth-50 rounded-xl p-6">
-                            <div class="flex items-start justify-between mb-4">
-                                <div class="flex items-start space-x-4 flex-1">
-                                    <span class="text-5xl">{{ $selectedDemand->category->icon }}</span>
-                                    <div class="flex-1">
-                                        <h4 class="text-2xl font-bold text-gray-900 mb-2">{{ $selectedDemand->title }}
-                                        </h4>
-                                        <div class="flex flex-wrap gap-2 mb-3">
-                                            <span
-                                                class="px-3 py-1 rounded-full text-xs font-semibold {{ $selectedDemand->status_badge_color }}">
-                                                {{ ucfirst($selectedDemand->status) }}
-                                            </span>
-                                            <span
-                                                class="px-3 py-1 rounded-full text-xs font-semibold {{ $selectedDemand->urgency_badge_color }}">
-                                                @if ($selectedDemand->urgency === 'high')
-                                                    🔴 Haute
-                                                @elseif($selectedDemand->urgency === 'medium')
-                                                    🟡 Moyenne
-                                                @else
-                                                    🟢 Basse
-                                                @endif
-                                            </span>
-                                            @if ($selectedDemand->is_verified)
-                                                <span
-                                                    class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">
-                                                    ✓ Vérifié le {{ $selectedDemand->verified_at->format('d/m/Y') }}
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 leading-relaxed">{{ $selectedDemand->description }}</p>
+                    {{-- Modal Header --}}
+                    <div class="relative bg-gradient-to-r from-orange-500 to-red-600 px-8 py-6">
+                        <div class="absolute inset-0 opacity-10"
+                            style="background-image: url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E');">
                         </div>
-
-                        <!-- User Info -->
-                        <div class="bg-white border border-gray-200 rounded-xl p-4">
-                            <h5 class="font-semibold text-gray-900 mb-3">Demandeur</h5>
-                            <div class="flex items-center space-x-3">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode($selectedDemand->user->name) }}&background=random"
-                                    class="w-12 h-12 rounded-full" alt="{{ $selectedDemand->user->name }}">
-                                <div>
-                                    <p class="font-semibold text-gray-900">{{ $selectedDemand->user->name }}</p>
-                                    <p class="text-sm text-gray-500">{{ $selectedDemand->user->email }}</p>
-                                    <p class="text-xs text-gray-400">Inscrit le
-                                        {{ $selectedDemand->user->created_at->format('d/m/Y') }}</p>
+                        <div class="relative flex justify-between items-start">
+                            <div class="flex gap-5">
+                                <div
+                                    class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-4xl shadow-lg border border-white/30">
+                                    {{ $selectedDemand->category->icon }}
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Details Grid -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <div class="flex items-center text-gray-600 mb-1">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
-                                        </path>
-                                    </svg>
-                                    <span class="text-sm font-medium">Catégorie</span>
-                                </div>
-                                <p class="text-gray-900 font-semibold">{{ $selectedDemand->category->name }}</p>
-                            </div>
-
-                            @if ($selectedDemand->quantity)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <div class="flex items-center text-gray-600 mb-1">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
-                                            </path>
-                                        </svg>
-                                        <span class="text-sm font-medium">Quantité</span>
-                                    </div>
-                                    <p class="text-gray-900 font-semibold">{{ $selectedDemand->quantity }}</p>
-                                </div>
-                            @endif
-
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <div class="flex items-center text-gray-600 mb-1">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                        </path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    </svg>
-                                    <span class="text-sm font-medium">Localisation</span>
-                                </div>
-                                <p class="text-gray-900 font-semibold">{{ $selectedDemand->city }},
-                                    {{ $selectedDemand->region }}</p>
-                            </div>
-
-                            @if ($selectedDemand->budget)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <div class="flex items-center text-gray-600 mb-1">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                            </path>
-                                        </svg>
-                                        <span class="text-sm font-medium">Budget</span>
-                                    </div>
-                                    <p class="text-gray-900 font-semibold">
-                                        {{ number_format($selectedDemand->budget, 0, ',', ' ') }} FCFA</p>
-                                </div>
-                            @endif
-
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <div class="flex items-center text-gray-600 mb-1">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
-                                    <span class="text-sm font-medium">Valide jusqu'au</span>
-                                </div>
-                                <p class="text-gray-900 font-semibold">
-                                    {{ $selectedDemand->validity_date->format('d/m/Y') }}</p>
-                            </div>
-
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <div class="flex items-center text-gray-600 mb-1">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                        </path>
-                                    </svg>
-                                    <span class="text-sm font-medium">Statistiques</span>
-                                </div>
-                                <p class="text-gray-900 font-semibold">{{ $selectedDemand->views_count }} vues •
-                                    {{ $selectedDemand->contacts_received }} contacts</p>
-                            </div>
-                        </div>
-
-                        <!-- Responses -->
-                        <div class="border-t pt-6">
-                            <h5 class="text-lg font-bold text-gray-900 mb-4">
-                                Réponses reçues ({{ $selectedDemand->responses->count() }})
-                            </h5>
-
-                            @forelse($selectedDemand->responses as $response)
-                                <div class="bg-gray-50 rounded-lg p-4 mb-3">
-                                    <div class="flex items-start justify-between mb-2">
-                                        <div class="flex items-center space-x-3">
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($response->user->name) }}&background=22c55e&color=fff"
-                                                class="w-10 h-10 rounded-full" alt="{{ $response->user->name }}">
-                                            <div>
-                                                <p class="font-semibold text-gray-900">{{ $response->user->name }}</p>
-                                                <p class="text-xs text-gray-500">
-                                                    {{ $response->created_at->diffForHumans() }}</p>
-                                            </div>
-                                        </div>
+                                <div class="text-white pt-1">
+                                    <h3 class="text-2xl font-bold leading-tight">{{ $selectedDemand->title }}</h3>
+                                    <div class="flex items-center gap-2 mt-2">
                                         <span
-                                            class="px-3 py-1 rounded-full text-xs font-semibold {{ $response->status_badge_color }}">
-                                            {{ ucfirst($response->status) }}
+                                            class="bg-white/20 backdrop-blur px-3 py-1 rounded-full text-xs font-medium border border-white/20">
+                                            {{ $selectedDemand->category->name }}
+                                        </span>
+                                        <span
+                                            class="bg-white/20 backdrop-blur px-3 py-1 rounded-full text-xs font-medium border border-white/20">
+                                            {{ ucfirst($selectedDemand->status) }}
                                         </span>
                                     </div>
-                                    <p class="text-gray-700 mb-2">{{ $response->message }}</p>
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
-                                        @if ($response->proposed_price)
-                                            <p class="text-gray-600">
-                                                <strong>Prix:</strong>
-                                                {{ number_format($response->proposed_price, 0, ',', ' ') }} FCFA
-                                            </p>
-                                        @endif
-                                        @if ($response->contact_phone)
-                                            <p class="text-gray-600">
-                                                <strong>Tél:</strong> {{ $response->contact_phone }}
-                                            </p>
-                                        @endif
-                                        @if ($response->contact_email)
-                                            <p class="text-gray-600">
-                                                <strong>Email:</strong> {{ $response->contact_email }}
-                                            </p>
-                                        @endif
+                                </div>
+                            </div>
+                            <button wire:click="$set('showDetailsModal', false)"
+                                class="text-white/70 hover:text-white hover:bg-white/20 rounded-full p-2 transition">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-8 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            {{-- Main Content --}}
+                            <div class="lg:col-span-2 space-y-6">
+                                <div>
+                                    <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
+                                        Description</h4>
+                                    <p
+                                        class="text-gray-600 leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                        {{ $selectedDemand->description }}
+                                    </p>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                        <p class="text-xs text-gray-500 font-bold uppercase">Budget</p>
+                                        <p class="text-lg font-bold text-gray-900">
+                                            {{ $selectedDemand->budget ? number_format($selectedDemand->budget) . ' FCFA' : 'Non spécifié' }}
+                                        </p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                        <p class="text-xs text-gray-500 font-bold uppercase">Quantité</p>
+                                        <p class="text-lg font-bold text-gray-900">
+                                            {{ $selectedDemand->quantity ?? 'Non spécifiée' }}</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                        <p class="text-xs text-gray-500 font-bold uppercase">Localisation</p>
+                                        <p class="text-lg font-bold text-gray-900">{{ $selectedDemand->city }}</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                        <p class="text-xs text-gray-500 font-bold uppercase">Validité</p>
+                                        <p class="text-lg font-bold text-gray-900">
+                                            {{ $selectedDemand->validity_date->format('d/m/Y') }}</p>
                                     </div>
                                 </div>
-                            @empty
-                                <div class="text-center py-8">
-                                    <svg class="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
-                                        </path>
-                                    </svg>
-                                    <p class="text-gray-500">Aucune réponse pour le moment</p>
+
+                                <div>
+                                    <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">Réponses
+                                        ({{ $selectedDemand->responses->count() }})</h4>
+                                    <div class="space-y-3">
+                                        @forelse($selectedDemand->responses as $response)
+                                            <div
+                                                class="flex gap-4 bg-white border border-gray-100 p-4 rounded-xl shadow-sm">
+                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($response->user->name) }}&background=random"
+                                                    class="w-10 h-10 rounded-full">
+                                                <div class="flex-1">
+                                                    <div class="flex justify-between items-start">
+                                                        <h5 class="font-bold text-gray-900">
+                                                            {{ $response->user->name }}</h5>
+                                                        <span
+                                                            class="text-xs text-gray-400">{{ $response->created_at->diffForHumans() }}</span>
+                                                    </div>
+                                                    <p class="text-gray-600 text-sm mt-1">{{ $response->message }}</p>
+                                                    @if ($response->proposed_price)
+                                                        <p class="text-xs font-bold text-green-600 mt-2">Offre:
+                                                            {{ number_format($response->proposed_price) }} FCFA</p>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @empty
+                                            <div class="text-center text-gray-400 py-4 italic">Aucune réponse pour le
+                                                moment.</div>
+                                        @endforelse
+                                    </div>
                                 </div>
-                            @endforelse
+                            </div>
+
+                            {{-- Sidebar Info --}}
+                            <div class="space-y-6">
+                                <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+                                    <h5 class="font-bold text-gray-900 mb-4">Demandeur</h5>
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($selectedDemand->user->name) }}&background=random"
+                                            class="w-12 h-12 rounded-full ring-4 ring-orange-50">
+                                        <div>
+                                            <p class="font-bold text-gray-900">{{ $selectedDemand->user->name }}</p>
+                                            <p class="text-xs text-gray-500">{{ $selectedDemand->user->email }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="border-t border-gray-100 pt-4 text-sm space-y-2">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-500">Inscrit le</span>
+                                            <span
+                                                class="font-medium">{{ $selectedDemand->user->created_at->format('d/m/Y') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+                                    <h5 class="font-bold text-blue-900 mb-2">Statistiques</h5>
+                                    <div class="flex justify-between items-center py-2 border-b border-blue-200/50">
+                                        <span class="text-blue-700">Vues</span>
+                                        <span
+                                            class="font-bold text-blue-900">{{ $selectedDemand->views_count }}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center py-2">
+                                        <span class="text-blue-700">Contacts</span>
+                                        <span
+                                            class="font-bold text-blue-900">{{ $selectedDemand->contacts_received }}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -597,44 +488,207 @@
         </div>
     @endif
 
-    <!-- Verify Modal -->
+    {{-- Delete Modal (Redesign) --}}
     @if ($showDeleteModal)
         <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ show: @entangle('showDeleteModal') }">
-            <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-                <div x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
-                    x-transition:enter-end="opacity-100"
-                    class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
+                    <div class="p-8 text-center">
+                        <div
+                            class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                            <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Supprimer définitivement ?</h3>
+                        <p class="text-gray-500 mb-8 leading-relaxed">Cette action est irréversible. Toutes les données
+                            associées à cette demande seront perdues.</p>
 
-                <div x-show="show" x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0 translate-y-4 sm:scale-95"
-                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                    class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-2xl rounded-2xl">
-
-                    <div class="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
-                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                            </path>
-                        </svg>
-                    </div>
-
-                    <h3 class="text-xl font-bold text-gray-900 text-center mb-2">Supprimer la demande</h3>
-                    <p class="text-gray-600 text-center mb-6">Êtes-vous sûr de vouloir supprimer cette demande ? Cette
-                        action est irréversible.</p>
-
-                    <div class="flex space-x-3">
-                        <button wire:click="$set('showDeleteModal', false)"
-                            class="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition">
-                            Annuler
-                        </button>
-                        <button wire:click="deleteDemand"
-                            class="flex-1 px-4 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition">
-                            Supprimer
-                        </button>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button wire:click="$set('showDeleteModal', false)"
+                                class="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-xl transition-colors">
+                                Annuler
+                            </button>
+                            <button wire:click="deleteDemand"
+                                class="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-200 transition-transform hover:scale-[1.02]">
+                                Supprimer
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     @endif
-</div>
 
+   <!-- Scripts Alpine.js et ApexCharts -->
+<script>
+    // Gestionnaire global des charts pour la gestion des demandes
+    function demandsManagement() {
+        return {
+            statusChart: null,
+            categoryChart: null,
+            chartsInitialized: false,
+
+            initCharts() {
+                // Détruire les graphiques existants
+                this.destroyCharts();
+
+                const chartsData = @json($chartData);
+
+                // 1. Chart des statuts (Donut)
+                const statusOptions = {
+                    series: Object.values(chartsData.status),
+                    labels: Object.keys(chartsData.status).map(s => s.charAt(0).toUpperCase() + s.slice(1)),
+                    chart: {
+                        type: 'donut',
+                        height: 250,
+                        fontFamily: 'inherit',
+                        animations: { enabled: true }
+                    },
+                    colors: ['#22c55e', '#3b82f6', '#ef4444', '#f97316', '#94a3b8'],
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                size: '65%',
+                                labels: {
+                                    show: true,
+                                    total: {
+                                        show: true,
+                                        label: 'Total',
+                                        color: '#6b7280'
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    dataLabels: { enabled: false },
+                    legend: { position: 'bottom', fontSize: '12px' },
+                    tooltip: {
+                        y: {
+                            formatter: function(value) {
+                                return value + ' demandes';
+                            }
+                        }
+                    }
+                };
+
+                // 2. Chart des catégories (Bar)
+                const categoryOptions = {
+                    series: [{
+                        name: 'Demandes',
+                        data: chartsData.categories.map(c => c.total)
+                    }],
+                    chart: {
+                        type: 'bar',
+                        height: 250,
+                        toolbar: { show: false },
+                        fontFamily: 'inherit',
+                        animations: { enabled: true }
+                    },
+                    colors: ['#f97316'],
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 4,
+                            horizontal: true,
+                            barHeight: '50%'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        textAnchor: 'start',
+                        style: { colors: ['#fff'] },
+                        formatter: function(val, opt) {
+                            return val;
+                        },
+                        offsetX: 0
+                    },
+                    xaxis: {
+                        categories: chartsData.categories.map(c => c.name),
+                        labels: { show: false }
+                    },
+                    yaxis: {
+                        labels: { show: false }
+                    },
+                    grid: {
+                        borderColor: '#f1f5f9',
+                        xaxis: { lines: { show: false } },
+                        yaxis: { lines: { show: false } }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(value, { seriesIndex, dataPointIndex }) {
+                                return chartsData.categories[dataPointIndex].name + ': ' + value + ' demandes';
+                            }
+                        }
+                    }
+                };
+
+                // Initialiser les graphiques
+                this.statusChart = new ApexCharts(document.querySelector("#statusChart"), statusOptions);
+                this.categoryChart = new ApexCharts(document.querySelector("#categoryChart"), categoryOptions);
+
+                this.statusChart.render();
+                this.categoryChart.render();
+                this.chartsInitialized = true;
+            },
+
+            destroyCharts() {
+                if (this.statusChart) {
+                    this.statusChart.destroy();
+                    this.statusChart = null;
+                }
+                if (this.categoryChart) {
+                    this.categoryChart.destroy();
+                    this.categoryChart = null;
+                }
+            },
+
+            refreshCharts() {
+                // Petit délai pour s'assurer que les données sont mises à jour
+                setTimeout(() => {
+                    this.initCharts();
+                }, 100);
+            }
+        }
+    }
+
+    // Initialisation au chargement de la page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Cette partie sera exécutée dans le contexte Alpine
+    });
+
+    // Écouter les événements Livewire
+    document.addEventListener('livewire:init', function() {
+        Livewire.on('refreshCharts', () => {
+            const alpineComponent = document.querySelector('[x-data="demandsManagement()"]');
+            if (alpineComponent && alpineComponent.__x) {
+                alpineComponent.__x.$data.refreshCharts();
+            }
+        });
+    });
+</script>
+
+    <style>
+        .form-group label {
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    </style>
+</div>
