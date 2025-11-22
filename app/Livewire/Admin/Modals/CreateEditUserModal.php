@@ -39,7 +39,7 @@ class CreateEditUserModal extends Component
     {
         $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $this->userId,
+            'email' => 'required|email|unique:users,email',
             'phone' => 'required|string|max:20',
             'role' => 'required|exists:roles,id',
             'region' => 'required|string',
@@ -49,7 +49,6 @@ class CreateEditUserModal extends Component
             'avatar' => 'nullable|image|max:2048',
             "activity" => 'nullable|string|max:255'
         ];
-
         if (!$this->userId) {
             $rules['password'] = 'required|min:8|confirmed';
         }

@@ -4,6 +4,8 @@ namespace App\Livewire\Admin\DemandsManagement;
 
 use App\Models\Demand;
 use App\Models\Category;
+use App\Notifications\DemandActivated; 
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
@@ -32,19 +34,16 @@ class DemandsManage extends Component
     public $verifiedFilter = 'all';
     public $sortBy = 'latest';
 
-    protected $queryString = ['search', 'statusFilter', 'categoryFilter', 'verifiedFilter'];
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'statusFilter' => ['except' => 'all'],
+        'categoryFilter' => ['except' => ''],
+        'verifiedFilter' => ['except' => 'all']
+    ];
 
     protected $regions = [
-        'Adamaoua',
-        'Centre',
-        'Est',
-        'Extrême-Nord',
-        'Littoral',
-        'Nord',
-        'Nord-Ouest',
-        'Ouest',
-        'Sud',
-        'Sud-Ouest'
+        'Adamaoua', 'Centre', 'Est', 'Extrême-Nord', 'Littoral',
+        'Nord', 'Nord-Ouest', 'Ouest', 'Sud', 'Sud-Ouest'
     ];
 
     public function viewDetails($id)
@@ -56,21 +55,13 @@ class DemandsManage extends Component
     public function openVerifyModal($id)
     {
         $this->verificationNote = '';
-        $demand = Demand::findOrfail($id);
-
-        if (!$demand) {
-            $this->dispatch('toast', [
-                'type' => 'error',
-                'message' => 'Demande non trouvé.'
-            ]);
-            return;
-        }
+        $demand = Demand::findOrFail($id);
 
         $this->dispatch('swal:confirm', [
             'title' => 'Confirmer la vérification',
-            'text' => "Êtes-vous sûr de vouloir verifier la demande \"{$demand->title}\" ?",
+            'text' => "Êtes-vous sûr de vouloir vérifier la demande \"{$demand->title}\" ?",
             'icon' => 'question',
-            'confirmText' => 'Oui, verifier',
+            'confirmText' => 'Oui, vérifier',
             'cancelText' => 'Annuler',
             'method' => 'DemandVerified',
             'params' => ['demandId' => $id]
@@ -91,6 +82,10 @@ class DemandsManage extends Component
                 'type' => 'success',
                 'message' => 'Demande vérifiée avec succès'
             ]);
+            
+            // Rafraîchir les graphiques
+            $this->dispatch('refreshCharts');
+
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -112,6 +107,10 @@ class DemandsManage extends Component
                 'type' => 'success',
                 'message' => 'Vérification retirée'
             ]);
+            
+            // Rafraîchir les graphiques
+            $this->dispatch('refreshCharts');
+
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -124,7 +123,16 @@ class DemandsManage extends Component
     {
         try {
             $demand = Demand::findOrFail($id);
+            $previousStatus = $demand->status;
+            
             $demand->update(['status' => $status]);
+
+            // --- NOTIFICATION LOGIC ---
+            if ($status === 'active' && $previousStatus !== 'active') {
+                if ($demand->user) {
+                    // $demand->user->notify(new DemandActivated($demand));
+                }
+            }
 
             $statusLabels = [
                 'active' => 'active',
@@ -137,6 +145,10 @@ class DemandsManage extends Component
                 'type' => 'success',
                 'message' => 'Statut changé en : ' . ($statusLabels[$status] ?? $status)
             ]);
+            
+            // Rafraîchir les graphiques
+            $this->dispatch('refreshCharts');
+
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -163,6 +175,10 @@ class DemandsManage extends Component
                 'type' => 'success',
                 'message' => 'Demande supprimée avec succès'
             ]);
+            
+            // Rafraîchir les graphiques
+            $this->dispatch('refreshCharts');
+
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -173,20 +189,33 @@ class DemandsManage extends Component
 
     public function expireOldDemands()
     {
-        $count = Demand::expired()->update(['status' => 'expired']);
+        $count = Demand::where('status', 'active')
+            ->whereDate('validity_date', '<', now())
+            ->update(['status' => 'expired']);
 
         $this->dispatch('toast', [
             'type' => 'success',
             'message' => "$count demande(s) expirée(s) mise(s) à jour"
         ]);
+        
+        // Rafraîchir les graphiques
+        $this->dispatch('refreshCharts');
+    }
+
+    // Réinitialiser la pagination lors du changement de filtres
+    public function updated($property)
+    {
+        if (in_array($property, ['search', 'statusFilter', 'categoryFilter', 'regionFilter', 'urgencyFilter', 'verifiedFilter', 'sortBy'])) {
+            $this->resetPage();
+        }
     }
 
     public function render()
     {
-        $demands = Demand::with(['category', 'user', 'responses'])
-            ->when($this->search, function ($query) {
-                $query->where(function ($q) {
-                    $q->where('title', 'like', '%' . $this->search . '%')
+        $query = Demand::with(['category', 'user', 'responses'])
+            ->when($this->search, function ($q) {
+                $q->where(function ($subQ) {
+                    $subQ->where('title', 'like', '%' . $this->search . '%')
                         ->orWhere('description', 'like', '%' . $this->search . '%')
                         ->orWhere('city', 'like', '%' . $this->search . '%')
                         ->orWhereHas('user', function ($userQuery) {
@@ -194,57 +223,69 @@ class DemandsManage extends Component
                         });
                 });
             })
-            ->when($this->statusFilter !== 'all', function ($query) {
-                $query->where('status', $this->statusFilter);
-            })
-            ->when($this->categoryFilter, function ($query) {
-                $query->where('category_id', $this->categoryFilter);
-            })
-            ->when($this->regionFilter, function ($query) {
-                $query->where('region', $this->regionFilter);
-            })
-            ->when($this->urgencyFilter, function ($query) {
-                $query->where('urgency', $this->urgencyFilter);
-            })
-            ->when($this->verifiedFilter !== 'all', function ($query) {
-                if ($this->verifiedFilter === 'verified') {
-                    $query->where('is_verified', true);
-                } else {
-                    $query->where('is_verified', false);
-                }
-            })
-            ->when($this->sortBy === 'latest', function ($query) {
-                $query->latest();
-            })
-            ->when($this->sortBy === 'oldest', function ($query) {
-                $query->oldest();
-            })
-            ->when($this->sortBy === 'most_viewed', function ($query) {
-                $query->orderBy('views_count', 'desc');
-            })
-            ->when($this->sortBy === 'most_responses', function ($query) {
-                $query->orderBy('contacts_received', 'desc');
-            })
-            ->paginate(15);
-
+            ->when($this->statusFilter !== 'all', fn($q) => $q->where('status', $this->statusFilter))
+            ->when($this->categoryFilter, fn($q) => $q->where('category_id', $this->categoryFilter))
+            ->when($this->regionFilter, fn($q) => $q->where('region', $this->regionFilter))
+            ->when($this->urgencyFilter, fn($q) => $q->where('urgency', $this->urgencyFilter))
+            ->when($this->verifiedFilter !== 'all', function ($q) {
+                $this->verifiedFilter === 'verified' ? $q->where('is_verified', true) : $q->where('is_verified', false);
+            });
+    
+        // Sorting
+        $query->when($this->sortBy === 'latest', fn($q) => $q->latest())
+              ->when($this->sortBy === 'oldest', fn($q) => $q->oldest())
+              ->when($this->sortBy === 'most_viewed', fn($q) => $q->orderByDesc('views_count'))
+              ->when($this->sortBy === 'most_responses', fn($q) => $q->orderByDesc('contacts_received'));
+    
+        $demands = $query->paginate(15);
         $categories = Category::where('is_active', true)->get();
-
-        // Statistics
+    
+        // Statistics & Charts Data
         $stats = [
             'total' => Demand::count(),
             'active' => Demand::where('status', 'active')->count(),
             'verified' => Demand::where('is_verified', true)->count(),
-            'pending_verification' => Demand::where('is_verified', false)->where('status', 'active')->count(),
-            'satisfied' => Demand::where('status', 'satisfied')->count(),
-            'expired' => Demand::where('status', 'expired')->count(),
+            'pending' => Demand::where('is_verified', false)->where('status', 'active')->count(),
             'responses' => Demand::sum('contacts_received'),
         ];
-
+    
+        // Chart 1: Status Distribution
+        $statuses = ['active', 'satisfied', 'expired', 'cancelled'];
+        $statusChartData = [];
+        
+        foreach ($statuses as $status) {
+            $statusChartData[$status] = Demand::where('status', $status)->count();
+        }
+    
+        // Chart 2: Top Categories
+        $categoryChartData = Demand::select('category_id', DB::raw('count(*) as total'))
+            ->groupBy('category_id')
+            ->with('category')
+            ->orderByDesc('total')
+            ->limit(5)
+            ->get()
+            ->map(function($item) {
+                return [
+                    'name' => $item->category->name ?? 'Inconnu',
+                    'total' => $item->total
+                ];
+            })
+            ->toArray();
+    
+        // Données par défaut si vide
+        if (empty($categoryChartData)) {
+            $categoryChartData = [['name' => 'Aucune donnée', 'total' => 0]];
+        }
+    
         return view('livewire.admin.demands-management.demands-manage', [
             'demands' => $demands,
             'categories' => $categories,
             'regions' => $this->regions,
             'stats' => $stats,
+            'chartData' => [
+                'status' => $statusChartData,
+                'categories' => $categoryChartData
+            ]
         ]);
     }
 }
