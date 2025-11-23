@@ -1292,11 +1292,11 @@
                                         <div class="bg-gray-50 rounded-xl p-4">
                                             <div class="flex items-center justify-between mb-2">
                                                 <div class="flex items-center space-x-3">
-                                                    <img src="{{ $avis->acheteur->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($avis->acheteur->name) }}"
+                                                    <img src="{{ $avis->consumer->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($avis->consumer->name) }}"
                                                         class="w-10 h-10 rounded-full">
                                                     <div>
                                                         <p class="font-semibold text-gray-800">
-                                                            {{ $avis->acheteur->name }}</p>
+                                                            {{ $avis->consumer->name }}</p>
                                                         <div class="flex items-center">
                                                             @for ($i = 1; $i <= 5; $i++)
                                                                 <svg class="w-4 h-4 {{ $i <= $avis->note ? 'text-yellow-400' : 'text-gray-300' }}"
