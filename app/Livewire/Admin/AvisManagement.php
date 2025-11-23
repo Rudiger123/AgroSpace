@@ -31,10 +31,22 @@ class AvisManagement extends Component
     protected $queryString = ['search', 'noteFilter', 'visibilityFilter', 'verifiedFilter'];
 
     // Événements d'écoute pour réinitialiser la pagination
-    public function updatingSearch() { $this->resetPage(); }
-    public function updatingNoteFilter() { $this->resetPage(); }
-    public function updatingVisibilityFilter() { $this->resetPage(); }
-    public function updatingVerifiedFilter() { $this->resetPage(); }
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+    public function updatingNoteFilter()
+    {
+        $this->resetPage();
+    }
+    public function updatingVisibilityFilter()
+    {
+        $this->resetPage();
+    }
+    public function updatingVerifiedFilter()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
@@ -50,7 +62,7 @@ class AvisManagement extends Component
             ->when($this->visibilityFilter !== 'all', fn ($q) => $q->where('is_visible', $this->visibilityFilter === 'true'))
             ->when($this->verifiedFilter !== 'all', fn ($q) => $q->where('is_verified', $this->verifiedFilter === 'true'))
             ->orderBy($this->sortBy, $this->sortDirection);
-        
+
         $avis = $avisQuery->paginate(15);
 
         // 2. Logique des statistiques pour ApexCharts
@@ -70,7 +82,7 @@ class AvisManagement extends Component
                             ->groupBy('note')
                             ->pluck('count', 'note')
                             ->toArray();
-        
+
         $notesData = [];
         for ($i = 1; $i <= 5; $i++) {
             $notesData[] = $distribution[$i] ?? 0;
@@ -94,7 +106,7 @@ class AvisManagement extends Component
             'verified_rate' => Avis::where('is_verified', true)->count(),
         ];
     }
-    
+
     // Actions de Modération
     public function openToggleVisibilityModal($avisId)
     {
@@ -110,6 +122,6 @@ class AvisManagement extends Component
         $this->showToggleVisibilityModal = false;
         $this->dispatch('alert', ['type' => 'success', 'message' => "L'avis a été " . ($avis->is_visible ? 'rendu visible' : 'masqué') . " avec succès."]);
     }
-    
+
     // ... Autres méthodes (supprimer, voir détails) ...
 }

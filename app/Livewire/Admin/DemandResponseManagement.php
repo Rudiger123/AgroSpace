@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin;
 
 use App\Models\DemandResponse;
-use App\Models\Offer;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -57,9 +56,9 @@ class DemandResponseManagement extends Component
             ->when($this->search, function ($query) {
                 // Recherche dans le message et le nom de l'utilisateur qui répond
                 $query->where('message', 'like', "%{$this->search}%")
-                    ->orWhereHas('user', fn($q) => $q->where('name', 'like', "%{$this->search}%"));
+                    ->orWhereHas('user', fn ($q) => $q->where('name', 'like', "%{$this->search}%"));
             })
-            ->when($this->statusFilter !== 'all', fn($q) => $q->where('status', $this->statusFilter))
+            ->when($this->statusFilter !== 'all', fn ($q) => $q->where('status', $this->statusFilter))
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(15);
 

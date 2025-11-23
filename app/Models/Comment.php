@@ -130,7 +130,7 @@ class Comment extends Model
         return $query->where(function ($q) use ($search) {
             // 1. Recherche dans le contenu du commentaire
             $q->where('content', 'like', "%{$search}%")
-            
+
             // 2. Recherche dans l'adresse IP (utile pour les admins)
               ->orWhere('ip_address', 'like', "%{$search}%")
 

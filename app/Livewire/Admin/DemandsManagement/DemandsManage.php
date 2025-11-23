@@ -4,7 +4,7 @@ namespace App\Livewire\Admin\DemandsManagement;
 
 use App\Models\Demand;
 use App\Models\Category;
-use App\Notifications\DemandActivated; 
+use App\Notifications\DemandActivated;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -82,10 +82,9 @@ class DemandsManage extends Component
                 'type' => 'success',
                 'message' => 'Demande vérifiée avec succès'
             ]);
-            
+
             // Rafraîchir les graphiques
             $this->dispatch('refreshCharts');
-
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -107,10 +106,9 @@ class DemandsManage extends Component
                 'type' => 'success',
                 'message' => 'Vérification retirée'
             ]);
-            
+
             // Rafraîchir les graphiques
             $this->dispatch('refreshCharts');
-
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -124,7 +122,7 @@ class DemandsManage extends Component
         try {
             $demand = Demand::findOrFail($id);
             $previousStatus = $demand->status;
-            
+
             $demand->update(['status' => $status]);
 
             // --- NOTIFICATION LOGIC ---
@@ -145,10 +143,9 @@ class DemandsManage extends Component
                 'type' => 'success',
                 'message' => 'Statut changé en : ' . ($statusLabels[$status] ?? $status)
             ]);
-            
+
             // Rafraîchir les graphiques
             $this->dispatch('refreshCharts');
-
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -175,10 +172,9 @@ class DemandsManage extends Component
                 'type' => 'success',
                 'message' => 'Demande supprimée avec succès'
             ]);
-            
+
             // Rafraîchir les graphiques
             $this->dispatch('refreshCharts');
-
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -197,7 +193,7 @@ class DemandsManage extends Component
             'type' => 'success',
             'message' => "$count demande(s) expirée(s) mise(s) à jour"
         ]);
-        
+
         // Rafraîchir les graphiques
         $this->dispatch('refreshCharts');
     }
@@ -223,23 +219,23 @@ class DemandsManage extends Component
                         });
                 });
             })
-            ->when($this->statusFilter !== 'all', fn($q) => $q->where('status', $this->statusFilter))
-            ->when($this->categoryFilter, fn($q) => $q->where('category_id', $this->categoryFilter))
-            ->when($this->regionFilter, fn($q) => $q->where('region', $this->regionFilter))
-            ->when($this->urgencyFilter, fn($q) => $q->where('urgency', $this->urgencyFilter))
+            ->when($this->statusFilter !== 'all', fn ($q) => $q->where('status', $this->statusFilter))
+            ->when($this->categoryFilter, fn ($q) => $q->where('category_id', $this->categoryFilter))
+            ->when($this->regionFilter, fn ($q) => $q->where('region', $this->regionFilter))
+            ->when($this->urgencyFilter, fn ($q) => $q->where('urgency', $this->urgencyFilter))
             ->when($this->verifiedFilter !== 'all', function ($q) {
                 $this->verifiedFilter === 'verified' ? $q->where('is_verified', true) : $q->where('is_verified', false);
             });
-    
+
         // Sorting
-        $query->when($this->sortBy === 'latest', fn($q) => $q->latest())
-              ->when($this->sortBy === 'oldest', fn($q) => $q->oldest())
-              ->when($this->sortBy === 'most_viewed', fn($q) => $q->orderByDesc('views_count'))
-              ->when($this->sortBy === 'most_responses', fn($q) => $q->orderByDesc('contacts_received'));
-    
+        $query->when($this->sortBy === 'latest', fn ($q) => $q->latest())
+              ->when($this->sortBy === 'oldest', fn ($q) => $q->oldest())
+              ->when($this->sortBy === 'most_viewed', fn ($q) => $q->orderByDesc('views_count'))
+              ->when($this->sortBy === 'most_responses', fn ($q) => $q->orderByDesc('contacts_received'));
+
         $demands = $query->paginate(15);
-        $categories = Category::where('is_active', true)->get();
-    
+        $categories = Category::where('is_active', true)->where('type','demand')->get();
+
         // Statistics & Charts Data
         $stats = [
             'total' => Demand::count(),
@@ -248,15 +244,15 @@ class DemandsManage extends Component
             'pending' => Demand::where('is_verified', false)->where('status', 'active')->count(),
             'responses' => Demand::sum('contacts_received'),
         ];
-    
+
         // Chart 1: Status Distribution
         $statuses = ['active', 'satisfied', 'expired', 'cancelled'];
         $statusChartData = [];
-        
+
         foreach ($statuses as $status) {
             $statusChartData[$status] = Demand::where('status', $status)->count();
         }
-    
+
         // Chart 2: Top Categories
         $categoryChartData = Demand::select('category_id', DB::raw('count(*) as total'))
             ->groupBy('category_id')
@@ -264,19 +260,19 @@ class DemandsManage extends Component
             ->orderByDesc('total')
             ->limit(5)
             ->get()
-            ->map(function($item) {
+            ->map(function ($item) {
                 return [
                     'name' => $item->category->name ?? 'Inconnu',
                     'total' => $item->total
                 ];
             })
             ->toArray();
-    
+
         // Données par défaut si vide
         if (empty($categoryChartData)) {
             $categoryChartData = [['name' => 'Aucune donnée', 'total' => 0]];
         }
-    
+
         return view('livewire.admin.demands-management.demands-manage', [
             'demands' => $demands,
             'categories' => $categories,

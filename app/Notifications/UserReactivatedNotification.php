@@ -23,7 +23,7 @@ class UserReactivatedNotification extends Notification implements ShouldQueue
 
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Réactivation de votre compte AgroSpace')
             ->greeting('Bonne nouvelle, ' . $notifiable->name . ' !')
             ->line('Votre compte AgroSpace a été réactivé avec succès.')

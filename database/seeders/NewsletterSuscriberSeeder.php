@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\NewsletterSubscriber;
 use Illuminate\Database\Seeder;
 
 class NewsletterSuscriberSeeder extends Seeder
@@ -11,6 +12,6 @@ class NewsletterSuscriberSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        NewsletterSubscriber::factory(50)->create();
     }
 }

@@ -25,8 +25,10 @@ class CategoryManage extends Component
     public $description;
     public $is_active = true;
     public $search = '';
+    public $type = 'post';
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
+    public $typeFilter = "";
 
     protected $rules = [
         'name' => 'required|string|max:255',
@@ -35,6 +37,7 @@ class CategoryManage extends Component
         'color' => 'required|string|max:7',
         'description' => 'nullable|string',
         'is_active' => 'boolean',
+        'type' => 'required|in:demand,post,offer',
     ];
 
     protected $messages = [
@@ -80,6 +83,7 @@ class CategoryManage extends Component
         $this->color = $category->color;
         $this->description = $category->description;
         $this->is_active = $category->is_active;
+        $this->type = $category->type;
         $this->showModal = true;
     }
 
@@ -97,6 +101,7 @@ class CategoryManage extends Component
             'slug' => $this->slug,
             'icon' => $this->icon,
             'color' => $this->color,
+            'type' => $this->type,
             'description' => $this->description,
             'is_active' => $this->is_active,
         ];
@@ -152,6 +157,7 @@ class CategoryManage extends Component
         $this->name = '';
         $this->slug = '';
         $this->icon = '';
+        $this->type = 'post';
         $this->color = '#22c55e';
         $this->description = '';
         $this->is_active = true;
@@ -172,6 +178,9 @@ class CategoryManage extends Component
         $query = Category::orderBy($this->sortField, $this->sortDirection);
         if ($this->search) {
             $query->search($this->search);
+        }
+        if ($this->typeFilter) {
+            $query->where('type', $this->typeFilter);
         }
         $categories = $query->paginate(12);
 

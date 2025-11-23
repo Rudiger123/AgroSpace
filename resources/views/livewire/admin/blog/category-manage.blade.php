@@ -25,7 +25,7 @@
                 <div class="flex flex-col md:flex-row gap-4">
                     <div class="flex-1">
                         <div class="relative">
-                            <input type="text" wire:model.debounce.300ms="search"
+                            <input type="text" wire:model.live.debounce.300ms="search"
                                 placeholder="Rechercher une catégorie..."
                                 class="w-full pl-10 pr-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter">
                             <!-- SVG Search -->
@@ -36,8 +36,19 @@
                             </svg>
                         </div>
                     </div>
+
                     <div class="flex gap-2">
-                        <select wire:model="sortField"
+                        <select wire:model.live="typeFilter"
+                            class="px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent font-inter">
+                            <option value="">Tous les types</option>
+                            <option value="offer">Offre</option>
+                            <option value="demand">demande</option>
+                            <option value="post">article</option>
+                        </select>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <select wire:model.live="sortField"
                             class="px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent font-inter">
                             <option value="name">Nom</option>
                             <option value="created_at">Date de création</option>
@@ -139,7 +150,7 @@
 
         <!-- Create/Edit Modal -->
         @if ($showModal)
-            <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 animate-fade-in"
+            <div class="fixed inset-0  bg-black/60 backdrop-blur-sm transition-opacity z-50 flex items-center justify-center p-4 animate-fade-in"
                 x-data="{ show: false }" x-init="setTimeout(() => show = true, 10)" x-show="show">
                 <div class="bg-agro-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
                     @click.away="show = false; $wire.closeModal()">
@@ -180,42 +191,134 @@
                             </div>
                         </div>
 
+                        <div class="space-y-6" x-data="{ selectedtype: @entangle('type') }">
+
+                            <label class="block text-sm font-medium text-agro-gray mb-2 font-inter"> Type </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                {{-- Actif --}}
+                                <label class="border-2 rounded-2xl transition-all duration-200 group cursor-pointer"
+                                    :class="selectedtype === 'offer' ? 'border-green-500 bg-green-50' :
+                                        'border-gray-200 hover:border-green-300'">
+                                    <input type="radio" wire:model="type" value="offer" class="sr-only">
+                                    <div class="flex flex-col items-center gap-3 p-4">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
+                                            :class="selectedtype === 'offer' ? 'bg-green-100' :
+                                                'bg-gray-100 group-hover:bg-green-50'">
+                                            <svg class="w-6 h-6 transition-colors"
+                                                :class="selectedtype === 'offer' ? 'text-green-600' :
+                                                    'text-gray-400 group-hover:text-green-500'"
+                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
+                                                </path>
+                                            </svg>
+
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="font-bold transition-colors"
+                                                :class="selectedtype === 'offer' ? 'text-green-700' :
+                                                    'text-gray-700 group-hover:text-green-700'">
+                                                Offre</p>
+                                            {{-- <p class="text-xs text-gray-500 mt-1">Offre</p> --}}
+                                        </div>
+                                    </div>
+                                </label>
+
+
+                                <label class="border-2 rounded-2xl transition-all duration-200 group cursor-pointer"
+                                    :class="selectedtype === 'demand' ? 'border-orange-500 bg-orange-50' :
+                                        'border-gray-200 hover:border-orange-300'">
+                                    <input type="radio" wire:model="type" value="demand" class="sr-only">
+                                    <div class="flex flex-col items-center gap-3 p-4">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
+                                            :class="selectedtype === 'demand' ? 'bg-orange-100' :
+                                                'bg-gray-100 group-hover:bg-orange-50'">
+                                            <svg class="w-6 h-6 transition-colors"
+                                                :class="selectedtype === 'demand' ? 'text-orange-600' :
+                                                    'text-gray-400 group-hover:text-orange-500'"
+                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                                                </path>
+                                            </svg>
+
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="font-bold transition-colors"
+                                                :class="selectedtype === 'demand' ? 'text-orange-700' :
+                                                    'text-gray-700 group-hover:text-orange-700'">
+                                                Demande</p>
+                                            {{-- <p class="text-xs text-gray-500 mt-1">Demande</p> --}}
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="border-2 rounded-2xl transition-all duration-200 group cursor-pointer"
+                                    :class="selectedtype === 'post' ? 'border-purple-500 bg-purple-50' :
+                                        'border-gray-200 hover:border-purple-300'">
+                                    <input type="radio" wire:model="type" value="post" class="sr-only">
+                                    <div class="flex flex-col items-center gap-3 p-4">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
+                                            :class="selectedtype === 'post' ? 'bg-purple-100' :
+                                                'bg-gray-100 group-hover:bg-purple-50'">
+                                            <svg class="w-6 h-6 transition-colors"
+                                                :class="selectedtype === 'post' ? 'text-purple-600' :
+                                                    'text-gray-400 group-hover:text-purple-500'"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z"
+                                                    clip-rule="evenodd"></path>
+                                                <path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="font-bold transition-colors"
+                                                :class="selectedtype === 'post' ? 'text-purple-700' :
+                                                    'text-gray-700 group-hover:text-purple-700'">
+                                                Article</p>
+                                            {{-- <p class="text-xs text-gray-500 mt-1">Article</p> --}}
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            @error('type')
+                                <p
+                                    class="text-red-500 text-xs font-medium mt-2 text-center flex items-center justify-center gap-1">
+                                    <span>⚠</span>{{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div x-data="{ showPicker: false }" class="relative">
 
                                 <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">Icône</label>
-                            
+
                                 <!-- Input -->
-                                <input type="text"
-                                       wire:model="icon"
-                                       placeholder="Clique pour choisir un emoji"
-                                       @click="showPicker = !showPicker"
-                                       class="w-full px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter cursor-pointer">
-                            
+                                <input type="text" wire:model="icon" placeholder="Clique pour choisir un emoji"
+                                    @click="showPicker = !showPicker"
+                                    class="w-full px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter cursor-pointer">
+
                                 @error('icon')
                                     <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                                 @enderror
-                            
+
                                 <!-- Picker -->
-                                <div x-show="showPicker"
-                                     @click.away="showPicker = false"
-                                     x-init="
-                                        const picker = new EmojiMart.Picker({
-                                            skinTonePosition: 'none',
-                                            previewPosition: 'none',
-                                            onEmojiSelect: (emoji) => {
-                                                $wire.set('icon', emoji.native);
-                                                showPicker = false;
-                                            },
-                                        });
-                                        $el.appendChild(picker);
-                                     "
-                                     class="absolute z-50 bg-white border rounded-2xl shadow-xl mt-2">
+                                <div x-show="showPicker" @click.away="showPicker = false" x-init="const picker = new EmojiMart.Picker({
+                                    skinTonePosition: 'none',
+                                    previewPosition: 'none',
+                                    onEmojiSelect: (emoji) => {
+                                        $wire.set('icon', emoji.native);
+                                        showPicker = false;
+                                    },
+                                });
+                                $el.appendChild(picker);"
+                                    class="absolute z-50 bg-white border rounded-2xl shadow-xl mt-2">
                                 </div>
-                            
+
                                 <p class="text-xs text-gray-500 mt-1">Clique pour sélectionner un emoji</p>
                             </div>
-                            
+
 
                             <div>
                                 <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">Couleur
@@ -306,12 +409,12 @@
     @push('scripts')
         <script>
             /* Ajouter des animations pour les cartes
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.bg-agro-white');
-            cards.forEach((card) => {
-                card.classList.add('animate-fade-in');
-            });
-        });*/
+                                                document.addEventListener('DOMContentLoaded', function() {
+                                                    const cards = document.querySelectorAll('.bg-agro-white');
+                                                    cards.forEach((card) => {
+                                                        card.classList.add('animate-fade-in');
+                                                    });
+                                                });*/
 
             // Ajouter des animations supplémentaires
             document.addEventListener('DOMContentLoaded', function() {

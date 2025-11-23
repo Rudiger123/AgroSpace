@@ -355,7 +355,7 @@ class BlogManager extends Component
 
     public function getCategoriesProperty()
     {
-        return Category::where('is_active', true)->get();
+        return Category::where('is_active', true)->where('type','post')->get();
     }
 
     public function getAllTagsProperty()

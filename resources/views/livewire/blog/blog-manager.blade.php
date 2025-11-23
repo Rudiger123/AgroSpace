@@ -296,7 +296,7 @@
                         <div class="mb-4">
                             <a href="{{ route('blog.show', $post->slug) }}" wire:navigate
                                 class="text-xl font-bold text-agro-gray mb-2 font-poppins group-hover:text-agro-green transition-colors duration-300">
-                                {{ $post->title }}
+                                {{ Str::words($post->title,10) }}
                             </a>
 
                             <p class="text-agro-gray text-sm font-inter line-clamp-2">

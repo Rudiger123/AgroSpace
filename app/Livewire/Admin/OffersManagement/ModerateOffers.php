@@ -131,10 +131,9 @@ class ModerateOffers extends Component
             DB::commit();
             $this->resetModals();
             $this->dispatch('toast', [
-                'type' => 'success', 
+                'type' => 'success',
                 'message' => '✅ Offre validée avec succès et producteur notifié par email.'
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             $this->dispatch('toast', ['type' => 'error', 'message' => 'Erreur : ' . $e->getMessage()]);
@@ -175,10 +174,9 @@ class ModerateOffers extends Component
             DB::commit();
             $this->resetModals();
             $this->dispatch('toast', [
-                'type' => 'warning', 
+                'type' => 'warning',
                 'message' => '⚠️ Offre rejetée et producteur notifié par email.'
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             $this->dispatch('toast', ['type' => 'error', 'message' => 'Erreur : ' . $e->getMessage()]);
@@ -206,7 +204,7 @@ class ModerateOffers extends Component
                 });
 
                 $this->dispatch('toast', [
-                    'type' => 'warning', 
+                    'type' => 'warning',
                     'message' => '🚫 Offre suspendue et producteur notifié par email.'
                 ]);
             } else {
@@ -251,10 +249,9 @@ class ModerateOffers extends Component
 
             $this->resetModals();
             $this->dispatch('toast', [
-                'type' => 'success', 
+                'type' => 'success',
                 'message' => '🗑️ Offre supprimée définitivement et producteur notifié par email.'
             ]);
-
         } catch (\Exception $e) {
             $this->dispatch('toast', ['type' => 'error', 'message' => 'Erreur : ' . $e->getMessage()]);
         }
@@ -264,9 +261,9 @@ class ModerateOffers extends Component
     {
         try {
             $producer = User::findOrFail($producerId);
-            
-            $producer->update(['is_active' => false]); 
-            
+
+            $producer->update(['is_active' => false]);
+
             $suspendedCount = Offer::where('producer_id', $producerId)
                 ->where('statut', '!=', 'suspendue')
                 ->update(['statut' => 'suspendue']);
@@ -287,7 +284,7 @@ class ModerateOffers extends Component
             }
 
             $this->dispatch('toast', [
-                'type' => 'warning', 
+                'type' => 'warning',
                 'message' => "🚫 Producteur {$producer->name} suspendu. {$suspendedCount} offre(s) désactivée(s). Email de notification envoyé."
             ]);
         } catch (\Exception $e) {
@@ -298,7 +295,7 @@ class ModerateOffers extends Component
     public function toggleFeatured($id)
     {
         $offer = Offer::find($id);
-        if($offer) {
+        if ($offer) {
             $offer->update(['is_featured' => !$offer->is_featured]);
             $message = $offer->is_featured ? '⭐ Offre mise en avant' : 'Offre retirée de la mise en avant';
             $this->dispatch('toast', ['type' => 'success', 'message' => $message]);
@@ -310,7 +307,7 @@ class ModerateOffers extends Component
         try {
             $offersToValidate = Offer::with('producer')
                 ->where('statut', 'en attente')
-                ->when($this->categorieFilter, fn($q) => $q->where('category_id', $this->categorieFilter))
+                ->when($this->categorieFilter, fn ($q) => $q->where('category_id', $this->categorieFilter))
                 ->get();
 
             $count = 0;
@@ -340,7 +337,7 @@ class ModerateOffers extends Component
             }
 
             $this->dispatch('toast', [
-                'type' => 'success', 
+                'type' => 'success',
                 'message' => "✅ {$count} offre(s) validée(s) en masse. Notifications envoyées."
             ]);
         } catch (\Exception $e) {
@@ -357,32 +354,39 @@ class ModerateOffers extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('titre', 'like', '%' . $this->search . '%')
-                  ->orWhereHas('producer', fn($p) => $p->where('name', 'like', '%' . $this->search . '%'));
+                  ->orWhereHas('producer', fn ($p) => $p->where('name', 'like', '%' . $this->search . '%'));
             });
         }
 
         if ($this->statusFilter !== 'all') {
             $this->statusFilter === 'pending' ? $query->where('statut', 'en attente') : $query->where('statut', $this->statusFilter);
         }
-        
-        if ($this->categorieFilter) $query->where('category_id', $this->categorieFilter);
-        if ($this->regionFilter) $query->where('region', $this->regionFilter);
-        
+
+        if ($this->categorieFilter) {
+            $query->where('category_id', $this->categorieFilter);
+        }
+        if ($this->regionFilter) {
+            $query->where('region', $this->regionFilter);
+        }
+
         if ($this->verifiedFilter !== 'all') {
             $this->verifiedFilter === 'verified' ? $query->where('statut', 'validé') : $query->where('statut', '!=', 'validé');
         }
 
         switch ($this->sortBy) {
-            case 'oldest': $query->oldest('date_publication'); break;
-            case 'price_high': $query->orderByDesc('prix'); break;
-            case 'price_low': $query->orderBy('prix'); break;
+            case 'oldest': $query->oldest('date_publication');
+                break;
+            case 'price_high': $query->orderByDesc('prix');
+                break;
+            case 'price_low': $query->orderBy('prix');
+                break;
             default: $query->latest('date_publication');
         }
 
         $offers = $query->paginate(15);
 
         // --- STATISTIQUES ---
-        
+
         $statsRaw = Offer::select('statut', DB::raw('count(*) as total'))
             ->groupBy('statut')
             ->pluck('total', 'statut')
@@ -415,7 +419,7 @@ class ModerateOffers extends Component
 
         $chartCategoryData = [
             'series' => $topCategories->pluck('total')->toArray(),
-            'labels' => $topCategories->map(fn($item) => $item->category->name ?? 'Inconnu')->toArray()
+            'labels' => $topCategories->map(fn ($item) => $item->category->name ?? 'Inconnu')->toArray()
         ];
 
         // Évolution des offres (7 derniers jours)
@@ -438,7 +442,7 @@ class ModerateOffers extends Component
             'labels' => $topRegions->pluck('region')->toArray()
         ];
 
-        $allCategories = Category::orderBy('name')->get();
+        $allCategories = Category::where('type','offer')->orderBy('name')->get();
 
         return view('livewire.admin.offers-management.moderate-offers', [
             'offers' => $offers,

@@ -11,7 +11,9 @@ use Illuminate\Queue\SerializesModels;
 
 class DemandResponseCreated implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $response;
 

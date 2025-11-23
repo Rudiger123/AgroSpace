@@ -26,7 +26,7 @@ new #[Layout('layouts.main')] class extends Component {
         SEO::setDescription('Une question ? Un projet ? Notre équipe dédiée est à votre écoute. Contactez AgroSpace, la plateforme leader de l\'agrobusiness au Cameroun.');
         SEO::setKeywords('contact agrospace, support client, aide agriculture, partenariat cameroun, douala, yaoundé, service client');
         SEO::setCanonical(url()->current());
-        SEO::addImages([asset('images/contact-agrospace-modern.png')]);
+        SEO::addImages([asset('images/agrospace.png')]);
     }
 
     public function submit()
@@ -226,7 +226,7 @@ new #[Layout('layouts.main')] class extends Component {
                                             complet <span class="text-red-500">*</span></label>
                                         <div class="relative">
                                             <input type="text" id="name" wire:model="name"
-                                                class="w-full pl-4 pr-4 py-4 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-300 outline-none font-medium placeholder-gray-400 @error('name') border-red-500 focus:border-red-500 focus:ring-red-500/10 @enderror"
+                                                class="w-full pl-4 pr-4 py-4 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:border-green-500 focus:ring-4 transition-all duration-300 outline-none font-medium placeholder-gray-400"
                                                 placeholder="Ex: Jean Dupont">
                                             @error('name')
                                                 <span
@@ -242,7 +242,7 @@ new #[Layout('layouts.main')] class extends Component {
                                             <span class="text-red-500">*</span></label>
                                         <div class="relative">
                                             <input type="email" id="email" wire:model="email"
-                                                class="w-full pl-4 pr-4 py-4 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-300 outline-none font-medium placeholder-gray-400 @error('email') border-red-500 focus:border-red-500 focus:ring-red-500/10 @enderror"
+                                                class="w-full pl-4 pr-4 py-4 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:border-green-500 focus:ring-4 transition-all duration-300 outline-none font-medium placeholder-gray-4000"
                                                 placeholder="Ex: jean@exemple.com">
                                             @error('email')
                                                 <span

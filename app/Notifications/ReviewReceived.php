@@ -23,16 +23,20 @@ class ReviewReceived extends Notification implements ShouldQueue
     public function via($notifiable): array
     {
         $channels = ['database'];
-        if ($notifiable->email_notifications_enabled ?? true) $channels[] = 'mail';
-        if ($notifiable->push_notifications_enabled ?? true) $channels[] = 'broadcast';
+        if ($notifiable->email_notifications_enabled ?? true) {
+            $channels[] = 'mail';
+        }
+        if ($notifiable->push_notifications_enabled ?? true) {
+            $channels[] = 'broadcast';
+        }
         return $channels;
     }
 
     public function toMail($notifiable): MailMessage
     {
         $consumerName = $this->avis->consumer->name ?? 'Un consommateur';
-        
-        return (new MailMessage)
+
+        return (new MailMessage())
             ->subject('⭐ Nouvel avis reçu sur AgroSpace')
             ->greeting('Bonjour ' . $notifiable->name . ',')
             ->line($consumerName . ' a laissé un avis de ' . $this->avis->note . '/5.')

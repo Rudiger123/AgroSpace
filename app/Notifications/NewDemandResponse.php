@@ -23,19 +23,23 @@ class NewDemandResponse extends Notification implements ShouldQueue
     public function via($notifiable): array
     {
         $channels = ['database'];
-        if ($notifiable->email_notifications_enabled ?? true) $channels[] = 'mail';
-        if ($notifiable->push_notifications_enabled ?? true) $channels[] = 'broadcast';
+        if ($notifiable->email_notifications_enabled ?? true) {
+            $channels[] = 'mail';
+        }
+        if ($notifiable->push_notifications_enabled ?? true) {
+            $channels[] = 'broadcast';
+        }
         return $channels;
     }
 
     public function toMail($notifiable): MailMessage
     {
         $responderName = $this->response->user->name ?? 'Un utilisateur';
-        $priceInfo = $this->response->proposed_price 
-            ? "Prix proposé : " . number_format($this->response->proposed_price, 0, ',', ' ') . " FCFA" 
+        $priceInfo = $this->response->proposed_price
+            ? "Prix proposé : " . number_format($this->response->proposed_price, 0, ',', ' ') . " FCFA"
             : "Aucun prix spécifié.";
 
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('📩 Nouvelle proposition pour votre demande')
             ->greeting('Bonjour ' . $notifiable->name . ',')
             ->line($responderName . ' a répondu à votre demande.')

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,21 +15,33 @@ class OfferFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
     public function definition(): array
     {
         return [
-            'titre' => $this->faker->text(5),
+            'titre' => $this->faker->text,
             'description' => $this->faker->text(50),
-            'category_id' => 1,
+            'category_id' => Category::inRandomOrder()->first()->id,
             'prix' => $this->faker->numberBetween(2000, 500000),
-            'region' => $this->faker->country(),
+            'region' => $this->faker->randomElement([
+                'Adamaoua',
+                'Centre',
+                'Est',
+                'Extrême-Nord',
+                'Littoral',
+                'Nord',
+                'Nord-Ouest',
+                'Ouest',
+                'Sud',
+                'Sud-Ouest'
+            ]),
             'contact' => $this->faker->phoneNumber(),
             'quantite' => $this->faker->numberBetween(100, 1000),
             'unite' => 'kg',
             'localisation' => 'Douala, Littoral',
             'ville' => $this->faker->city(),
             'date_publication' => now(),
-            'statut' => 'en attente',
+            'statut' => $this->faker->randomElement(['validé', 'expirée', 'vendue', 'suspendue', 'en attente', 'rejeté']),
             'contact' => $this->faker->phoneNumber(),
         ];
     }

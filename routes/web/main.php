@@ -29,7 +29,6 @@ use Livewire\Volt\Volt;
  * Les Routes protegées
  */
 Route::middleware(['auth', 'verified', '2fa'])->group(function () {
-
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
     Route::get('/profile/settings', ProfileManagement::class)->name('profile');
@@ -41,7 +40,7 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
     Route::get('/notifications', NotificationsPage::class)->name('notifications.index');
 
     Route::get('/avis', AvisManagement::class)->name('admin.avis');
-    
+
     Route::get('/responses', DemandResponseManagement::class)->name('admin.responses');
 
     Route::prefix('/admin')->middleware('role:admin')->group(function () {
@@ -112,7 +111,7 @@ Route::prefix('blog')->name('blog.')->group(function () {
 // Public Newsletter Routes
 Route::get('/newsletter/unsubscribe/{token}', UnsubscribeConfirmation::class)
     ->name('newsletter.unsubscribe');
-    
+
 Volt::route('/contact', 'contact')->name('contact');
 
 /**
