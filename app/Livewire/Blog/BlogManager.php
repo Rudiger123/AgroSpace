@@ -160,6 +160,7 @@ class BlogManager extends Component
             if ($this->showCreateModal) {
                 $postData['author_id'] = Auth::id();
                 $this->selectedPost = Post::create($postData);
+                event(new \App\Events\Notifications\ArticlePublished($this->selectedPost, Auth::user()));
                 $message = 'Article créé avec succès !';
             }
             if ($this->showEditModal) {
@@ -354,7 +355,7 @@ class BlogManager extends Component
 
     public function getCategoriesProperty()
     {
-        return Category::where('is_active', true)->get();
+        return Category::where('is_active', true)->where('type','post')->get();
     }
 
     public function getAllTagsProperty()

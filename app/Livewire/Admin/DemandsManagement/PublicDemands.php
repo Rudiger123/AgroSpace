@@ -99,7 +99,7 @@ class PublicDemands extends Component
         $this->validate();
 
         try {
-            DemandResponse::create([
+            $response = DemandResponse::create([
                 'demand_id' => $this->selectedDemandId,
                 'user_id' => Auth::user()->id,
                 'message' => $this->message,
@@ -112,6 +112,7 @@ class PublicDemands extends Component
             // Incrémenter le compteur de contacts
             $demand = Demand::find($this->selectedDemandId);
             $demand->incrementContacts();
+            event(new \App\Events\Notifications\DemandResponseCreated($response));
 
             $this->showResponseModal = false;
 

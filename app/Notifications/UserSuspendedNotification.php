@@ -23,7 +23,7 @@ class UserSuspendedNotification extends Notification implements ShouldQueue
 
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Suspension de votre compte AgroSpace')
             ->greeting('Bonjour ' . $notifiable->name . ',')
             ->line('Nous vous informons que votre compte AgroSpace a été temporairement suspendu.')

@@ -35,7 +35,7 @@
                     <!-- comments manager -->
                     <a href="{{ route('admin.blog.comments.index') }}" wire:navigate
                         class="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-300 text-white rounded-lg font-medium hover:shadow-lg transition-all text-sm sm:text-base flex-1 sm:flex-none justify-center">
-                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-8 h-8 text-primary-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                         </svg>
                     </a>
@@ -296,7 +296,7 @@
                         <div class="mb-4">
                             <a href="{{ route('blog.show', $post->slug) }}" wire:navigate
                                 class="text-xl font-bold text-agro-gray mb-2 font-poppins group-hover:text-agro-green transition-colors duration-300">
-                                {{ $post->title }}
+                                {{ Str::words($post->title,10) }}
                             </a>
 
                             <p class="text-agro-gray text-sm font-inter line-clamp-2">

@@ -152,13 +152,15 @@ class OffresList extends Component
         try {
             $service = new AvisService();
 
-            $service->createAvis([
+            $avis = $service->createAvis([
                 'producer_id' => $this->avisproducerId,
                 'offre_id' => $this->avisOffreId,
                 'note' => $this->avisNote,
                 'commentaire' => $this->avisCommentaire,
                 'is_verified' => false, // Sera vérifié par admin si besoin
             ]);
+
+            event(new \App\Events\Notifications\NewReviewCreated($avis));
 
             $this->showAvisModal = false;
             $this->reset(['avisproducerId', 'avisOffreId', 'avisNote', 'avisCommentaire']);

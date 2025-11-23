@@ -29,15 +29,14 @@ class NotificationsPage extends Component
         try {
             $notification = Auth::user()->notifications()->findOrFail($id);
             $notification->markAsRead();
-            
+
             $this->dispatch('refreshNotifications');
-            
+
             // Toast Succès
             $this->dispatch('show-toast', [
                 'type' => 'success',
                 'message' => 'Notification marquée comme lue.',
             ]);
-
         } catch (\Exception $e) {
             // Toast Erreur
             $this->dispatch('show-toast', [
@@ -52,14 +51,13 @@ class NotificationsPage extends Component
         try {
             $notification = Auth::user()->notifications()->findOrFail($id);
             $notification->delete();
-            
+
             $this->dispatch('refreshNotifications');
 
             $this->dispatch('show-toast', [
                 'type' => 'success',
                 'message' => 'Notification supprimée avec succès.',
             ]);
-
         } catch (\Exception $e) {
             $this->dispatch('show-toast', [
                 'type' => 'error',
@@ -72,14 +70,13 @@ class NotificationsPage extends Component
     {
         try {
             Auth::user()->unreadNotifications->markAsRead();
-            
+
             $this->dispatch('refreshNotifications');
 
             $this->dispatch('show-toast', [
                 'type' => 'success',
                 'message' => 'Toutes les notifications ont été marquées comme lues.',
             ]);
-
         } catch (\Exception $e) {
             $this->dispatch('show-toast', [
                 'type' => 'error',
@@ -92,7 +89,7 @@ class NotificationsPage extends Component
     {
         try {
             Auth::user()->notifications()->delete();
-            
+
             $this->dispatch('refreshNotifications');
             $this->resetPage();
 
@@ -100,7 +97,6 @@ class NotificationsPage extends Component
                 'type' => 'success',
                 'message' => 'Toutes les notifications ont été supprimées.',
             ]);
-
         } catch (\Exception $e) {
             $this->dispatch('show-toast', [
                 'type' => 'error',

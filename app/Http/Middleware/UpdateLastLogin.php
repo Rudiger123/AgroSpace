@@ -18,10 +18,10 @@ class UpdateLastLogin
     {
         if (Auth::check()) {
             $user = Auth::user();
-            
+
             // Mettre à jour la dernière connexion seulement si c'est une nouvelle session
             // ou si la dernière mise à jour date de plus de 5 minutes $user->last_login_at->lt(now()->subMinutes(5))
-            if (!$user->last_login_at ) {
+            if (!$user->last_login_at) {
                 $user->update([
                     'last_login_at' => now()
                 ]);

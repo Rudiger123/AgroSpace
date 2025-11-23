@@ -13,7 +13,6 @@ use Livewire\Attributes\Url;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session as FacadesSession;
 use Livewire\Attributes\On;
 
 #[Layout('layouts.app')]
@@ -47,7 +46,7 @@ class UsersManagement extends Component
     public $verifiedUsers;
     public $suspendedUsers;
     public $newUsersThisMonth;
-    
+
     // Stats pour graphiques
     public $usersByRole = [];
     public $usersByRegion = [];
@@ -77,7 +76,7 @@ class UsersManagement extends Component
         $this->totalUsers = User::count();
         $this->activeUsers = User::where('status', 'active')->count();
         $this->suspendedUsers = User::where('status', 'suspended')->count();
-        
+
         $this->producers = User::whereHas('role', function ($query) {
             $query->where('name', 'producer');
         })->count();
@@ -87,7 +86,7 @@ class UsersManagement extends Component
         })->count();
 
         $this->verifiedUsers = User::whereNotNull('email_verified_at')->count();
-        
+
         $this->newUsersThisMonth = User::whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
@@ -174,7 +173,7 @@ class UsersManagement extends Component
     private function getFilteredUsers()
     {
         $currentUserId = Auth::id();
-        
+
         return User::query()
             // Ne pas afficher l'utilisateur connecté s'il est admin
             ->when(Auth::user()->isAdmin(), function ($query) use ($currentUserId) {
@@ -216,7 +215,7 @@ class UsersManagement extends Component
     {
         // Vérifier que l'utilisateur n'est pas un admin
         $user = User::find($userId);
-        
+
         if ($user && $user->isAdmin()) {
             $this->dispatch('toast', [
                 'type' => 'error',
@@ -224,7 +223,7 @@ class UsersManagement extends Component
             ]);
             return;
         }
-        
+
         $this->dispatch('openEditUserModal', userId: $userId);
     }
 
@@ -477,7 +476,7 @@ class UsersManagement extends Component
                     if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
                         Storage::disk('public')->delete($user->avatar);
                     }
-                    
+
                     $user->delete();
 
                     $this->loadStats();
@@ -679,7 +678,7 @@ class UsersManagement extends Component
                     if (method_exists($user, 'demands')) {
                         $user->demands()->delete();
                     }
-                    
+
                     $user->delete();
                     $count++;
                 }

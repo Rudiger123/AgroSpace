@@ -43,7 +43,7 @@
 
                             <input id='name' type="text" wire:model='name' autofocus
                                 placeholder="{{ __('wirechat::new.group.inputs.name.placeholder') }}"
-                                class=" w-full border-0 px-0  bg-inherit outline-hidden w-full focus:outline-hidden  focus:ring-0 hover:ring-0">
+                                class=" w-full border-0 px-0  bg-inherit outline-hidden focus:outline-hidden  focus:ring-0 hover:ring-0">
 
                             <span class="text-red-500 text-sm ">
                                 @error('name')
@@ -71,7 +71,7 @@
 
                         <textarea id='description' type="text" wire:model='description'
                             placeholder="{{ __('wirechat::new.group.inputs.description.placeholder') }}" rows="4"
-                            class=" w-full resize-none rounded-lg border-[var(--wc-light-border)]   bg-inherit outline-hidden w-full focus:outline-hidden  focus:ring-0 hover:ring-0">
+                            class=" w-full resize-none rounded-lg border-[var(--wc-light-border)]   bg-inherit outline-hidden focus:outline-hidden  focus:ring-0 hover:ring-0">
                         </textarea>
 
 
@@ -116,7 +116,7 @@
                     <button @click="$wire.showAddMembers=false"
                         class="p-2 ml-0 text-gray-600 rounded-full hover:text-gray-800 hover:bg-[var(--wc-light-secondary)]">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class=" w-5 w-5">
+                            stroke="currentColor" class=" w-5">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                         </svg>
@@ -149,7 +149,7 @@
                 <section class="flex flex-wrap items-center px-0 border-b border-[var(--wc-light-secondary)]">
                     <input type="search" id="users-search-field" wire:model.live.debounce='search' autocomplete="off"
                         placeholder="{{ __('wirechat::new.group.inputs.search.placeholder') }}"
-                        class=" w-full border-0 w-auto outline-hidden focus:outline-hidden bg-[var(--wc-light-primary)] bg-none rounded-lg focus:ring-0 hover:ring-0">
+                        class=" w-full border-0 outline-hidden focus:outline-hidden bg-[var(--wc-light-primary)] bg-none rounded-lg focus:ring-0 hover:ring-0">
                 </section>
 
 

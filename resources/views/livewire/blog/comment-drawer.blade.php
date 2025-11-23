@@ -88,7 +88,7 @@ new class extends Component {
     <div>
         @if ($isOpen && $comment)
             <div class="fixed inset-0 z-50 overflow-hidden" x-data="{ show: @entangle('isOpen') }" x-show="show" style="display: none;">
-                <div class="absolute inset-0 bg-gray-900 bg-opacity-75 transition-opacity" x-show="show"
+                <div class="absolute inset-0  bg-black/60 backdrop-blur-sm transition-opacity" x-show="show"
                     x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" wire:click="close"></div>

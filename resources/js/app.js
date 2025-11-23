@@ -1,13 +1,13 @@
 import './bootstrap';
 import './seo-jsonld';
-import Alpine from 'alpinejs';
+// import Alpine from 'alpinejs';
 import Swal from 'sweetalert2';
 import persist from '@alpinejs/persist';
-import { Picker } from 'emoji-mart'
-import ApexCharts from 'apexcharts';
+import { Picker } from 'emoji-mart';
+window.EmojiMart = { Picker };
 
+import ApexCharts from 'apexcharts';
 window.ApexCharts = ApexCharts;
-window.EmojiMart = { Picker }
 
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';

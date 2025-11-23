@@ -2,7 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Avis;
+use App\Models\Comment;
+use App\Models\DemandResponse;
+use App\Models\Post;
 use App\Models\User;
+use Database\Factories\CategoryFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -19,10 +24,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             CategorySeeder::class,
-            BlogSeeder::class
+            BlogSeeder::class,
+            NewsletterSuscriberSeeder::class
         ]);
-
-
+        
 
         User::factory()->hasOffers(10)->create([
             'email' => 'rudi@gmail.com',
@@ -50,5 +55,10 @@ class DatabaseSeeder extends Seeder
         User::factory(5)->hasDemands(10)->create([
             'role_id' => 3
         ]);
+
+        Post::factory(50)->create();
+        Avis::factory(50)->create();
+        DemandResponse::factory(30)->create();
+        Comment::factory(50)->create();
     }
 }
