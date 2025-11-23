@@ -1,8 +1,10 @@
 <?php
 
+use App\Livewire\Admin\AvisManagement;
 use App\Livewire\Admin\Blog\CategoryManage;
 use App\Livewire\Admin\Blog\TagManage;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\DemandResponseManagement;
 use App\Livewire\Admin\DemandsManagement\DemandsManage;
 use App\Livewire\Admin\DemandsManagement\MyDemands;
 use App\Livewire\Admin\DemandsManagement\PublicDemands;
@@ -37,6 +39,10 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
     Route::get('/demands', PublicDemands::class)->name('demands-list');
 
     Route::get('/notifications', NotificationsPage::class)->name('notifications.index');
+
+    Route::get('/avis', AvisManagement::class)->name('admin.avis');
+    
+    Route::get('/responses', DemandResponseManagement::class)->name('admin.responses');
 
     Route::prefix('/admin')->middleware('role:admin')->group(function () {
         //Gestion des Utilisateurs
@@ -106,7 +112,8 @@ Route::prefix('blog')->name('blog.')->group(function () {
 // Public Newsletter Routes
 Route::get('/newsletter/unsubscribe/{token}', UnsubscribeConfirmation::class)
     ->name('newsletter.unsubscribe');
-
+    
+Volt::route('/contact', 'contact')->name('contact');
 
 /**
  * imports

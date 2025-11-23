@@ -22,12 +22,12 @@
         <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
             <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-1">🔍 Rechercher</label>
-                <input type="text" wire:model.debounce.300ms="search" placeholder="Contenu, auteur, email..."
+                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Contenu, auteur, email..."
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 shadow-sm transition duration-150">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">🏷️ Statut</label>
-                <select wire:model="status"
+                <select wire:model.live="status"
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 shadow-sm transition duration-150 bg-white">
                     <option value="all">Tous</option>
                     <option value="pending">En attente</option>
@@ -38,7 +38,7 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">📰 Article</label>
-                <select wire:model="post_id"
+                <select wire:model.live="post_id"
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 shadow-sm transition duration-150 bg-white">
                     <option value="">Tous les articles</option>
                     @foreach ($posts as $post)
@@ -48,7 +48,7 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">🔢 Par page</label>
-                <select wire:model="perPage"
+                <select wire:model.live="perPage"
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 shadow-sm transition duration-150 bg-white">
                     <option value="10">10</option>
                     <option value="15">15</option>

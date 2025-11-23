@@ -11,15 +11,33 @@ class NewsletterSubscriptionForm extends Component
     public $email = '';
 
     protected $rules = [
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:newsletter_subscribers,email',
+        'name' => [
+            'required',
+            'string',
+            'max:255',
+            'regex:/^[^<>]*$/' // Interdit les caractères < et > pour éviter le HTML basique
+        ],
+        'email' => [
+            'required',
+            'string',
+            'max:255',
+            'unique:newsletter_subscribers,email',
+            // 1. Vérification stricte des standards email (RFC) + Vérification DNS + Anti-Spoofing
+            'email:rfc,dns,spoof',
+            // 2. Regex stricte pour forcer un format standard et bloquer les caractères dangereux (XSS)
+            'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+        ],
     ];
 
     protected $messages = [
         'name.required' => 'Le nom est obligatoire.',
+        'name.regex' => 'Le nom contient des caractères non autorisés.',
         'email.required' => "L'email est obligatoire.",
-        'email.email' => "L'email doit être une adresse valide.",
+        'email.email' => "L'adresse email n'est pas valide.",
         'email.unique' => 'Cet email est déjà inscrit à la newsletter.',
+        'email.regex' => "Le format de l'email est invalide ou contient des caractères interdits.",
+        'email.dns' => "Le nom de domaine de cet email n'existe pas.",
+        'email.spoof' => "Cette adresse email semble suspecte.",
     ];
 
     public function subscribe()

@@ -16,7 +16,7 @@ class CommentManagement extends Component
 {
     use WithPagination;
 
-    public $search = '';
+    public $search = "";
     public $status = 'all';
     public $post_id = '';
     public $sortField = 'created_at';

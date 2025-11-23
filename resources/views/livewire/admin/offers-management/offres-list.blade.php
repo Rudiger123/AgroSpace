@@ -1,5 +1,4 @@
 <div>
-
     <div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-green-50" x-data="{
         showFilters: false,
         viewMode: 'grid',
@@ -574,7 +573,7 @@
         <div x-data="{ currentPhoto: 0 }" x-show="$wire.showDetailsModal"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto"
+            class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity flex items-center justify-center z-50 p-4 overflow-y-auto"
             @click.self="$wire.showDetailsModal = false" x-cloak>
 
             <div x-show="$wire.showDetailsModal" x-transition:enter="transition ease-out duration-300"

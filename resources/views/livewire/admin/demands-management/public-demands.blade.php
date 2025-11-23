@@ -240,7 +240,7 @@
                          x-transition:leave="ease-in duration-200"
                          x-transition:leave-start="opacity-100"
                          x-transition:leave-end="opacity-0"
-                         class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
+                         class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
     
                     <div x-show="show" 
                          x-transition:enter="ease-out duration-300"
@@ -355,7 +355,7 @@
                          x-transition:leave="ease-in duration-200"
                          x-transition:leave-start="opacity-100"
                          x-transition:leave-end="opacity-0"
-                         class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
+                         class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
     
                     <div x-show="show" 
                          x-transition:enter="ease-out duration-300"

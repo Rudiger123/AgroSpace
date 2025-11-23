@@ -2,7 +2,6 @@
 
 
 @php
-
     $isSameAsNext =
         $message?->sendable_id === $nextMessage?->sendable_id &&
         $message?->sendable_type === $nextMessage?->sendable_type;
@@ -62,7 +61,7 @@
         </div>
     @endif
 
-    <pre class="whitespace-pre-line break-all tracking-normal text-sm md:text-base lg:tracking-normal"
+    <pre class="whitespace-pre-line break-all tracking-normal text-sm md:text-md lg:tracking-normal"
         style="font-family: inherit;">
     {{ $message?->body }}
 </pre>
