@@ -633,6 +633,7 @@
                 }).then(function(result) {
                     if (result.isConfirmed && confirmData.method) {
                         // Re-dispatch vers Livewire avec la méthode
+                        console.log(confirmData.params);
                         Livewire.dispatch(confirmData.method, confirmData.params || {});
                     }
                 });

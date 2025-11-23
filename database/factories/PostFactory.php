@@ -24,7 +24,7 @@ class PostFactory extends Factory
             'slug' => Str::slug($title),
             'excerpt' =>  $this->faker->sentence,
             'content' =>  $this->faker->sentence(100, 15),
-            'author_id' => User::where('role_id',1)->inRandomOrder()->first()->id,
+            'author_id' => User::where('role_id', 1)->inRandomOrder()->first()->id,
             'category_id' => random_int(1, 4),
             'published' => true,
             'published_at' => now()->subDays(rand(1, 30)),

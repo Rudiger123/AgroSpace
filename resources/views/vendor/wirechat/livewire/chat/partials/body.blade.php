@@ -174,8 +174,8 @@ style="contain: content">
                                         </x-slot>
                                         <x-slot name="content">
                                             @if ($message->ownedBy($this->auth)|| ($authParticipant->isAdmin() && $isGroup))
-                                                <button dusk="delete_message_for_everyone" wire:click="deleteForEveryone('{{ encrypt($message->id) }}')"
-                                                    wire:confirm="{{ __('wirechat::chat.actions.delete_for_everyone.confirmation_message') }}" 
+                                                <button dusk="delete_message_for_everyone" wire:click="confirmDeleteForEveryone('{{ encrypt($message->id) }}')"
+                                                    {{-- wire:confirm="{{ __('wirechat::chat.actions.delete_for_everyone.confirmation_message') }}"  --}}
                                                     class="w-full text-start hover:bg-red-50 transition-colors">
                                                     <x-wirechat::dropdown-link class="text-red-600">
                                                         @lang('wirechat::chat.actions.delete_for_everyone.label')
@@ -184,8 +184,8 @@ style="contain: content">
                                             @endif
 
                                             @if (!$isGroup)
-                                            <button dusk="delete_message_for_me" wire:click="deleteForMe('{{ encrypt($message->id) }}')"
-                                                wire:confirm="{{ __('wirechat::chat.actions.delete_for_me.confirmation_message') }}" 
+                                            <button dusk="delete_message_for_me" wire:click="confirmDeleteForMe('{{ encrypt($message->id) }}')"
+                                                {{-- wire:confirm="{{ __('wirechat::chat.actions.delete_for_me.confirmation_message') }}"  --}}
                                                 class="w-full text-start hover:bg-gray-50 transition-colors">
                                                 <x-wirechat::dropdown-link>
                                                     @lang('wirechat::chat.actions.delete_for_me.label')

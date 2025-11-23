@@ -179,7 +179,7 @@ class PublicDemands extends Component
             })
             ->paginate(12);
 
-        $categories = Category::where('is_active', true)->get();
+        $categories = Category::where('is_active', true)->where('type', 'demand')->get();
 
         // Stats
         $stats = [

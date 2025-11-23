@@ -20,7 +20,7 @@ class CommentFactory extends Factory
     {
         return [
             'post_id' => Post::inRandomOrder()->first()->id,
-            'user_id' => User::where('role_id',1)->inRandomOrder()->first()->id,
+            'user_id' => User::where('role_id', 1)->inRandomOrder()->first()->id,
             'content' => $this->faker->sentence,
             'status' => 'approved',
             'ip_address' => '127.0.0.1',

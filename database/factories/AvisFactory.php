@@ -20,13 +20,13 @@ class AvisFactory extends Factory
     {
         return [
             'producer_id' => User::where('role_id', 2)->inRandomOrder()->first()->id,
-            'consumer_id'=>User::where('role_id', 2)->inRandomOrder()->first()->id,
-            'offer_id'=> Offer::inRandomOrder()->first()->id,
-            'note' =>$this->faker->numberBetween(1,5),
-            'commentaire'=>$this->faker->sentence(20,13),
-            'is_verified'=>$this->faker->boolean,
-            'is_visible' =>$this->faker->boolean,
-            'date_creation' =>$this->faker->date,
+            'consumer_id' => User::where('role_id', 2)->inRandomOrder()->first()->id,
+            'offer_id' => Offer::inRandomOrder()->first()->id,
+            'note' => $this->faker->numberBetween(1, 5),
+            'commentaire' => $this->faker->sentence(20, 13),
+            'is_verified' => $this->faker->boolean,
+            'is_visible' => $this->faker->boolean,
+            'date_creation' => $this->faker->date,
         ];
     }
 }

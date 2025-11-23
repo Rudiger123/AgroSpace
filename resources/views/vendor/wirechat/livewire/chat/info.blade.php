@@ -42,7 +42,8 @@
     <section class="flex flex-col justify-start w-full">
 
         {{-- Only show if is not group --}}
-            <button wire:confirm="{{ __('wirechat::chat.info.actions.delete_chat.confirmation_message') }}" wire:click="deleteChat"
+
+            <button wire:click="confirmDeleteChat"
                 class=" w-full cursor-pointer py-5 px-8 hover:bg-[var(--wc-light-secondary)] transition  flex gap-3 items-center text-red-500">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6 w-5 h-5">

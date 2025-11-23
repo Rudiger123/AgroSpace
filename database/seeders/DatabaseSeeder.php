@@ -7,7 +7,6 @@ use App\Models\Comment;
 use App\Models\DemandResponse;
 use App\Models\Post;
 use App\Models\User;
-use Database\Factories\CategoryFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +26,7 @@ class DatabaseSeeder extends Seeder
             BlogSeeder::class,
             NewsletterSuscriberSeeder::class
         ]);
-        
+
 
         User::factory()->hasOffers(10)->create([
             'email' => 'rudi@gmail.com',

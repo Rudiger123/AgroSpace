@@ -244,7 +244,7 @@
         @if ($authIsOwner)
 
             {{-- Delete group --}}
-            <button wire:confirm="{{ __('wirechat::chat.group.info.actions.delete_group.confirmation_message') }}" wire:click="deleteGroup"
+            <button wire:click="confirmDeleteGroup"
                 class="cursor-pointer w-full py-5 px-8 hover:bg-[var(--wc-light-secondary)] transition text-start space-y-2   gap-3   text-red-500">
                 <div class="flex gap-3 items-center ">
 
