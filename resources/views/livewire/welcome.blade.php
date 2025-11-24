@@ -614,16 +614,5 @@ new #[Layout('layouts.main')] class extends Component {
 
         {{-- Footer --}}
         <x-layouts.footer />
-
-        {{-- Scroll to top button --}}
-        <button x-data="{ showButton: false }" x-init="window.addEventListener('scroll', () => { showButton = window.pageYOffset > 300 })" x-show="showButton" x-cloak
-            @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
-            class="fixed bottom-8 right-8 bg-base text-white w-12 h-12 rounded-full shadow-2xl hover:bg-green-800 transition-all hover:scale-110 flex items-center justify-center z-40"
-            aria-label="Retour en haut de la page" title="Retour en haut">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5 10l7-7m0 0l7 7m-7-7v18" />
-            </svg>
-        </button>
     </div>
 </div>

@@ -13,6 +13,9 @@ use Namu\WireChat\Livewire\Chats\Chats;
 use Namu\WireChat\Livewire\Concerns\Widget;
 use Namu\WireChat\Livewire\Widgets\WireChat as WidgetsWireChat;
 use Namu\WireChat\Models\Message;
+use App\Notifications\DemandResponseAccepted; // Importation de la notification
+use App\Notifications\DemandResponseRejected; // Importation de la notification
+use App\Models\User; // Nécessaire pour les notifications
 
 #[Layout('layouts.app')]
 #[Title('Gestion des Réponses aux Demandes')]
@@ -26,13 +29,21 @@ class DemandResponseManagement extends Component
     public $statusFilter = 'pending'; // pending, accepted, rejected, all
     public $sortBy = 'created_at';
     public $sortDirection = 'desc';
+    public $isAdmin;
 
     // Modales & Actions
     public $showDetailsModal = false;
     public $showAcceptModal = false;
+    public $showRejectModal = false; // Ajout de la modale de rejet
     public $selectedResponseId = null;
+    public $rejectionReason = ''; // Pour une raison de rejet si nécessaire
 
     protected $queryString = ['search', 'statusFilter'];
+    public function mount()
+    {
+        // Supposons que l'Admin a un rôle 'admin'
+        $this->isAdmin = Auth::user()->isAdmin();
+    }
 
     // Événements d'écoute
     public function updatingSearch()
@@ -48,163 +59,135 @@ class DemandResponseManagement extends Component
     {
         $this->showDetailsModal = false;
         $this->showAcceptModal = false;
+        $this->showRejectModal = false;
+        $this->selectedResponseId = null;
+        $this->rejectionReason = '';
     }
 
     public function render()
     {
-        $responses = DemandResponse::with(['demand:id,user_id', 'user:id,name,email'])
-            ->when($this->search, function ($query) {
-                // Recherche dans le message et le nom de l'utilisateur qui répond
-                $query->where('message', 'like', "%{$this->search}%")
-                    ->orWhereHas('user', fn ($q) => $q->where('name', 'like', "%{$this->search}%"));
+        $userId = Auth::id();
+        $responses = DemandResponse::with(['user:id,name', 'demand:id,title'])
+            // CONVENTION: Admin voit TOUT. consomateur voit SEULEMENT ses responses.
+            ->when(!$this->isAdmin, function ($q) use ($userId) {
+                return $q->where(function ($query) use ($userId) {
+                    $query->whereHas('demand', function ($subQuery) use ($userId) {
+                            $subQuery->where('user_id', $userId);
+                        });
+                });
             })
-            ->when($this->statusFilter !== 'all', fn ($q) => $q->where('status', $this->statusFilter))
+            ->when($this->search, function ($query) {
+                $query->where('message', 'like', '%' . $this->search . '%')
+                    ->orWhereHas('user', fn($q) => $q->where('name', 'like', '%' . $this->search . '%'));
+            })
+            ->when($this->statusFilter !== 'all', fn($query) => $query->where('status', $this->statusFilter))
             ->orderBy($this->sortBy, $this->sortDirection)
-            ->paginate(15);
-
-        // Statistiques simples
-        $stats = [
-            'total' => DemandResponse::count(),
-            'pending' => DemandResponse::where('status', 'pending')->count(),
-            'accepted' => DemandResponse::where('status', 'accepted')->count(),
-        ];
+            ->paginate(10);
 
         return view('livewire.admin.demand-response-management', [
             'responses' => $responses,
-            'stats' => $stats,
         ]);
     }
 
-    // Ouvre la modale pour accepter
+    // Ouvre la modale d'acceptation
     public function openAcceptModal($responseId)
     {
         $this->selectedResponseId = $responseId;
         $this->showAcceptModal = true;
     }
 
-    // Valide et déclenche le chat
-    public function acceptResponse()
+    // Ouvre la modale de rejet
+    public function openRejectModal($responseId)
+    {
+        $this->selectedResponseId = $responseId;
+        $this->showRejectModal = true;
+    }
+
+    // Rejeter la réponse (implémentation simple)
+    public function rejectResponse()
     {
         $response = DemandResponse::findOrFail($this->selectedResponseId);
 
-        // 1. Mise à jour du statut
-        $response->update(['status' => 'accepted']);
+        // 1. Mettre à jour le statut
+        $response->status = 'rejected';
+        $response->save();
 
-        // 2. Déclenchement du Chat Interne
-
-
-        // Exemple: Créer ou trouver une conversation entre le Producteur (user_id) et le Demandeur (demand->user_id)
-        $demandCreatorId = $response->demand->user_id;
-        $model = $response->user;
-
-        if (!Auth::check()) {
-            return redirect()->route('login');
+        // 2. Envoyer la notification par email au producteur
+        $producer = $response->user;
+        if ($producer) {
+            $producer->notify(new DemandResponseRejected($response));
         }
 
-        // Rediriger vers la messagerie ou ouvrir modal de contact
-        if ($model) {
-            $createdConversation = Auth::user()->createConversationWith($model);
-
-            $response_date = $response->demand->created_at->format('d/m/Y');
-            $response_title = $response->demand->title;
-
-            // Create the message
-            $message = Message::create([
-                'reply_id' => null,
-                'conversation_id' => $createdConversation->id,
-                'sendable_type' => Auth::user()->getMorphClass(), // Polymorphic sender type
-                'sendable_id' => Auth::id(), // Polymorphic sender ID
-                'type' => 'text',
-                'body' => "Votre réponse a ma demande $response_title du $response_date a été acceptée avec succès et maintenant nous devons discuter des paiements et livraisons...",
-            ]);
-
-            // update the conversation model - for sorting in chatlist
-            $createdConversation->updated_at = now();
-            $createdConversation->save();
-
-            // dispatch event 'refresh ' to chatlist
-            $this->dispatch('refresh')->to(Chats::class);
-
-            if ($createdConversation) {
-                // redirect to conversation
-                $this->handleComponentTermination(
-                    redirectRoute: route(WireChat::viewRouteName(), [$createdConversation->id]),
-                    events: [
-                        WidgetsWireChat::class => ['open-chat',  ['conversation' => $createdConversation->id]],
-                    ]
-                );
-            }
-        }
-        $this->dispatch('toast', [
-            'type' => 'info',
-            'message' => 'Vous pouvez maintenant discuter avec le producteur de cette offre'
-        ]);
-
-        // TODO: Implémenter la redirection vers le chat
-        // return redirect()->route('messages.show', $offre->producer_id);
-
-        $this->showAcceptModal = false;
-        $this->dispatch('toast', ['type' => 'success', 'message' => "Réponse acceptée. Conversation initiée entre les parties."]);
+        $this->closeModals();
+        $this->dispatch('toast', ['type' => 'info', 'message' => "Réponse de {$producer->name} à la demande #{$response->demand_id} rejetée et producteur notifié."]);
     }
 
-    // Méthode pour rejeter une réponse (similaire à acceptResponse, mais sans l'initiation du chat)
-    public function rejectResponse($responseId)
+
+    // Accepter la réponse (logique existante + notification)
+    public function acceptResponse()
     {
-        $response = DemandResponse::findOrFail($responseId);
-        $response->update(['status' => 'rejected']);
-        $this->dispatch('toast', ['type' => 'info', 'message' => "Réponse rejetée."]);
+        $response = DemandResponse::with(['user', 'demand.user'])->findOrFail($this->selectedResponseId);
+
+        // Vérifier si la demande a déjà une réponse acceptée
+        if ($response->demand->responses()->where('status', 'accepted')->exists()) {
+            $this->closeModals();
+            $this->dispatch('toast', ['type' => 'warning', 'message' => 'Une réponse a déjà été acceptée pour cette demande.']);
+            return;
+        }
+
+        // 1. Mettre à jour le statut de la réponse
+        $response->status = 'accepted';
+        $response->save();
+
+        // 2. Notification par email au producteur
+        $producer = $response->user;
+        if ($producer) {
+            $producer->notify(new DemandResponseAccepted($response));
+        }
+
+        // 3. Création de la conversation
+        $consumer = $response->demand->user;
+
+        $createdConversation = Auth::user()->createConversationWith($producer);
+
+        // Message initial
+        $response_title = $response->demand->title;
+        $response_date = $response->created_at->format('d/m/Y');
+
+        $message = Message::create([
+            'reply_id' => null,
+            'conversation_id' => $createdConversation->id,
+            'sendable_type' => Auth::user()->getMorphClass(),
+            'sendable_id' => Auth::id(),
+            'type' => 'text',
+            'body' => "Bonjour, je vous contacte à propos de votre offre sur ma demande : **\"{$response_title}\"** du $response_date. Votre offre a été sélectionnée. Discutons des détails pour finaliser l'échange.",
+        ]);
+
+        $createdConversation->updated_at = now();
+        $createdConversation->save();
+
+        $this->dispatch('refresh')->to(Chats::class);
+
+        if ($createdConversation) {
+            $this->handleComponentTermination(
+                redirectRoute: route(WireChat::viewRouteName(), [$createdConversation->id]),
+                events: [
+                    WidgetsWireChat::class => ['open-chat',  ['conversation' => $createdConversation->id]],
+                ]
+            );
+            return;
+        }
+
+        $this->closeModals();
+        $this->dispatch('toast', [
+            'type' => 'success',
+            'message' => 'Réponse acceptée. La conversation a été initiée ou mise à jour.'
+        ]);
     }
 
-    // Méthode pour contacter directement le producteur par le chat (sans accepter l'offre)
-    public function contactProducer($responseId)
+    public function openDetailsModal($responseId)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        $this->dispatch('toast', ['type' => 'info', 'message' => "Ouverture de la fenêtre de chat avec le producteur..."]);
-
-        $response = DemandResponse::findOrFail($responseId);
-        $model = $response->user;
-
-        // Rediriger vers la messagerie ou ouvrir modal de contact
-        if ($model) {
-            $createdConversation = Auth::user()->createConversationWith($model);
-
-            $response_date = $response->created_at->format('d/m/Y');
-            $response_title = $response->message;
-            $demande = $response->demand->title;
-
-            // Create the message
-            $message = Message::create([
-                'reply_id' => null,
-                'conversation_id' => $createdConversation->id,
-                'sendable_type' => Auth::user()->getMorphClass(), // Polymorphic sender type
-                'sendable_id' => Auth::id(), // Polymorphic sender ID
-                'type' => 'text',
-                'body' => "Bonjour, je vous contacte à propos de votre réponse : \n $response_title \n du $response_date  sur ma demande $demande afin d'avoir plus d'informations", // Add body if required
-            ]);
-
-            // update the conversation model - for sorting in chatlist
-            $createdConversation->updated_at = now();
-            $createdConversation->save();
-
-            // dispatch event 'refresh ' to chatlist
-            $this->dispatch('refresh')->to(Chats::class);
-
-            if ($createdConversation) {
-                // redirect to conversation
-                $this->handleComponentTermination(
-                    redirectRoute: route(WireChat::viewRouteName(), [$createdConversation->id]),
-                    events: [
-                        WidgetsWireChat::class => ['open-chat',  ['conversation' => $createdConversation->id]],
-                    ]
-                );
-            }
-        }
-        $this->dispatch('toast', [
-            'type' => 'info',
-            'message' => 'Vous pouvez maintenant discuter avec le producteur de cette offre'
-        ]);
+        $this->selectedResponseId = $responseId;
+        $this->showDetailsModal = true;
     }
 }

@@ -665,683 +665,1051 @@
 
         <!-- Modales (Créer, Éditer, Supprimer, Détails) - À créer séparément -->
 
-        <!-- Modal Créer/Éditer Offre -->
         <div x-show="$wire.showCreateModal || $wire.showEditModal"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100" x-cloak
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+            x-transition:enter-end="opacity-100" x-cloak class="fixed inset-0 z-50">
 
-            <div x-show="$wire.showCreateModal || $wire.showEditModal"
-                x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 transform scale-90"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8"
-                @click.away="$wire.closeModals()">
-
-                <!-- Header -->
-                <div
-                    class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10 rounded-t-2xl">
-                    <h3 class="text-2xl font-bold text-gray-800 flex items-center space-x-2">
-                        <svg class="w-7 h-7 text-primary-600" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
-                            </path>
-                        </svg>
-                        <span x-text="$wire.showCreateModal ? 'Créer une nouvelle offre' : 'Modifier l\'offre'"></span>
-                    </h3>
-                    <button type="button" wire:click="closeModals"
-                        class="p-2 hover:bg-gray-100 rounded-lg transition">
-                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-
-                <form wire:submit="{{ $showCreateModal ? 'createOffer' : 'updateOffer' }}" @submit.prevent>
-
-                    <!-- Body -->
-                    <div class="p-6 space-y-6">
-
-                        <!-- Informations générales -->
-                        <div class="bg-gray-50 rounded-xl p-6 space-y-4">
-                            <h4 class="font-bold text-gray-800 flex items-center space-x-2 mb-4">
-                                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <span>Informations générales</span>
-                            </h4>
-
-                            <!-- Titre -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Titre de l'offre <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" wire:model="titre" placeholder="Ex: Maïs bio de haute qualité"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                @error('titre')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Description -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Description <span class="text-red-500">*</span>
-                                </label>
-                                <textarea wire:model="description" rows="4" placeholder="Décrivez votre produit en détail..."
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"></textarea>
-                                @error('description')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                                <p class="text-xs text-gray-500 mt-1">Minimum 20 caractères</p>
-                            </div>
-
-                            <!-- Catégorie -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Catégorie <span class="text-red-500">*</span>
-                                </label>
-                                <select wire:model="categorie"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                    <option value="">Sélectionnez une catégorie</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->icon }}
-                                            {{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('categorie')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <label class="flex items-center cursor-pointer select-none space-x-3">
-
-                                <span class="text-gray-800 font-medium">
-                                    Publier
-                                </span>
-
-                                <div class="relative">
-                                    <input type="checkbox" wire:model= "published" class="peer sr-only"
-                                        name="is_published" id="is_published">
-
-                                    <!-- Background -->
-                                    <div
-                                        class="w-12 h-6 rounded-full bg-gray-300 peer-checked:bg-green-600 transition-colors">
-                                    </div>
-
-                                    <!-- Circle -->
-                                    <div
-                                        class="absolute top-0.5 left-0.5 h-5 w-5 bg-white rounded-full shadow
-                                                transition-all peer-checked:translate-x-6">
-                                    </div>
-                                </div>
-
-                            </label>
-
-                        </div>
-
-                        <!-- Prix et quantité -->
-                        <div class="bg-gray-50 rounded-xl p-6 space-y-4">
-                            <h4 class="font-bold text-gray-800 flex items-center space-x-2 mb-4">
-                                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                    </path>
-                                </svg>
-                                <span>Prix et quantité</span>
-                            </h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <!-- Prix -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Prix (FCFA) <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="number" wire:model="prix" placeholder="5000" min="0"
-                                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                    @error('prix')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Quantité -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Quantité <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="number" wire:model="quantite" placeholder="100" min="1"
-                                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                    @error('quantite')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Unité -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Unité <span class="text-red-500">*</span>
-                                    </label>
-                                    <select wire:model="unite"
-                                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                        <option value="">Choisir</option>
-                                        @foreach ($unites as $key => $label)
-                                            <option value="{{ $key }}">{{ $label }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('unite')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Localisation -->
-                        <div class="bg-gray-50 rounded-xl p-6 space-y-4">
-                            <h4 class="font-bold text-gray-800 flex items-center space-x-2 mb-4">
-                                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                    </path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                                <span>Localisation</span>
-                            </h4>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <!-- Région -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Région <span class="text-red-500">*</span>
-                                    </label>
-                                    <select wire:model="region"
-                                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                        <option value="">Sélectionnez</option>
-                                        @foreach ($regions as $reg)
-                                            <option value="{{ $reg }}">{{ $reg }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('region')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Ville -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Ville
-                                    </label>
-                                    <input type="text" wire:model="ville" placeholder="Ex: Douala"
-                                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                </div>
-
-                                <!-- Localisation précise -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Adresse <span class="text-red-500">*</span>
-                                    </label>
-                                    <input type="text" wire:model="localisation" placeholder="Ex: Marché central"
-                                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                    @error('localisation')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Photos -->
-                        <div class="bg-gray-50 rounded-xl p-6">
-                            <h4 class="font-bold text-gray-800 flex items-center space-x-2 mb-4">
-                                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                    </path>
-                                </svg>
-                                <span>Photos</span>
-                            </h4>
-
-                            <!-- Photos existantes -->
-                            @if ($showEditModal && count($existingPhotos) > 0)
-                                <div class="mb-4">
-                                    <p class="text-sm text-gray-600 mb-3">Photos actuelles :</p>
-                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        @foreach ($existingPhotos as $photo)
-                                            <div class="relative group">
-                                                <img src="{{ asset('storage/' . $photo['path']) }}"
-                                                    class="w-full h-32 object-cover rounded-xl border-2 border-gray-200">
-
-                                                @if ($photo['is_principale'])
-                                                    <div class="absolute top-2 left-2">
-                                                        <span
-                                                            class="bg-primary-500 text-white text-xs px-2 py-1 rounded-full font-bold">Principale</span>
-                                                    </div>
-                                                @else
-                                                    <button wire:click="setPhotoPrincipale({{ $photo['id'] }})"
-                                                        class="absolute top-2 left-2 bg-white text-gray-700 text-xs px-2 py-1 rounded-full hover:bg-primary-100 transition opacity-0 group-hover:opacity-100">
-                                                        Définir comme principale
-                                                    </button>
-                                                @endif
-
-                                                <button wire:click="deletePhoto({{ $photo['id'] }})"
-                                                    class="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition opacity-0 group-hover:opacity-100">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @endif
-
-                            <!-- Upload nouvelles photos -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Ajouter des photos
-                                </label>
-                                <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-primary-500 transition cursor-pointer"
-                                    onclick="document.getElementById('photos-input').click()">
-                                    <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
-                                        </path>
-                                    </svg>
-                                    <p class="text-sm text-gray-600 mb-1">Cliquez pour télécharger ou glissez-déposez
-                                    </p>
-                                    <p class="text-xs text-gray-500">PNG, JPG jusqu'à 2MB (max 5 photos)</p>
-                                    <input type="file" id="photos-input" wire:model="photos" multiple
-                                        accept="image/*" class="hidden">
-                                </div>
-                                @error('photos.*')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-
-                                <!-- Prévisualisation upload -->
-                                @if ($photos)
-                                    <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        @foreach ($photos as $photo)
-                                            <div class="relative">
-                                                <img src="{{ $photo->temporaryUrl() }}"
-                                                    class="w-full h-32 object-cover rounded-xl border-2 border-primary-200">
-                                                <div class="absolute top-2 right-2">
-                                                    <span
-                                                        class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Nouveau</span>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <!-- Informations complémentaires -->
-                        <div class="bg-gray-50 rounded-xl p-6 space-y-4">
-                            <h4 class="font-bold text-gray-800 flex items-center space-x-2 mb-4">
-                                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                    </path>
-                                </svg>
-                                <span>Informations complémentaires</span>
-                            </h4>
-
-                            <!-- Conditions de livraison -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Conditions de livraison
-                                </label>
-                                <textarea wire:model="conditions_livraison" rows="3"
-                                    placeholder="Ex: Livraison possible dans un rayon de 50km, frais en sus..."
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"></textarea>
-                            </div>
-
-                            <!-- Contact -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Numéro de contact
-                                </label>
-                                <input type="tel" wire:model="contact" placeholder="+237 6 90 12 34 56"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                <p class="text-xs text-gray-500 mt-1">Par défaut, votre numéro de profil sera utilisé
-                                </p>
-                            </div>
-
-                            <!-- Date d'expiration -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Date d'expiration (optionnel)
-                                </label>
-                                <input type="date" wire:model="date_expiration"
-                                    min="{{ date('Y-m-d', strtotime('+1 day')) }}"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                <p class="text-xs text-gray-500 mt-1">L'offre sera automatiquement désactivée après
-                                    cette
-                                    date</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Footer -->
-                    <div
-                        class="sticky bottom-0 bg-white border-t px-6 py-4 flex items-center justify-end space-x-3 rounded-b-2xl">
-                        <button type="button" wire:click="closeModals"
-                            class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-medium">
-                            Annuler
-                        </button>
-                        <button type="submit" wire:loading.attr="disabled"
-                            class="px-6 py-3 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition font-medium shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2">
-                            <span wire:loading.remove
-                                x-text="$wire.showCreateModal ? 'Créer l\'offre' : 'Mettre à jour'"></span>
-                            <span wire:loading class="flex items-center">
-                                <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                    </path>
-                                </svg>
-                                Traitement...
-                            </span>
-                        </button>
-                    </div>
-                </form>
+            {{-- Overlay avec backdrop blur --}}
+            <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" @click="$wire.closeModals()">
             </div>
-        </div>
 
-        <!-- Modal Détails Offre -->
-        <div x-show="$wire.showDetailsModal" x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-cloak
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto"
-            @click.self="$wire.closeModals()">
+            {{-- Modal Container --}}
+            <div class="flex min-h-screen items-center justify-center p-4">
+                <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl transform transition-all"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                    @click.stop>
 
-            <div x-show="$wire.showDetailsModal" x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 transform scale-90"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto my-8">
-
-                @if ($selectedOffer)
-                    <!-- Header -->
+                    {{-- Header Premium --}}
                     <div
-                        class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10 rounded-t-2xl">
-                        <h3 class="text-2xl font-bold text-gray-800">Détails de l'offre</h3>
-                        <button wire:click="closeModals" class="p-2 hover:bg-gray-100 rounded-lg transition">
-                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
+                        class="relative bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 px-6 sm:px-8 py-6 rounded-t-3xl overflow-hidden">
+                        {{-- Pattern Background --}}
+                        <div class="absolute inset-0 opacity-10"
+                            style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+                        </div>
+
+                        <div class="relative flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        @if ($showEditModal)
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                            </path>
+                                        @else
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 4v16m8-8H4"></path>
+                                        @endif
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">
+                                        {{ $showEditModal ? 'Modifier l\'offre' : 'Nouvelle offre' }}
+                                    </h3>
+                                    <p class="text-sm text-green-100 mt-1">
+                                        {{ $showEditModal ? 'Mettez à jour les informations de l\'offre' : 'Créez une nouvelle offre sur la plateforme' }}
+                                    </p>
+                                </div>
+                            </div>
+                            <button @click="$wire.closeModals()"
+                                class="text-white/80 hover:text-white hover:bg-white/20 rounded-xl p-2.5 transition-all">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Body -->
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {{-- Body avec scroll --}}
+                    <div class="max-h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar">
+                        <form wire:submit="{{ $showCreateModal ? 'createOffer' : 'updateOffer' }}"
+                            class="p-6 sm:p-8 space-y-8">
 
-                            <!-- Images -->
-                            <div>
-                                @if ($selectedOffer->photos->count() > 0)
-                                    <div class="space-y-4">
-                                        <!-- Image principale -->
-                                        <div class="relative h-80 bg-gray-200 rounded-2xl overflow-hidden">
-                                            <img src="{{ $selectedOffer->photo_principale_url }}"
-                                                class="w-full h-full object-cover">
+                            {{-- Section Informations Générales --}}
+                            <div class="space-y-6">
+                                <div class="flex items-center gap-3 pb-4 border-b-2 border-gray-100">
+                                    <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-gray-900">Informations Générales</h4>
+                                </div>
 
-                                            <!-- Badge statut -->
-                                            <div class="absolute top-4 right-4">
+                                <div class="grid grid-cols-1 gap-6">
+                                    {{-- Titre --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Titre de l'offre
+                                            <span class="text-red-500 ml-1">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <input type="text" wire:model="titre"
+                                                class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
+                                                placeholder="Ex: Maïs bio de haute qualité">
+                                        </div>
+                                        @error('titre')
+                                            <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
+                                                <span>⚠</span>{{ $message }}
+                                            </p>
+                                        @enderror
+                                    </div>
 
-                                                @if ($selectedOffer->statut === 'vendue')
-                                                    <span
-                                                        class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">Vendue</span>
-                                                @elseif($selectedOffer->statut === 'validé')
-                                                    <span
-                                                        class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">validé</span>
-                                                @elseif($selectedOffer->statut === 'expirée')
-                                                    <span
-                                                        class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">Expirée</span>
-                                                @elseif($selectedOffer->statut === 'en attente')
-                                                    <span
-                                                        class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">en
-                                                        attente</span>
-                                                @elseif($selectedOffer->statut === 'rejeté')
-                                                    <span
-                                                        class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">rejeté</span>
-                                                @else
-                                                    <span
-                                                        class="bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-bold">Suspendue</span>
-                                                @endif
+                                    {{-- Description --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Description
+                                            <span class="text-red-500 ml-1">*</span>
+                                        </label>
+                                        <textarea wire:model="description" rows="4"
+                                            class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50 resize-y min-h-[100px]"
+                                            placeholder="Décrivez votre produit en détail..."></textarea>
+                                        @error('description')
+                                            <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
+                                                <span>⚠</span>{{ $message }}
+                                            </p>
+                                        @enderror
+                                        <p class="text-xs text-gray-500 mt-2">Minimum 20 caractères</p>
+                                    </div>
 
-                                                @if ($selectedOffer->is_published)
-                                                    <span
-                                                        class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">active</span>
-                                                @else
-                                                    <span
-                                                        class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">desactive</span>
-                                                @endif
+                                    {{-- Catégorie --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Catégorie
+                                            <span class="text-red-500 ml-1">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <select wire:model="categorie"
+                                                class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
+                                                <option value="">Sélectionnez une catégorie</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->icon }}
+                                                        {{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @error('categorie')
+                                            <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
+                                                <span>⚠</span>{{ $message }}
+                                            </p>
+                                        @enderror
+                                    </div>
+
+                                    {{-- Statut de publication --}}
+                                    <div
+                                        class="flex items-center justify-between bg-blue-50 border border-blue-100 rounded-2xl p-4">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                                                <svg class="w-5 h-5 text-blue-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-blue-900">Publier l'offre</p>
+                                                <p class="text-sm text-blue-700">Rendre cette offre visible sur la
+                                                    plateforme</p>
                                             </div>
                                         </div>
-
-                                        <!-- Miniatures -->
-                                        @if ($selectedOffer->photos->count() > 1)
-                                            <div class="grid grid-cols-4 gap-3">
-                                                @foreach ($selectedOffer->photos->take(4) as $photo)
-                                                    <img src="{{ asset('storage/' . $photo->path) }}"
-                                                        class="w-full h-20 object-cover rounded-xl cursor-pointer hover:opacity-75 transition">
-                                                @endforeach
+                                        <label class="flex items-center cursor-pointer select-none">
+                                            <div class="relative">
+                                                <input type="checkbox" wire:model="published" class="peer sr-only">
+                                                <div
+                                                    class="w-12 h-6 rounded-full bg-gray-300 peer-checked:bg-green-600 transition-colors">
+                                                </div>
+                                                <div
+                                                    class="absolute top-0.5 left-0.5 h-5 w-5 bg-white rounded-full shadow transition-all peer-checked:translate-x-6">
+                                                </div>
                                             </div>
-                                        @endif
+                                        </label>
                                     </div>
-                                @else
-                                    <div
-                                        class="h-80 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl flex items-center justify-center">
-                                        <svg class="w-24 h-24 text-primary-400" fill="none" stroke="currentColor"
+                                </div>
+                            </div>
+
+                            {{-- Section Prix et Quantité --}}
+                            <div class="space-y-6">
+                                <div class="flex items-center gap-3 pb-4 border-b-2 border-gray-100">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-gray-900">Prix et Quantité</h4>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    {{-- Prix --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Prix (FCFA)
+                                            <span class="text-red-500 ml-1">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <input type="number" wire:model="prix" min="0"
+                                                placeholder="5000"
+                                                class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
+                                        </div>
+                                        @error('prix')
+                                            <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
+                                                <span>⚠</span>{{ $message }}
+                                            </p>
+                                        @enderror
+                                    </div>
+
+                                    {{-- Quantité --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Quantité
+                                            <span class="text-red-500 ml-1">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <input type="number" wire:model="quantite" min="1"
+                                                placeholder="100"
+                                                class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
+                                        </div>
+                                        @error('quantite')
+                                            <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
+                                                <span>⚠</span>{{ $message }}
+                                            </p>
+                                        @enderror
+                                    </div>
+
+                                    {{-- Unité --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Unité
+                                            <span class="text-red-500 ml-1">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <select wire:model="unite"
+                                                class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
+                                                <option value="">Choisir</option>
+                                                @foreach ($unites as $key => $label)
+                                                    <option value="{{ $key }}">{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @error('unite')
+                                            <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
+                                                <span>⚠</span>{{ $message }}
+                                            </p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Section Localisation --}}
+                            <div class="space-y-6">
+                                <div class="flex items-center gap-3 pb-4 border-b-2 border-gray-100">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                            </path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-gray-900">Localisation</h4>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    {{-- Région --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Région
+                                            <span class="text-red-500 ml-1">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <select wire:model="region"
+                                                class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
+                                                <option value="">Sélectionnez</option>
+                                                @foreach ($regions as $reg)
+                                                    <option value="{{ $reg }}">{{ $reg }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @error('region')
+                                            <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
+                                                <span>⚠</span>{{ $message }}
+                                            </p>
+                                        @enderror
+                                    </div>
+
+                                    {{-- Ville --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Ville
+                                        </label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <input type="text" wire:model="ville" placeholder="Ex: Douala"
+                                                class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
+                                        </div>
+                                    </div>
+
+                                    {{-- Adresse --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Adresse
+                                            <span class="text-red-500 ml-1">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <input type="text" wire:model="localisation"
+                                                placeholder="Ex: Marché central"
+                                                class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
+                                        </div>
+                                        @error('localisation')
+                                            <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
+                                                <span>⚠</span>{{ $message }}
+                                            </p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Section Photos --}}
+                            <div class="space-y-6">
+                                <div class="flex items-center gap-3 pb-4 border-b-2 border-gray-100">
+                                    <div class="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                                             </path>
                                         </svg>
                                     </div>
+                                    <h4 class="text-lg font-bold text-gray-900">Photos</h4>
+                                </div>
+
+                                {{-- Photos existantes --}}
+                                @if ($showEditModal && count($existingPhotos) > 0)
+                                    <div class="mb-4">
+                                        <p class="text-sm font-medium text-gray-700 mb-3">Photos actuelles :</p>
+                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            @foreach ($existingPhotos as $photo)
+                                                <div class="relative group">
+                                                    <img src="{{ asset('storage/' . $photo['path']) }}"
+                                                        class="w-full h-32 object-cover rounded-xl border-2 border-gray-200 shadow-sm">
+
+                                                    @if ($photo['is_principale'])
+                                                        <div class="absolute top-2 left-2">
+                                                            <span
+                                                                class="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-bold">Principale</span>
+                                                        </div>
+                                                    @else
+                                                        <button wire:click="setPhotoPrincipale({{ $photo['id'] }})"
+                                                            class="absolute top-2 left-2 bg-white text-gray-700 text-xs px-2 py-1 rounded-full hover:bg-green-100 transition opacity-0 group-hover:opacity-100 shadow-sm">
+                                                            Définir comme principale
+                                                        </button>
+                                                    @endif
+
+                                                    <button wire:click="deletePhoto({{ $photo['id'] }})"
+                                                        class="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition opacity-0 group-hover:opacity-100 shadow-sm">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 @endif
-                            </div>
 
-                            <!-- Informations -->
-                            <div class="space-y-6">
-                                <!-- Titre et prix -->
-                                <div>
-                                    <span
-                                        class="inline-block bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm font-semibold mb-3">
-                                        {{ $selectedOffer->category->name }}
-                                    </span>
-                                    <h2 class="text-3xl font-bold text-gray-800 mb-3">{{ $selectedOffer->titre }}</h2>
-                                    <div class="flex items-baseline space-x-2">
-                                        <span
-                                            class="text-4xl font-bold text-primary-600">{{ number_format($selectedOffer->prix, 0, ',', ' ') }}</span>
-                                        <span class="text-xl text-gray-600">FCFA / {{ $selectedOffer->unite }}</span>
+                                {{-- Upload nouvelles photos --}}
+                                <div class="space-y-1.5">
+                                    <label class="block text-sm font-bold text-gray-800 ml-1">
+                                        Ajouter des photos
+                                    </label>
+                                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-green-500 transition cursor-pointer bg-gray-50"
+                                        onclick="document.getElementById('photos-input').click()">
+                                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                            </path>
+                                        </svg>
+                                        <p class="text-sm text-gray-600 mb-1">Cliquez pour télécharger ou
+                                            glissez-déposez</p>
+                                        <p class="text-xs text-gray-500">PNG, JPG jusqu'à 2MB (max 5 photos)</p>
+                                        <input type="file" id="photos-input" wire:model="photos" multiple
+                                            accept="image/*" class="hidden">
                                     </div>
-                                </div>
+                                    @error('photos.*')
+                                        <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
+                                            <span>⚠</span>{{ $message }}
+                                        </p>
+                                    @enderror
 
-                                <!-- Description -->
-                                <div>
-                                    <h3 class="font-bold text-gray-800 mb-2">Description</h3>
-                                    <p class="text-gray-600 leading-relaxed">{{ $selectedOffer->description }}</p>
-                                </div>
-
-                                <!-- Détails -->
-                                <div class="bg-gray-50 rounded-xl p-4 space-y-3">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-gray-600 flex items-center">
-                                            <svg class="w-5 h-5 mr-2 text-gray-400" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
-                                                </path>
-                                            </svg>
-                                            Quantité disponible
-                                        </span>
-                                        <span class="font-bold text-gray-800">{{ $selectedOffer->quantite }}
-                                            {{ $selectedOffer->unite }}</span>
-                                    </div>
-
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-gray-600 flex items-center">
-                                            <svg class="w-5 h-5 mr-2 text-gray-400" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                                </path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            </svg>
-                                            Localisation
-                                        </span>
-                                        <span
-                                            class="font-bold text-gray-800">{{ $selectedOffer->localisation }}</span>
-                                    </div>
-
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-gray-600 flex items-center">
-                                            <svg class="w-5 h-5 mr-2 text-gray-400" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
-                                                </path>
-                                            </svg>
-                                            Contact
-                                        </span>
-                                        <span class="font-bold text-gray-800">{{ $selectedOffer->contact }}</span>
-                                    </div>
-
-                                    @if ($selectedOffer->date_expiration)
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-gray-600 flex items-center">
-                                                <svg class="w-5 h-5 mr-2 text-gray-400" fill="none"
-                                                    stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                                Expire le
-                                            </span>
-                                            <span
-                                                class="font-bold text-gray-800">{{ $selectedOffer->date_expiration->format('d/m/Y') }}</span>
+                                    {{-- Prévisualisation upload --}}
+                                    @if ($photos)
+                                        <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            @foreach ($photos as $photo)
+                                                <div class="relative">
+                                                    <img src="{{ $photo->temporaryUrl() }}"
+                                                        class="w-full h-32 object-cover rounded-xl border-2 border-green-200 shadow-sm">
+                                                    <div class="absolute top-2 right-2">
+                                                        <span
+                                                            class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Nouveau</span>
+                                                    </div>
+                                                </div>
+                                            @endforeach
                                         </div>
                                     @endif
                                 </div>
+                            </div>
 
-                                <!-- Conditions de livraison -->
-                                @if ($selectedOffer->conditions_livraison)
-                                    <div>
-                                        <h3 class="font-bold text-gray-800 mb-2 flex items-center">
-                                            <svg class="w-5 h-5 mr-2 text-primary-600" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z">
-                                                </path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0">
-                                                </path>
-                                            </svg>
-                                            Conditions de livraison
-                                        </h3>
-                                        <p class="text-gray-600 bg-blue-50 p-3 rounded-lg">
-                                            {{ $selectedOffer->conditions_livraison }}</p>
+                            {{-- Section Informations Complémentaires --}}
+                            <div class="space-y-6">
+                                <div class="flex items-center gap-3 pb-4 border-b-2 border-gray-100">
+                                    <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                            </path>
+                                        </svg>
                                     </div>
-                                @endif
+                                    <h4 class="text-lg font-bold text-gray-900">Informations Complémentaires</h4>
+                                </div>
 
-                                <!-- Statistiques -->
-                                <div class="bg-gradient-to-r from-primary-50 to-green-50 rounded-xl p-4">
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="text-center">
-                                            <div class="text-2xl font-bold text-primary-600">
-                                                {{ $selectedOffer->views_count }}</div>
-                                            <div class="text-sm text-gray-600">Vues</div>
+                                <div class="grid grid-cols-1 gap-6">
+                                    {{-- Conditions de livraison --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Conditions de livraison
+                                        </label>
+                                        <textarea wire:model="conditions_livraison" rows="3"
+                                            placeholder="Ex: Livraison possible dans un rayon de 50km, frais en sus..."
+                                            class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50 resize-y min-h-[80px]"></textarea>
+                                    </div>
+
+                                    {{-- Contact --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Numéro de contact
+                                        </label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <input type="tel" wire:model="contact"
+                                                placeholder="+237 6 90 12 34 56"
+                                                class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
                                         </div>
-                                        <div class="text-center">
-                                            <div class="text-2xl font-bold text-primary-600">
-                                                {{ $selectedOffer->contacts_count }}</div>
-                                            <div class="text-sm text-gray-600">Contacts</div>
+                                        <p class="text-xs text-gray-500 mt-2">Par défaut, votre numéro de profil sera
+                                            utilisé</p>
+                                    </div>
+
+                                    {{-- Date d'expiration --}}
+                                    <div class="space-y-1.5">
+                                        <label class="block text-sm font-bold text-gray-800 ml-1">
+                                            Date d'expiration
+                                            <span class="text-gray-400 text-sm font-normal ml-2">(Optionnel)</span>
+                                        </label>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <input type="date" wire:model="date_expiration"
+                                                min="{{ date('Y-m-d', strtotime('+1 day')) }}"
+                                                class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
                                         </div>
+                                        <p class="text-xs text-gray-500 mt-2">L'offre sera automatiquement désactivée
+                                            après cette date</p>
                                     </div>
                                 </div>
+                            </div>
+
+                            {{-- Footer Actions --}}
+                            <div
+                                class="sticky bottom-0 -mx-8 -mb-8 px-8 py-6 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-4 mt-8 rounded-b-3xl">
+                                <button type="button" @click="$wire.closeModals()"
+                                    class="px-6 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-white hover:shadow-sm transition-all focus:ring-2 focus:ring-gray-200">
+                                    Annuler
+                                </button>
+
+                                <button type="submit"
+                                    class="px-8 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-xl shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+                                    <span wire:loading.remove wire:target="createOffer,updateOffer">
+                                        {{ $showEditModal ? 'Mettre à jour' : 'Créer l\'offre' }}
+                                    </span>
+                                    <span wire:loading wire:target="createOffer,updateOffer"
+                                        class="flex items-center gap-2">
+                                        <svg class="animate-spin h-5 w-5 text-white"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                            </path>
+                                        </svg>
+                                        Traitement...
+                                    </span>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Détails Offre -->
+        @if ($selectedOffer)
+
+            <div x-show="$wire.showDetailsModal" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-cloak
+                class="fixed inset-0 z-50" @click.self="$wire.closeModals()">
+
+                {{-- Overlay avec backdrop blur --}}
+                <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+                    @click="$wire.closeModals()">
+                </div>
+
+                {{-- Modal Container --}}
+                <div class="flex min-h-screen items-center justify-center p-4">
+                    <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-6xl transform transition-all"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-200"
+                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                        @click.stop>
+
+                        {{-- Header Premium --}}
+                        <div
+                            class="relative bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 px-6 sm:px-8 py-6 rounded-t-3xl overflow-hidden">
+                            {{-- Pattern Background --}}
+                            <div class="absolute inset-0 opacity-10"
+                                style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+                            </div>
+
+                            <div class="relative flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-lg">
+                                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-bold text-white">Détails de l'offre</h3>
+                                    </div>
+                                </div>
+                                <button @click="$wire.closeModals()"
+                                    class="text-white/80 hover:text-white hover:bg-white/20 rounded-xl p-2.5 transition-all">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
 
-                        <!-- Avis si disponibles -->
-                        @if ($selectedOffer->avis->count() > 0)
-                            <div class="mt-8 pt-8 border-t">
-                                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                                    <svg class="w-6 h-6 mr-2 text-primary-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
-                                        </path>
-                                    </svg>
-                                    Avis des acheteurs ({{ $selectedOffer->avis->count() }})
-                                </h3>
+                        {{-- Body avec scroll --}}
+                        <div class="max-h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar">
+                            <div class="p-6 sm:p-8 space-y-8">
 
-                                <div class="space-y-4">
-                                    @foreach ($selectedOffer->avis->take(3) as $avis)
-                                        <div class="bg-gray-50 rounded-xl p-4">
-                                            <div class="flex items-center justify-between mb-2">
-                                                <div class="flex items-center space-x-3">
-                                                    <img src="{{ $avis->consumer->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($avis->consumer->name) }}"
-                                                        class="w-10 h-10 rounded-full">
-                                                    <div>
-                                                        <p class="font-semibold text-gray-800">
-                                                            {{ $avis->consumer->name }}</p>
-                                                        <div class="flex items-center">
-                                                            @for ($i = 1; $i <= 5; $i++)
-                                                                <svg class="w-4 h-4 {{ $i <= $avis->note ? 'text-yellow-400' : 'text-gray-300' }}"
-                                                                    fill="currentColor" viewBox="0 0 20 20">
-                                                                    <path
-                                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                                    </path>
-                                                                </svg>
-                                                            @endfor
+                                {{-- Section Images et Informations Principales --}}
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                                    {{-- Galerie d'images --}}
+                                    <div class="space-y-4">
+                                        {{-- Image principale --}}
+                                        <div
+                                            class="relative h-80 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg">
+                                            @if ($selectedOffer->photos->count() > 0)
+                                                <img src="{{ $selectedOffer->photo_principale_url }}"
+                                                    class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+                                            @else
+                                                <div class="w-full h-full flex items-center justify-center">
+                                                    <svg class="w-24 h-24 text-gray-400" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                        </path>
+                                                    </svg>
+                                                </div>
+                                            @endif
+
+                                            {{-- Badges statut --}}
+                                            <div class="absolute top-4 right-4 flex flex-col gap-2">
+                                                {{-- Statut principal --}}
+                                                @if ($selectedOffer->statut === 'vendue')
+                                                    <span
+                                                        class="bg-green-500 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-lg flex items-center gap-1">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                        </svg>
+                                                        Vendue
+                                                    </span>
+                                                @elseif($selectedOffer->statut === 'validé')
+                                                    <span
+                                                        class="bg-blue-500 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-lg flex items-center gap-1">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                            </path>
+                                                        </svg>
+                                                        Validé
+                                                    </span>
+                                                @elseif($selectedOffer->statut === 'expirée')
+                                                    <span
+                                                        class="bg-red-500 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-lg flex items-center gap-1">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                        Expirée
+                                                    </span>
+                                                @elseif($selectedOffer->statut === 'en attente')
+                                                    <span
+                                                        class="bg-yellow-500 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-lg flex items-center gap-1">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                        En attente
+                                                    </span>
+                                                @elseif($selectedOffer->statut === 'rejeté')
+                                                    <span
+                                                        class="bg-red-500 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-lg flex items-center gap-1">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                        </svg>
+                                                        Rejeté
+                                                    </span>
+                                                @endif
+
+                                                {{-- Statut publication --}}
+                                                @if ($selectedOffer->is_published)
+                                                    <span
+                                                        class="bg-green-500 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-lg flex items-center gap-1">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                                        </svg>
+                                                        Active
+                                                    </span>
+                                                @else
+                                                    <span
+                                                        class="bg-gray-500 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-lg flex items-center gap-1">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21">
+                                                            </path>
+                                                        </svg>
+                                                        Désactivée
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        {{-- Miniatures --}}
+                                        @if ($selectedOffer->photos->count() > 1)
+                                            <div class="grid grid-cols-4 gap-3">
+                                                @foreach ($selectedOffer->photos->take(4) as $photo)
+                                                    <div class="relative group">
+                                                        <img src="{{ asset('storage/' . $photo->path) }}"
+                                                            class="w-full h-20 object-cover rounded-xl cursor-pointer transition-all duration-300 group-hover:scale-105 group-hover:shadow-lg border-2 border-gray-200">
+                                                        <div
+                                                            class="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 rounded-xl transition-opacity">
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <span
-                                                    class="text-sm text-gray-500">{{ $avis->date_creation->diffForHumans() }}</span>
+                                                @endforeach
                                             </div>
-                                            @if ($avis->commentaire)
-                                                <p class="text-gray-600 text-sm">{{ $avis->commentaire }}</p>
-                                            @endif
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
-                    </div>
+                                        @endif
+                                    </div>
 
-                    <!-- Footer -->
-                    <div
-                        class="sticky bottom-0 bg-white border-t px-6 py-4 flex items-center justify-end space-x-3 rounded-b-2xl">
-                        <button wire:click="closeModals"
-                            class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-medium">
-                            Fermer
-                        </button>
-                        <button wire:click="openEditModal({{ $selectedOffer->id }})"
-                            class="px-6 py-3 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition font-medium shadow-lg hover:shadow-xl flex items-center space-x-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                </path>
-                            </svg>
-                            <span>Modifier</span>
-                        </button>
+                                    {{-- Informations principales --}}
+                                    <div class="space-y-6">
+                                        {{-- Catégorie et Titre --}}
+                                        <div class="space-y-4">
+                                            <span
+                                                class="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 px-4 py-2 rounded-xl text-sm font-semibold shadow-sm">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                                    </path>
+                                                </svg>
+                                                {{ $selectedOffer->category->name }}
+                                            </span>
+
+                                            <h2 class="text-3xl font-bold text-gray-800 leading-tight">
+                                                {{ $selectedOffer->titre }}</h2>
+
+                                            <div
+                                                class="flex items-baseline space-x-3 bg-gradient-to-r from-gray-50 to-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                                                <span
+                                                    class="text-4xl font-bold text-green-600">{{ number_format($selectedOffer->prix, 0, ',', ' ') }}</span>
+                                                <span class="text-xl text-gray-600">FCFA /
+                                                    {{ $selectedOffer->unite }}</span>
+                                            </div>
+                                        </div>
+
+                                        {{-- Description --}}
+                                        <div class="bg-gray-50 rounded-2xl p-6 shadow-sm border border-gray-100">
+                                            <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2 text-lg">
+                                                <svg class="w-5 h-5 text-green-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                    </path>
+                                                </svg>
+                                                Description
+                                            </h3>
+                                            <p class="text-gray-600 leading-relaxed text-sm">
+                                                {{ $selectedOffer->description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Section Détails --}}
+                                <div class="space-y-6">
+                                    <div class="flex items-center gap-3 pb-4 border-b-2 border-gray-100">
+                                        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <h4 class="text-lg font-bold text-gray-900">Détails de l'offre</h4>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {{-- Informations principales --}}
+                                        <div class="space-y-4">
+                                            <div
+                                                class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-gray-600 flex items-center gap-2">
+                                                        <svg class="w-5 h-5 text-green-500" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
+                                                            </path>
+                                                        </svg>
+                                                        Quantité disponible
+                                                    </span>
+                                                    <span
+                                                        class="font-bold text-gray-800 text-lg">{{ $selectedOffer->quantite }}
+                                                        {{ $selectedOffer->unite }}</span>
+                                                </div>
+
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-gray-600 flex items-center gap-2">
+                                                        <svg class="w-5 h-5 text-green-500" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                                            </path>
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z">
+                                                            </path>
+                                                        </svg>
+                                                        Localisation
+                                                    </span>
+                                                    <span
+                                                        class="font-bold text-gray-800 text-lg">{{ $selectedOffer->localisation }}</span>
+                                                </div>
+
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-gray-600 flex items-center gap-2">
+                                                        <svg class="w-5 h-5 text-green-500" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                                            </path>
+                                                        </svg>
+                                                        Contact
+                                                    </span>
+                                                    <span
+                                                        class="font-bold text-gray-800 text-lg">{{ $selectedOffer->contact }}</span>
+                                                </div>
+
+                                                @if ($selectedOffer->date_expiration)
+                                                    <div class="flex items-center justify-between">
+                                                        <span class="text-gray-600 flex items-center gap-2">
+                                                            <svg class="w-5 h-5 text-green-500" fill="none"
+                                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                                </path>
+                                                            </svg>
+                                                            Expire le
+                                                        </span>
+                                                        <span
+                                                            class="font-bold text-gray-800 text-lg">{{ $selectedOffer->date_expiration->format('d/m/Y') }}</span>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        {{-- Statistiques --}}
+                                        <div class="space-y-4">
+                                            <div
+                                                class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 shadow-sm border border-green-100">
+                                                <h4 class="font-bold text-gray-800 mb-4 text-center">Statistiques</h4>
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div class="text-center bg-white rounded-xl p-4 shadow-sm">
+                                                        <div class="text-2xl font-bold text-green-600">
+                                                            {{ $selectedOffer->views_count }}</div>
+                                                        <div class="text-sm text-gray-600 mt-1">Vues</div>
+                                                    </div>
+                                                    <div class="text-center bg-white rounded-xl p-4 shadow-sm">
+                                                        <div class="text-2xl font-bold text-green-600">
+                                                            {{ $selectedOffer->contacts_count }}</div>
+                                                        <div class="text-sm text-gray-600 mt-1">Contacts</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Section Conditions de livraison --}}
+                                @if ($selectedOffer->conditions_livraison)
+                                    <div class="space-y-6">
+                                        <div class="flex items-center gap-3 pb-4 border-b-2 border-gray-100">
+                                            <div
+                                                class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                                                <svg class="w-5 h-5 text-purple-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z">
+                                                    </path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <h4 class="text-lg font-bold text-gray-900">Conditions de livraison</h4>
+                                        </div>
+
+                                        <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6">
+                                            <p class="text-gray-700 leading-relaxed">
+                                                {{ $selectedOffer->conditions_livraison }}</p>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                {{-- Section Avis --}}
+                                @if ($selectedOffer->avis->count() > 0)
+                                    <div class="space-y-6">
+                                        <div class="flex items-center gap-3 pb-4 border-b-2 border-gray-100">
+                                            <div
+                                                class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
+                                                <svg class="w-5 h-5 text-yellow-600" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <h4 class="text-lg font-bold text-gray-900">
+                                                Avis des acheteurs ({{ $selectedOffer->avis->count() }})
+                                            </h4>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            @foreach ($selectedOffer->avis->take(4) as $avis)
+                                                <div
+                                                    class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                                    <div class="flex items-start justify-between mb-3">
+                                                        <div class="flex items-center space-x-3">
+                                                            <img src="{{ $avis->consumer->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($avis->consumer->name) . '&background=10b981&color=ffffff' }}"
+                                                                class="w-12 h-12 rounded-xl object-cover border-2 border-green-100">
+                                                            <div>
+                                                                <p class="font-semibold text-gray-800">
+                                                                    {{ $avis->consumer->name }}</p>
+                                                                <div class="flex items-center mt-1">
+                                                                    @for ($i = 1; $i <= 5; $i++)
+                                                                        <svg class="w-4 h-4 {{ $i <= $avis->note ? 'text-yellow-400' : 'text-gray-300' }}"
+                                                                            fill="currentColor" viewBox="0 0 20 20">
+                                                                            <path
+                                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    @endfor
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <span
+                                                            class="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">{{ $avis->date_creation->diffForHumans() }}</span>
+                                                    </div>
+                                                    @if ($avis->commentaire)
+                                                        <p
+                                                            class="text-gray-600 text-sm leading-relaxed bg-gray-50 p-3 rounded-lg">
+                                                            {{ $avis->commentaire }}</p>
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- Footer Actions --}}
+                        <div
+                            class="sticky bottom-0 -mb-8 px-8 py-6 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-4 mt-8 rounded-b-3xl">
+                            <button type="button" @click="$wire.closeModals()"
+                                class="px-6 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-white hover:shadow-sm transition-all focus:ring-2 focus:ring-gray-200">
+                                Fermer
+                            </button>
+
+                            <button wire:click="openEditModal({{ $selectedOffer->id }})"
+                                class="px-8 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-xl shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                    </path>
+                                </svg>
+                                Modifier l'offre
+                            </button>
+                        </div>
                     </div>
-                @endif
+                </div>
             </div>
-        </div>
+        @endif
 
         <!-- Modal Supprimer Offre -->
         <div x-show="$wire.showDeleteModal" x-transition:enter="transition ease-out duration-300"
@@ -1356,7 +1724,8 @@
 
                 <div class="text-center">
                     <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
-                        <svg class="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-8 w-8 text-red-600" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
                             </path>
