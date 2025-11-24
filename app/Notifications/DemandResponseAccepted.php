@@ -41,7 +41,7 @@ class DemandResponseAccepted extends Notification implements ShouldQueue
         $consumer = $demand->user;
         $producer = $this->demandResponse->user;
 
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject("🎉 Félicitations ! Votre réponse à la demande #{$demand->id} a été acceptée !")
             ->greeting("Bonjour {$producer->name},")
             ->line("Excellente nouvelle ! Le consommateur **{$consumer->name}** a accepté votre offre en réponse à sa demande : **\"{$demand->titre}\"**.")

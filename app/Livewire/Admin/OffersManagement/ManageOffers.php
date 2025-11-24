@@ -451,7 +451,7 @@ class ManageOffers extends Component
         return view('livewire.admin.offers-management.manage-offers', [
             'offers' => $offers,
             'stats' => $stats,
-            'categories' => Category::where('is_active', true)->where('type','offer')->get(),
+            'categories' => Category::where('is_active', true)->where('type', 'offer')->get(),
             'unites' => Offer::getUnitesOptions(),
             'regions' => Offer::getRegionsOptions(),
         ]);

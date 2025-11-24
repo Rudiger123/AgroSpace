@@ -15,7 +15,8 @@ use Namu\WireChat\Livewire\Widgets\WireChat as WidgetsWireChat;
 use Namu\WireChat\Models\Message;
 use App\Notifications\DemandResponseAccepted; // Importation de la notification
 use App\Notifications\DemandResponseRejected; // Importation de la notification
-use App\Models\User; // Nécessaire pour les notifications
+
+// Nécessaire pour les notifications
 
 #[Layout('layouts.app')]
 #[Title('Gestion des Réponses aux Demandes')]
@@ -72,15 +73,15 @@ class DemandResponseManagement extends Component
             ->when(!$this->isAdmin, function ($q) use ($userId) {
                 return $q->where(function ($query) use ($userId) {
                     $query->whereHas('demand', function ($subQuery) use ($userId) {
-                            $subQuery->where('user_id', $userId);
-                        });
+                        $subQuery->where('user_id', $userId);
+                    });
                 });
             })
             ->when($this->search, function ($query) {
                 $query->where('message', 'like', '%' . $this->search . '%')
-                    ->orWhereHas('user', fn($q) => $q->where('name', 'like', '%' . $this->search . '%'));
+                    ->orWhereHas('user', fn ($q) => $q->where('name', 'like', '%' . $this->search . '%'));
             })
-            ->when($this->statusFilter !== 'all', fn($query) => $query->where('status', $this->statusFilter))
+            ->when($this->statusFilter !== 'all', fn ($query) => $query->where('status', $this->statusFilter))
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(10);
 

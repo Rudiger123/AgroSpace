@@ -40,7 +40,7 @@ class DemandResponseRejected extends Notification implements ShouldQueue
         $demand = $this->demandResponse->demand;
         $producer = $this->demandResponse->user;
 
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject("ℹ️ Mise à jour de votre réponse à la demande #{$demand->id} : Rejetée")
             ->greeting("Bonjour {$producer->name},")
             ->line("Nous vous informons que le consommateur a choisi de ne pas retenir votre réponse concernant sa demande : **\"{$demand->titre}\"**.")

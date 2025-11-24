@@ -160,11 +160,14 @@ class BlogManager extends Component
             if ($this->showCreateModal) {
                 $postData['author_id'] = Auth::id();
                 $this->selectedPost = Post::create($postData);
+
                 event(new \App\Events\Notifications\ArticlePublished($this->selectedPost, Auth::user()));
+
                 $message = 'Article créé avec succès !';
             }
             if ($this->showEditModal) {
                 $this->selectedPost->update($postData);
+                // event(new \App\Events\Notifications\ArticlePublished($this->selectedPost, Auth::user()));
                 $message = 'Article mis à jour avec succès !';
             }
 

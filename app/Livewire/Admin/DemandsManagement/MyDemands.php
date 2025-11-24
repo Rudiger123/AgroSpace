@@ -273,7 +273,7 @@ class MyDemands extends Component
             ->latest()
             ->paginate(10);
 
-        $categories = Category::where('is_active', true)->get();
+        $categories = Category::where('is_active', true)->where('type', 'demand')->get();
 
         return view('livewire.admin.demands-management.my-demands', [
             'demands' => $demands,

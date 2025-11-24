@@ -101,9 +101,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Demand::class);
     }
 
-     /**
-     * Get the user's preferences.
-     */
+    /**
+    * Get the user's preferences.
+    */
     public function preferences()
     {
         return $this->hasOne(UserPreference::class);
