@@ -101,12 +101,25 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Demand::class);
     }
 
-    //Preference sur le systeme de notification
+     /**
+     * Get the user's preferences.
+     */
     public function preferences()
     {
         return $this->hasOne(UserPreference::class);
     }
 
+    /**
+     * Get user preferences with defaults.
+     */
+    public function getPreferencesAttribute()
+    {
+        if (!$this->relationLoaded('preferences')) {
+            $this->load('preferences');
+        }
+
+        return $this->getRelation('preferences') ?? new UserPreference(UserPreference::getDefaults());
+    }
 
     // Accessors pour chiffrer/déchiffrer automatiquement
     public function setTwoFactorSecretAttribute($value)
