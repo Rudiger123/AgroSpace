@@ -49,7 +49,7 @@ class DemandCreatedNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('📋 Nouvelle demande à modérer - AgroSpace')
             ->greeting('Bonjour ' . $notifiable->name . ',')
             ->line('Une nouvelle demande a été créée et nécessite votre modération.')

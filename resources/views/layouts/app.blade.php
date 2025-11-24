@@ -476,7 +476,7 @@
                                         <p class="text-xs text-gray-500">Gérer vos informations</p>
                                     </div>
                                 </a>
-                                <a href="#"
+                                <a href="{{ route('settings') }}" wire:navigate
                                     class="flex items-center space-x-3 px-4 py-2.5 hover:bg-gray-50 transition">
                                     <div class="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"

@@ -84,7 +84,7 @@
                 <!-- Footer avec dégradé -->
                 <div class="px-5 py-4 bg-gradient-to-r from-gray-50 via-white to-gray-50 border-t border-gray-100">
                     <a 
-                        href="{{ route('notifications.index') }}" 
+                        href="{{ route('notifications.index') }}"  wire:navigate
                         class="flex items-center justify-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors duration-200 group"
                     >
                         <span>Voir toutes les notifications</span>

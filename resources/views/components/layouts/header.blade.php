@@ -234,7 +234,7 @@
                                     </a>
                                 @endif
 
-                                <a href="#" wire:navigate
+                                <a href="{{ route('chats') }}" wire:navigate
                                     class="flex items-center space-x-3 px-4 py-2.5 hover:bg-gray-50 transition">
                                     <div class="w-9 h-9 bg-teal-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor"
@@ -250,7 +250,7 @@
                                     </div>
                                 </a>
 
-                                <a href="#" wire:navigate
+                                <a href="{{ route('settings') }}" wire:navigate
                                     class="flex items-center space-x-3 px-4 py-2.5 hover:bg-gray-50 transition">
                                     <div class="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center">
                                         <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
@@ -351,6 +351,7 @@
             </nav>
 
             @auth
+            @livewire('notifications.notification-bell')
                 <div class="border-t border-gray-200 pt-4 mt-4">
                     {{-- User Info Card --}}
                     <div
@@ -431,7 +432,7 @@
                             <span>Messages</span>
                         </a>
 
-                        <a href="{{ route('profile') }}" @click="mobileMenuOpen = false" wire:navigate
+                        <a href="{{ route('settings') }}" @click="mobileMenuOpen = false" wire:navigate
                             class="mobile-nav-link {{ request()->routeIs('settings') ? 'active' : '' }}">
                             <span class="mr-2">⚙️</span>
                             <span>Paramètres</span>

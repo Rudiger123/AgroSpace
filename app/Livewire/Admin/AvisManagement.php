@@ -18,9 +18,9 @@ class AvisManagement extends Component
 
     // --- Propriétés de Filtrage et Tri ---
     public $search = '';
-    public $noteFilter = 'all'; 
-    public $visibilityFilter = 'all'; 
-    public $verifiedFilter = 'all'; 
+    public $noteFilter = 'all';
+    public $visibilityFilter = 'all';
+    public $verifiedFilter = 'all';
     public $sortBy = 'date_creation';
     public $sortDirection = 'desc';
 
@@ -29,7 +29,7 @@ class AvisManagement extends Component
     public $showDeleteModal = false;
     public $showToggleVisibilityModal = false;
     public $selectedAvis = null;
-    
+
     // Déterminer si l'utilisateur est un administrateur
     public $isAdmin;
 
@@ -38,26 +38,27 @@ class AvisManagement extends Component
     public function mount()
     {
         // Supposons que l'Admin a un rôle 'admin'
-        $this->isAdmin = Auth::user()->isAdmin(); 
+        $this->isAdmin = Auth::user()->isAdmin();
     }
 
     // Événements d'écoute pour réinitialiser la pagination
-    public function updating($key) { 
+    public function updating($key)
+    {
         if (in_array($key, ['search', 'noteFilter', 'visibilityFilter', 'verifiedFilter'])) {
-            $this->resetPage(); 
+            $this->resetPage();
         }
     }
 
     public function render()
     {
         $userId = Auth::id();
-        
+
         // 1. Logique de la requête principale
         $avisQuery = Avis::with(['producer:id,name', 'consumer:id,name', 'offer:id,titre'])
-            
+
             // CONVENTION: Admin voit TOUT. Producteur voit SEULEMENT ses avis.
             ->when(!$this->isAdmin, fn ($q) => $q->where('producer_id', $userId))
-            
+
             // Application de la recherche et des filtres
             ->when($this->search, function ($query) {
                 $query->where('commentaire', 'like', "%{$this->search}%")
@@ -68,7 +69,7 @@ class AvisManagement extends Component
             ->when($this->visibilityFilter !== 'all', fn ($q) => $q->where('is_visible', $this->visibilityFilter === 'true'))
             ->when($this->verifiedFilter !== 'all', fn ($q) => $q->where('is_verified', $this->verifiedFilter === 'true'))
             ->orderBy($this->sortBy, $this->sortDirection);
-        
+
         $avis = $avisQuery->paginate(15);
 
         // 2. Logique des statistiques (adaptée au rôle)
@@ -98,7 +99,7 @@ class AvisManagement extends Component
                             ->groupBy('note')
                             ->pluck('count', 'note')
                             ->toArray();
-        
+
         $notesData = [];
         for ($i = 1; $i <= 5; $i++) {
             $notesData[] = $distribution[$i] ?? 0;
@@ -116,45 +117,49 @@ class AvisManagement extends Component
         ];
     }
 
-      // Actions de Modération
-      public function openToggleVisibilityModal($avisId)
-      {
-          $this->selectedAvis =  Avis::findOrFail($avisId);
-          $this->showToggleVisibilityModal = true;
-      }
-  
-      public function toggleVisibility()
-      {
-          $avis =$this->selectedAvis;
-          $avis->is_visible = !$avis->is_visible;
-          $avis->save();
-          $this->showToggleVisibilityModal = false;
-          $this->dispatch('toast', ['type' => 'success', 'message' => "L'avis a été " . ($avis->is_visible ? 'rendu visible' : 'masqué') . " avec succès."]);
-      }
-    
+    // Actions de Modération
+    public function openToggleVisibilityModal($avisId)
+    {
+        $this->selectedAvis =  Avis::findOrFail($avisId);
+        $this->showToggleVisibilityModal = true;
+    }
+
+    public function toggleVisibility()
+    {
+        $avis = $this->selectedAvis;
+        $avis->is_visible = !$avis->is_visible;
+        $avis->save();
+        $this->showToggleVisibilityModal = false;
+        $this->dispatch('toast', ['type' => 'success', 'message' => "L'avis a été " . ($avis->is_visible ? 'rendu visible' : 'masqué') . " avec succès."]);
+    }
+
     // Actions de Modération (Admin uniquement)
     public function openDeleteModal($avisId)
     {
-        if (!$this->isAdmin) return; 
+        if (!$this->isAdmin) {
+            return;
+        }
         $this->selectedAvis = Avis::find($avisId);
         $this->showDeleteModal = true;
     }
 
     public function deleteAvis()
     {
-        if (!$this->isAdmin || !$this->selectedAvis) return; // Sécurité
+        if (!$this->isAdmin || !$this->selectedAvis) {
+            return;
+        } // Sécurité
         $this->selectedAvis->delete();
         $this->showDeleteModal = false;
         $this->selectedAvis = null;
         $this->dispatch('toast', ['type' => 'success', 'message' => "L'avis a été supprimé avec succès."]);
     }
-    
+
     public function openDetailsModal($avisId)
-    { 
+    {
         $this->selectedAvis = Avis::with(['producer', 'consumer', 'offer'])->find($avisId);
         $this->showDetailsModal = true;
     }
-    
+
     public function closeModals()
     {
         $this->showDetailsModal = false;

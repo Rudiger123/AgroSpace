@@ -43,7 +43,7 @@ class SendDemandCreatedNotification implements ShouldQueue
     protected function getRecipients(DemandCreated $event)
     {
         return User::where('role_id', 1) // ID 1 = Administrateur
-                   ->where('is_active', true)
+                //    ->where('is_active', true)
                    ->get();
     }
 

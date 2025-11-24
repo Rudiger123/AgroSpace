@@ -174,7 +174,7 @@
     <!-- Modale de Détails (Utilisation de la modale générique) -->
     <x-livewire.modal wire:model="showDetailsModal" maxWidth="sm:max-w-xl">
         <x-slot name="title">
-            Détails de la Réponse #{{ $selectedAvis?->id }}
+            Détails de l'Avis #{{ $selectedAvis?->id }}
         </x-slot>
 
         @if ($selectedAvis)
