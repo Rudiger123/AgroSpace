@@ -155,7 +155,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
 
             <!-- Barre de contrôle -->
-            <div class="bg-white rounded-2xl shadow-lg p-4 mb-6 sticky top-4 z-40">
+            <div class="bg-white rounded-2xl shadow-lg p-4 mb-6 sticky top-4 z-20">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
 
                     <!-- Résultats -->

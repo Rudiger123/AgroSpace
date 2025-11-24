@@ -234,7 +234,7 @@ class DemandsManage extends Component
               ->when($this->sortBy === 'most_responses', fn ($q) => $q->orderByDesc('contacts_received'));
 
         $demands = $query->paginate(15);
-        $categories = Category::where('is_active', true)->where('type','demand')->get();
+        $categories = Category::where('is_active', true)->where('type', 'demand')->get();
 
         // Statistics & Charts Data
         $stats = [

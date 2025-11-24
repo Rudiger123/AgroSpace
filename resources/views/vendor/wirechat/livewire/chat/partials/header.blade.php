@@ -204,8 +204,9 @@
                                 <div class="border-t border-gray-100 my-1"></div>
 
                                 <button class="w-full text-start hover:bg-orange-50 transition-colors rounded-lg mx-1"
-                                    wire:click="clearConversation"
-                                    wire:confirm="{{ __('wirechat::chat.actions.clear_chat.confirmation_message') }}">
+                                    wire:click="confirmClearConversation"
+                                    {{-- wire:confirm="{{ __('wirechat::chat.actions.clear_chat.confirmation_message') }}" --}}
+                                    >
                                     <div class="flex items-center space-x-3 px-3 py-2">
                                         <div class="bg-orange-100 rounded-lg p-2">
                                             <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor"
@@ -218,8 +219,8 @@
                                     </div>
                                 </button>
 
-                                <button wire:click="deleteConversation"
-                                    wire:confirm="{{ __('wirechat::chat.actions.delete_chat.confirmation_message') }}"
+                                <button wire:click="confirmDeleteConversation"
+                                    {{-- wire:confirm="{{ __('wirechat::chat.actions.delete_chat.confirmation_message') }}" --}}
                                     class="w-full text-start hover:bg-red-50 transition-colors rounded-lg mx-1">
                                     <div class="flex items-center space-x-3 px-3 py-2">
                                         <div class="bg-red-100 rounded-lg p-2">
@@ -237,8 +238,8 @@
                             @if ($conversation->isGroup() && !$this->auth->isOwnerOf($conversation))
                                 <div class="border-t border-gray-100 my-1"></div>
 
-                                <button wire:click="exitConversation"
-                                    wire:confirm="{{ __('wirechat::chat.actions.exit_group.confirmation_message') }}"
+                                <button wire:click="confirmExitConversation"
+                                    {{-- wire:confirm="{{ __('wirechat::chat.actions.exit_group.confirmation_message') }}" --}}
                                     class="w-full text-start hover:bg-red-50 transition-colors rounded-lg mx-1">
                                     <div class="flex items-center space-x-3 px-3 py-2">
                                         <div class="bg-red-100 rounded-lg p-2">

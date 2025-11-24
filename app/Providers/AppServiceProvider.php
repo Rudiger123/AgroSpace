@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Events\Notifications\ArticlePublished;
+use App\Events\Notifications\DemandCreated;
 use App\Events\Notifications\DemandResponseCreated;
 use App\Events\Notifications\NewOfferCreated;
 use App\Events\Notifications\NewReviewCreated;
 use App\Listeners\Notifications\SendArticlePublishedNotification;
+use App\Listeners\Notifications\SendDemandCreatedNotification;
 use App\Listeners\Notifications\SendDemandResponseNotification;
 use App\Listeners\Notifications\SendNewOfferNotification;
 use App\Listeners\Notifications\SendNewReviewNotification;
@@ -32,7 +34,6 @@ class AppServiceProvider extends ServiceProvider
             NewOfferCreated::class,
             SendNewOfferNotification::class,
         );
-
         Event::listen(
             ArticlePublished::class,
             SendArticlePublishedNotification::class,
@@ -44,6 +45,10 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(
             NewReviewCreated::class,
             SendNewReviewNotification::class,
+        );
+        Event::listen(
+            DemandCreated::class,
+            SendDemandCreatedNotification::class,
         );
     }
 }

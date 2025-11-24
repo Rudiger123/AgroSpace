@@ -100,16 +100,14 @@
                                         @if ($authIsOwner && !$loopParticipantIsAuth)
                                             @if ($participant->isAdmin())
                                                 <x-wirechat::dropdown-button
-                                                    wire:click="dismissAdmin('{{ $participant->id }}')"
-                                                    wire:confirm="{{__('wirechat::chat.group.members.actions.dismiss_admin.confirmation_message',['member'=>$participant->participantable?->display_name])}}"
-                                                    class="  ">
+                                                    wire:click="confirmDismiss('{{ $participant->id }}')"
+                                                    >
                                                     {{__('wirechat::chat.group.members.actions.dismiss_admin.label')}}
                                                 </x-wirechat::dropdown-button>
                                             @else
                                                 <x-wirechat::dropdown-button
-                                                    wire:click="makeAdmin('{{ $participant->id }}')"
-                                                    wire:confirm="{{__('wirechat::chat.group.members.actions.make_admin.confirmation_message',['member'=>$participant->participantable?->display_name])}}"
-                                                    class=" ">
+                                                    wire:click="confirmMake('{{ $participant->id }}')"
+                                                    >
                                                     {{__('wirechat::chat.group.members.actions.make_admin.label')}}
                                                 </x-wirechat::dropdown-button>
                                             @endif
@@ -118,8 +116,7 @@
                                             {{--AND We only want to show remove actions if participant is not owner of conversation because we don't want to remove owner--}}
                                             @if (!$participant->isOwner() && !$loopParticipantIsAuth && !$participant->isAdmin())
                                             <x-wirechat::dropdown-button
-                                                wire:click="removeFromGroup('{{ $participant->id }}')"
-                                                wire:confirm="{{__('wirechat::chat.group.members.actions.remove_from_group.confirmation_message',['member'=>$participant->participantable?->display_name])}}"
+                                                wire:click="confirmRemove('{{ $participant->id }}')"
                                                 class="text-red-500 ">
                                                 {{__('wirechat::chat.group.members.actions.remove_from_group.label')}}
                                             </x-wirechat::dropdown-button>

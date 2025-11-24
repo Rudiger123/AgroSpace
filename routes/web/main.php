@@ -22,6 +22,7 @@ use App\Livewire\Blog\CommentManagement;
 use App\Livewire\Newsletter\AdminNewsletterList;
 use App\Livewire\Newsletter\UnsubscribeConfirmation;
 use App\Livewire\Notifications\NotificationsPage;
+use App\Livewire\Settings\PreferencesManager;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -42,6 +43,8 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
     Route::get('/avis', AvisManagement::class)->name('admin.avis');
 
     Route::get('/responses', DemandResponseManagement::class)->name('admin.responses');
+
+    Route::get('/settings', PreferencesManager::class)->name('settings');
 
     Route::prefix('/admin')->middleware('role:admin')->group(function () {
         //Gestion des Utilisateurs

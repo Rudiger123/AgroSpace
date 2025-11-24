@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\DemandsManagement;
 
+use App\Events\Notifications\DemandCreated;
 use App\Models\Demand;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
@@ -139,7 +140,7 @@ class MyDemands extends Component
 
                 $message = 'Demande modifiée avec succès';
             } else {
-                Demand::create([
+                $demand = Demand::create([
                     'user_id' => Auth::user()->id,
                     'title' => $this->title,
                     'description' => $this->description,
@@ -154,6 +155,8 @@ class MyDemands extends Component
                 ]);
 
                 $message = 'Demande créée avec succès';
+                // Déclencher l'événement de notification
+                event(new DemandCreated($demand, Auth::user()));
             }
 
             $this->showModal = false;

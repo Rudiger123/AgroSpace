@@ -249,7 +249,7 @@ class OffresList extends Component
         return view('livewire.admin.offers-management.offres-list', [
             'offres' => $offres,
             'featuredOffres' => $featuredOffres,
-            'categories' => Category::where('is_active', true)->get(),
+            'categories' => Category::where('is_active', true)->where('type', 'offer')->get(),
             'regions' => Offer::getRegionsOptions(),
         ]);
     }

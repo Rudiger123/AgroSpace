@@ -442,7 +442,7 @@ class ModerateOffers extends Component
             'labels' => $topRegions->pluck('region')->toArray()
         ];
 
-        $allCategories = Category::where('type','offer')->orderBy('name')->get();
+        $allCategories = Category::where('type', 'offer')->orderBy('name')->get();
 
         return view('livewire.admin.offers-management.moderate-offers', [
             'offers' => $offers,

@@ -44,10 +44,7 @@ class NotificationList extends Component
         }
 
         $query = Auth::user()->notifications();
-
-        if ($this->showOnlyUnread) {
-            $query->whereNull('read_at');
-        }
+        $query->whereNull('read_at');
 
         return $query->take($this->limit)->get();
     }
