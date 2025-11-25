@@ -13,7 +13,7 @@ new #[Layout('layouts.main')] class extends Component
         SEO::setDescription('Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.');
         SEO::setKeywords('producteur agricole Cameroun, AgroSpace producteur, vendre produits agricoles, plateforme producteurs, agriculture locale Cameroun, sans intermédiaire');
         SEO::setCanonical(url()->current());
-        SEO::setImage(asset('images/agrospace-producer-og.jpg'));   // 1200×630
+        SEO::setImage(asset('images/agrospace.png'));   // 1200×630
         SEO::setType('website');
     }
 }; ?>
@@ -34,7 +34,7 @@ new #[Layout('layouts.main')] class extends Component
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles">
     <meta property="og:description" content="Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.">
-    <meta property="og:image" content="{{ asset('images/agrospace-producer-og.jpg') }}">
+    <meta property="og:image" content="{{ asset('images/agrospace.png') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="AgroSpace">
@@ -45,7 +45,7 @@ new #[Layout('layouts.main')] class extends Component
     <meta name="twitter:url" content="{{ url()->current() }}">
     <meta name="twitter:title" content="Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles">
     <meta name="twitter:description" content="Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.">
-    <meta name="twitter:image" content="{{ asset('images/agrospace-producer-og.jpg') }}">
+    <meta name="twitter:image" content="{{ asset('images/agrospace.png') }}">
 
     {{-- Geo-tags --}}
     <meta name="geo.region" content="CM">
@@ -78,16 +78,49 @@ new #[Layout('layouts.main')] class extends Component
                     <p class="text-lg md:text-xl text-green-50 leading-relaxed">
                         Valorisez vos produits agricoles, gagnez en visibilité et trouvez de nouvelles opportunités sans intermédiaires.
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                        <a href="{{ route('register', ['type' => 'producteur']) }}"
+                    <div class="flex flex-col sm:flex-row gap-5 pt-8">
+                        {{-- Bouton Principal --}}
+                        <a href="{{ route('register', ['type' => 'producteur']) }}"  wire:navigate
                            title="Devenir Producteur sur AgroSpace - Inscription gratuite"
-                           class="bg-white text-base px-8 py-4 rounded-lg font-bold hover:bg-yellow-300 hover:text-base transition-all shadow-xl hover:shadow-2xl text-center text-lg">
-                            Devenir Producteur sur AgroSpace
+                           class="group relative bg-gradient-to-br from-white to-yellow-50 text-base px-8 py-4 rounded-2xl font-bold transition-all duration-700 hover:scale-105 overflow-hidden shadow-2xl hover:shadow-3xl border-2 border-yellow-100">
+                           
+                           {{-- Effet de particules --}}
+                           <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-200/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                           
+                           {{-- Animation de lumière --}}
+                           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                           
+                           <span class="relative z-10 flex items-center justify-center gap-4 text-lg">
+                               <svg class="w-7 h-7 transform group-hover:scale-125 group-hover:rotate-12 transition-all duration-500" 
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+                               </svg>
+                               Devenir Producteur
+                           </span>
                         </a>
-                        <a href="{{ route('features') }}"
+                    
+                        {{-- Bouton Secondaire --}}
+                        <a href="{{ route('features') }}"  wire:navigate
                            title="Découvrir la plateforme AgroSpace"
-                           class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-base transition-all text-center">
-                            Découvrir la plateforme
+                           class="group relative bg-transparent border-2 border-white/70 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-700 overflow-hidden hover:border-white backdrop-blur-md hover:backdrop-blur-lg">
+                           
+                           {{-- Fond gradient animé --}}
+                           <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                           
+                           {{-- Bordure animée --}}
+                           <div class="absolute -inset-0.5 bg-gradient-to-r from-green-400/50 via-yellow-400/50 to-green-400/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:animate-pulse"></div>
+                           
+                           {{-- Effet de remplissage --}}
+                           <div class="absolute inset-0 bg-white transform -translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out"></div>
+                           
+                           <span class="relative z-10 flex items-center justify-center gap-4 group-hover:text-base transition-colors duration-500">
+                               <svg class="w-7 h-7 transform group-hover:scale-110 transition-transform duration-500" 
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                               </svg>
+                               Explorer AgroSpace
+                           </span>
                         </a>
                     </div>
                     <div class="flex items-center gap-6 pt-6 text-sm">
@@ -253,7 +286,7 @@ new #[Layout('layouts.main')] class extends Component
             </div>
 
             <div class="text-center mt-12">
-                <a href="{{ route('register', ['type' => 'producteur']) }}"
+                <a href="{{ route('register', ['type' => 'producteur']) }}" wire:navigate
                    title="Rejoindre AgroSpace maintenant - Inscription gratuite"
                    class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Rejoindre AgroSpace maintenant
@@ -397,7 +430,7 @@ new #[Layout('layouts.main')] class extends Component
             </div>
 
             <div class="text-center">
-                <a href="{{ route('register', ['type' => 'producteur']) }}"
+                <a href="{{ route('register', ['type' => 'producteur']) }}"  wire:navigate
                    title="Commencer gratuitement sur AgroSpace"
                    class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Commencer gratuitement
@@ -471,16 +504,53 @@ new #[Layout('layouts.main')] class extends Component
             <p class="text-xl md:text-2xl text-green-50 mb-10 max-w-3xl mx-auto">
                 Des milliers de producteurs ont déjà choisi AgroSpace pour développer leur activité. Pourquoi pas vous ?
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="{{ route('register', ['type' => 'producteur']) }}"
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                {{-- Bouton Producteur --}}
+                <a href="{{ route('register', ['type' => 'producteur']) }}"  wire:navigate
                    title="S'inscrire comme Producteur sur AgroSpace - Inscription gratuite"
-                   class="bg-white text-base px-12 py-6 rounded-lg font-bold text-xl hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105">
-                    S'inscrire comme Producteur
+                   class="group relative bg-white text-base px-12 py-6 rounded-xl font-bold text-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 overflow-hidden">
+                   
+                   {{-- Effet de brillance au survol --}}
+                   <div class="absolute inset-0 bg-gradient-to-r from-yellow-200 to-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12 -translate-x-full group-hover:translate-x-full"></div>
+                   
+                   {{-- Texte avec transition de couleur --}}
+                   <span class="relative z-10 group-hover:text-yellow-900 transition-colors duration-300">
+                       S'inscrire comme Producteur
+                   </span>
+                   
+                   {{-- Icône flèche --}}
+                   <svg class="w-5 h-5 ml-2 relative z-10 inline-block transform group-hover:translate-x-1 transition-transform duration-300" 
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                   </svg>
                 </a>
-                <a href="{{ route('offers-list') }}"
+            
+                {{-- Bouton Découvrir --}}
+                <a href="{{ route('offers-list') }}"  wire:navigate
                    title="Découvrir les offres agricoles sur AgroSpace"
-                   class="bg-transparent border-2 border-white text-white px-12 py-6 rounded-lg font-bold text-xl hover:bg-white hover:text-base transition-all">
-                    Découvrir les offres
+                   class="group relative bg-transparent border-2 border-white text-white px-12 py-6 rounded-xl font-bold text-xl hover:shadow-2xl transition-all duration-300 overflow-hidden">
+                   
+                   {{-- Fond qui se remplit au survol --}}
+                   <div class="absolute inset-0 bg-white transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></div>
+                   
+                   {{-- Bordure animée --}}
+                   <div class="absolute inset-0 border-2 border-transparent bg-gradient-to-r from-yellow-400 to-green-400 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10">
+                       <div class="absolute inset-[2px] bg-gray-900 rounded-xl"></div>
+                   </div>
+                   
+                   {{-- Texte avec changement de couleur --}}
+                   <span class="relative z-10 group-hover:text-base transition-colors duration-300">
+                       Découvrir les offres
+                   </span>
+                   
+                   {{-- Icône œil --}}
+                   <svg class="w-5 h-5 ml-2 relative z-10 inline-block transform group-hover:scale-110 transition-transform duration-300" 
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                             d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                   </svg>
                 </a>
             </div>
             <p class="text-sm text-green-100 mt-8">
@@ -488,6 +558,8 @@ new #[Layout('layouts.main')] class extends Component
             </p>
         </div>
     </section>
+
+    
 
     <!-- FOOTER -->
     <x-layouts.footer/>

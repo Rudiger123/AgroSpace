@@ -31,18 +31,28 @@ class SendArticlePublishedNotification implements ShouldQueue
     public function handle(ArticlePublished $event): void
     {
         // Get all active newsletter subscribers
-        $subscribers = NewsletterSubscriber::whereNull('unsubscribe_token')
+        $subscribers = \App\Models\NewsletterSubscriber::whereNull('unsubscribe_token')->get();
+    
+        // Get registered users who enabled blog notifications through their preferences
+        $users = \App\Models\User::whereHas('preferences', function($query) {
+                $query->where('notify_articles', true);
+            })
+            ->with('preferences') // Charger les préférences pour éviter les requêtes N+1
             ->get();
-
-        // Also notify registered users who enabled blog notifications
-        // $users = User::preferences()->where('notify_articles', true)->get();
-
+    
         // Combine both collections
-        // $recipients = $subscribers->merge($users);
-
+        $recipients = $subscribers->merge($users);
+    
+        \Log::info("Envoi de notifications à " . $recipients->count() . " destinataires");
+    
         // Send notification to each recipient
-        foreach ($subscribers as $recipient) {
-            $recipient->notify(new ArticlePublishedNotification($event->article, $event->author));
+        foreach ($recipients as $recipient) {
+            try {
+                $recipient->notify(new ArticlePublishedNotification($event->article, $event->author));
+                \Log::info("Notification envoyée à: " . ($recipient->email ?? $recipient->id));
+            } catch (\Exception $e) {
+                \Log::error("Erreur envoi notification: " . $e->getMessage());
+            }
         }
     }
 

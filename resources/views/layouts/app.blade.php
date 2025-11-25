@@ -253,7 +253,7 @@
                     </svg>
                     <span class="font-medium">Mes Offres</span>
                     <span
-                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">156</span>
+                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">{{ \App\Models\Offer::where('producer_id', Auth::id())->count() }}</span>
                 </a>
             @else
                 <a href="{{ route('demands-management') }}" wire:navigate
@@ -265,7 +265,7 @@
                     </svg>
                     <span class="font-medium">Mes Demandes</span>
                     <span
-                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
+                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">{{ \App\Models\Demand::where('user_id', Auth::id())->count() }}</span>
                 </a>
             @endif
 
@@ -280,8 +280,6 @@
                         </path>
                     </svg>
                     <span class="font-medium">Mes Responses</span>
-                    <span
-                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
                 </a>
             @endif
 
@@ -294,8 +292,7 @@
                         </path>
                     </svg>
                     <span class="font-medium">Mes Avis</span>
-                    <span
-                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
+
                 </a>
             @endif
 
@@ -308,8 +305,7 @@
                         d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
                 <span class="font-medium">Offres Publiques</span>
-                <span
-                    class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">156</span>
+
             </a>
 
             <a href="{{ route('demands-list') }}" wire:navigate
@@ -320,8 +316,7 @@
                     </path>
                 </svg>
                 <span class="font-medium">Demandes Publiques</span>
-                <span
-                    class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
+
             </a>
 
             <a href="/chats" wire:navigate
@@ -332,8 +327,7 @@
                     </path>
                 </svg>
                 <span class="font-medium">Messages</span>
-                <span
-                    class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">12</span>
+
             </a>
 
             <a href="{{ route('settings') }}" wire:navigate

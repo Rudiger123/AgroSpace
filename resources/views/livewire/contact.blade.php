@@ -71,7 +71,7 @@ new #[Layout('layouts.main')] class extends Component {
             <div div class="grid md:grid-cols-2 gap-12 items-start"">
 
                 {{-- COLONNE GAUCHE : INFOS & ILLUSTRATION (5 colonnes) --}}
-                <div class="lg:col-span-5 space-y-10">
+                <div class="space-y-10">
                     <div>
                         <h2 class="text-3xl font-bold text-gray-900 mb-4">Nos Canaux de Communication</h2>
                         <p class="text-gray-600 text-lg">
@@ -185,7 +185,7 @@ new #[Layout('layouts.main')] class extends Component {
                 </div>
 
                 {{-- COLONNE DROITE : FORMULAIRE (7 colonnes) --}}
-                <div class="lg:col-span-7">
+                <div class="">
                     <div
                         class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-gray-100 relative overflow-hidden">
                         {{-- Décoration d'arrière-plan du formulaire --}}

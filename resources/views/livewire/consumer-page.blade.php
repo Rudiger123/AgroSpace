@@ -12,7 +12,7 @@ new #[Layout('layouts.main')] class extends Component
         SEO::setDescription('Rejoignez AgroSpace en tant que consommateur : accédez à des offres agricoles locales, contactez directement les producteurs, soutenez l’agriculture de proximité. Inscription 100 % gratuite.');
         SEO::setKeywords('consommateur agricole Cameroun, produits locaux, circuits courts, achat direct producteur, AgroSpace consommateur, marché local');
         SEO::setCanonical(url()->current());
-        SEO::setImage(asset('images/agrospace-consumer-og.jpg')); // 1200×630
+        SEO::setImage(asset('images/agrospace.png')); // 1200×630
         SEO::setType('website');
     }
 }; ?>
@@ -33,7 +33,7 @@ new #[Layout('layouts.main')] class extends Component
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="Espace Consommateurs - AgroSpace Cameroun | Produits Agricoles Locaux">
     <meta property="og:description" content="Accédez à des offres agricoles locales, contactez directement les producteurs, soutenez l’agriculture de proximité. Inscription 100 % gratuite.">
-    <meta property="og:image" content="{{ asset('images/agrospace-consumer-og.jpg') }}">
+    <meta property="og:image" content="{{ asset('images/agrospace.png') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="AgroSpace">
@@ -44,7 +44,7 @@ new #[Layout('layouts.main')] class extends Component
     <meta name="twitter:url" content="{{ url()->current() }}">
     <meta name="twitter:title" content="Espace Consommateurs - AgroSpace Cameroun | Produits Agricoles Locaux">
     <meta name="twitter:description" content="Accédez à des offres agricoles locales, contactez directement les producteurs, soutenez l’agriculture de proximité.">
-    <meta name="twitter:image" content="{{ asset('images/agrospace-consumer-og.jpg') }}">
+    <meta name="twitter:image" content="{{ asset('images/agrospace.png') }}">
 
     {{-- Geo-tags --}}
     <meta name="geo.region" content="CM">
@@ -73,14 +73,49 @@ new #[Layout('layouts.main')] class extends Component
                         Accédez à des offres vérifiées, contactez directement les producteurs et soutenez l'agriculture
                         locale en toute simplicité.
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                        <a href="/register?type=consommateur"
-                            class="bg-base text-white px-8 py-4 rounded-lg font-bold hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl text-center text-lg">
-                            Créer un compte Consommateur
+                    <div class="flex flex-col sm:flex-row gap-6 pt-6">
+                        {{-- Bouton Consommateur --}}
+                        <a href="/register?type=consommateur"  wire:navigate
+                           title="Créer un compte Consommateur - Rejoindre AgroSpace"
+                           class="group relative bg-base text-white px-10 py-5 rounded-2xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 overflow-hidden">
+                           
+                           {{-- Effet de gradient animé --}}
+                           <div class="absolute inset-0 bg-gradient-to-r from-green-600 via-green-700 to-green-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform -skew-x-12 -translate-x-full group-hover:translate-x-full"></div>
+                           
+                           {{-- Lueur externe --}}
+                           <div class="absolute -inset-1 bg-gradient-to-r from-green-400 to-green-600 rounded-2xl opacity-0 group-hover:opacity-70 blur transition-all duration-500"></div>
+                           
+                           {{-- Contenu avec icône --}}
+                           <span class="relative z-10 flex items-center justify-center gap-3">
+                               <svg class="w-6 h-6 transform group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" 
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                               </svg>
+                               Créer un compte Consommateur
+                           </span>
                         </a>
-                        <a href="/offres"
-                            class="bg-white border-2 border-base text-base px-8 py-4 rounded-lg font-semibold hover:bg-base hover:text-white transition-all text-center">
-                            Parcourir les offres
+                    
+                        {{-- Bouton Parcourir --}}
+                        <a href="{{ route('offers-list') }}"  wire:navigate
+                           title="Parcourir les offres agricoles - Découvrir les produits"
+                           class="group relative bg-white border-2 border-base text-base px-10 py-5 rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden hover:scale-105">
+                           
+                           {{-- Fond qui se remplit --}}
+                           <div class="absolute inset-0 bg-base transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-out origin-left"></div>
+                           
+                           {{-- Bordure animée --}}
+                           <div class="absolute -inset-0.5 bg-gradient-to-r from-base to-green-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-sm transition-all duration-500"></div>
+                           
+                           {{-- Contenu avec icône --}}
+                           <span class="relative z-10 flex items-center justify-center gap-3 group-hover:text-white transition-colors duration-300">
+                               <svg class="w-6 h-6 transform group-hover:scale-110 transition-transform duration-500" 
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                               </svg>
+                               Parcourir les offres
+                           </span>
                         </a>
                     </div>
                     <div class="flex items-center gap-6 pt-6 text-sm text-gray-50">
@@ -213,7 +248,7 @@ new #[Layout('layouts.main')] class extends Component
             </div>
 
             <div class="text-center mt-12">
-                <a href="/register?type=consommateur"
+                <a href="/register?type=consommateur"  wire:navigate
                     class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Rejoindre la communauté
                 </a>
@@ -578,7 +613,7 @@ new #[Layout('layouts.main')] class extends Component
             </div>
 
             <div class="text-center">
-                <a href="/register?type=consommateur"
+                <a href="/register?type=consommateur"  wire:navigate
                     class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Créer mon compte gratuitement
                 </a>
@@ -679,7 +714,7 @@ new #[Layout('layouts.main')] class extends Component
             </div>
 
             <div class="text-center mt-12">
-                <a href="/register?type=consommateur"
+                <a href="/register?type=consommateur"  wire:navigate
                     class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
                     Créer mon compte gratuitement
                 </a>
@@ -761,14 +796,60 @@ new #[Layout('layouts.main')] class extends Component
             <p class="text-xl md:text-2xl text-green-50 mb-10 max-w-3xl mx-auto">
                 Des milliers de consommateurs ont déjà trouvé ce qu'ils cherchaient. C'est gratuit, simple et local.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="/register?type=consommateur"
-                    class="bg-white text-base px-12 py-6 rounded-lg font-bold text-xl hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105">
-                    Créer un compte Consommateur
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                {{-- Bouton Consommateur --}}
+                <a href="/register?type=consommateur"  wire:navigate
+                   class="group relative bg-white text-base px-12 py-6 rounded-2xl font-bold text-xl 
+                          transition-all duration-500 hover:scale-105 overflow-hidden
+                          shadow-2xl hover:shadow-3xl border-2 border-transparent hover:border-yellow-300">
+                   
+                   {{-- Effet de brillance au survol --}}
+                   <div class="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/40 to-transparent 
+                               transform -skew-x-12 -translate-x-full group-hover:translate-x-full 
+                               transition-transform duration-700"></div>
+                   
+                   {{-- Fond coloré qui apparaît --}}
+                   <div class="absolute inset-0 bg-yellow-300 opacity-0 group-hover:opacity-100 
+                               transition-opacity duration-500"></div>
+                   
+                   {{-- Contenu --}}
+                   <span class="relative z-10 flex items-center justify-center gap-3 
+                                group-hover:text-yellow-900 transition-colors duration-300">
+                       <svg class="w-6 h-6 transform group-hover:scale-110 group-hover:rotate-12 
+                                  transition-transform duration-300" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                       </svg>
+                       Créer un compte Consommateur
+                   </span>
                 </a>
-                <a href="/offres"
-                    class="bg-transparent border-2 border-white text-white px-12 py-6 rounded-lg font-bold text-xl hover:bg-white hover:text-base transition-all">
-                    Découvrir les offres
+            
+                {{-- Bouton Découvrir --}}
+                <a href="{{ route('offers-list') }}"  wire:navigate
+                   class="group relative bg-transparent border-2 border-white text-white 
+                          px-12 py-6 rounded-2xl font-bold text-xl transition-all duration-500 
+                          hover:scale-105 overflow-hidden backdrop-blur-sm
+                          shadow-lg hover:shadow-xl">
+                   
+                   {{-- Fond qui se remplit de gauche à droite --}}
+                   <div class="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 
+                               transition-transform duration-700 ease-out origin-left"></div>
+                   
+                   {{-- Bordure lumineuse --}}
+                   <div class="absolute -inset-0.5 bg-gradient-to-r from-white to-yellow-300 rounded-2xl 
+                               opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500"></div>
+                   
+                   {{-- Contenu --}}
+                   <span class="relative z-10 flex items-center justify-center gap-3 
+                                group-hover:text-base transition-colors duration-300">
+                       <svg class="w-6 h-6 transform group-hover:scale-110 transition-transform duration-300" 
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                       </svg>
+                       Explorer les offres
+                   </span>
                 </a>
             </div>
             <p class="text-sm text-green-100 mt-8">

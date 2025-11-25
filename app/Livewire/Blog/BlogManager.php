@@ -167,7 +167,7 @@ class BlogManager extends Component
             }
             if ($this->showEditModal) {
                 $this->selectedPost->update($postData);
-                // event(new \App\Events\Notifications\ArticlePublished($this->selectedPost, Auth::user()));
+                event(new \App\Events\Notifications\ArticlePublished($this->selectedPost, Auth::user()));
                 $message = 'Article mis à jour avec succès !';
             }
 

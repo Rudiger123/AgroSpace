@@ -69,7 +69,7 @@ new #[Layout('layouts.guest')] class extends Component {
 
 <div>
     <div
-        class="bg-gradient-to-br from-[#F5F5DC] via-[#F5F5DC] to-[#E8E8D0] min-h-screen flex items-center justify-center font-inter">
+        class="min-h-screen flex items-center justify-center font-inter">
 
 
         {{-- Background Pattern --}}

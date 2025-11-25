@@ -19,9 +19,6 @@ class ArticlePublishedNotification extends Notification implements ShouldQueue
 
     /**
      * Create a new notification instance.
-     *
-     * @param Post $article
-     * @param User $author
      */
     public function __construct(Post $article, User $author)
     {
@@ -31,9 +28,6 @@ class ArticlePublishedNotification extends Notification implements ShouldQueue
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     * @return array<int, string>
      */
     public function via($notifiable): array
     {
@@ -42,19 +36,37 @@ class ArticlePublishedNotification extends Notification implements ShouldQueue
             return ['mail'];
         }
 
-        // For registered users, send all channels
-        return ['database', 'mail', 'broadcast'];
+        // For registered users, check their preferences
+        if ($notifiable instanceof User) {
+            $channels = ['database'];
+            
+            // Load preferences if not loaded
+            if (!$notifiable->relationLoaded('preferences')) {
+                $notifiable->load('preferences');
+            }
+            
+            $preferences = $notifiable->preferences ?? new \App\Models\UserPreference(\App\Models\UserPreference::getDefaults());
+            
+            if ($preferences->email_notifications && $preferences->notify_articles) {
+                $channels[] = 'mail';
+            }
+            
+            if ($preferences->push_notifications && $preferences->notify_articles) {
+                $channels[] = 'broadcast';
+            }
+            
+            return $channels;
+        }
+
+        return ['mail']; // fallback
     }
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable): MailMessage
     {
-        $recipientName = $notifiable->name ?? 'Cher(e) abonné(e)';
+        $recipientName = $notifiable->name ?? $notifiable->email ?? 'Cher(e) abonné(e)';
 
         return (new MailMessage())
             ->subject('Nouvel article : ' . $this->article->title)
@@ -69,12 +81,9 @@ class ArticlePublishedNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the array representation of the notification for database.
-     *
-     * @param mixed $notifiable
-     * @return array<string, mixed>
+     * Get the array representation for database.
      */
-    public function toDatabase($notifiable): array
+    public function toArray($notifiable): array
     {
         return [
             'type' => 'article_published',
@@ -96,9 +105,6 @@ class ArticlePublishedNotification extends Notification implements ShouldQueue
 
     /**
      * Get the broadcastable representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return BroadcastMessage
      */
     public function toBroadcast($notifiable): BroadcastMessage
     {

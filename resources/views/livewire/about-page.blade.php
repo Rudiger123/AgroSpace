@@ -78,7 +78,7 @@ new #[Layout('layouts.main')] class extends Component
                         AgroSpace est la première plateforme qui relie les producteurs et consommateurs agricoles pour
                         créer un réseau collaboratif et local.
                     </p>
-                    <a href="{{ route('register') }}"
+                    <a href="{{ route('register') }}"  wire:navigate
                        title="Rejoindre la communauté AgroSpace - Inscription gratuite"
                        class="inline-flex items-center gap-2 bg-white text-base font-semibold px-8 py-4 rounded-lg 
                               shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1
@@ -275,7 +275,7 @@ new #[Layout('layouts.main')] class extends Component
             <p class="text-xl text-green-50 mb-8">
                 Contribuez à l’avenir durable de l’agriculture africaine et créez des connexions qui comptent vraiment.
             </p>
-            <a href="{{ route('register') }}"
+            <a href="{{ route('register') }}"  wire:navigate
                title="Rejoindre la communauté AgroSpace - Inscription gratuite"
                class="inline-block bg-white text-[#1B5E20] px-10 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
                 Créer un compte gratuitement

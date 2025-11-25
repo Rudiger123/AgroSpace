@@ -10,43 +10,6 @@ use App\Models\ActivityLog;
 new #[Layout('layouts.guest')] class extends Component {
     public LoginForm $form;
 
-    /**
-     * Handle an incoming authentication request.
-     */
-    // public function login()
-    // {
-    //     $this->validate();
-
-    //     $this->form->authenticate(); // Authentifie l'utilisateur
-    //     $user = Auth::user();
-
-    //     Session::regenerate(); // Sécurise la session
-
-    //     // Logger la connexion
-    //     ActivityLog::log('login', 'Tentative de connexion réussie');
-
-    //     // Si 2FA activé, rediriger vers la page 2FA
-    //     if ($user->hasTwoFactorEnabled()) {
-    //         // Stocker l'ID utilisateur pour la page 2FA
-    //         session(['two_factor_user_id' => $user->id]);
-
-    //         // Déconnecter temporairement
-    //         Auth::logout();
-
-    //         return to_route('2fa.challenge');
-    //     }
-
-    //     // Sinon, marquer comme authentifié et rediriger
-    //     session(['two_factor_authenticated' => true]);
-
-    //     $this->dispatch('toast', [
-    //         'type' => 'success',
-    //         'message' => "Bienvenue 2 $user->name",
-    //     ]);
-
-    //     return redirect()->intended($this->redirectPath());
-    // }
-
     public function login()
     {
         $this->validate();
