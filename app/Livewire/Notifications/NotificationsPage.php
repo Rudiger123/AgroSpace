@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 
 #[Layout('layouts.app')]
@@ -85,6 +86,20 @@ class NotificationsPage extends Component
         }
     }
 
+    public function confirmDeleteAll()
+    {
+        $this->dispatch('swal:confirm', [
+            'title' => 'Confirmer la suppréssion',
+            'text' => "Êtes-vous sûr de vouloir supprimer toutes les notifications de l'utilisateur ?",
+            'icon' => 'question',
+            'confirmText' => 'Oui, supprimer',
+            'cancelText' => 'Annuler',
+            'method' => 'deleteAll',
+            'params' => []
+        ]);
+    }
+
+    #[On('deleteAll')]
     public function deleteAll()
     {
         try {

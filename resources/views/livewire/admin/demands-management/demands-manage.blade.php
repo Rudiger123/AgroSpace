@@ -294,12 +294,12 @@
                                                 <button wire:click="updateStatus({{ $demand->id }}, 'active')"
                                                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">Marquer
                                                     Active</button>
-                                                <button wire:click="updateStatus({{ $demand->id }}, 'satisfied')"
+                                                {{-- <button wire:click="updateStatus({{ $demand->id }}, 'satisfied')"
                                                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Marquer
-                                                    Satisfaite</button>
-                                                <button wire:click="updateStatus({{ $demand->id }}, 'cancelled')"
+                                                    Satisfaite</button> --}}
+                                                {{-- <button wire:click="updateStatus({{ $demand->id }}, 'cancelled')"
                                                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-700">Annuler</button>
-                                                <div class="border-t border-gray-100 my-1"></div>
+                                                <div class="border-t border-gray-100 my-1"></div> --}}
                                                 <button wire:click="confirmDelete({{ $demand->id }})"
                                                     class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Supprimer</button>
                                             </div>

@@ -148,7 +148,7 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <input type="text" wire:model="name" 
+                                        <input type="text" wire:model="name"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
                                             placeholder="Ex: Jean Kouam">
                                     </div>
@@ -175,7 +175,7 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <input type="email" wire:model="email" 
+                                        <input type="email" wire:model="email"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
                                             placeholder="email@example.com">
                                     </div>
@@ -202,7 +202,7 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <input type="tel" wire:model="phone" 
+                                        <input type="tel" wire:model="phone"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
                                             placeholder="+237 690 123 456">
                                     </div>
@@ -229,7 +229,7 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <select wire:model="role" 
+                                        <select wire:model="role"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
                                             <option value="">Sélectionner un rôle</option>
                                             @foreach (App\Models\Role::all() as $role)
@@ -285,7 +285,7 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <select wire:model="region" 
+                                        <select wire:model="region"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
                                             <option value="">Sélectionner une région</option>
                                             @foreach (['Adamaoua', 'Centre', 'Est', 'Extrême-Nord', 'Littoral', 'Nord', 'Nord-Ouest', 'Ouest', 'Sud', 'Sud-Ouest'] as $r)
@@ -316,7 +316,7 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <input type="text" wire:model="city" 
+                                        <input type="text" wire:model="city"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
                                             placeholder="Ex: Douala">
                                     </div>
@@ -358,7 +358,7 @@
                                             </path>
                                         </svg>
                                     </div>
-                                    <input type="text" wire:model="activity" 
+                                    <input type="text" wire:model="activity"
                                         class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
                                         placeholder="Ex: Éleveur de Poulets, Maraîcher...">
                                 </div>
@@ -375,7 +375,7 @@
                                     Biographie
                                     <span class="text-gray-400 text-sm font-normal ml-2">(Optionnel)</span>
                                 </label>
-                                <textarea wire:model="bio" rows="4" 
+                                <textarea wire:model="bio" rows="4"
                                     class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50 resize-y min-h-[100px]"
                                     placeholder="Décrivez brièvement l'activité, l'expérience et les compétences de l'utilisateur..."></textarea>
                                 @error('bio')
@@ -388,97 +388,111 @@
                             </div>
                         </div>
 
-                       {{-- Section Statut du Compte --}}
-<div class="space-y-6" x-data="{ selectedStatus: @entangle('status') }">
-    <div class="flex items-center gap-3 pb-4 border-b-2 border-gray-100">
-        <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
-            <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                </path>
-            </svg>
-        </div>
-        <h4 class="text-lg font-bold text-gray-900">Statut du Compte</h4>
-    </div>
+                        {{-- Section Statut du Compte --}}
+                        <div class="space-y-6" x-data="{ selectedStatus: @entangle('status') }">
+                            <div class="flex items-center gap-3 pb-4 border-b-2 border-gray-100">
+                                <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-lg font-bold text-gray-900">Statut du Compte</h4>
+                            </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {{-- Actif --}}
-        <label class="border-2 rounded-2xl transition-all duration-200 group cursor-pointer"
-            :class="selectedStatus === 'active' ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-green-300'">
-            <input type="radio" wire:model="status" value="active" class="sr-only">
-            <div class="flex flex-col items-center gap-3 p-4">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
-                    :class="selectedStatus === 'active' ? 'bg-green-100' : 'bg-gray-100 group-hover:bg-green-50'">
-                    <svg class="w-6 h-6 transition-colors"
-                        :class="selectedStatus === 'active' ? 'text-green-600' : 'text-gray-400 group-hover:text-green-500'"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-                <div class="text-center">
-                    <p class="font-bold transition-colors"
-                        :class="selectedStatus === 'active' ? 'text-green-700' : 'text-gray-700 group-hover:text-green-700'">
-                        Actif</p>
-                    <p class="text-xs text-gray-500 mt-1">Accès complet</p>
-                </div>
-            </div>
-        </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                {{-- Actif --}}
+                                <label class="border-2 rounded-2xl transition-all duration-200 group cursor-pointer"
+                                    :class="selectedStatus === 'active' ? 'border-green-500 bg-green-50' :
+                                        'border-gray-200 hover:border-green-300'">
+                                    <input type="radio" wire:model="status" value="active" class="sr-only">
+                                    <div class="flex flex-col items-center gap-3 p-4">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
+                                            :class="selectedStatus === 'active' ? 'bg-green-100' :
+                                                'bg-gray-100 group-hover:bg-green-50'">
+                                            <svg class="w-6 h-6 transition-colors"
+                                                :class="selectedStatus === 'active' ? 'text-green-600' :
+                                                    'text-gray-400 group-hover:text-green-500'"
+                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="font-bold transition-colors"
+                                                :class="selectedStatus === 'active' ? 'text-green-700' :
+                                                    'text-gray-700 group-hover:text-green-700'">
+                                                Actif</p>
+                                            <p class="text-xs text-gray-500 mt-1">Accès complet</p>
+                                        </div>
+                                    </div>
+                                </label>
 
-        {{-- Suspendu --}}
-        <label class="border-2 rounded-2xl transition-all duration-200 group cursor-pointer"
-            :class="selectedStatus === 'suspended' ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-orange-300'">
-            <input type="radio" wire:model="status" value="suspended" class="sr-only">
-            <div class="flex flex-col items-center gap-3 p-4">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
-                    :class="selectedStatus === 'suspended' ? 'bg-orange-100' : 'bg-gray-100 group-hover:bg-orange-50'">
-                    <svg class="w-6 h-6 transition-colors"
-                        :class="selectedStatus === 'suspended' ? 'text-orange-600' : 'text-gray-400 group-hover:text-orange-500'"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
-                        </path>
-                    </svg>
-                </div>
-                <div class="text-center">
-                    <p class="font-bold transition-colors"
-                        :class="selectedStatus === 'suspended' ? 'text-orange-700' : 'text-gray-700 group-hover:text-orange-700'">
-                        Suspendu</p>
-                    <p class="text-xs text-gray-500 mt-1">Accès restreint</p>
-                </div>
-            </div>
-        </label>
+                                {{-- Suspendu --}}
+                                <label class="border-2 rounded-2xl transition-all duration-200 group cursor-pointer"
+                                    :class="selectedStatus === 'suspended' ? 'border-orange-500 bg-orange-50' :
+                                        'border-gray-200 hover:border-orange-300'">
+                                    <input type="radio" wire:model="status" value="suspended" class="sr-only">
+                                    <div class="flex flex-col items-center gap-3 p-4">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
+                                            :class="selectedStatus === 'suspended' ? 'bg-orange-100' :
+                                                'bg-gray-100 group-hover:bg-orange-50'">
+                                            <svg class="w-6 h-6 transition-colors"
+                                                :class="selectedStatus === 'suspended' ? 'text-orange-600' :
+                                                    'text-gray-400 group-hover:text-orange-500'"
+                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="font-bold transition-colors"
+                                                :class="selectedStatus === 'suspended' ? 'text-orange-700' :
+                                                    'text-gray-700 group-hover:text-orange-700'">
+                                                Suspendu</p>
+                                            <p class="text-xs text-gray-500 mt-1">Accès restreint</p>
+                                        </div>
+                                    </div>
+                                </label>
 
-        {{-- Banni --}}
-        <label class="border-2 rounded-2xl transition-all duration-200 group cursor-pointer"
-            :class="selectedStatus === 'banned' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-red-300'">
-            <input type="radio" wire:model="status" value="banned" class="sr-only">
-            <div class="flex flex-col items-center gap-3 p-4">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
-                    :class="selectedStatus === 'banned' ? 'bg-red-100' : 'bg-gray-100 group-hover:bg-red-50'">
-                    <svg class="w-6 h-6 transition-colors"
-                        :class="selectedStatus === 'banned' ? 'text-red-600' : 'text-gray-400 group-hover:text-red-500'"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
-                        </path>
-                    </svg>
-                </div>
-                <div class="text-center">
-                    <p class="font-bold transition-colors"
-                        :class="selectedStatus === 'banned' ? 'text-red-700' : 'text-gray-700 group-hover:text-red-700'">
-                        Banni</p>
-                    <p class="text-xs text-gray-500 mt-1">Accès bloqué</p>
-                </div>
-            </div>
-        </label>
-    </div>
-    @error('status')
-        <p class="text-red-500 text-xs font-medium mt-2 text-center flex items-center justify-center gap-1">
-            <span>⚠</span>{{ $message }}
-        </p>
-    @enderror
-</div>
+                                {{-- Banni --}}
+                                <label class="border-2 rounded-2xl transition-all duration-200 group cursor-pointer"
+                                    :class="selectedStatus === 'banned' ? 'border-red-500 bg-red-50' :
+                                        'border-gray-200 hover:border-red-300'">
+                                    <input type="radio" wire:model="status" value="banned" class="sr-only">
+                                    <div class="flex flex-col items-center gap-3 p-4">
+                                        <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
+                                            :class="selectedStatus === 'banned' ? 'bg-red-100' :
+                                                'bg-gray-100 group-hover:bg-red-50'">
+                                            <svg class="w-6 h-6 transition-colors"
+                                                :class="selectedStatus === 'banned' ? 'text-red-600' :
+                                                    'text-gray-400 group-hover:text-red-500'"
+                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="font-bold transition-colors"
+                                                :class="selectedStatus === 'banned' ? 'text-red-700' :
+                                                    'text-gray-700 group-hover:text-red-700'">
+                                                Banni</p>
+                                            <p class="text-xs text-gray-500 mt-1">Accès bloqué</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            @error('status')
+                                <p
+                                    class="text-red-500 text-xs font-medium mt-2 text-center flex items-center justify-center gap-1">
+                                    <span>⚠</span>{{ $message }}
+                                </p>
+                            @enderror
+                        </div>
 
                         {{-- Section Sécurité (Uniquement pour la création) --}}
                         @if (!$userId)
@@ -512,7 +526,7 @@
                                                     </path>
                                                 </svg>
                                             </div>
-                                            <input type="password" wire:model="password" 
+                                            <input type="password" wire:model="password"
                                                 class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
                                                 placeholder="••••••••">
                                         </div>
@@ -596,5 +610,5 @@
         </div>
     </div>
 
-  
+
 </div>

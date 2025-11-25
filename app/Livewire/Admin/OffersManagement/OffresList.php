@@ -21,6 +21,7 @@ use Namu\WireChat\Livewire\Concerns\Widget;
 class OffresList extends Component
 {
     use WithPagination;
+    protected $paginationTheme = 'agrospace-pagination';
     use Widget;
 
     // Filtres

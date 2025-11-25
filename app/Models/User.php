@@ -287,7 +287,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // Compter les offres actives (pour les producers)
     public function activeOffersCount(): int
     {
-        return $this->offers()->where('status', 'active')->count();
+        return $this->offers()->where('statut', 'active')->count();
     }
 
     // Compter les demandes actives (pour les consommateurs)

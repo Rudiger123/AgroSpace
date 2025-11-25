@@ -152,7 +152,7 @@
         @endif
 
         <!-- Filtres et Liste principale -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 mt-8">
 
             <!-- Barre de contrôle -->
             <div class="bg-white rounded-2xl shadow-lg p-4 mb-6 sticky top-4 z-20">

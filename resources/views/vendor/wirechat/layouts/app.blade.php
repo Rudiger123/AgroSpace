@@ -153,7 +153,7 @@
 <body class="bg-gradient-to-br from-green-50 via-white to-amber-50 font-sans antialiased">
 
     {{-- Sidebar avec son propre x-data --}}
-    <aside x-data="{ open: false }"
+    <aside x-data
         x-bind:class="$store.sidebar.open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
         class="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-green-800 to-green-900 text-white shadow-2xl z-50 transition-transform duration-300">
 
@@ -181,6 +181,7 @@
         </div>
 
 
+        {{-- Navigation --}}
         {{-- Navigation --}}
         <nav class="p-4 space-y-2 overflow-y-auto h-[calc(100vh-180px)]">
             <a href="{{ route('dashboard') }}" wire:navigate
@@ -285,7 +286,7 @@
                     </svg>
                     <span class="font-medium">Mes Offres</span>
                     <span
-                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">156</span>
+                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">{{ \App\Models\Offer::where('producer_id', Auth::id())->count() }}</span>
                 </a>
             @else
                 <a href="{{ route('demands-management') }}" wire:navigate
@@ -297,7 +298,7 @@
                     </svg>
                     <span class="font-medium">Mes Demandes</span>
                     <span
-                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
+                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">{{ \App\Models\Demand::where('user_id', Auth::id())->count() }}</span>
                 </a>
             @endif
 
@@ -312,8 +313,6 @@
                         </path>
                     </svg>
                     <span class="font-medium">Mes Responses</span>
-                    <span
-                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
                 </a>
             @endif
 
@@ -326,8 +325,7 @@
                         </path>
                     </svg>
                     <span class="font-medium">Mes Avis</span>
-                    <span
-                        class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
+
                 </a>
             @endif
 
@@ -340,8 +338,7 @@
                         d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
                 <span class="font-medium">Offres Publiques</span>
-                <span
-                    class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">156</span>
+
             </a>
 
             <a href="{{ route('demands-list') }}" wire:navigate
@@ -352,8 +349,7 @@
                     </path>
                 </svg>
                 <span class="font-medium">Demandes Publiques</span>
-                <span
-                    class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">89</span>
+
             </a>
 
             <a href="/chats" wire:navigate
@@ -364,8 +360,7 @@
                     </path>
                 </svg>
                 <span class="font-medium">Messages</span>
-                <span
-                    class="ml-auto bg-amber-400 text-amber-900 text-xs px-2 py-1 rounded-full font-semibold">12</span>
+
             </a>
 
             <a href="{{ route('settings') }}" wire:navigate
