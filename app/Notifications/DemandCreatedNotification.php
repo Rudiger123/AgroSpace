@@ -37,9 +37,9 @@ class DemandCreatedNotification extends Notification implements ShouldQueue
             $channels[] = 'mail';
         }
 
-        if ($notifiable->push_notifications_enabled ?? true) {
-            $channels[] = 'broadcast';
-        }
+        // if ($notifiable->push_notifications_enabled ?? true) {
+        //     $channels[] = 'broadcast';
+        // }
 
         return $channels;
     }

@@ -16,6 +16,7 @@ use Livewire\WithPagination;
 class PublicDemands extends Component
 {
     use WithPagination;
+    protected $paginationTheme = 'agrospace-pagination';
 
     public $showResponseModal = false;
     public $showDetailsModal = false;
@@ -36,9 +37,16 @@ class PublicDemands extends Component
     protected $queryString = ['search', 'categoryFilter', 'regionFilter', 'urgencyFilter', 'sortBy'];
 
     protected $regions = [
-        'Adamaoua', 'Centre', 'Est', 'Extrême-Nord',
-        'Littoral', 'Nord', 'Nord-Ouest', 'Ouest',
-        'Sud', 'Sud-Ouest'
+        'Adamaoua',
+        'Centre',
+        'Est',
+        'Extrême-Nord',
+        'Littoral',
+        'Nord',
+        'Nord-Ouest',
+        'Ouest',
+        'Sud',
+        'Sud-Ouest'
     ];
 
     public function rules()
@@ -152,8 +160,8 @@ class PublicDemands extends Component
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%')
-                      ->orWhere('city', 'like', '%' . $this->search . '%');
+                        ->orWhere('description', 'like', '%' . $this->search . '%')
+                        ->orWhere('city', 'like', '%' . $this->search . '%');
                 });
             })
             ->when($this->categoryFilter, function ($query) {
@@ -194,5 +202,39 @@ class PublicDemands extends Component
             'regions' => $this->regions,
             'stats' => $stats,
         ]);
+    }
+
+    public function resetAllFilters()
+    {
+        $this->search = '';
+        $this->categoryFilter = '';
+        $this->regionFilter = '';
+        $this->urgencyFilter = '';
+        $this->sortBy = 'latest';
+
+        // Optionnel : Émettre un événement si nécessaire
+        $this->dispatch('filters-reset');
+    }
+
+    // Méthodes utilitaires pour le compteur de filtres
+    public function hasActiveFilters()
+    {
+        return !empty($this->search) ||
+            !empty($this->categoryFilter) ||
+            !empty($this->regionFilter) ||
+            !empty($this->urgencyFilter) ||
+            $this->sortBy !== 'latest';
+    }
+
+    public function countActiveFilters()
+    {
+        $count = 0;
+        if (!empty($this->search)) $count++;
+        if (!empty($this->categoryFilter)) $count++;
+        if (!empty($this->regionFilter)) $count++;
+        if (!empty($this->urgencyFilter)) $count++;
+        if ($this->sortBy !== 'latest') $count++;
+
+        return $count;
     }
 }

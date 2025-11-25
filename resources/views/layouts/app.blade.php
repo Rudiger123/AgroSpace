@@ -83,45 +83,44 @@
         }
     </style>
 
-    <script>
-        // Store global Alpine.js
-        document.addEventListener('alpine:init', () => {
-            Alpine.store('sidebar', {
-                open: Alpine.$persist(true),
+<script>
+    // Store global Alpine.js
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('sidebar', {
+            open: Alpine.$persist(window.innerWidth >= 1024),
 
-                init() {
-                    // Fermer sur mobile au chargement
-                    if (window.innerWidth < 1024) {
+            init() {
+                // Écouter les changements de taille d'écran
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth >= 1024) {
+                        this.open = true;
+                    } else {
                         this.open = false;
                     }
+                });
+            },
 
-                    // Écouter les changements de taille d'écran
-                    window.addEventListener('resize', () => {
-                        if (window.innerWidth < 1024) {
-                            this.open = false;
-                        }
-                    });
-                },
+            toggle() {
+                this.open = !this.open;
+            },
 
-                toggle() {
-                    console.log('toggle');
-                    this.open = !this.open;
-                },
+            close() {
+                this.open = false;
+            },
 
-                close() {
-                    console.log('close')
-                    this.open = false;
-                }
-            });
+            open() {
+                this.open = true;
+            }
         });
-    </script>
+    });
+</script>
 </head>
 
 <body class="font-sans antialiased" style="background: linear-gradient(135deg, #f8fffb 0%, #eefdf4 50%, #e5f9ed 100%);
 ">
 
     {{-- Sidebar avec son propre x-data --}}
-    <aside x-data="{ open: false }"
+   <aside x-data
         x-bind:class="$store.sidebar.open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
         class="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-green-800 to-green-900 text-white shadow-2xl z-50 transition-transform duration-300">
 
