@@ -1,115 +1,268 @@
 <div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white p-6 rounded-xl shadow-lg mb-6 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-    <input type="text" wire:model.live.debounce.300ms="search"
-    placeholder="Rechercher par message ou producteur..."
-    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 transition shadow-sm">
-    
-            <select wire:model.live="statusFilter"
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 transition shadow-sm">
-                <option value="all">Tous les Statuts</option>
-                <option value="pending">En Attente</option>
-                <option value="accepted">Accepté</option>
-                <option value="rejected">Rejeté</option>
-            </select>
+        
+        <!-- En-tête amélioré -->
+        <div class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex-1">
+                    <h1 class="text-3xl font-bold text-gray-900">Réponses aux Demandes</h1>
+                    <p class="text-gray-600 mt-2">Gérez les réponses des producteurs aux demandes des consommateurs</p>
+                </div>
+                <div class="mt-4 sm:mt-0">
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-100">
+                        <p class="text-sm text-green-800 font-medium">Réponses en attente</p>
+                        <div class="flex items-center mt-1">
+                            <div class="text-2xl font-bold text-green-900">{{ $stats['pending'] }}</div>
+                            <div class="ml-3 text-sm text-green-700">
+                                sur {{ $stats['total'] }} réponses totales
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    
-        <div class="bg-white p-6 rounded-xl shadow-lg">
+
+        <!-- Cartes Statistiques Modernes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total des réponses</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">En attente</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ $stats['pending'] }}</p>
+                        <p class="text-xs text-yellow-600 font-medium mt-1">
+                            {{ $stats['total'] > 0 ? round(($stats['pending'] / $stats['total']) * 100, 1) : 0 }}% du total
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Acceptées</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ $stats['accepted'] }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Rejetées</p>
+                        <p class="text-2xl font-bold text-gray-900">{{ $stats['rejected'] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtres et Recherche Modernes -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:space-x-4 space-y-4 lg:space-y-0">
+                <div class="flex-1">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <input type="text" wire:model.live.debounce.300ms="search"
+                            placeholder="Rechercher par message ou nom de producteur..."
+                            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition duration-150 ease-in-out">
+                    </div>
+                </div>
+                
+                <div class="flex-shrink-0">
+                    <select wire:model.live="statusFilter"
+                        class="block w-full lg:w-48 pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 rounded-lg transition duration-150 ease-in-out">
+                        <option value="all">Tous les statuts</option>
+                        <option value="pending">En attente</option>
+                        <option value="accepted">Accepté</option>
+                        <option value="rejected">Rejeté</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau Modern -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
-                    <thead>
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th
-                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                ID</th>
-                            <th
-                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Producteur</th>
-                            <th
-                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Demande Concernée</th>
-                            <th
-                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Prix Proposé</th>
-                            <th
-                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Statut</th>
-                            <th
-                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Réponse</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producteur</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Demande</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200">
+                    <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($responses as $response)
-                            <tr>
-                                <td class="px-6 py-4 text-sm text-gray-500">{{ $response->id }}</td>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                                    {{ $response->user->name ?? 'N/A' }}
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-500">
-                                    {{ $response->demand->title ?? 'Demande supprimée' }}
-                                </td>
-                                <td class="px-6 py-4 text-sm font-semibold text-primary-600">
-                                    {{ number_format($response->proposed_price, 0, ',', ' ') }} F CFA
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0">
+                                            <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">#{{ $response->id }}</div>
+                                            <div class="text-sm text-gray-500 max-w-xs truncate">{{ Str::limit($response->message, 10) }}</div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span
-                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $response->status_badge_color }}">
+                                    <div class="text-sm text-gray-900">{{ $response->user->name ?? 'N/A' }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ Str::limit($response->demand->title, 30) }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-semibold text-primary-600">{{ number_format($response->proposed_price, 0, ',', ' ') }} F CFA</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @php
+                                        $statusColors = [
+                                            'pending' => 'bg-yellow-100 text-yellow-800',
+                                            'accepted' => 'bg-green-100 text-green-800', 
+                                            'rejected' => 'bg-red-100 text-red-800'
+                                        ];
+                                        $color = $statusColors[$response->status] ?? 'bg-gray-100 text-gray-800';
+                                    @endphp
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $color }}">
                                         {{ ucfirst($response->status) }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    @if ($response->status === 'pending' && auth()->user()->isConsumer())
-                                        <button wire:click="openAcceptModal({{ $response->id }})"
-                                            class="text-green-600 hover:text-green-900 mr-3 transition">Accepter</button>
-                                        <button wire:click="openRejectModal({{ $response->id }})"
-                                            class="text-red-600 hover:text-red-900 transition">Rejeter</button>
-                                    @elseif ($response->status === 'accepted')
-                                        <span class="text-gray-500 italic">Validée</span>
-                                    @elseif ($response->status === 'rejected')
-                                        <span class="text-gray-500 italic">Rejetée</span>
-                                    @endif
-                                    <button wire:click="openDetailsModal({{ $response->id }})"
-                                        class="text-indigo-600 hover:text-indigo-900 ml-3 transition">Détails</button>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        @if ($response->status === 'pending' && auth()->user()->isConsumer())
+                                            <button wire:click="openAcceptModal({{ $response->id }})"
+                                                class="inline-flex items-center px-3 py-1.5 border border-green-300 shadow-sm text-sm font-medium rounded-lg text-green-700 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                Accepter
+                                            </button>
+                                            <button wire:click="openRejectModal({{ $response->id }})"
+                                                class="inline-flex items-center px-3 py-1.5 border border-red-300 shadow-sm text-sm font-medium rounded-lg text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                                </svg>
+                                                Rejeter
+                                            </button>
+                                        @elseif ($response->status === 'accepted')
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Validée
+                                            </span>
+                                        @elseif ($response->status === 'rejected')
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                Rejetée
+                                            </span>
+                                        @endif
+                                        <button wire:click="openDetailsModal({{ $response->id }})"
+                                            class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                            Détails
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-8 text-gray-500">Aucune réponse trouvée.</td>
+                                <td colspan="6" class="px-6 py-12 text-center">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <p class="text-lg font-medium text-gray-900 mb-2">Aucune réponse trouvée</p>
+                                        <p class="text-gray-500">Aucune réponse ne correspond à vos critères de recherche.</p>
+                                    </div>
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-            <div class="mt-4">{{ $responses->links() }}</div>
+
+            <!-- Pagination -->
+            <div class="bg-white px-6 py-4 border-t border-gray-200">
+                {{ $responses->links() }}
+            </div>
         </div>
     
     </div>
     
-    <!-- Modale de Confirmation d'ACCEPTATION -->
+    <!-- Modales -->
     <x-livewire.confirmation-modal wire:model="showAcceptModal"
-        title="Accepter cette Offre ?"
+        title="Accepter cette offre"
         content="En acceptant, la réponse sera marquée comme 'acceptée' et une conversation de chat instantané sera créée entre le consommateur (vous) et le producteur. Le producteur sera notifié par email."
-        button-text="Oui, Accepter l'Offre"
+        button-text="Oui, accepter l'offre"
         button-color="bg-green-600 hover:bg-green-700"
         wire:click="acceptResponse"
         wire:loading.attr="disabled"
     />
     
-    <!-- Modale de Confirmation de REJET -->
     <x-livewire.confirmation-modal wire:model="showRejectModal"
-        title="Rejeter cette Offre ?"
+        title="Rejeter cette offre"
         content="Confirmez-vous le rejet de cette réponse ? Le statut passera à 'rejeté' et le producteur en sera informé par email. Cette action est irréversible."
-        button-text="Oui, Rejeter l'Offre"
+        button-text="Oui, rejeter l'offre"
         button-color="bg-red-600 hover:bg-red-700"
         wire:click="rejectResponse"
         wire:loading.attr="disabled"
     />
     
-    <!-- Modale de Détails (Utilisation de la modale générique) -->
-    <x-livewire.modal wire:model="showDetailsModal" maxWidth="sm:max-w-xl">
+    <x-livewire.modal wire:model="showDetailsModal" maxWidth="sm:max-w-2xl">
         <x-slot name="title">
-            Détails de la Réponse #{{ $selectedResponseId }}
+            <div class="flex items-center">
+                <svg class="w-6 h-6 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Détails de la réponse #{{ $selectedResponseId }}
+            </div>
         </x-slot>
     
         @if ($selectedResponseId)
@@ -118,68 +271,74 @@
             @endphp
             
             @if($response)
-                <div class="space-y-4 text-gray-700">
-                    <p><strong>Producteur:</strong> {{ $response->user->name ?? 'N/A' }}</p>
-                    <p><strong>Demande:</strong> {{ $response->demand->titre ?? 'N/A' }}</p>
-                    <p><strong>Prix Proposé:</strong> <span class="font-bold text-primary-600">{{ number_format($response->proposed_price, 0, ',', ' ') }} F CFA</span></p>
-                    <p><strong>Statut:</strong> <span class="font-semibold text-sm px-2 py-1 rounded-full {{ $response->status_badge_color }}">{{ ucfirst($response->status) }}</span></p>
-                    <div class="bg-gray-50 p-4 rounded-lg border">
-                        <p class="font-semibold mb-2">Message du Producteur:</p>
-                        <p class="italic text-gray-600 whitespace-pre-wrap">{{ $response->message }}</p>
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Informations générales</h3>
+                            <dl class="mt-2 space-y-2">
+                                <div>
+                                    <dt class="text-xs text-gray-500">Producteur</dt>
+                                    <dd class="text-sm font-medium text-gray-900">{{ $response->user->name ?? 'N/A' }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-xs text-gray-500">Demande</dt>
+                                    <dd class="text-sm font-medium text-gray-900">{{ $response->demand->title ?? 'N/A' }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-xs text-gray-500">Prix proposé</dt>
+                                    <dd class="text-sm font-semibold text-primary-600">{{ number_format($response->proposed_price, 0, ',', ' ') }} F CFA</dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">Statut</h3>
+                            <dl class="mt-2 space-y-2">
+                                <div>
+                                    <dt class="text-xs text-gray-500">Statut</dt>
+                                    <dd>
+                                        @php
+                                            $statusColors = [
+                                                'pending' => 'bg-yellow-100 text-yellow-800',
+                                                'accepted' => 'bg-green-100 text-green-800',
+                                                'rejected' => 'bg-red-100 text-red-800'
+                                            ];
+                                            $color = $statusColors[$response->status] ?? 'bg-gray-100 text-gray-800';
+                                        @endphp
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $color }}">
+                                            {{ ucfirst($response->status) }}
+                                        </span>
+                                    </dd>
+                                </div>
+                                <div>
+                                    <dt class="text-xs text-gray-500">Date de création</dt>
+                                    <dd class="text-sm text-gray-900">{{ $response->created_at->format('d/m/Y à H:i') }}</dd>
+                                </div>
+                            </dl>
+                        </div>
                     </div>
-                    <p class="text-xs text-gray-400">Réponse créée le {{ $response->created_at->format('d/m/Y à H:i') }}</p>
+
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-3">Message du producteur</h3>
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                            <p class="text-gray-700 whitespace-pre-wrap leading-relaxed">{{ $response->message }}</p>
+                        </div>
+                    </div>
                 </div>
             @else
-                <p>Chargement des détails...</p>
+                <p class="text-gray-500 text-center py-8">Chargement des détails...</p>
             @endif
         @else
-            <p>Sélectionnez une réponse pour voir les détails.</p>
+            <p class="text-gray-500 text-center py-8">Sélectionnez une réponse pour voir les détails.</p>
         @endif
     
         <x-slot name="footer">
-             <button x-on:click="$dispatch('close')"
-                class="w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-6 py-3 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:w-auto sm:text-sm transition duration-150 ease-in-out">
-                Fermer
-            </button>
+            <div class="flex justify-end space-x-3">
+                <button x-on:click="$dispatch('close')"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
+                    Fermer
+                </button>
+            </div>
         </x-slot>
     </x-livewire.modal>
     
-    
-    @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            document.addEventListener('livewire:init', () => {
-                Livewire.on('alert', (event) => {
-                    const data = event[0] || event;
-                    Swal.fire({
-                        icon: data.type,
-                        title: data.type === 'success' ? 'Succès !' : data.type === 'error' ?
-                            'Erreur !' : data.type === 'warning' ? 'Attention !' : 'Information',
-                        text: data.message,
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 4000,
-                        timerProgressBar: true,
-                    });
-                });
-    
-                // Écouteur pour fermer la modale après redirection/action réussie
-                Livewire.on('toast', (event) => {
-                    const data = event[0] || event;
-                    Swal.fire({
-                        icon: data.type,
-                        title: data.message,
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 4000,
-                        timerProgressBar: true,
-                    });
-                });
-            });
-        </script>
-    @endpush
-    
-    
-    </div>
+</div>
