@@ -117,7 +117,8 @@
     </script>
 </head>
 
-<body class=" bg-accent font-sans antialiased">
+<body class="font-sans antialiased" style="background: linear-gradient(135deg, #f8fffb 0%, #eefdf4 50%, #e5f9ed 100%);
+">
 
     {{-- Sidebar avec son propre x-data --}}
     <aside x-data="{ open: false }"

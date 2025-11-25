@@ -13,10 +13,8 @@ use Namu\WireChat\Livewire\Chats\Chats;
 use Namu\WireChat\Livewire\Concerns\Widget;
 use Namu\WireChat\Livewire\Widgets\WireChat as WidgetsWireChat;
 use Namu\WireChat\Models\Message;
-use App\Notifications\DemandResponseAccepted; // Importation de la notification
-use App\Notifications\DemandResponseRejected; // Importation de la notification
-
-// Nécessaire pour les notifications
+use App\Notifications\DemandResponseAccepted;
+use App\Notifications\DemandResponseRejected;
 
 #[Layout('layouts.app')]
 #[Title('Gestion des Réponses aux Demandes')]
@@ -25,35 +23,58 @@ class DemandResponseManagement extends Component
     use WithPagination;
     use Widget;
 
-    // Filtres
     public $search = '';
-    public $statusFilter = 'pending'; // pending, accepted, rejected, all
+    public $statusFilter = 'pending';
     public $sortBy = 'created_at';
     public $sortDirection = 'desc';
     public $isAdmin;
 
-    // Modales & Actions
     public $showDetailsModal = false;
     public $showAcceptModal = false;
-    public $showRejectModal = false; // Ajout de la modale de rejet
+    public $showRejectModal = false;
     public $selectedResponseId = null;
-    public $rejectionReason = ''; // Pour une raison de rejet si nécessaire
+    public $rejectionReason = '';
+
+    public $stats = [];
 
     protected $queryString = ['search', 'statusFilter'];
+
     public function mount()
     {
-        // Supposons que l'Admin a un rôle 'admin'
         $this->isAdmin = Auth::user()->isAdmin();
+        $this->loadStats();
     }
 
-    // Événements d'écoute
+    public function loadStats()
+    {
+        $userId = Auth::id();
+        
+        $baseQuery = DemandResponse::query()
+            ->when(!$this->isAdmin, function ($q) use ($userId) {
+                return $q->whereHas('demand', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                });
+            });
+
+        $this->stats['total'] = (clone $baseQuery)->count();
+        $this->stats['pending'] = (clone $baseQuery)->where('status', 'pending')->count();
+        $this->stats['accepted'] = (clone $baseQuery)->where('status', 'accepted')->count();
+        $this->stats['rejected'] = (clone $baseQuery)->where('status', 'rejected')->count();
+    }
+
     public function updatingSearch()
     {
         $this->resetPage();
     }
+
     public function updatingStatusFilter()
     {
         $this->resetPage();
+    }
+
+    public function updated()
+    {
+        $this->loadStats();
     }
 
     public function closeModals()
@@ -69,7 +90,6 @@ class DemandResponseManagement extends Component
     {
         $userId = Auth::id();
         $responses = DemandResponse::with(['user:id,name', 'demand:id,title'])
-            // CONVENTION: Admin voit TOUT. consomateur voit SEULEMENT ses responses.
             ->when(!$this->isAdmin, function ($q) use ($userId) {
                 return $q->where(function ($query) use ($userId) {
                     $query->whereHas('demand', function ($subQuery) use ($userId) {
@@ -90,68 +110,57 @@ class DemandResponseManagement extends Component
         ]);
     }
 
-    // Ouvre la modale d'acceptation
     public function openAcceptModal($responseId)
     {
         $this->selectedResponseId = $responseId;
         $this->showAcceptModal = true;
     }
 
-    // Ouvre la modale de rejet
     public function openRejectModal($responseId)
     {
         $this->selectedResponseId = $responseId;
         $this->showRejectModal = true;
     }
 
-    // Rejeter la réponse (implémentation simple)
     public function rejectResponse()
     {
         $response = DemandResponse::findOrFail($this->selectedResponseId);
 
-        // 1. Mettre à jour le statut
         $response->status = 'rejected';
         $response->save();
 
-        // 2. Envoyer la notification par email au producteur
         $producer = $response->user;
         if ($producer) {
             $producer->notify(new DemandResponseRejected($response));
         }
 
         $this->closeModals();
+        $this->loadStats();
         $this->dispatch('toast', ['type' => 'info', 'message' => "Réponse de {$producer->name} à la demande #{$response->demand_id} rejetée et producteur notifié."]);
     }
 
-
-    // Accepter la réponse (logique existante + notification)
     public function acceptResponse()
     {
         $response = DemandResponse::with(['user', 'demand.user'])->findOrFail($this->selectedResponseId);
 
-        // Vérifier si la demande a déjà une réponse acceptée
         if ($response->demand->responses()->where('status', 'accepted')->exists()) {
             $this->closeModals();
             $this->dispatch('toast', ['type' => 'warning', 'message' => 'Une réponse a déjà été acceptée pour cette demande.']);
             return;
         }
 
-        // 1. Mettre à jour le statut de la réponse
         $response->status = 'accepted';
         $response->save();
 
-        // 2. Notification par email au producteur
         $producer = $response->user;
         if ($producer) {
             $producer->notify(new DemandResponseAccepted($response));
         }
 
-        // 3. Création de la conversation
         $consumer = $response->demand->user;
 
         $createdConversation = Auth::user()->createConversationWith($producer);
 
-        // Message initial
         $response_title = $response->demand->title;
         $response_date = $response->created_at->format('d/m/Y');
 
@@ -180,6 +189,7 @@ class DemandResponseManagement extends Component
         }
 
         $this->closeModals();
+        $this->loadStats();
         $this->dispatch('toast', [
             'type' => 'success',
             'message' => 'Réponse acceptée. La conversation a été initiée ou mise à jour.'
