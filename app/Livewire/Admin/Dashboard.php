@@ -20,8 +20,8 @@ use Livewire\Component;
 class Dashboard extends Component
 {
     public $user;
-    public $dateRange = '30'; // Jours par défaut
-    
+    public $dateRange = '30';
+
     public function mount()
     {
         $this->user = Auth::user();
@@ -52,6 +52,9 @@ class Dashboard extends Component
 
     private function getAdminStats()
     {
+        $today = now()->today();
+        $yesterday = now()->yesterday();
+
         return [
             'total_users' => User::count(),
             'active_users' => User::where('status', 'active')->count(),
@@ -60,39 +63,45 @@ class Dashboard extends Component
             'total_demands' => Demand::count(),
             'active_demands' => Demand::where('status', 'active')->count(),
             'total_posts' => Post::count(),
-            'published_posts' => Post::where('is_published', true)->count(),
-            'total_comments' => Comment::where('is_approved', true)->count(),
-            'pending_comments' => Comment::where('is_approved', false)->count(),
+            'published_posts' => Post::where('published', true)->count(),
+            'total_comments' => Comment::count(),
+            'pending_comments' => Comment::where("status", "pending")->count(),
             'avg_rating' => round(Avis::where('is_visible', true)->avg('note') ?? 0, 2),
-            'new_users_today' => User::whereDate('created_at', today())->count(),
+            'new_users_today' => User::whereDate('created_at', $today)->count(),
         ];
     }
 
     private function getProducerStats()
     {
+        $userOffers = $this->user->offers();
+
         return [
-            'total_offers' => $this->user->offers()->count(),
-            'active_offers' => $this->user->offers()->where('statut', 'validé')->count(),
-            'expired_offers' => $this->user->offers()->where('statut', 'expirée')->count(),
-            'sold_offers' => $this->user->offers()->where('statut', 'vendue')->count(),
-            'total_views' => $this->user->offers()->sum('views_count'),
-            'total_contacts' => $this->user->offers()->sum('contacts_count'),
+            'total_offers' => $userOffers->count(),
+            'active_offers' => $userOffers->where('statut', 'validé')->count(),
+            'expired_offers' => $userOffers->where('statut', 'expirée')->count(),
+            'sold_offers' => $userOffers->where('statut', 'vendue')->count(),
+            'total_views' => $userOffers->sum('views_count'),
+            'total_contacts' => $userOffers->sum('contacts_count'),
             'avg_rating' => $this->user->avisRecus()->where('is_visible', true)->avg('note') ?? 0,
             'total_reviews' => $this->user->avisRecus()->where('is_visible', true)->count(),
-            'pending_offers' => $this->user->offers()->where('statut', 'en attente')->count(),
+            'pending_offers' => $userOffers->where('statut', 'en attente')->count(),
             'conversion_rate' => $this->calculateConversionRate(),
         ];
     }
 
     private function getConsumerStats()
     {
+        $userDemands = $this->user->demands();
+
         return [
-            'total_demands' => $this->user->demands()->count(),
-            'active_demands' => $this->user->demands()->where('status', 'active')->count(),
-            'satisfied_demands' => $this->user->demands()->where('status', 'satisfied')->count(),
-            'expired_demands' => $this->user->demands()->where('status', 'expired')->count(),
-            'total_responses' => $this->user->demands()->withCount('responses')->get()->sum('responses_count'),
-            'avg_views' => round($this->user->demands()->avg('views_count') ?? 0),
+            'total_demands' => $userDemands->count(),
+            'active_demands' => $userDemands->where('status', 'active')->count(),
+            'satisfied_demands' => $userDemands->where('status', 'satisfied')->count(),
+            'expired_demands' => $userDemands->where('status', 'expired')->count(),
+            'total_responses' => DB::table('demand_responses')
+                ->whereIn('demand_id', $userDemands->pluck('id'))
+                ->count(),
+            'avg_views' => round($userDemands->avg('views_count') ?? 0),
             'reviews_given' => $this->user->avisDonnes()->count(),
             'favorite_offers' => 0,
         ];
@@ -112,28 +121,33 @@ class Dashboard extends Component
     private function getAdminChartData()
     {
         $days = (int) $this->dateRange;
-        
-        $userGrowth = User::selectRaw('DATE(created_at) as date, COUNT(*) as count')
-            ->where('created_at', '>=', now()->subDays($days))
+        $startDate = now()->subDays($days);
+
+        // Évolution des utilisateurs avec données réelles
+        $userGrowth = User::selectRaw("DATE(created_at) as date, COUNT(*) as count")
+            ->where('created_at', '>=', $startDate)
             ->groupBy('date')
             ->orderBy('date')
             ->get();
 
+        // Offres par catégorie avec données réelles
         $offersByCategory = Offer::selectRaw('categories.name as category, COUNT(*) as count')
             ->join('categories', 'offers.category_id', '=', 'categories.id')
-            ->where('offers.created_at', '>=', now()->subDays($days))
-            ->groupBy('categories.name')
+            ->where('offers.created_at', '>=', $startDate)
+            ->groupBy('categories.name', 'categories.id')
             ->orderByDesc('count')
             ->limit(6)
             ->get();
 
+        // Utilisateurs par rôle avec données réelles
         $usersByRole = User::selectRaw('roles.name as role, COUNT(*) as count')
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->groupBy('roles.name')
+            ->groupBy('roles.name', 'roles.id')
             ->get();
 
-        $dailyActivity = ActivityLog::selectRaw('DATE(created_at) as date, COUNT(*) as count')
-            ->where('created_at', '>=', now()->subDays($days))
+        // Activité journalière avec données réelles
+        $dailyActivity = ActivityLog::selectRaw("DATE(created_at) as date, COUNT(*) as count")
+            ->where('created_at', '>=', $startDate)
             ->groupBy('date')
             ->orderBy('date')
             ->get();
@@ -161,14 +175,17 @@ class Dashboard extends Component
     private function getProducerChartData()
     {
         $days = (int) $this->dateRange;
-        
+        $startDate = now()->subDays($days);
+
+        // Vues des offres avec données réelles
         $offerViews = $this->user->offers()
-            ->selectRaw('DATE(created_at) as date, SUM(views_count) as views')
-            ->where('created_at', '>=', now()->subDays($days))
+            ->selectRaw("DATE(created_at) as date, COALESCE(SUM(views_count), 0) as views")
+            ->where('created_at', '>=', $startDate)
             ->groupBy('date')
             ->orderBy('date')
             ->get();
 
+        // Distribution des notes avec données réelles
         $ratingDistribution = Avis::where('producer_id', $this->user->id)
             ->where('is_visible', true)
             ->selectRaw('note, COUNT(*) as count')
@@ -177,20 +194,27 @@ class Dashboard extends Component
             ->pluck('count', 'note')
             ->toArray();
 
+        // Remplir toutes les notes de 1 à 5
         $fullDistribution = [];
         for ($i = 1; $i <= 5; $i++) {
             $fullDistribution[$i] = $ratingDistribution[$i] ?? 0;
         }
 
+        // Statut des offres avec données réelles
         $offerStatus = $this->user->offers()
             ->selectRaw('statut, COUNT(*) as count')
             ->groupBy('statut')
             ->get();
 
+        // Performances mensuelles avec données réelles
         $monthlyPerformance = $this->user->offers()
-            ->selectRaw('EXTRACT(MONTH FROM created_at) as month, COUNT(*) as total, SUM(CASE WHEN statut = \'vendue\' THEN 1 ELSE 0 END) as sold')
+            ->selectRaw("EXTRACT(MONTH FROM created_at) as month, 
+                        EXTRACT(YEAR FROM created_at) as year,
+                        COUNT(*) as total, 
+                        COALESCE(SUM(CASE WHEN statut = 'vendue' THEN 1 ELSE 0 END), 0) as sold")
             ->where('created_at', '>=', now()->subMonths(6))
-            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
+            ->groupBy('year', 'month')
+            ->orderBy('year')
             ->orderBy('month')
             ->get();
 
@@ -208,7 +232,10 @@ class Dashboard extends Component
                 'counts' => $offerStatus->pluck('count'),
             ],
             'monthly_performance' => [
-                'months' => $monthlyPerformance->pluck('month')->map(fn($m) => \Carbon\Carbon::create()->month((int)$m)->format('M')),
+                'months' => $monthlyPerformance->map(
+                    fn($item) =>
+                    \Carbon\Carbon::create((int)$item->year, (int)$item->month)->format('M Y')
+                ),
                 'total' => $monthlyPerformance->pluck('total'),
                 'sold' => $monthlyPerformance->pluck('sold'),
             ],
@@ -218,31 +245,29 @@ class Dashboard extends Component
     private function getConsumerChartData()
     {
         $days = (int) $this->dateRange;
-        
+        $startDate = now()->subDays($days);
+
+        // Évolution des demandes avec données réelles
         $demandTrend = $this->user->demands()
-            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
-            ->where('created_at', '>=', now()->subDays($days))
+            ->selectRaw("DATE(created_at) as date, COUNT(*) as count")
+            ->where('created_at', '>=', $startDate)
             ->groupBy('date')
             ->orderBy('date')
             ->get();
 
+        // Statut des demandes avec données réelles
         $demandStatus = $this->user->demands()
             ->selectRaw('status, COUNT(*) as count')
             ->groupBy('status')
             ->get();
 
+        // Réponses reçues avec données réelles
         $responsesReceived = $this->user->demands()
             ->withCount('responses')
-            ->where('created_at', '>=', now()->subDays($days))
-            ->get()
-            ->map(function($demand) {
-                return [
-                    'title' => $demand->title,
-                    'responses' => $demand->responses_count,
-                ];
-            })
-            ->sortByDesc('responses')
-            ->take(5);
+            ->where('created_at', '>=', $startDate)
+            ->orderByDesc('responses_count')
+            ->limit(5)
+            ->get();
 
         return [
             'demand_trend' => [
@@ -255,7 +280,7 @@ class Dashboard extends Component
             ],
             'responses_received' => [
                 'demands' => $responsesReceived->pluck('title'),
-                'responses' => $responsesReceived->pluck('responses'),
+                'responses' => $responsesReceived->pluck('responses_count'),
             ],
         ];
     }
@@ -279,20 +304,22 @@ class Dashboard extends Component
     {
         if ($this->user->isAdmin()) {
             return [
-                'top_producers' => User::whereHas('role', function($q) {
+                'top_producers' => User::whereHas('role', function ($q) {
                     $q->where('name', 'producer');
                 })
-                ->withCount(['offers' => function($q) {
-                    $q->where('statut', 'validé');
-                }])
-                ->orderByDesc('offers_count')
-                ->take(5)
-                ->get(),
+                    ->withCount(['offers' => function ($q) {
+                        $q->where('statut', 'validé');
+                    }])
+                    ->withAvg('avisRecus as note_moyenne', 'note')
+                    ->orderByDesc('offers_count')
+                    ->take(5)
+                    ->get(),
                 'top_offers' => Offer::where('statut', 'validé')
+                    ->with('producer')
                     ->orderByDesc('views_count')
                     ->take(5)
                     ->get(),
-                'recent_posts' => Post::where('is_published', true)
+                'recent_posts' => Post::where('published', true)
                     ->latest('created_at')
                     ->take(5)
                     ->get(),
@@ -314,10 +341,12 @@ class Dashboard extends Component
             return [
                 'active_demands' => $this->user->demands()
                     ->where('status', 'active')
+                    ->withCount('responses')
                     ->latest()
                     ->take(5)
                     ->get(),
                 'recommended_offers' => Offer::where('statut', 'validé')
+                    ->with('producer')
                     ->inRandomOrder()
                     ->take(5)
                     ->get(),
@@ -329,7 +358,7 @@ class Dashboard extends Component
     {
         $total = $this->user->offers()->count();
         if ($total === 0) return 0;
-        
+
         $sold = $this->user->offers()->where('statut', 'vendue')->count();
         return round(($sold / $total) * 100, 2);
     }
@@ -346,7 +375,7 @@ class Dashboard extends Component
             'total_posts' => '#06b6d4, #0891b2',
             'published_posts' => '#10b981, #059669',
         ];
-        
+
         return $colors[$key] ?? '#6b7280, #4b5563';
     }
 
@@ -362,7 +391,7 @@ class Dashboard extends Component
             'total_posts' => 'from-cyan-400 to-cyan-500',
             'published_posts' => 'from-green-400 to-emerald-500',
         ];
-        
+
         return $gradients[$key] ?? 'from-gray-400 to-gray-500';
     }
 
@@ -378,7 +407,7 @@ class Dashboard extends Component
             'total_posts' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>',
             'published_posts' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>',
         ];
-        
+
         return $icons[$key] ?? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>';
     }
 
@@ -409,7 +438,7 @@ class Dashboard extends Component
             'pending_comments' => 'Commentaires en Attente',
             'new_users_today' => 'Nouveaux Aujourd\'hui',
         ];
-        
+
         return $labels[$key] ?? ucfirst(str_replace('_', ' ', $key));
     }
 
@@ -427,7 +456,7 @@ class Dashboard extends Component
     private function getMaxForStat($key)
     {
         if ($this->user->isAdmin()) {
-            return match($key) {
+            return match ($key) {
                 'total_users' => 1000,
                 'total_offers' => 500,
                 'total_demands' => 500,
@@ -435,14 +464,14 @@ class Dashboard extends Component
                 default => 100
             };
         } elseif ($this->user->isProducer()) {
-            return match($key) {
+            return match ($key) {
                 'total_offers' => 50,
                 'total_views' => 5000,
                 'total_contacts' => 200,
                 default => 100
             };
         } else {
-            return match($key) {
+            return match ($key) {
                 'total_demands' => 20,
                 'total_responses' => 50,
                 default => 100
