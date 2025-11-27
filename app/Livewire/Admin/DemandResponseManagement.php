@@ -48,7 +48,7 @@ class DemandResponseManagement extends Component
     public function loadStats()
     {
         $userId = Auth::id();
-        
+
         $baseQuery = DemandResponse::query()
             ->when(!$this->isAdmin, function ($q) use ($userId) {
                 return $q->whereHas('demand', function ($query) use ($userId) {

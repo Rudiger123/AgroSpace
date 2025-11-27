@@ -22,21 +22,6 @@ window.Echo = new Echo({
     disableStats: true,
 });
 
-window.Echo.channel('notifications')
-    .listen('NewOfferCreated', (e) => {
-        // Jouer le son
-        const audio = new Audio('/sounds/notification.mp3');
-        audio.play();
-
-        // Afficher la notification visuelle
-        alert(`Nouvelle offre: ${e.offer.title}`);
-    });
-
-
-// Nous ne devons pas initialiser Alpine ici, Livewire le fera.
-// Mais nous devons enregistrer le plugin lorsque Alpine est disponible.
-// Livewire exposera Alpine via window.Alpine après son initialisation.
-
 // Configuration SweetAlert2
 window.Swal = Swal;
 

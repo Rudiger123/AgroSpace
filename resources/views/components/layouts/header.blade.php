@@ -3,7 +3,8 @@
     <nav class="container mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
             <!-- Logo -->
-            <a href="#" class="flex items-center space-x-2 group">
+            <a href="{{ route('home') }}" wire:navigate
+             class="flex items-center space-x-2 group">
                 <img src="{{ asset('images/logo.png') }}" alt="Agrospace" class="w-12 h-12">
                 <span class="text-2xl font-bold text-primary">AgroSpace</span>
             </a>

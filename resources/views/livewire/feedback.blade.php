@@ -199,19 +199,6 @@ new #[Layout('layouts.main')] class extends Component {
         </div>
     </div>
 
-    {{-- BOUTON SCROLL TOP (inchangé)
-    <div x-data="{ show: false }" @scroll.window="show = window.scrollY > 500" class="fixed bottom-8 right-8 z-50">
-        <button x-show="show" x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0"
-                x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-y-0"
-                x-transition:leave-end="opacity-0 translate-y-10" @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
-                class="bg-green-600 text-white w-12 h-12 rounded-full shadow-lg hover:bg-green-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-green-500/30">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-            </svg>
-        </button>
-    </div> --}}
-
     {{-- STYLES D'ANIMATION --}}
     <style>
         @keyframes blob {
