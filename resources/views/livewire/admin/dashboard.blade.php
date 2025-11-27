@@ -1,717 +1,560 @@
-<div>
-    {{-- Inclure ApexCharts depuis CDN --}}
-    @push('styles')
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <style>
-            .agrospace-gradient {
-                background: linear-gradient(135deg, #1e4620 0%, #2d5a2f 50%, #3a7040 100%);
-            }
-            .agrospace-card {
-                background: linear-gradient(to bottom right, #ffffff 0%, #f8faf7 100%);
-                border-left: 4px solid #2d5a2f;
-                transition: all 0.3s ease;
-            }
-            .agrospace-card:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 12px 24px rgba(45, 90, 47, 0.15);
-            }
-            .stat-icon-wrapper {
-                background: linear-gradient(135deg, #d4e7d4 0%, #e8f5e8 100%);
-                transition: all 0.3s ease;
-            }
-            .agrospace-card:hover .stat-icon-wrapper {
-                transform: scale(1.1) rotate(5deg);
-            }
-            .chart-card {
-                background: white;
-                border-radius: 16px;
-                box-shadow: 0 4px 16px rgba(30, 70, 32, 0.08);
-                border: 1px solid #e8f5e8;
-                transition: all 0.3s ease;
-            }
-            .chart-card:hover {
-                box-shadow: 0 8px 24px rgba(30, 70, 32, 0.12);
-            }
-            .agrospace-badge {
-                background: linear-gradient(135deg, #2d5a2f 0%, #3a7040 100%);
-                color: white;
-                padding: 0.5rem 1rem;
-                border-radius: 20px;
-                font-weight: 600;
-                display: inline-block;
-                box-shadow: 0 2px 8px rgba(45, 90, 47, 0.3);
-            }
-            .table-header {
-                background: linear-gradient(to right, #f0f7f0 0%, #e8f5e8 100%);
-                border-bottom: 2px solid #2d5a2f;
-            }
-            .status-badge {
-                padding: 0.375rem 0.75rem;
-                border-radius: 12px;
-                font-size: 0.813rem;
-                font-weight: 600;
-                letter-spacing: 0.3px;
-            }
-        </style>
-    @endpush
-
-    {{-- En-tête Hero avec gradient AgroSpace --}}
-    <div class="agrospace-gradient py-8 mb-8 shadow-lg">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold text-white mb-2 tracking-tight">
-                    🌾 Bienvenue sur AgroSpace
-                </h1>
-                <p class="text-xl text-green-100">
-                    Votre écosystème agropastoral intelligent
-                </p>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-emerald-50">
+    {{-- Header avec animation --}}
+    <div class="bg-white shadow-lg border-b border-green-100" x-data="{ scrolled: false }" 
+         @scroll.window="scrolled = window.pageYOffset > 20">
+         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 transition-all duration-300"
+         :class="scrolled ? 'py-4' : 'py-6'">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <!-- Section utilisateur -->
+            <div class="flex items-center space-x-4">
+                <!-- Avatar avec effet amélioré -->
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full blur-lg opacity-70 group-hover:opacity-100 transition-all duration-300 animate-pulse"></div>
+                    <div class="relative h-20 w-20 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white p-1">
+                        <img src="{{ auth()->user()->avatar_url }}" 
+                             alt="Avatar de {{ auth()->user()->name }}" 
+                             class="h-full w-full rounded-full object-cover transition-transform duration-300 group-hover:scale-105">
+                    </div>
+                    <!-- Badge de statut -->
+                    <div class="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-green-500 border-2 border-white flex items-center justify-center">
+                        <svg class="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Informations utilisateur -->
+                <div class="space-y-2">
+                    <div>
+                        <h1 class="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                            Bonjour, {{ auth()->user()->name }}! 👋
+                        </h1>
+                        <p class="text-gray-600 mt-1 max-w-md">
+                            Bienvenue sur votre tableau de bord. Voici un aperçu de votre activité récente.
+                        </p>
+                    </div>
+                    
+                    <!-- Badge de rôle et informations supplémentaires -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ auth()->user()->getRoleBadge()['class'] }}">
+                            {!! auth()->user()->getRoleBadge()['label'] !!}
+                        </span>
+                        
+                        <!-- Date d'inscription ou autre information -->
+                        <span class="inline-flex items-center text-xs text-gray-500">
+                            <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            Membre depuis {{ auth()->user()->created_at->format('M Y') }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contrôles et actions -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full lg:w-auto">
+                <!-- Sélecteur de période -->
+                <div class="relative">
+                    <select wire:model.live="dateRange" 
+                            class="appearance-none rounded-xl border-gray-200 shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm pl-4 pr-10 py-2.5 bg-white transition-all duration-200 hover:shadow-md">
+                        <option value="7">7 derniers jours</option>
+                        <option value="30">30 derniers jours</option>
+                        <option value="90">90 derniers jours</option>
+                        <option value="365">Cette année</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="pb-8">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-
-            <!-- Cartes de statistiques AgroSpace -->
-            <div class="grid grid-cols-1 gap-6 mb-10 md:grid-cols-2 lg:grid-cols-4">
-                <!-- Carte : Utilisateurs (Admin) -->
-                @if (auth()->user()->isAdmin())
-                    <div class="agrospace-card p-7 rounded-2xl shadow-lg">
-                        <div class="flex items-center justify-between">
-                            <div class="flex-1">
-                                <p class="text-sm font-semibold text-green-700 uppercase tracking-wide mb-2">Utilisateurs Totaux</p>
-                                <p class="text-4xl font-bold text-green-900">{{ App\Models\User::count() }}</p>
-                                <p class="text-xs text-green-600 mt-2">👥 Communauté active</p>
-                            </div>
-                            <div class="stat-icon-wrapper p-4 rounded-2xl">
-                                <svg class="w-10 h-10 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-                <!-- Carte : Offres (Admin/Producer) -->
-                @if (auth()->user()->isAdmin() || auth()->user()->isProducer())
-                    <div class="agrospace-card p-7 rounded-2xl shadow-lg">
-                        <div class="flex items-center justify-between">
-                            <div class="flex-1">
-                                <p class="text-sm font-semibold text-green-700 uppercase tracking-wide mb-2">Offres Actives</p>
-                                <p class="text-4xl font-bold text-green-900">
-                                    @if (auth()->user()->isAdmin())
-                                        {{ App\Models\Offer::where('statut', 'active')->count() }}
-                                    @else
-                                        {{ auth()->user()->offers()->where('statut', 'active')->count() }}
-                                    @endif
-                                </p>
-                                <p class="text-xs text-green-600 mt-2">📦 Produits disponibles</p>
-                            </div>
-                            <div class="stat-icon-wrapper p-4 rounded-2xl">
-                                <svg class="w-10 h-10 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-                <!-- Carte : Demandes (Admin/Consumer) -->
-                @if (auth()->user()->isAdmin() || auth()->user()->isConsumer())
-                    <div class="agrospace-card p-7 rounded-2xl shadow-lg">
-                        <div class="flex items-center justify-between">
-                            <div class="flex-1">
-                                <p class="text-sm font-semibold text-green-700 uppercase tracking-wide mb-2">Demandes Actives</p>
-                                <p class="text-4xl font-bold text-green-900">
-                                    @if (auth()->user()->isAdmin())
-                                        {{ App\Models\Demand::where('status', 'active')->count() }}
-                                    @else
-                                        {{ auth()->user()->demands()->where('status', 'active')->count() }}
-                                    @endif
-                                </p>
-                                <p class="text-xs text-green-600 mt-2">🔍 Recherches en cours</p>
-                            </div>
-                            <div class="stat-icon-wrapper p-4 rounded-2xl">
-                                <svg class="w-10 h-10 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-                <!-- Carte : Mes Offres (Producer) -->
-                @if (auth()->user()->isProducer())
-                    <div class="agrospace-card p-7 rounded-2xl shadow-lg">
-                        <div class="flex items-center justify-between">
-                            <div class="flex-1">
-                                <p class="text-sm font-semibold text-green-700 uppercase tracking-wide mb-2">Mes Offres</p>
-                                <p class="text-4xl font-bold text-green-900">
-                                    {{ auth()->user()->offers()->count() }}
-                                </p>
-                                <p class="text-xs text-green-600 mt-2">🌱 Catalogue complet</p>
-                            </div>
-                            <div class="stat-icon-wrapper p-4 rounded-2xl">
-                                <svg class="w-10 h-10 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            </div>
-
-            <!-- Graphiques Analytics -->
-            <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-
-                <!-- Graphiques Admin -->
-                @if (auth()->user()->isAdmin())
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">📈 Évolution des Offres & Demandes</h3>
-                            <span class="agrospace-badge text-xs">12 mois</span>
-                        </div>
-                        <div id="offersDemandsChart"></div>
-                    </div>
-
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">🗺️ Offres par Région</h3>
-                            <span class="agrospace-badge text-xs">Distribution</span>
-                        </div>
-                        <div id="regionDistributionChart"></div>
-                    </div>
-
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">👥 Répartition des Utilisateurs</h3>
-                            <span class="agrospace-badge text-xs">Par rôle</span>
-                        </div>
-                        <div id="usersRoleChart"></div>
-                    </div>
-
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">⚡ Activité Récente</h3>
-                            <span class="agrospace-badge text-xs">30 jours</span>
-                        </div>
-                        <div id="activityChart"></div>
-                    </div>
-                @endif
-
-                <!-- Graphiques Producteur -->
-                @if (auth()->user()->isProducer())
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">📊 Performance des Offres</h3>
-                            <span class="agrospace-badge text-xs">Top 8</span>
-                        </div>
-                        <div id="offersPerformanceChart"></div>
-                    </div>
-
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">⭐ Distribution des Notes</h3>
-                            <span class="agrospace-badge text-xs">Avis clients</span>
-                        </div>
-                        <div id="ratingsDistributionChart"></div>
-                    </div>
-
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">🏷️ Ventes par Catégorie</h3>
-                            <span class="agrospace-badge text-xs">Performance</span>
-                        </div>
-                        <div id="salesCategoryChart"></div>
-                    </div>
-
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">📞 Contacts Reçus</h3>
-                            <span class="agrospace-badge text-xs">30 jours</span>
-                        </div>
-                        <div id="contactsChart"></div>
-                    </div>
-                @endif
-
-                <!-- Graphiques Consommateur -->
-                @if (auth()->user()->isConsumer())
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">📋 Mes Demandes</h3>
-                            <span class="agrospace-badge text-xs">12 mois</span>
-                        </div>
-                        <div id="demandsChart"></div>
-                    </div>
-
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">💰 Budget vs Prix Proposés</h3>
-                            <span class="agrospace-badge text-xs">Comparaison</span>
-                        </div>
-                        <div id="budgetComparisonChart"></div>
-                    </div>
-
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">✉️ Réponses aux Demandes</h3>
-                            <span class="agrospace-badge text-xs">Statut</span>
-                        </div>
-                        <div id="responsesChart"></div>
-                    </div>
-
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">🔍 Activité de Recherche</h3>
-                            <span class="agrospace-badge text-xs">30 jours</span>
-                        </div>
-                        <div id="consumerActivityChart"></div>
-                    </div>
-                @endif
-            </div>
-
-            <!-- Tableaux de données -->
-            <div class="mt-10">
-
-                <!-- Section Offres Récentes (Admin/Producer) -->
-                @if (auth()->user()->isAdmin() || auth()->user()->isProducer())
-                    <div class="chart-card p-8 mb-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">
-                                🌿 {{ auth()->user()->isAdmin() ? 'Offres Récentes' : 'Mes Offres Récentes' }}
-                            </h3>
-                            <span class="text-sm text-green-600 font-semibold">Dernières 5 entrées</span>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full">
-                                <thead>
-                                    <tr class="table-header">
-                                        <th class="px-6 py-4 text-left text-sm font-bold text-green-900 uppercase tracking-wider">
-                                            Titre</th>
-                                        <th class="px-6 py-4 text-left text-sm font-bold text-green-900 uppercase tracking-wider">
-                                            Prix</th>
-                                        <th class="px-6 py-4 text-left text-sm font-bold text-green-900 uppercase tracking-wider">
-                                            Statut</th>
-                                        <th class="px-6 py-4 text-left text-sm font-bold text-green-900 uppercase tracking-wider">
-                                            Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-green-100">
-                                    @php
-                                        $recentOffers = auth()->user()->isAdmin()
-                                            ? App\Models\Offer::latest()->take(5)->get()
-                                            : auth()->user()->offers()->latest()->take(5)->get();
-                                    @endphp
-
-                                    @forelse ($recentOffers as $offer)
-                                        <tr class="hover:bg-green-50 transition-colors duration-150">
-                                            <td class="px-6 py-4 text-sm font-semibold text-gray-900">
-                                                {{ $offer->titre }}</td>
-                                            <td class="px-6 py-4 text-sm font-bold text-green-700">
-                                                {{ number_format($offer->prix, 0, ',', ' ') }} FCFA</td>
-                                            <td class="px-6 py-4">
-                                                <span class="status-badge
-                                            {{ $offer->statut === 'active' ? 'bg-green-100 text-green-800' : ($offer->statut === 'en attente' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
-                                                    {{ ucfirst($offer->statut) }}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-600">
-                                                {{ $offer->created_at->format('d/m/Y') }}</td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="4" class="px-6 py-12 text-center">
-                                                <div class="text-green-600">
-                                                    <svg class="mx-auto h-12 w-12 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
-                                                    </svg>
-                                                    <p class="text-sm font-medium">Aucune offre disponible pour le moment</p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                @endif
-
-                <!-- Section Demandes Récentes (Admin/Consumer) -->
-                @if (auth()->user()->isAdmin() || auth()->user()->isConsumer())
-                    <div class="chart-card p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-green-900">
-                                📝 {{ auth()->user()->isAdmin() ? 'Demandes Récentes' : 'Mes Demandes Récentes' }}
-                            </h3>
-                            <span class="text-sm text-green-600 font-semibold">Dernières 5 entrées</span>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full">
-                                <thead>
-                                    <tr class="table-header">
-                                        <th class="px-6 py-4 text-left text-sm font-bold text-green-900 uppercase tracking-wider">
-                                            Titre</th>
-                                        <th class="px-6 py-4 text-left text-sm font-bold text-green-900 uppercase tracking-wider">
-                                            Budget</th>
-                                        <th class="px-6 py-4 text-left text-sm font-bold text-green-900 uppercase tracking-wider">
-                                            Urgence</th>
-                                        <th class="px-6 py-4 text-left text-sm font-bold text-green-900 uppercase tracking-wider">
-                                            Statut</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-green-100">
-                                    @php
-                                        $recentDemands = auth()->user()->isAdmin()
-                                            ? App\Models\Demand::latest()->take(5)->get()
-                                            : auth()->user()->demands()->latest()->take(5)->get();
-                                    @endphp
-
-                                    @forelse ($recentDemands as $demand)
-                                        <tr class="hover:bg-green-50 transition-colors duration-150">
-                                            <td class="px-6 py-4 text-sm font-semibold text-gray-900">
-                                                {{ $demand->title }}</td>
-                                            <td class="px-6 py-4 text-sm font-bold text-green-700">
-                                                {{ number_format($demand->budget, 0, ',', ' ') }} FCFA</td>
-                                            <td class="px-6 py-4">
-                                                <span class="status-badge
-                                            {{ $demand->urgency === 'high' ? 'bg-red-100 text-red-800' : ($demand->urgency === 'medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800') }}">
-                                                    {{ ucfirst($demand->urgency) }}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <span class="status-badge
-                                            {{ $demand->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                                    {{ ucfirst($demand->status) }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="4" class="px-6 py-12 text-center">
-                                                <div class="text-green-600">
-                                                    <svg class="mx-auto h-12 w-12 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                                    </svg>
-                                                    <p class="text-sm font-medium">Aucune demande disponible pour le moment</p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                @endif
-            </div>
-        </div>
     </div>
 
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Palette de couleurs AgroSpace
-                const agroColors = {
-                    primary: '#2d5a2f',      // Vert profond
-                    secondary: '#3a7040',    // Vert moyen
-                    success: '#4a8f4d',      // Vert clair
-                    accent: '#8b7355',       // Beige terre
-                    light: '#d4e7d4',        // Vert très clair
-                    gradient1: ['#1e4620', '#2d5a2f', '#3a7040'],
-                    gradient2: ['#3a7040', '#4a8f4d', '#5da860']
-                };
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {{-- Stats Cards avec animations --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" 
+             x-data="{ 
+                 animateValue(el, start, end, duration) {
+                     let startTimestamp = null;
+                     const step = (timestamp) => {
+                         if (!startTimestamp) startTimestamp = timestamp;
+                         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                         el.innerText = Math.floor(progress * (end - start) + start).toLocaleString('fr-FR');
+                         if (progress < 1) window.requestAnimationFrame(step);
+                     };
+                     window.requestAnimationFrame(step);
+                 }
+             }"
+             x-init="
+                 $nextTick(() => {
+                     document.querySelectorAll('[data-countup]').forEach(el => {
+                         animateValue(el, 0, parseInt(el.dataset.countup), 1500);
+                     });
+                 });
+             ">
+            
+            @foreach($stats as $key => $value)
+                <div class="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1"
+                     x-data="{ hovered: false }" @mouseenter="hovered = true" @mouseleave="hovered = false">
+                    
+                    {{-- Gradient background animé --}}
+                    <div class="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                         style="background: linear-gradient(135deg, {{ $this->getStatColor($key) }})"></div>
+                    
+                    <div class="p-6 relative">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-3 rounded-xl transition-all duration-300"
+                                 :class="hovered ? 'bg-gradient-to-br {{ $this->getStatGradient($key) }} shadow-lg scale-110' : 'bg-gray-100'">
+                                <svg class="w-6 h-6 transition-colors duration-300"
+                                     :class="hovered ? 'text-white' : 'text-gray-600'">
+                                    {!! $this->getStatIcon($key) !!}
+                                </svg>
+                            </div>
+                            
+                            @if($this->getStatTrend($key))
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                           {{ $this->getStatTrend($key) > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="{{ $this->getStatTrend($key) > 0 ? 'M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z' : 'M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z' }}" clip-rule="evenodd"/>
+                                    </svg>
+                                    {{ abs($this->getStatTrend($key)) }}%
+                                </span>
+                            @endif
+                        </div>
+                        
+                        <h3 class="text-sm font-medium text-gray-600 uppercase tracking-wide mb-2">
+                            {{ $this->getStatLabel($key) }}
+                        </h3>
+                        
+                        <div class="flex items-baseline">
+                            <p class="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent"
+                               data-countup="{{ $value }}">0</p>
+                        </div>
+                        
+                        {{-- Barre de progression animée --}}
+                        <div class="mt-4 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r {{ $this->getStatGradient($key) }} rounded-full transition-all duration-1000 ease-out"
+                                 x-data="{ width: 0 }"
+                                 x-init="setTimeout(() => width = {{ $this->getStatProgress($key, $value) }}, 100)"
+                                 :style="`width: ${width}%`"></div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
 
-                @if (auth()->user()->isAdmin())
-                    // Graphique Évolution Offres/Demandes
-                    new ApexCharts(document.querySelector("#offersDemandsChart"), {
-                        series: [{
-                            name: 'Offres',
-                            data: {!! json_encode($stats['offers_trend'] ?? []) !!}
-                        }, {
-                            name: 'Demandes',
-                            data: {!! json_encode($stats['demands_trend'] ?? []) !!}
-                        }],
-                        chart: { 
-                            height: 350, 
-                            type: 'line', 
-                            zoom: { enabled: false },
-                            toolbar: { show: true },
-                            fontFamily: 'Inter, sans-serif'
-                        },
-                        colors: [agroColors.primary, agroColors.success],
-                        stroke: { curve: 'smooth', width: 4 },
-                        xaxis: { 
-                            categories: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
-                            labels: { style: { colors: agroColors.primary, fontWeight: 600 } }
-                        },
-                        yaxis: { labels: { style: { colors: agroColors.primary, fontWeight: 600 } } },
-                        legend: { 
-                            position: 'top',
-                            labels: { colors: agroColors.primary }
-                        },
-                        grid: { borderColor: agroColors.light }
-                    }).render();
+        {{-- Charts Section --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {{-- Chart 1: Principal --}}
+            <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-gray-900">
+                        {{ $this->getMainChartTitle() }}
+                    </h2>
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+                            En direct
+                        </span>
+                    </div>
+                </div>
+                
+                <div x-data="{
+                    chart: null,
+                    initChart() {
+                        const options = {
+                            series: [{
+                                name: '{{ $this->getMainChartLabel() }}',
+                                data: @js($chartData[$this->getMainChartKey()]['counts'] ?? [])
+                            }],
+                            chart: {
+                                type: 'area',
+                                height: 350,
+                                toolbar: { show: false },
+                                animations: {
+                                    enabled: true,
+                                    easing: 'easeinout',
+                                    speed: 800,
+                                    animateGradually: { enabled: true, delay: 150 }
+                                }
+                            },
+                            dataLabels: { enabled: false },
+                            stroke: { curve: 'smooth', width: 3 },
+                            fill: {
+                                type: 'gradient',
+                                gradient: {
+                                    shadeIntensity: 1,
+                                    opacityFrom: 0.7,
+                                    opacityTo: 0.2,
+                                    stops: [0, 90, 100]
+                                }
+                            },
+                            colors: ['#10b981'],
+                            xaxis: {
+                                categories: @js($chartData[$this->getMainChartKey()]['dates'] ?? []),
+                                labels: { style: { colors: '#6b7280', fontSize: '12px' } }
+                            },
+                            yaxis: {
+                                labels: { style: { colors: '#6b7280', fontSize: '12px' } }
+                            },
+                            grid: {
+                                borderColor: '#f3f4f6',
+                                strokeDashArray: 4
+                            },
+                            tooltip: {
+                                theme: 'light',
+                                x: { show: true },
+                                y: {
+                                    formatter: (val) => val.toLocaleString('fr-FR')
+                                }
+                            }
+                        };
+                        this.chart = new ApexCharts(this.$refs.chart1, options);
+                        this.chart.render();
+                    }
+                }" x-init="setTimeout(() => initChart(), 100)">
+                    <div x-ref="chart1"></div>
+                </div>
+            </div>
 
-                    // Graphique Répartition par région
-                    new ApexCharts(document.querySelector("#regionDistributionChart"), {
-                        series: {!! json_encode($stats['region_distribution'] ?? []) !!},
-                        chart: { type: 'donut', height: 350 },
-                        labels: ['Centre', 'Littoral', 'Ouest', 'Nord', 'Adamaoua', 'Est', 'Sud', 'Nord-Ouest', 'Sud-Ouest', 'Extrême-Nord'],
-                        colors: ['#1e4620', '#2d5a2f', '#3a7040', '#4a8f4d', '#5da860', '#8b7355', '#a68a6a', '#c1a080', '#d4b896', '#e8cfac'],
-                        legend: { 
-                            position: 'bottom',
-                            labels: { colors: agroColors.primary }
-                        },
-                        plotOptions: {
-                            pie: {
-                                donut: {
-                                    labels: {
-                                        show: true,
-                                        total: {
+            {{-- Chart 2: Donut/Pie --}}
+            <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">
+                    {{ $this->getSecondaryChartTitle() }}
+                </h2>
+                
+                <div x-data="{
+                    chart: null,
+                    initChart() {
+                        const options = {
+                            series: @js($chartData[$this->getSecondaryChartKey()]['counts'] ?? []),
+                            chart: {
+                                type: 'donut',
+                                height: 350,
+                                animations: {
+                                    enabled: true,
+                                    easing: 'easeinout',
+                                    speed: 800,
+                                    animateGradually: { enabled: true, delay: 150 }
+                                }
+                            },
+                            labels: @js($chartData[$this->getSecondaryChartKey()][array_keys($chartData[$this->getSecondaryChartKey()])[0]] ?? []),
+                            colors: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'],
+                            plotOptions: {
+                                pie: {
+                                    donut: {
+                                        size: '70%',
+                                        labels: {
                                             show: true,
-                                            color: agroColors.primary,
-                                            fontSize: '18px',
-                                            fontWeight: 700
+                                            total: {
+                                                show: true,
+                                                label: 'Total',
+                                                fontSize: '22px',
+                                                fontWeight: 600,
+                                                color: '#1f2937',
+                                                formatter: (w) => {
+                                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0).toLocaleString('fr-FR');
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                            },
+                            legend: {
+                                position: 'bottom',
+                                fontSize: '14px',
+                                markers: { radius: 12 }
+                            },
+                            dataLabels: {
+                                enabled: true,
+                                formatter: (val) => val.toFixed(1) + '%'
+                            },
+                            tooltip: {
+                                theme: 'light',
+                                y: {
+                                    formatter: (val) => val.toLocaleString('fr-FR')
+                                }
                             }
-                        }
-                    }).render();
+                        };
+                        this.chart = new ApexCharts(this.$refs.chart2, options);
+                        this.chart.render();
+                    }
+                }" x-init="setTimeout(() => initChart(), 200)">
+                    <div x-ref="chart2"></div>
+                </div>
+            </div>
+        </div>
 
-                    // Graphique Utilisateurs par rôle
-                    new ApexCharts(document.querySelector("#usersRoleChart"), {
-                        series: {!! json_encode($stats['users_by_role'] ?? []) !!},
-                        chart: { type: 'pie', height: 350 },
-                        labels: ['Producteurs', 'Consommateurs', 'Admins'],
-                        colors: [agroColors.primary, agroColors.success, agroColors.accent],
-                        legend: { 
-                            position: 'bottom',
-                            labels: { colors: agroColors.primary }
-                        }
-                    }).render();
+        {{-- Charts Row 2 --}}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            {{-- Radial Chart --}}
+            <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300">
+                <h2 class="text-lg font-bold text-gray-900 mb-6">Taux de Réussite</h2>
+                
+                <div x-data="{
+                    chart: null,
+                    initChart() {
+                        const options = {
+                            series: [{{ $this->getSuccessRate() }}],
+                            chart: {
+                                type: 'radialBar',
+                                height: 280,
+                                animations: {
+                                    enabled: true,
+                                    easing: 'easeinout',
+                                    speed: 800
+                                }
+                            },
+                            plotOptions: {
+                                radialBar: {
+                                    startAngle: -135,
+                                    endAngle: 135,
+                                    hollow: {
+                                        size: '70%',
+                                        background: 'transparent'
+                                    },
+                                    track: {
+                                        background: '#f3f4f6',
+                                        strokeWidth: '100%'
+                                    },
+                                    dataLabels: {
+                                        show: true,
+                                        name: {
+                                            show: true,
+                                            fontSize: '14px',
+                                            color: '#6b7280',
+                                            offsetY: -10
+                                        },
+                                        value: {
+                                            fontSize: '30px',
+                                            fontWeight: 700,
+                                            color: '#1f2937',
+                                            formatter: (val) => val + '%'
+                                        }
+                                    }
+                                }
+                            },
+                            fill: {
+                                type: 'gradient',
+                                gradient: {
+                                    shade: 'dark',
+                                    type: 'horizontal',
+                                    shadeIntensity: 0.5,
+                                    gradientToColors: ['#10b981'],
+                                    inverseColors: false,
+                                    opacityFrom: 1,
+                                    opacityTo: 1,
+                                    stops: [0, 100]
+                                }
+                            },
+                            stroke: { lineCap: 'round' },
+                            labels: ['Performance']
+                        };
+                        this.chart = new ApexCharts(this.$refs.chart3, options);
+                        this.chart.render();
+                    }
+                }" x-init="setTimeout(() => initChart(), 300)">
+                    <div x-ref="chart3"></div>
+                </div>
+            </div>
 
-                    // Graphique Activité
-                    new ApexCharts(document.querySelector("#activityChart"), {
-                        series: [{ name: 'Connexions', data: {!! json_encode($stats['login_activity'] ?? []) !!} }],
-                        chart: { 
-                            height: 350, 
-                            type: 'area',
-                            toolbar: { show: true }
-                        },
-                        colors: [agroColors.primary],
-                        fill: {
-                            type: 'gradient',
-                            gradient: {
-                                shade: 'light',
-                                type: 'vertical',
-                                shadeIntensity: 0.5,
-                                gradientToColors: [agroColors.light],
-                                opacityFrom: 0.7,
-                                opacityTo: 0.3
+            {{-- Bar Chart --}}
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300">
+                <h2 class="text-lg font-bold text-gray-900 mb-6">
+                    {{ $this->getBarChartTitle() }}
+                </h2>
+                
+                <div x-data="{
+                    chart: null,
+                    initChart() {
+                        const options = {
+                            series: @js($this->getBarChartSeries()),
+                            chart: {
+                                type: 'bar',
+                                height: 280,
+                                toolbar: { show: false },
+                                animations: {
+                                    enabled: true,
+                                    easing: 'easeinout',
+                                    speed: 800
+                                }
+                            },
+                            plotOptions: {
+                                bar: {
+                                    horizontal: false,
+                                    columnWidth: '60%',
+                                    borderRadius: 8
+                                }
+                            },
+                            dataLabels: { enabled: false },
+                            stroke: {
+                                show: true,
+                                width: 2,
+                                colors: ['transparent']
+                            },
+                            colors: ['#10b981', '#3b82f6'],
+                            xaxis: {
+                                categories: @js($this->getBarChartCategories()),
+                                labels: { style: { colors: '#6b7280', fontSize: '12px' } }
+                            },
+                            yaxis: {
+                                labels: { style: { colors: '#6b7280', fontSize: '12px' } }
+                            },
+                            grid: {
+                                borderColor: '#f3f4f6',
+                                strokeDashArray: 4
+                            },
+                            fill: { opacity: 1 },
+                            tooltip: {
+                                theme: 'light',
+                                y: {
+                                    formatter: (val) => val.toLocaleString('fr-FR')
+                                }
+                            },
+                            legend: {
+                                position: 'top',
+                                horizontalAlign: 'right',
+                                markers: { radius: 12 }
                             }
-                        },
-                        xaxis: { 
-                            categories: Array.from({ length: 30 }, (_, i) => i + 1),
-                            labels: { style: { colors: agroColors.primary } }
-                        },
-                        yaxis: { labels: { style: { colors: agroColors.primary } } },
-                        stroke: { curve: 'smooth', width: 3 },
-                        grid: { borderColor: agroColors.light }
-                    }).render();
-                @endif
+                        };
+                        this.chart = new ApexCharts(this.$refs.chart4, options);
+                        this.chart.render();
+                    }
+                }" x-init="setTimeout(() => initChart(), 400)">
+                    <div x-ref="chart4"></div>
+                </div>
+            </div>
+        </div>
 
-                @if (auth()->user()->isProducer())
-                    // Performance des offres
-                    new ApexCharts(document.querySelector("#offersPerformanceChart"), {
-                        series: [{
-                            name: 'Vues',
-                            data: {!! json_encode($stats['views_data'] ?? []) !!}
-                        }, {
-                            name: 'Contacts',
-                            data: {!! json_encode($stats['contacts_data'] ?? []) !!}
-                        }],
-                        chart: { 
-                            height: 350, 
-                            type: 'bar',
-                            toolbar: { show: true }
-                        },
-                        colors: [agroColors.primary, agroColors.success],
-                        plotOptions: { 
-                            bar: { 
-                                borderRadius: 8, 
-                                columnWidth: '65%',
-                                dataLabels: { position: 'top' }
-                            } 
-                        },
-                        xaxis: { 
-                            categories: {!! json_encode($stats['offers_titles'] ?? []) !!},
-                            labels: { 
-                                style: { colors: agroColors.primary, fontWeight: 600 },
-                                rotate: -45
-                            }
-                        },
-                        yaxis: { labels: { style: { colors: agroColors.primary } } },
-                        grid: { borderColor: agroColors.light }
-                    }).render();
+        {{-- Tables Section --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {{-- Recent Activity Table --}}
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+                <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-green-50 to-emerald-50">
+                    <h2 class="text-lg font-bold text-gray-900 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Activité Récente
+                    </h2>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Type
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Description
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Date
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse($recentActivity as $activity)
+                                <tr class="hover:bg-green-50 transition-colors duration-150 cursor-pointer"
+                                    x-data="{ hovered: false }" 
+                                    @mouseenter="hovered = true" 
+                                    @mouseleave="hovered = false">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                                              :class="hovered ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'">
+                                            {{ $activity->type }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm text-gray-900 truncate max-w-xs">
+                                            {{ $activity->description }}
+                                        </p>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $activity->created_at->diffForHumans() }}
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center text-gray-400">
+                                            <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                                            </svg>
+                                            <p class="text-sm">Aucune activité récente</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                    // Distribution des notes
-                    new ApexCharts(document.querySelector("#ratingsDistributionChart"), {
-                        series: [{ data: [5, 10, 15, 25, 45] }],
-                        chart: { height: 350, type: 'bar' },
-                        colors: [agroColors.accent],
-                        plotOptions: { 
-                            bar: { 
-                                borderRadius: 8, 
-                                columnWidth: '60%',
-                                distributed: true
-                            } 
-                        },
-                        xaxis: { 
-                            categories: ['1★', '2★', '3★', '4★', '5★'],
-                            labels: { style: { colors: agroColors.primary, fontSize: '14px', fontWeight: 700 } }
-                        },
-                        yaxis: { labels: { style: { colors: agroColors.primary } } },
-                        legend: { show: false },
-                        grid: { borderColor: agroColors.light }
-                    }).render();
-
-                    // Ventes par catégorie
-                    new ApexCharts(document.querySelector("#salesCategoryChart"), {
-                        series: {!! json_encode($stats['sales_by_category'] ?? []) !!},
-                        chart: { type: 'polarArea', height: 350 },
-                        labels: {!! json_encode($stats['categories'] ?? []) !!},
-                        colors: agroColors.gradient2,
-                        stroke: { colors: ['#fff'], width: 2 },
-                        fill: { opacity: 0.85 },
-                        legend: { 
-                            position: 'bottom',
-                            labels: { colors: agroColors.primary }
-                        }
-                    }).render();
-
-                    // Contacts reçus
-                    new ApexCharts(document.querySelector("#contactsChart"), {
-                        series: [{ name: 'Contacts', data: {!! json_encode($stats['contacts_trend'] ?? []) !!} }],
-                        chart: { 
-                            height: 350, 
-                            type: 'line',
-                            toolbar: { show: true }
-                        },
-                        colors: [agroColors.success],
-                        stroke: { curve: 'smooth', width: 4 },
-                        markers: { size: 5, colors: [agroColors.primary] },
-                        xaxis: { 
-                            categories: Array.from({ length: 30 }, (_, i) => i + 1),
-                            labels: { style: { colors: agroColors.primary } }
-                        },
-                        yaxis: { labels: { style: { colors: agroColors.primary } } },
-                        grid: { borderColor: agroColors.light }
-                    }).render();
-                @endif
-
-                @if (auth()->user()->isConsumer())
-                    // Évolution des demandes
-                    new ApexCharts(document.querySelector("#demandsChart"), {
-                        series: [{
-                            name: 'Demandes Actives',
-                            data: {!! json_encode($stats['active_demands'] ?? []) !!}
-                        }, {
-                            name: 'Demandes Satisfaites',
-                            data: {!! json_encode($stats['fulfilled_demands'] ?? []) !!}
-                        }],
-                        chart: { 
-                            height: 350, 
-                            type: 'area',
-                            toolbar: { show: true }
-                        },
-                        colors: [agroColors.primary, agroColors.success],
-                        fill: {
-                            type: 'gradient',
-                            gradient: {
-                                opacityFrom: 0.6,
-                                opacityTo: 0.2
-                            }
-                        },
-                        stroke: { curve: 'smooth', width: 3 },
-                        xaxis: { 
-                            categories: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
-                            labels: { style: { colors: agroColors.primary } }
-                        },
-                        yaxis: { labels: { style: { colors: agroColors.primary } } },
-                        legend: { 
-                            labels: { colors: agroColors.primary }
-                        },
-                        grid: { borderColor: agroColors.light }
-                    }).render();
-
-                    // Budget vs Prix
-                    new ApexCharts(document.querySelector("#budgetComparisonChart"), {
-                        series: [{
-                            name: 'Budget Max',
-                            data: {!! json_encode($stats['budget_data'] ?? []) !!}
-                        }, {
-                            name: 'Prix Moyen Proposé',
-                            data: {!! json_encode($stats['proposed_prices'] ?? []) !!}
-                        }],
-                        chart: { 
-                            height: 350, 
-                            type: 'bar',
-                            toolbar: { show: true }
-                        },
-                        colors: [agroColors.primary, agroColors.success],
-                        plotOptions: { 
-                            bar: { 
-                                borderRadius: 8, 
-                                columnWidth: '65%' 
-                            } 
-                        },
-                        xaxis: { 
-                            categories: {!! json_encode($stats['demands_titles'] ?? []) !!},
-                            labels: { 
-                                style: { colors: agroColors.primary },
-                                rotate: -45
-                            }
-                        },
-                        yaxis: { labels: { style: { colors: agroColors.primary } } },
-                        grid: { borderColor: agroColors.light }
-                    }).render();
-
-                    // Réponses
-                    new ApexCharts(document.querySelector("#responsesChart"), {
-                        series: {!! json_encode($stats['responses_data'] ?? []) !!},
-                        chart: { type: 'pie', height: 350 },
-                        labels: ['Acceptées', 'En attente', 'Rejetées'],
-                        colors: [agroColors.success, agroColors.accent, '#dc2626'],
-                        legend: { 
-                            position: 'bottom',
-                            labels: { colors: agroColors.primary }
-                        }
-                    }).render();
-
-                    // Activité
-                    new ApexCharts(document.querySelector("#consumerActivityChart"), {
-                        series: [{ name: 'Recherches', data: {!! json_encode($stats['search_activity'] ?? []) !!} }],
-                        chart: { 
-                            height: 350, 
-                            type: 'line',
-                            toolbar: { show: true }
-                        },
-                        colors: [agroColors.accent],
-                        stroke: { curve: 'smooth', width: 4 },
-                        markers: { size: 5, colors: [agroColors.primary] },
-                        xaxis: { 
-                            categories: Array.from({ length: 30 }, (_, i) => i + 1),
-                            labels: { style: { colors: agroColors.primary } }
-                        },
-                        yaxis: { labels: { style: { colors: agroColors.primary } } },
-                        grid: { borderColor: agroColors.light }
-                    }).render();
-                @endif
-            });
-        </script>
-    @endpush
+            {{-- Top Items Table --}}
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+                <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+                    <h2 class="text-lg font-bold text-gray-900 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                        {{ $this->getTopItemsTitle() }}
+                    </h2>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                @foreach($this->getTopItemsHeaders() as $header)
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        {{ $header }}
+                                    </th>
+                                @endforeach
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse($this->getTopItemsData() as $index => $item)
+                                <tr class="hover:bg-blue-50 transition-colors duration-150 cursor-pointer"
+                                    x-data="{ hovered: false }" 
+                                    @mouseenter="hovered = true" 
+                                    @mouseleave="hovered = false">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 relative">
+                                                <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full blur opacity-50 transition-opacity duration-300"
+                                                     :class="hovered ? 'opacity-75' : 'opacity-50'"></div>
+                                                <div class="relative h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold">
+                                                    {{ $index + 1 }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    @foreach($this->formatTopItemRow($item) as $cell)
+                                        <td class="px-6 py-4">
+                                            {!! $cell !!}
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="{{ count($this->getTopItemsHeaders()) + 1 }}" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center text-gray-400">
+                                            <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                            </svg>
+                                            <p class="text-sm">Aucune donnée disponible</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+@endpush
