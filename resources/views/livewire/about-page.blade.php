@@ -2,67 +2,66 @@
 
 use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
-use App\Helpers\SEO;             // <-- helper already created
+use App\Helpers\SEO;
 
-new #[Layout('layouts.main')] class extends Component
-{
+new #[Layout('layouts.main')] class extends Component {
     public function mount()
     {
         /* ----------  SEO  ---------- */
-        SEO::setTitle('À propos d\'AgroSpace - Plateforme Agricole au Cameroun | Mission, Équipe & Valeurs');
-        SEO::setDescription('Découvrez la mission, l’équipe et les valeurs d\'AgroSpace, la plateforme n°1 au Cameroun pour connecter producteurs et consommateurs agricoles. Inscription gratuite.');
-        SEO::setKeywords('AgroSpace, à propos, mission, équipe, valeurs, agriculture Cameroun, producteurs locaux, plateforme agricole, durabilité, collaboration');
+        SEO::setTitle(__('about.seo.title'));
+        SEO::setDescription(__('about.seo.description'));
+        SEO::setKeywords(__('about.seo.keywords'));
         SEO::setCanonical(url()->current());
-        SEO::setImage(asset('images/agrospace.png'));   // 1200×630
-        SEO::setType('website');
+        SEO::setImage(asset(__('about.seo.image'))); // 1200×630
+        SEO::setType(__('about.seo.type'));
     }
 }; ?>
 
 @push('meta')
     {{-- Primary Meta Tags --}}
-    <title>À propos d'AgroSpace - Plateforme Agricole au Cameroun | Mission, Équipe & Valeurs</title>
-    <meta name="title" content="À propos d'AgroSpace - Plateforme Agricole au Cameroun | Mission, Équipe & Valeurs">
-    <meta name="description" content="Découvrez la mission, l’équipe et les valeurs d'AgroSpace, la plateforme n°1 au Cameroun pour connecter producteurs et consommateurs agricoles. Inscription gratuite.">
-    <meta name="keywords" content="AgroSpace, à propos, mission, équipe, valeurs, agriculture Cameroun, producteurs locaux, plateforme agricole, durabilité, collaboration">
+    <title>{{ __('about.seo.title') }}</title>
+    <meta name="title" content="{{ __('about.seo.title') }}">
+    <meta name="description" content="{{ __('about.seo.description') }}">
+    <meta name="keywords" content="{{ __('about.seo.keywords') }}">
     <meta name="robots" content="index, follow">
-    <meta name="language" content="fr">
+    <meta name="language" content="{{ app()->getLocale() }}">
     <meta name="author" content="AgroSpace">
     <link rel="canonical" href="{{ url()->current() }}">
 
     {{-- Open Graph / Facebook --}}
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="{{ __('about.seo.type') }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="À propos d'AgroSpace - Plateforme Agricole au Cameroun">
-    <meta property="og:description" content="Découvrez la mission, l’équipe et les valeurs d'AgroSpace.">
-    <meta property="og:image" content="{{ asset('images/agrospace.png') }}">
+    <meta property="og:title" content="{{ __('about.seo.og_title') }}">
+    <meta property="og:description" content="{{ __('about.seo.og_description') }}">
+    <meta property="og:image" content="{{ asset(__('about.seo.image')) }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="AgroSpace">
-    <meta property="og:locale" content="fr_CM">
+    <meta property="og:locale" content="{{ __('about.seo.locale') }}">
 
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ url()->current() }}">
-    <meta name="twitter:title" content="À propos d'AgroSpace - Plateforme Agricole au Cameroun">
-    <meta name="twitter:description" content="Découvrez la mission, l’équipe et les valeurs d'AgroSpace.">
-    <meta name="twitter:image" content="{{ asset('images/agrospace.png') }}">
+    <meta name="twitter:title" content="{{ __('about.seo.twitter_title') }}">
+    <meta name="twitter:description" content="{{ __('about.seo.twitter_description') }}">
+    <meta name="twitter:image" content="{{ asset(__('about.seo.image')) }}">
 
     {{-- Geo-tags --}}
-    <meta name="geo.region" content="CM">
-    <meta name="geo.placename" content="Cameroun">
-    <meta name="geo.position" content="3.848;11.5021">
-    <meta name="ICBM" content="3.848, 11.5021">
+    <meta name="geo.region" content="{{ __('about.geo.region') }}">
+    <meta name="geo.placename" content="{{ __('about.geo.placename') }}">
+    <meta name="geo.position" content="{{ __('about.geo.position') }}">
+    <meta name="ICBM" content="{{ __('about.geo.position') }}">
 @endpush
 
 <div>
     <x-layouts.header />
 
     {{-- HERO --}}
-    <section id="about-hero" class="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden gradient-bg"
-             itemscope itemtype="https://schema.org/WPHeader">
+    <section id="about-hero" class="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden gradient-bg" itemscope
+        itemtype="https://schema.org/WPHeader">
         <div class="absolute inset-0 opacity-10 pointer-events-none" aria-hidden="true">
             <div class="absolute inset-0"
-                 style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.2\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+                style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.2\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
             </div>
         </div>
 
@@ -72,24 +71,22 @@ new #[Layout('layouts.main')] class extends Component
                 <div class="text-white space-y-6 animate-fade-in-up">
                     {{-- SEO : only H1 of the page --}}
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                        Connecter, Valoriser, Collaborer pour un monde agropastoral durable
+                        {{ __('about.hero.h1') }}
                     </h1>
                     <p class="text-xl text-gray-50 mb-8">
-                        AgroSpace est la première plateforme qui relie les producteurs et consommateurs agricoles pour
-                        créer un réseau collaboratif et local.
+                        {{ __('about.hero.p') }}
                     </p>
-                    <a href="{{ route('register') }}"  wire:navigate
-                       title="Rejoindre la communauté AgroSpace - Inscription gratuite"
-                       class="inline-flex items-center gap-2 bg-white text-base font-semibold px-8 py-4 rounded-lg 
+                    <a href="{{ route('register') }}" wire:navigate title="{{ __('about.hero.cta_title') }}"
+                        class="inline-flex items-center gap-2 bg-white text-base font-semibold px-8 py-4 rounded-lg 
                               shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1
                               hover:bg-gradient-to-r hover:from-green-500 hover:to-emerald-500 hover:text-white
                               focus:outline-none focus:ring-2 focus:ring-green-300 focus:ring-offset-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor">
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m3-4a4 4 0 100-8 4 4 0 000 8z" />
+                                d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m3-4a4 4 0 100-8 4 4 0 000 8z" />
                         </svg>
-                        Rejoindre la communauté
+                        {{ __('about.hero.cta') }}
                     </a>
                 </div>
 
@@ -118,13 +115,12 @@ new #[Layout('layouts.main')] class extends Component
                     <div class="w-16 h-16 bg-[#1B5E20] rounded-xl flex items-center justify-center mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Notre Mission</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ __('about.mission.title') }}</h2>
                     <p class="text-lg text-gray-600 leading-relaxed">
-                        Faciliter les échanges entre acteurs agricoles et valoriser la production locale grâce au
-                        numérique. Nous créons des ponts entre ceux qui produisent et ceux qui consomment.
+                        {{ __('about.mission.text') }}
                     </p>
                 </article>
 
@@ -133,15 +129,14 @@ new #[Layout('layouts.main')] class extends Component
                     <div class="w-16 h-16 bg-[#81C784] rounded-xl flex items-center justify-center mb-6">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
                     </div>
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Notre Vision</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ __('about.vision.title') }}</h2>
                     <p class="text-lg text-gray-600 leading-relaxed">
-                        Devenir la référence africaine de la collaboration agropastorale et de la transformation
-                        numérique du secteur. Un avenir où chaque acteur trouve sa place.
+                        {{ __('about.vision.text') }}
                     </p>
                 </article>
             </div>
@@ -152,22 +147,18 @@ new #[Layout('layouts.main')] class extends Component
     <section class="py-20 bg-[#F9FAF6]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <header class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Nos valeurs fondamentales</h2>
-                <p class="text-xl text-gray-600">Les principes qui guident chacune de nos actions</p>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ __('about.values.header_title') }}</h2>
+                <p class="text-xl text-gray-600">{{ __('about.values.header_sub') }}</p>
             </header>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                @foreach([
-                    ['emoji' => '🌿', 'title' => 'Durabilité', 'text' => 'Promouvoir une agriculture responsable et respectueuse de la nature pour les générations futures.'],
-                    ['emoji' => '🤝', 'title' => 'Collaboration', 'text' => 'Créer des ponts entre producteurs et consommateurs pour renforcer l’écosystème agricole.'],
-                    ['emoji' => '💡', 'title' => 'Innovation', 'text' => 'Utiliser le numérique pour moderniser et faciliter les échanges dans le secteur agropastoral.'],
-                    ['emoji' => '❤️', 'title' => 'Confiance', 'text' => 'Garantir un espace sûr, authentique et humain où chaque membre se sent valorisé.']
-                ] as $val)
-                <article class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2">
-                    <div class="text-5xl mb-4" aria-hidden="true">{{ $val['emoji'] }}</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">{{ $val['title'] }}</h3>
-                    <p class="text-gray-600">{{ $val['text'] }}</p>
-                </article>
+                @foreach (array_filter(trans('about.values'), 'is_array') as $val)
+                    <article
+                        class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-2">
+                        <div class="text-5xl mb-4" aria-hidden="true">{{ $val['emoji'] }}</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">{{ $val['title'] }}</h3>
+                        <p class="text-gray-600">{{ $val['text'] }}</p>
+                    </article>
                 @endforeach
             </div>
         </div>
@@ -178,30 +169,27 @@ new #[Layout('layouts.main')] class extends Component
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                    <h2 class="text-4xl font-bold text-gray-900 mb-6">L’histoire d’AgroSpace</h2>
+                    <h2 class="text-4xl font-bold text-gray-900 mb-6">{{ __('about.history.title') }}</h2>
                     <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-                        Né de la passion pour l’agriculture et l’innovation, AgroSpace est un projet créé pour résoudre
-                        un problème majeur : le manque de visibilité et de communication entre les acteurs du monde
-                        agricole.
+                        {{ __('about.history.p1') }}
                     </p>
                     <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-                        Nous avons constaté que de nombreux producteurs talentueux restaient invisibles, tandis que des
-                        consommateurs cherchaient désespérément des sources locales et fiables. Cette déconnexion nous a
-                        motivés à créer une solution.
+                        {{ __('about.history.p2') }}
                     </p>
-                    <p class="text-lg text-gray-600 leading-relaxed">
-                        Aujourd’hui, nous construisons un réseau où les producteurs et les consommateurs peuvent
-                        échanger, collaborer et croître ensemble. AgroSpace, c’est le LinkedIn de l’agriculture
-                        africaine.
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        {{ __('about.history.p3') }}
                     </p>
                 </div>
                 <div class="relative">
                     <div class="bg-gradient-to-br from-emerald-100 to-green-200 rounded-3xl p-8 shadow-xl">
                         <svg class="w-full h-auto text-[#1B5E20]" viewBox="0 0 400 400" fill="none">
-                            <rect x="50" y="150" width="100" height="200" fill="currentColor" opacity="0.3" rx="10" />
-                            <rect x="250" y="100" width="100" height="250" fill="currentColor" opacity="0.5" rx="10" />
+                            <rect x="50" y="150" width="100" height="200" fill="currentColor" opacity="0.3"
+                                rx="10" />
+                            <rect x="250" y="100" width="100" height="250" fill="currentColor" opacity="0.5"
+                                rx="10" />
                             <circle cx="200" cy="200" r="80" fill="currentColor" opacity="0.4" />
-                            <path d="M100 250 Q200 200 300 250" stroke="currentColor" stroke-width="4" fill="none" />
+                            <path d="M100 250 Q200 200 300 250" stroke="currentColor" stroke-width="4"
+                                fill="none" />
                         </svg>
                     </div>
                 </div>
@@ -213,29 +201,30 @@ new #[Layout('layouts.main')] class extends Component
     <section class="py-20 bg-emerald-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <header class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Une équipe engagée pour un avenir vert 🌍</h2>
-                <p class="text-xl text-gray-600">Des passionnés au service de l’agriculture durable</p>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ __('about.team.header_title') }}</h2>
+                <p class="text-xl text-gray-600">{{ __('about.team.header_sub') }}</p>
             </header>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach([
-                    ['name' => 'Feutsop Rüdiger', 'role' => 'Fondateur & Développeur principal', 'emoji' => '👨‍💼', 'text' => 'Passionné par l’innovation technologique et l’agriculture, Rüdiger a créé AgroSpace pour transformer le secteur agricole africain grâce au numérique.'],
-                    ['name' => 'Marie Kouam', 'role' => 'Responsable Communauté', 'emoji' => '👩‍💼', 'text' => 'Experte en engagement communautaire, Marie veille à ce que chaque membre d\'AgroSpace trouve sa place et crée des connexions authentiques.'],
-                    ['name' => 'Jean Nkoulou', 'role' => 'Expert Agropastoral', 'emoji' => '👨‍🌾', 'text' => 'Avec 15 ans d’expérience dans le secteur agricole, Jean apporte son expertise pour garantir la pertinence et l’utilité de notre plateforme.']
-                ] as $member)
-                <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2"
-                         itemscope itemtype="https://schema.org/Person">
-                    <div class="h-48 bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
-                        <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center text-6xl" aria-hidden="true">
-                            {{ $member['emoji'] }}
+                @foreach (array_filter(trans('about.team'), 'is_array') as $member)
+                    <article
+                        class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2"
+                        itemscope itemtype="https://schema.org/Person">
+                        <div
+                            class="h-48 bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
+                            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center text-6xl"
+                                aria-hidden="true">
+                                {{ $member['emoji'] }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2" itemprop="name">{{ $member['name'] }}</h3>
-                        <p class="text-[#1B5E20] font-semibold mb-4" itemprop="jobTitle">{{ $member['role'] }}</p>
-                        <p class="text-gray-600" itemprop="description">{{ $member['text'] }}</p>
-                    </div>
-                </article>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2" itemprop="name">{{ $member['name'] }}
+                            </h3>
+                            <p class="text-[#1B5E20] font-semibold mb-4" itemprop="jobTitle">{{ $member['role'] }}
+                            </p>
+                            <p class="text-gray-600" itemprop="description">{{ $member['text'] }}</p>
+                        </div>
+                    </article>
                 @endforeach
             </div>
         </div>
@@ -245,22 +234,19 @@ new #[Layout('layouts.main')] class extends Component
     <section class="py-20 bg-gradient-to-br from-emerald-50 to-green-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <header class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Notre impact en quelques chiffres</h2>
-                <p class="text-xl text-gray-600">Des résultats concrets qui témoignent de notre engagement</p>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ __('about.stats.header_title') }}</h2>
+                <p class="text-xl text-gray-600">{{ __('about.stats.header_sub') }}</p>
             </header>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                @foreach([
-                    ['emoji' => '👥', 'value' => '+500', 'label' => 'Utilisateurs inscrits'],
-                    ['emoji' => '🤝', 'value' => '+120', 'label' => 'Connexions créées'],
-                    ['emoji' => '📍', 'value' => '+30', 'label' => 'Régions couvertes'],
-                    ['emoji' => '📢', 'value' => '+100', 'label' => 'Offres publiées/mois']
-                ] as $stat)
-                <article class="bg-white p-8 rounded-2xl text-center shadow-lg" itemscope itemtype="https://schema.org/Number">
-                    <div class="text-5xl mb-4" aria-hidden="true">{{ $stat['emoji'] }}</div>
-                    <div class="text-4xl font-bold text-[#1B5E20] mb-2" itemprop="value">{{ $stat['value'] }}</div>
-                    <p class="text-gray-600 font-medium">{{ $stat['label'] }}</p>
-                </article>
+                @foreach (array_filter(trans('about.stats'), 'is_array') as $stat)
+                    <article class="bg-white p-8 rounded-2xl text-center shadow-lg" itemscope
+                        itemtype="https://schema.org/Number">
+                        <div class="text-5xl mb-4" aria-hidden="true">{{ $stat['emoji'] }}</div>
+                        <div class="text-4xl font-bold text-[#1B5E20] mb-2" itemprop="value">{{ $stat['value'] }}
+                        </div>
+                        <p class="text-gray-600 font-medium">{{ $stat['label'] }}</p>
+                    </article>
                 @endforeach
             </div>
         </div>
@@ -270,17 +256,16 @@ new #[Layout('layouts.main')] class extends Component
     <section class="py-20 bg-gradient-to-r from-[#1B5E20] to-green-600">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-4xl font-bold text-white mb-6">
-                Rejoignez la communauté AgroSpace dès aujourd’hui
+                {{ __('about.cta.title') }}
             </h2>
             <p class="text-xl text-green-50 mb-8">
-                Contribuez à l’avenir durable de l’agriculture africaine et créez des connexions qui comptent vraiment.
+                {{ __('about.cta.p') }}
             </p>
-            <a href="{{ route('register') }}"  wire:navigate
-               title="Rejoindre la communauté AgroSpace - Inscription gratuite"
-               class="inline-block bg-white text-[#1B5E20] px-10 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
-                Créer un compte gratuitement
+            <a href="{{ route('register') }}" wire:navigate title="{{ __('about.cta.button_title') }}"
+                class="inline-block bg-white text-[#1B5E20] px-10 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+                {{ __('about.cta.button') }}
             </a>
-            <p class="text-green-100 mt-4 text-sm">C’est rapide, simple et gratuit.</p>
+            <p class="text-green-100 mt-4 text-sm">{{ __('about.cta.note') }}</p>
         </div>
     </section>
 

@@ -3,6 +3,7 @@
 use App\Livewire\Admin\AvisManagement;
 use App\Livewire\Admin\Blog\CategoryManage;
 use App\Livewire\Admin\Blog\TagManage;
+use App\Livewire\Admin\Contacts\ListContacts;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\DemandResponseManagement;
 use App\Livewire\Admin\DemandsManagement\DemandsManage;
@@ -53,6 +54,8 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
         //Modération des demandes
         Route::get('/demands/moderate', DemandsManage::class)
             ->name('demands.index'); //admin
+
+        Route::get('/contacts', ListContacts::class)->name('contacts.index');
 
         // Modération des offres
         Route::get('/offers/moderate', ModerateOffers::class)
