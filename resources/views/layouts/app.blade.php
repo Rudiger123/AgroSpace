@@ -414,6 +414,10 @@
                         @livewire('admin.global-search')
                     </div>
 
+                    <div class="flex justify-center items-center">
+                        <livewire:components.language-switcher />
+                    </div>
+
                     <!-- Notification Bell -->
                     @auth
                         @livewire('notifications.notification-bell')
@@ -676,6 +680,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Ctrl+K or Cmd+K is already handled in the component
             console.log('Global Search: Raccourci clavier Ctrl+K / Cmd+K activé');
+        });
+
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('refresh-page', () => {
+                window.location.reload();
+            });
         });
     </script>
 

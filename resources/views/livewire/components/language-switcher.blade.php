@@ -137,6 +137,7 @@
                 // Vous pouvez ajouter d'autres actions ici
                 // Par exemple, recharger certains composants, analytics, etc.
             });
+            
         </script>
     @endscript
 

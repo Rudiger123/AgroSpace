@@ -15,8 +15,6 @@ use Livewire\Attributes\Layout;
 
 /**
  * Composant Livewire - Liste des articles du blog AgroSpace
- *
- * Design moderne avec hero section et filtres dynamiques
  */
 #[Layout('layouts.main')]
 class BlogList extends Component
@@ -36,7 +34,7 @@ class BlogList extends Component
     public ?string $selectedTag = null;
 
     #[Url(as: 'sort')]
-    public string $sortBy = 'recent'; // recent, popular, likes
+    public string $sortBy = 'recent';
 
     public int $perPage = 9;
 
@@ -100,7 +98,6 @@ class BlogList extends Component
             $query->where('status', 'published')
                   ->where('published_at', '<=', now());
         }])
-        // ->having('posts_count', '>', 0)
         ->orderBy('posts_count', 'desc')
         ->limit(15)
         ->get();
@@ -176,32 +173,16 @@ class BlogList extends Component
             'total_posts' => Post::published()->count(),
             'categories_count' => $this->categories->count(),
             'tags_count' => $this->popularTags->count(),
-            // Articles
-            'total_posts' => Post::where('published', true)->count(),
             'posts_this_month' => Post::where('published', true)
                 ->whereMonth('published_at', now()->month)
                 ->whereYear('published_at', now()->year)
                 ->count(),
-
-            // Vues
             'total_views' => Post::sum('views_count'),
             'views_today' => View::whereDate('created_at', today())->count(),
-
-            // Commentaires
             'total_comments' => Comment::count(),
             'approved_comments' => Comment::where('status', 'approved')->count(),
-
-            // Réactions (Likes)
             'total_likes' => Post::sum('likes_count'),
-
-            // Partages
             'total_shares' => Post::sum('shares_count'),
-
-            // Tags et Catégories
-            'tags_count' => Tag::where('is_active', true)->count(),
-            'categories_count' => Category::where('is_active', true)->count(),
-
-            // Auteurs actifs (ayant publié au moins 1 article)
             'active_authors' => Post::where('published', true)
                 ->distinct('author_id')
                 ->count('author_id'),

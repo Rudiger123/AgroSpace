@@ -30,8 +30,6 @@ class CommentManagement extends Component
 
     public function render()
     {
-        // J'utilise la nouvelle scopeSearch ici.
-        // Je m'assure également que la relation 'user' charge le nom et l'email pour la recherche.
         $comments = Comment::with(['post:id,title', 'user:id,name,email'])
             ->when($this->search, fn ($q) => $q->search($this->search))
             ->when($this->status !== 'all', fn ($q) => $q->where('status', $this->status))
@@ -74,21 +72,21 @@ class CommentManagement extends Component
     {
         $comment = Comment::findOrFail($id);
         $comment->update(['status' => 'approved', 'moderated_at' => now(), 'moderated_by' => Auth::user()->id]);
-        $this->dispatch('comment-approved', ['message' => 'Commentaire approuvé avec succès']);
+        $this->dispatch('comment-approved', ['message' => __('blog.success.approved')]);
     }
 
     public function reject($id)
     {
         $comment = Comment::findOrFail($id);
         $comment->update(['status' => 'rejected', 'moderated_at' => now(), 'moderated_by' => Auth::user()->id]);
-        $this->dispatch('comment-rejected', ['message' => 'Commentaire rejeté']);
+        $this->dispatch('comment-rejected', ['message' => __('blog.success.rejected')]);
     }
 
     public function markSpam($id)
     {
         $comment = Comment::findOrFail($id);
         $comment->update(['status' => 'spam', 'moderated_at' => now(), 'moderated_by' => Auth::user()->id]);
-        $this->dispatch('comment-spam', ['message' => 'Commentaire marqué comme spam']);
+        $this->dispatch('comment-spam', ['message' => __('blog.success.marked_spam')]);
     }
 
     public function delete($id)
@@ -99,7 +97,7 @@ class CommentManagement extends Component
     public function confirmDelete($id)
     {
         Comment::findOrFail($id)->delete();
-        $this->dispatch('comment-deleted', ['message' => 'Commentaire supprimé']);
+        $this->dispatch('comment-deleted', ['message' => __('blog.success.deleted')]);
     }
 
     public function openDetails($id)
@@ -110,7 +108,7 @@ class CommentManagement extends Component
     public function bulkDelete()
     {
         if (empty($this->selected)) {
-            $this->dispatch('alert', ['message' => 'Aucun commentaire sélectionné']);
+            $this->dispatch('alert', ['message' => __('blog.errors.no_selection')]);
             return;
         }
 
@@ -122,14 +120,12 @@ class CommentManagement extends Component
         Comment::whereIn('id', $this->selected)->delete();
         $this->selected = [];
         $this->selectAll = false;
-        $this->dispatch('comments-deleted', ['message' => count($this->selected) . ' commentaires supprimés']);
+        $this->dispatch('comments-deleted', ['message' => __('blog.success.deleted')]);
     }
 
     public function updatedSelectAll($value)
     {
         if ($value) {
-            // J'ajoute l'utilisation de la scopeSearch ici pour que la sélection de masse
-            // respecte les filtres actifs, y compris la recherche.
             $this->selected = Comment::when($this->search, fn ($q) => $q->search($this->search))
                 ->when($this->status !== 'all', fn ($q) => $q->where('status', $this->status))
                 ->when($this->post_id, fn ($q) => $q->where('post_id', $this->post_id))

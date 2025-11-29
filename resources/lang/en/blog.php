@@ -227,5 +227,287 @@ return [
         'published_date' => 'Publication date',
         'status' => 'Status',
         'featured' => 'Featured'
-    ]
+    ],
+    'analytics' => [
+        'title' => 'Agrospace Analytics Dashboard',
+        'description' => 'In-depth blog performance analysis',
+        'refresh' => 'Refresh',
+        'export_csv' => 'Export CSV',
+        'filters' => [
+            'title' => 'Period & Content Filters',
+            'date_from' => 'From',
+            'date_to' => 'To',
+            'selected_period' => 'Selected period: from :from to :to',
+            'filter_by_post' => 'Filter by Post',
+            'filter_by_author' => 'Filter by Author',
+            'comment_status' => 'Comment Status',
+            'all_posts' => 'All posts',
+            'all_authors' => 'All authors',
+            'all_comments' => 'All comments',
+            'approved' => 'Approved',
+            'pending' => 'Pending',
+            'rejected' => 'Rejected',
+            'spam' => 'Spam',
+        ],
+        'stats' => [
+            'published_posts' => 'Published posts',
+            'filtered_coverage' => 'Covered by filters',
+            'total_views' => 'Total views',
+            'period' => 'During the period',
+            'comments' => 'Comments',
+            'pending' => 'pending',
+            'total_likes' => 'Total Likes',
+            'total_engagement' => 'Total engagement',
+            'total_shares' => 'Total Shares',
+            'external_visibility' => 'External visibility',
+        ],
+        'charts' => [
+            'traffic_trend' => 'Traffic Trend (Views and Comments)',
+            'reaction_breakdown' => 'Reactions Breakdown',
+            'shares_by_platform' => 'Shares by Platform',
+            'top_posts' => 'Top 5 Posts by Comments',
+            'no_articles' => 'No articles found according to filters.',
+        ],
+    ],
+    
+    'list' => [
+        'hero' => [
+            'title' => 'News & :highlight from the agropastoral world',
+            'highlight' => 'Innovations',
+            'description' => 'Discover trends, tips, and inspiring stories from the Agrospace community.',
+            'explore_articles' => 'Explore articles',
+            'stats' => [
+                'published_articles' => 'Published articles',
+                'expert_contributors' => 'Expert contributors',
+                'engaged_readers' => 'Engaged readers',
+            ],
+        ],
+        'featured' => [
+            'title' => 'Featured',
+            'featured_badge' => '⭐ Featured article',
+            'read_full' => 'Read full article',
+        ],
+        'filters' => [
+            'search_placeholder' => 'Search for an article or topic...',
+            'all_categories' => '📚 All',
+            'popular_tags' => 'Popular tags:',
+            'sort_by' => 'Sort by:',
+            'most_recent' => 'Most recent',
+            'most_popular' => 'Most popular',
+            'most_liked' => 'Most liked',
+            'clear_filters' => 'Clear filters',
+            'loading' => 'Loading articles...',
+        ],
+        'articles' => [
+            'no_results' => [
+                'title' => 'No articles found',
+                'description' => 'No articles match your search criteria.',
+                'reset_filters' => 'Reset filters',
+            ],
+            'read' => 'Read',
+            'stats' => [
+                'views' => 'views',
+                'likes' => 'likes',
+                'comments' => 'comments',
+            ],
+        ],
+        'impact' => [
+            'title' => 'The Impact of <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-700">AgroSpace</span>',
+            'description' => 'A dynamic community that shares, learns, and grows together',
+            'stats' => [
+                'published_articles' => 'Published Articles',
+                'this_month' => 'this month',
+                'total_views' => 'Total Views',
+                'today' => 'Today',
+                'comments' => 'Comments',
+                'approved' => 'approved',
+                'reactions' => 'Reactions',
+                'liked_articles' => 'Liked articles',
+                'shares' => 'Shares',
+                'tags' => 'Tags',
+                'categories' => 'Categories',
+                'authors' => 'Authors',
+            ],
+        ],
+        'cta' => [
+            'title' => 'Agrospace is more than a platform',
+            'description' => 'It\'s an agricultural community moving together towards a sustainable and prosperous future.',
+            'join_community' => 'Join the community',
+            'signup_info' => 'Sign up for free and connect with producers and consumers near you.',
+        ],
+    ],
+    
+    'manager' => [
+        'title' => 'Blog Management',
+        'description' => 'Create, edit and manage your articles with style',
+        'actions' => [
+            'new_article' => 'New Article',
+            'comments_manager' => 'Comments Manager',
+            'analytics' => 'Analytics',
+        ],
+        'stats' => [
+            'total_posts' => 'Total Posts',
+            'published' => 'Published',
+            'drafts' => 'Drafts',
+            'total_views' => 'Total Views',
+        ],
+        'filters' => [
+            'search' => [
+                'label' => 'Search',
+                'placeholder' => 'Title, content, author...',
+            ],
+            'category' => [
+                'label' => 'Category',
+                'all' => 'All categories',
+            ],
+            'status' => [
+                'label' => 'Status',
+                'all' => 'All statuses',
+                'published' => 'Published',
+                'draft' => 'Drafts',
+                'scheduled' => 'Scheduled',
+            ],
+            'author' => [
+                'label' => 'Author',
+                'all' => 'All authors',
+            ],
+            'quick_filters' => [
+                'all_posts' => 'All posts',
+                'published' => 'Published',
+                'drafts' => 'Drafts',
+                'oldest' => 'Oldest',
+                'newest' => 'Newest',
+            ],
+        ],
+        'articles' => [
+            'status' => [
+                'published' => 'Published',
+                'draft' => 'Draft',
+            ],
+            'actions' => [
+                'preview' => 'Preview',
+                'edit' => 'Edit',
+                'publish' => 'Publish',
+                'unpublish' => 'Unpublish',
+                'feature' => 'Feature',
+                'unfeature' => 'Unfeature',
+                'delete' => 'Delete',
+            ],
+            'meta' => [
+                'author' => 'Author',
+                'publish_date' => 'Publish date',
+                'not_published' => 'Not published',
+            ],
+            'no_results' => [
+                'title' => 'No articles found',
+                'description' => 'Start your blogging adventure by creating your first beautiful article.',
+                'create_first' => 'Create my first article',
+            ],
+        ],
+        'modals' => [
+            'create' => [
+                'title' => '✨ Create New Article',
+                'description' => 'Share your knowledge and inspire the AgroSpace community',
+            ],
+            'edit' => [
+                'title' => '✏️ Edit Article',
+                'description' => 'Update your article information to keep your community informed',
+            ],
+            'sections' => [
+                'main_info' => [
+                    'title' => 'Main Information',
+                    'description' => 'The essential details of your article',
+                    'fields' => [
+                        'title' => 'Article Title',
+                        'slug' => 'URL (Slug)',
+                        'slug_info' => 'Automatically generated from title',
+                    ],
+                ],
+                'classification' => [
+                    'title' => 'Classification',
+                    'description' => 'Category and tags to organize your content',
+                    'fields' => [
+                        'category' => 'Category',
+                        'tags' => 'Tags',
+                        'tags_info' => 'Hold Ctrl (Cmd on Mac) to select multiple tags',
+                    ],
+                ],
+                'featured_image' => [
+                    'title' => 'Featured Image',
+                    'description' => 'Choose an attractive image for your article',
+                    'upload' => [
+                        'click_to_upload' => 'Click to upload or drag and drop',
+                        'formats' => 'PNG, JPG, GIF up to 2MB',
+                    ],
+                ],
+                'excerpt' => [
+                    'title' => 'Excerpt',
+                    'description' => 'A concise overview of your article',
+                    'fields' => [
+                        'excerpt' => 'Short Description',
+                        'excerpt_info' => 'Will be automatically generated from content if left empty',
+                    ],
+                ],
+                'content' => [
+                    'title' => 'Article Content',
+                    'description' => 'Write the body of your article',
+                    'fields' => [
+                        'content' => 'Main Text',
+                        'markdown_support' => 'Markdown supported',
+                    ],
+                ],
+                'publishing' => [
+                    'title' => 'Publishing Options',
+                    'description' => 'Schedule your article publication',
+                    'fields' => [
+                        'publish_now' => 'Publish now',
+                        'publish_now_info' => 'Article will be immediately visible',
+                        'publish_date' => 'Publication Date and Time',
+                        'publish_date_info' => 'Leave empty for immediate publication',
+                    ],
+                ],
+                'seo' => [
+                    'title' => 'SEO Optimization',
+                    'description' => 'Improve your visibility on search engines',
+                    'fields' => [
+                        'meta_title' => 'Meta Title',
+                        'meta_title_info' => 'Ideally between 50-60 characters',
+                        'meta_description' => 'Meta Description',
+                        'meta_description_info' => 'Optimal between 150-160 characters for full display',
+                    ],
+                ],
+            ],
+            'actions' => [
+                'cancel' => 'Cancel',
+                'save' => 'Save',
+                'create' => '✨ Create Article',
+                'update' => '💾 Update',
+                'saving' => 'Saving...',
+                'auto_save' => 'Auto save',
+                'auto_save_info' => 'Your changes are being saved',
+            ],
+        ],
+        'delete_modal' => [
+            'title' => 'Confirm deletion',
+            'description' => 'Are you sure you want to delete this article? This action is irreversible.',
+            'cancel' => 'Cancel',
+            'confirm' => 'Delete',
+        ],
+        'preview_modal' => [
+            'title' => '✨ Preview',
+            'description' => 'Preview your article before publication',
+            'desktop_view' => 'Desktop View',
+            'mobile_view' => 'Mobile View',
+            'fullscreen' => 'Fullscreen',
+            'share' => [
+                'title' => 'Share this article',
+                'description' => 'Share this content with your community',
+            ],
+            'cta' => [
+                'title' => 'Ready to publish your article?',
+                'description' => 'Share your knowledge with the AgroSpace community',
+                'back_to_edit' => 'Back to editing',
+            ],
+        ],
+    ],
 ];

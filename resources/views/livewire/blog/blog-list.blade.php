@@ -16,10 +16,10 @@
                 <!-- Left Content -->
                 <div class="text-white space-y-6 animate-fade-in-up">
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                        Actualités & <span class="text-secondary">Innovations</span> du monde agropastoral
+                        {{ __('blog.list.hero.title', ['highlight' => '<span class="text-secondary">' . __('blog.list.hero.highlight') . '</span>']) }}
                     </h1>
                     <p class="text-lg md:text-xl text-gray-50 leading-relaxed">
-                        Découvrez les tendances, les conseils et les histoires inspirantes de la communauté Agrospace.
+                        {{ __('blog.list.hero.description') }}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 pt-6">
                         <!-- Bouton principal amélioré -->
@@ -56,7 +56,7 @@
 
                             {{-- Texte --}}
                             <span class="relative z-10 font-semibold text-lg">
-                                Explorer les articles
+                                {{ __('blog.list.hero.explore_articles') }}
                             </span>
                         </a>
                     </div>
@@ -65,15 +65,15 @@
                     <div class="flex items-center gap-8 pt-6 flex-wrap">
                         <div class="text-center">
                             <div class="text-3xl font-bold">200+</div>
-                            <div class="text-sm text-green-50">Articles publiés</div>
+                            <div class="text-sm text-green-50">{{ __('blog.list.hero.stats.published_articles') }}</div>
                         </div>
                         <div class="text-center">
                             <div class="text-3xl font-bold">50+</div>
-                            <div class="text-sm text-green-50">Experts contributeurs</div>
+                            <div class="text-sm text-green-50">{{ __('blog.list.hero.stats.expert_contributors') }}</div>
                         </div>
                         <div class="text-center">
                             <div class="text-3xl font-bold">10,000+</div>
-                            <div class="text-sm text-green-50">Lecteurs engagés</div>
+                            <div class="text-sm text-green-50">{{ __('blog.list.hero.stats.engaged_readers') }}</div>
                         </div>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                         <path
                             d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
-                    <h2 class="text-3xl font-bold text-gray-900">À la une</h2>
+                    <h2 class="text-3xl font-bold text-gray-900">{{ __('blog.list.featured.title') }}</h2>
                 </div>
 
                 <div
@@ -135,7 +135,7 @@
                             <div class="absolute top-4 left-4">
                                 <span
                                     class="inline-block bg-yellow-400 text-yellow-900 text-xs font-bold px-4 py-2 rounded-full shadow-lg">
-                                    ⭐ Article vedette
+                                    {{ __('blog.list.featured.featured_badge') }}
                                 </span>
                             </div>
                         </div>
@@ -169,7 +169,7 @@
                             </div>
                             <a href="{{ route('blog.show', $featuredPost->slug) }}" wire:navigate
                                 class="inline-flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 w-fit">
-                                <span>Lire l'article complet</span>
+                                <span>{{ __('blog.list.featured.read_full') }}</span>
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -189,7 +189,7 @@
             <div class="max-w-2xl mx-auto mb-8">
                 <div class="relative">
                     <input type="text" wire:model.live.debounce.300ms="search"
-                        placeholder="Rechercher un article ou un thème..."
+                        placeholder="{{ __('blog.list.filters.search_placeholder') }}"
                         class="w-full px-6 py-4 pr-12 rounded-xl border-2 border-gray-200 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition shadow-sm">
                     <svg class="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,7 +203,7 @@
             <div class="flex flex-wrap justify-center gap-3 mb-12">
                 <button wire:click="selectCategory('tous')"
                     class="px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 shadow-md hover:shadow-lg {{ $selectedCategory === 'tous' ? 'bg-gradient-to-r from-green-600 to-green-700 text-white' : 'bg-gray-100 text-gray-700 hover:bg-green-100' }}">
-                    📚 Tous
+                    {{ __('blog.list.filters.all_categories') }}
                 </button>
                 @foreach ($categories as $category)
                     <button wire:click="selectCategory({{ $category->id }})"
@@ -217,7 +217,7 @@
             <!-- Tags populaires -->
             @if ($popularTags->isNotEmpty())
                 <div class="flex flex-wrap justify-center gap-2 mb-8">
-                    <span class="text-sm text-gray-600 self-center mr-2">Tags populaires:</span>
+                    <span class="text-sm text-gray-600 self-center mr-2">{{ __('blog.list.filters.popular_tags') }}</span>
                     @foreach ($popularTags->take(10) as $tag)
                         <button wire:click="selectTag({{ $tag->id }})"
                             class="px-3 py-1 text-sm rounded-full transition-all {{ $selectedTag == $tag->id ? 'bg-green-500 text-white' : 'bg-green-100 text-green-700 hover:bg-green-200' }}">
@@ -230,19 +230,19 @@
             <!-- Options de tri -->
             <div class="flex flex-wrap items-center justify-between mb-8 gap-4">
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-600">Trier par:</span>
+                    <span class="text-sm text-gray-600">{{ __('blog.list.filters.sort_by') }}</span>
                     <div class="flex items-center space-x-2">
                         <button wire:click="$set('sortBy', 'recent')"
                             class="px-4 py-2 text-sm rounded-lg transition {{ $sortBy === 'recent' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                            Plus récents
+                            {{ __('blog.list.filters.most_recent') }}
                         </button>
                         <button wire:click="$set('sortBy', 'popular')"
                             class="px-4 py-2 text-sm rounded-lg transition {{ $sortBy === 'popular' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                            Plus populaires
+                            {{ __('blog.list.filters.most_popular') }}
                         </button>
                         <button wire:click="$set('sortBy', 'likes')"
                             class="px-4 py-2 text-sm rounded-lg transition {{ $sortBy === 'likes' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                            Plus aimés
+                            {{ __('blog.list.filters.most_liked') }}
                         </button>
                     </div>
                 </div>
@@ -254,7 +254,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
-                        <span>Effacer les filtres</span>
+                        <span>{{ __('blog.list.filters.clear_filters') }}</span>
                     </button>
                 @endif
             </div>
@@ -262,7 +262,7 @@
             <!-- Loading state -->
             <div wire:loading.delay class="text-center py-12 w-full">
                 <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
-                <p class="text-gray-600 mt-4">Chargement des articles...</p>
+                <p class="text-gray-600 mt-4">{{ __('blog.list.filters.loading') }}</p>
             </div>
 
             <!-- Grille d'articles -->
@@ -339,7 +339,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
-                                        <span>{{ number_format($post->views_count) }}</span>
+                                        <span>{{ number_format($post->views_count) }} {{ __('blog.list.articles.stats.views') }}</span>
                                     </span>
                                     <span class="flex items-center space-x-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -347,7 +347,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                         </svg>
-                                        <span>{{ number_format($post->likes_count) }}</span>
+                                        <span>{{ number_format($post->likes_count) }} {{ __('blog.list.articles.stats.likes') }}</span>
                                     </span>
                                     <span class="flex items-center space-x-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -355,12 +355,12 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                         </svg>
-                                        <span>{{ number_format($post->comments_count) }}</span>
+                                        <span>{{ number_format($post->comments_count) }} {{ __('blog.list.articles.stats.comments') }}</span>
                                     </span>
                                 </div>
                                 <a href="{{ route('blog.show', $post->slug) }}" wire:navigate
                                     class="text-green-600 hover:text-green-700 font-semibold text-sm flex items-center space-x-1 group">
-                                    <span>Lire</span>
+                                    <span>{{ __('blog.list.articles.read') }}</span>
                                     <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -377,12 +377,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <h3 class="text-xl font-semibold text-gray-700 mb-2">Aucun article trouvé</h3>
-                        <p class="text-gray-500 mb-4">Aucun article ne correspond à vos critères de recherche.</p>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">{{ __('blog.list.articles.no_results.title') }}</h3>
+                        <p class="text-gray-500 mb-4">{{ __('blog.list.articles.no_results.description') }}</p>
                         @if ($search || $selectedCategory !== 'tous' || $selectedTag)
                             <button wire:click="resetFilters"
                                 class="inline-flex items-center space-x-2 bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 transition font-semibold">
-                                <span>Réinitialiser les filtres</span>
+                                <span>{{ __('blog.list.articles.no_results.reset_filters') }}</span>
                             </button>
                         @endif
                     </div>
@@ -418,11 +418,10 @@
                     </svg>
                 </div>
                 <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">
-                    L'Impact d'<span
-                        class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-700">AgroSpace</span>
+                    {!! __('blog.list.impact.title') !!}
                 </h2>
                 <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                    Une communauté dynamique qui partage, apprend et grandit ensemble
+                    {{ __('blog.list.impact.description') }}
                 </p>
             </div>
 
@@ -450,7 +449,7 @@
                             </div>
 
                             <!-- Label -->
-                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">Articles Publiés
+                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">{{ __('blog.list.impact.stats.published_articles') }}
                             </h3>
 
                             <!-- Value -->
@@ -466,7 +465,7 @@
                                         d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
                                         clip-rule="evenodd"></path>
                                 </svg>
-                                <span class="font-semibold">+{{ $stats['posts_this_month'] ?? 0 }} ce mois</span>
+                                <span class="font-semibold">+{{ $stats['posts_this_month'] ?? 0 }} {{ __('blog.list.impact.stats.this_month') }}</span>
                             </div>
                         </div>
                     </a>
@@ -493,7 +492,7 @@
                                 </svg>
                             </div>
 
-                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">Vues Totales
+                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">{{ __('blog.list.impact.stats.total_views') }}
                             </h3>
 
                             <p
@@ -507,8 +506,7 @@
                                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
                                         clip-rule="evenodd"></path>
                                 </svg>
-                                <span class="font-semibold">Aujourd'hui:
-                                    {{ number_format($stats['views_today'] ?? 0) }}</span>
+                                <span class="font-semibold">{{ __('blog.list.impact.stats.today') }}: {{ number_format($stats['views_today'] ?? 0) }}</span>
                             </div>
                         </div>
                     </div>
@@ -533,7 +531,7 @@
                                 </svg>
                             </div>
 
-                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">Commentaires
+                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">{{ __('blog.list.impact.stats.comments') }}
                             </h3>
 
                             <p
@@ -549,7 +547,7 @@
                                         d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z">
                                     </path>
                                 </svg>
-                                <span class="font-semibold">{{ $stats['approved_comments'] ?? 0 }} approuvés</span>
+                                <span class="font-semibold">{{ $stats['approved_comments'] ?? 0 }} {{ __('blog.list.impact.stats.approved') }}</span>
                             </div>
                         </div>
                     </a>
@@ -573,7 +571,7 @@
                                 </svg>
                             </div>
 
-                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">Réactions</h3>
+                            <h3 class="text-base font-bold text-gray-600 mb-2 uppercase tracking-wide">{{ __('blog.list.impact.stats.reactions') }}</h3>
 
                             <p
                                 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-pink-600 mb-2">
@@ -586,7 +584,7 @@
                                         d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z">
                                     </path>
                                 </svg>
-                                <span class="font-semibold">Articles appréciés</span>
+                                <span class="font-semibold">{{ __('blog.list.impact.stats.liked_articles') }}</span>
                             </div>
                         </div>
                     </div>
@@ -609,7 +607,7 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-600 font-semibold uppercase">Partages</p>
+                            <p class="text-sm text-gray-600 font-semibold uppercase">{{ __('blog.list.impact.stats.shares') }}</p>
                             <p class="text-2xl font-black text-teal-600">
                                 {{ number_format($stats['total_shares'] ?? 0) }}</p>
                         </div>
@@ -630,7 +628,7 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-600 font-semibold uppercase">Tags</p>
+                            <p class="text-sm text-gray-600 font-semibold uppercase">{{ __('blog.list.impact.stats.tags') }}</p>
                             <p class="text-2xl font-black text-yellow-600">
                                 {{ number_format($stats['tags_count'] ?? 0) }}</p>
                         </div>
@@ -651,7 +649,7 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-600 font-semibold uppercase">Catégories</p>
+                            <p class="text-sm text-gray-600 font-semibold uppercase">{{ __('blog.list.impact.stats.categories') }}</p>
                             <p class="text-2xl font-black text-indigo-600">
                                 {{ number_format($stats['categories_count'] ?? 0) }}</p>
                         </div>
@@ -672,7 +670,7 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-600 font-semibold uppercase">Auteurs</p>
+                            <p class="text-sm text-gray-600 font-semibold uppercase">{{ __('blog.list.impact.stats.authors') }}</p>
                             <p class="text-2xl font-black text-pink-600">
                                 {{ number_format($stats['active_authors'] ?? 0) }}</p>
                         </div>
@@ -706,17 +704,17 @@
     <section class="py-20 bg-[#1B5E20]">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-4xl font-bold text-white mb-6">
-                Agrospace, c'est plus qu'une plateforme
+                {{ __('blog.list.cta.title') }}
             </h2>
             <p class="text-xl text-green-100 mb-8">
-                C'est une communauté agricole qui avance ensemble vers un avenir durable et prospère.
+                {{ __('blog.list.cta.description') }}
             </p>
             <a href="{{ route('register') }}"  wire:navigate
                 class="inline-block bg-white text-[#1B5E20] px-10 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-xl transform hover:-translate-y-1">
-                Rejoindre la communauté
+                {{ __('blog.list.cta.join_community') }}
             </a>
             <p class="text-green-200 mt-4">
-                Inscrivez-vous gratuitement et connectez-vous aux producteurs et consommateurs près de chez vous.
+                {{ __('blog.list.cta.signup_info') }}
             </p>
         </div>
     </section>
