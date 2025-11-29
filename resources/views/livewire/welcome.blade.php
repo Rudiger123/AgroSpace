@@ -7,10 +7,10 @@ use App\Helpers\SEO;
 new #[Layout('layouts.main')] class extends Component {
     public function mount()
     {
-        // Set SEO meta tags dynamically
-        SEO::setTitle('AgroSpace - Plateforme Agricole Cameroun | Connecte Producteurs & Consommateurs');
-        SEO::setDescription('Plateforme #1 au Cameroun pour connecter producteurs et consommateurs agricoles. Trouvez des offres locales, créez des partenariats durables. Inscription gratuite !');
-        SEO::setKeywords('agriculture cameroun, producteur agricole, marché local, agrospace, vente directe producteur, agriculture durable afrique');
+        // Set SEO meta tags dynamically using translations
+        SEO::setTitle(__('welcome.meta.title'));
+        SEO::setDescription(__('welcome.meta.description'));
+        SEO::setKeywords(__('welcome.meta.keywords'));
         SEO::setCanonical(url()->current());
         SEO::addImages([asset('images/agrospace.png')]);
     }
@@ -18,51 +18,47 @@ new #[Layout('layouts.main')] class extends Component {
 
 @push('meta')
     {{-- Primary Meta Tags --}}
-    <title>AgroSpace - Plateforme Agricole au Cameroun | Connectez Producteurs et Consommateurs Locaux</title>
-    <meta name="title" content="AgroSpace - Plateforme Agricole au Cameroun | Producteurs & Consommateurs">
-    <meta name="description"
-        content="Rejoignez AgroSpace, la plateforme n°1 au Cameroun pour connecter producteurs agricoles et consommateurs locaux. +2500 producteurs, +8000 échanges. Inscription gratuite !">
-    <meta name="keywords"
-        content="agriculture cameroun, producteur agricole cameroun, marché agricole local, agrospace, vente directe producteur, consommateur local, agriculture durable afrique, agropastoral cameroun, plateforme agricole">
+    <title>{{ __('welcome.meta.title') }}</title>
+    <meta name="title" content="{{ __('welcome.meta.og_title') }}">
+    <meta name="description" content="{{ __('welcome.meta.description') }}">
+    <meta name="keywords" content="{{ __('welcome.meta.keywords') }}">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="language" content="fr">
+    <meta name="language" content="{{ app()->getLocale() }}">
     <meta name="author" content="AgroSpace">
     <link rel="canonical" href="{{ url()->current() }}">
 
     {{-- Open Graph / Facebook --}}
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="AgroSpace - Plateforme Agricole #1 au Cameroun">
-    <meta property="og:description"
-        content="Connectez producteurs et consommateurs agricoles locaux. +2500 producteurs, +1200 consommateurs, +8000 échanges. Rejoignez-nous gratuitement !">
+    <meta property="og:title" content="{{ __('welcome.meta.og_title') }}">
+    <meta property="og:description" content="{{ __('welcome.meta.description') }}">
     <meta property="og:image" content="{{ asset('images/agrospace.png') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="AgroSpace">
-    <meta property="og:locale" content="fr_CM">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'fr' ? 'fr_CM' : 'en_US' }}">
 
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ url()->current() }}">
-    <meta name="twitter:title" content="AgroSpace - Plateforme Agricole au Cameroun">
-    <meta name="twitter:description"
-        content="Rejoignez +2500 producteurs et +1200 consommateurs sur AgroSpace. Créez des partenariats agricoles durables au Cameroun.">
+    <meta name="twitter:title" content="{{ __('welcome.meta.og_title') }}">
+    <meta name="twitter:description" content="{{ __('welcome.meta.description') }}">
     <meta name="twitter:image" content="{{ asset('images/agrospace.png') }}">
 
     {{-- Additional SEO Meta --}}
     <meta name="geo.region" content="CM">
-    <meta name="geo.placename" content="Cameroun">
+    <meta name="geo.placename" content="{{ __('welcome.meta.region_name') }}">
     <meta name="geo.position" content="3.848;11.5021">
     <meta name="ICBM" content="3.848, 11.5021">
 @endpush
 
 <div>
     {{-- SEO: Breadcrumb Navigation --}}
-    <nav aria-label="Fil d'Ariane" class="hidden">
+    <nav aria-label="{{ __('welcome.nav.breadcrumb') }}" class="hidden">
         <ol itemscope itemtype="https://schema.org/BreadcrumbList">
             <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
                 <a itemprop="item" href="{{ url('/') }}">
-                    <span itemprop="name">Accueil</span>
+                    <span itemprop="name">{{ __('welcome.nav.home') }}</span>
                 </a>
                 <meta itemprop="position" content="1" />
             </li>
@@ -88,19 +84,17 @@ new #[Layout('layouts.main')] class extends Component {
                     <div class="text-white space-y-6 animate-fade-in-up">
                         {{-- SEO: Main H1 with primary keywords --}}
                         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                            Plateforme Agricole au Cameroun : Connectez <span class="text-secondary">Producteurs</span>
-                            et <span class="text-secondary">Consommateurs</span> Locaux
+                            {!! __('welcome.hero.h1') !!}
                         </h1>
 
                         {{-- SEO: Descriptive subtitle --}}
                         <p class="text-lg md:text-xl text-green-50 leading-relaxed">
-                            Découvrez, échangez et collaborez dans un écosystème agropastoral durable.
-                            Plus de 2500 producteurs agricoles et 1200 consommateurs actifs au Cameroun.
+                            {{ __('welcome.hero.subtitle') }}
                         </p>
                         <div class="flex flex-col sm:flex-row gap-5 pt-8">
                             {{-- Bouton Principal - Créer compte --}}
                             <a href="{{ route('register') }}" wire:navigate
-                                title="Créer un compte gratuit sur AgroSpace - Inscription producteur ou consommateur"
+                                title="{{ __('welcome.cta.create_account_title') }}"
                                 class="group relative flex items-center justify-center gap-3 
                                        bg-gradient-to-r from-green-600 via-emerald-500 to-green-600 
                                        text-white px-8 py-4 rounded-2xl font-semibold 
@@ -129,13 +123,13 @@ new #[Layout('layouts.main')] class extends Component {
                                 
                                 {{-- Texte --}}
                                 <span class="relative font-bold text-lg">
-                                    Créer mon compte gratuitement
+                                    {{ __('welcome.cta.create_account') }}
                                 </span>
                             </a>
                         
                             {{-- Bouton Secondaire - Découvrir offres --}}
                             <a href="{{ route('offers-list') }}" wire:navigate
-                                title="Découvrir les offres agricoles disponibles au Cameroun"
+                                title="{{ __('welcome.cta.explore_offers_title') }}"
                                 class="group relative flex items-center justify-center gap-3 
                                        bg-transparent border-2 border-white/80 text-white 
                                        px-10 py-5 rounded-2xl font-semibold 
@@ -165,25 +159,25 @@ new #[Layout('layouts.main')] class extends Component {
                                 
                                 {{-- Texte --}}
                                 <span class="relative z-10 font-semibold">
-                                    Explorer les offres agricoles
+                                    {{ __('welcome.cta.explore_offers') }}
                                 </span>
                             </a>
                         </div>
 
                         {{-- SEO: Statistics with semantic markup --}}
                         <div class="flex items-center gap-8 pt-6 flex-wrap" role="region"
-                            aria-label="Statistiques AgroSpace">
+                            aria-label="{{ __('welcome.stats.region_label') }}">
                             <div class="text-center" itemscope itemtype="https://schema.org/Number">
                                 <div class="text-3xl font-bold" itemprop="value">2,500+</div>
-                                <div class="text-sm text-green-100">Producteurs Agricoles</div>
+                                <div class="text-sm text-green-100">{{ __('welcome.stats.producers') }}</div>
                             </div>
                             <div class="text-center" itemscope itemtype="https://schema.org/Number">
                                 <div class="text-3xl font-bold" itemprop="value">1,200+</div>
-                                <div class="text-sm text-green-100">Consommateurs Locaux</div>
+                                <div class="text-sm text-green-100">{{ __('welcome.stats.consumers') }}</div>
                             </div>
                             <div class="text-center" itemscope itemtype="https://schema.org/Number">
                                 <div class="text-3xl font-bold" itemprop="value">8,000+</div>
-                                <div class="text-sm text-green-100">Échanges Réalisés</div>
+                                <div class="text-sm text-green-100">{{ __('welcome.stats.exchanges') }}</div>
                             </div>
                         </div>
                     </div>
@@ -191,11 +185,7 @@ new #[Layout('layouts.main')] class extends Component {
                     {{-- Right Illustration --}}
                     <div class="hidden md:block">
                         <div class="relative">
-                            {{-- <img src="{{ asset('images/hero/hero.png') }}"
-                                alt="Illustration agriculture au Cameroun - Producteurs et consommateurs locaux sur AgroSpace"
-                                width="400" height="300" class="w-full h-auto rounded-xl" loading="eager" />
-                            --}}
-                            <!-- Right Illustration -->
+                            <!-- Right Illustration (unchanged) -->
                             <div class="hidden md:block">
                                 <div class="relative">
                                     <svg class="w-full h-auto" viewBox="0 0 500 400" fill="none"
@@ -229,11 +219,10 @@ new #[Layout('layouts.main')] class extends Component {
             <div class="container mx-auto px-4">
                 <header class="text-center mb-16">
                     <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                        Pourquoi Choisir AgroSpace pour vos Échanges Agricoles au Cameroun ?
+                        {{ __('welcome.features.title') }}
                     </h2>
                     <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                        Une plateforme conçue pour valoriser l'agriculture locale et créer des opportunités commerciales
-                        durables entre producteurs et consommateurs
+                        {{ __('welcome.features.subtitle') }}
                     </p>
                 </header>
 
@@ -250,12 +239,10 @@ new #[Layout('layouts.main')] class extends Component {
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-4" itemprop="name">
-                            Connexion Directe Producteur-Consommateur
+                            {{ __('welcome.features.f1.name') }}
                         </h3>
                         <p class="text-gray-600 leading-relaxed" itemprop="description">
-                            Mettez en relation producteurs et consommateurs proches de vous pour des échanges
-                            authentiques et directs.
-                            Éliminez les intermédiaires et établissez des partenariats commerciaux durables.
+                            {{ __('welcome.features.f1.desc') }}
                         </p>
                     </article>
 
@@ -271,12 +258,10 @@ new #[Layout('layouts.main')] class extends Component {
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-4" itemprop="name">
-                            Valorisation des Produits Agricoles Locaux
+                            {{ __('welcome.features.f2.name') }}
                         </h3>
                         <p class="text-gray-600 leading-relaxed" itemprop="description">
-                            Donnez de la visibilité à vos produits et services agricoles auprès d'une communauté
-                            engagée.
-                            Touchez des milliers de consommateurs locaux intéressés par l'agriculture camerounaise.
+                            {{ __('welcome.features.f2.desc') }}
                         </p>
                     </article>
 
@@ -292,21 +277,19 @@ new #[Layout('layouts.main')] class extends Component {
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-4" itemprop="name">
-                            Opportunités Commerciales Durables
+                            {{ __('welcome.features.f3.name') }}
                         </h3>
                         <p class="text-gray-600 leading-relaxed" itemprop="description">
-                            Trouvez des partenaires commerciaux, clients et projets locaux pour développer votre
-                            activité agricole.
-                            Accédez à un réseau de professionnels qualifiés dans tout le Cameroun.
+                            {{ __('welcome.features.f3.desc') }}
                         </p>
                     </article>
                 </div>
 
                 <div class="text-center mt-12">
                     <a href="{{ route('register') }}" wire:navigate
-                        title="Rejoindre la communauté AgroSpace - Producteurs et consommateurs agricoles"
+                        title="{{ __('welcome.features.cta_title') }}"
                         class="inline-block bg-base text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-800 transition-all shadow-lg hover:shadow-xl">
-                        Explorer la communauté agricole
+                        {{ __('welcome.features.cta') }}
                     </a>
                 </div>
             </div>
@@ -317,11 +300,10 @@ new #[Layout('layouts.main')] class extends Component {
             <div class="container mx-auto px-4">
                 <header class="text-center mb-16">
                     <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                        Comment Fonctionne AgroSpace ? Guide Complet
+                        {{ __('welcome.how.title') }}
                     </h2>
                     <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                        En trois étapes simples, commencez à valoriser votre activité agricole et créez des partenariats
-                        commerciaux au Cameroun
+                        {{ __('welcome.how.subtitle') }}
                     </p>
                 </header>
 
@@ -329,18 +311,16 @@ new #[Layout('layouts.main')] class extends Component {
                     {{-- Step 1 --}}
                     <article class="text-center relative">
                         <div class="bg-gradient-to-br from-base to-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
-                            aria-label="Étape 1">
+                            aria-label="{{ __('welcome.how.step1.aria') }}">
                             <span class="text-3xl font-bold text-white">1</span>
                         </div>
                         <div
                             class="bg-gray-50 p-8 rounded-xl h-64 flex flex-col justify-center hover:shadow-lg transition-shadow">
                             <h3 class="text-xl font-bold text-gray-900 mb-3">
-                                Créez Votre Profil Producteur ou Consommateur
+                                {{ __('welcome.how.step1.title') }}
                             </h3>
                             <p class="text-gray-600">
-                                Inscrivez-vous gratuitement en tant que Producteur Agricole ou Consommateur Local.
-                                Complétez votre profil professionnel en quelques clics et accédez à toutes les
-                                fonctionnalités.
+                                {{ __('welcome.how.step1.desc') }}
                             </p>
                         </div>
                     </article>
@@ -348,17 +328,16 @@ new #[Layout('layouts.main')] class extends Component {
                     {{-- Step 2 --}}
                     <article class="text-center relative">
                         <div class="bg-gradient-to-br from-base to-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
-                            aria-label="Étape 2">
+                            aria-label="{{ __('welcome.how.step2.aria') }}">
                             <span class="text-3xl font-bold text-white">2</span>
                         </div>
                         <div
                             class="bg-gray-50 p-8 rounded-xl h-64 flex flex-col justify-center hover:shadow-lg transition-shadow">
                             <h3 class="text-xl font-bold text-gray-900 mb-3">
-                                Publiez vos Offres ou Demandes Agricoles
+                                {{ __('welcome.how.step2.title') }}
                             </h3>
                             <p class="text-gray-600">
-                                Partagez vos produits agricoles, services ou recherchez ce dont vous avez besoin.
-                                Ajoutez photos, descriptions détaillées et prix pour attirer les bons partenaires.
+                                {{ __('welcome.how.step2.desc') }}
                             </p>
                         </div>
                     </article>
@@ -366,17 +345,16 @@ new #[Layout('layouts.main')] class extends Component {
                     {{-- Step 3 --}}
                     <article class="text-center relative">
                         <div class="bg-gradient-to-br from-base to-secondary w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
-                            aria-label="Étape 3">
+                            aria-label="{{ __('welcome.how.step3.aria') }}">
                             <span class="text-3xl font-bold text-white">3</span>
                         </div>
                         <div
                             class="bg-gray-50 p-8 rounded-xl h-64 flex flex-col justify-center hover:shadow-lg transition-shadow">
                             <h3 class="text-xl font-bold text-gray-900 mb-3">
-                                Échangez Directement et Finalisez vos Transactions
+                                {{ __('welcome.how.step3.title') }}
                             </h3>
                             <p class="text-gray-600">
-                                Utilisez la messagerie sécurisée intégrée pour discuter, négocier et finaliser vos
-                                collaborations commerciales en toute simplicité.
+                                {{ __('welcome.how.step3.desc') }}
                             </p>
                         </div>
                     </article>
@@ -390,10 +368,10 @@ new #[Layout('layouts.main')] class extends Component {
             <div class="container mx-auto px-4">
                 <header class="text-center mb-16">
                     <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                        Témoignages : Producteurs et Consommateurs Satisfaits
+                        {{ __('welcome.testimonials.title') }}
                     </h2>
                     <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                        Découvrez les histoires de réussite de notre communauté agricole camerounaise
+                        {{ __('welcome.testimonials.subtitle') }}
                     </p>
                 </header>
 
@@ -460,7 +438,7 @@ new #[Layout('layouts.main')] class extends Component {
                         </template>
 
                         {{-- Navigation dots --}}
-                        <nav class="flex justify-center gap-3 mt-8" aria-label="Navigation témoignages">
+                        <nav class="flex justify-center gap-3 mt-8" aria-label="{{ __('welcome.testimonials.nav') }}">
                             <template x-for="(testimonial, index) in testimonials" :key="index">
                                 <button @click="currentIndex = index"
                                     :class="currentIndex === index ? 'bg-base w-8' : 'bg-gray-300 w-3'"
@@ -474,9 +452,9 @@ new #[Layout('layouts.main')] class extends Component {
 
                 <div class="text-center mt-12">
                     <a href="{{ route('register') }}" wire:navigate
-                    title="Rejoindre la communauté AgroSpace - Inscription gratuite"
+                    title="{{ __('welcome.testimonials.cta_title') }}"
                         class="inline-block bg-base text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-800 transition-all shadow-lg hover:shadow-xl">
-                        Rejoindre la communauté agricole
+                        {{ __('welcome.testimonials.cta') }}
                     </a>
                 </div>
             </div>
@@ -487,11 +465,10 @@ new #[Layout('layouts.main')] class extends Component {
             <div class="container mx-auto px-4">
                 <header class="text-center mb-16">
                     <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                        Blog Agriculture Cameroun : Actualités et Conseils
+                        {{ __('welcome.blog.title') }}
                     </h2>
                     <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                        Restez informé des dernières tendances, innovations et conseils pratiques pour le secteur
-                        agricole camerounais
+                        {{ __('welcome.blog.subtitle') }}
                     </p>
                 </header>
                 @php
@@ -524,7 +501,7 @@ new #[Layout('layouts.main')] class extends Component {
                                     @if($post->category)
                                         {{ $post->category->name }}
                                     @else
-                                        📝 Article
+                                        📝 {{ __('welcome.blog.default_category') }}
                                     @endif
                                 </span>
                 
@@ -532,7 +509,7 @@ new #[Layout('layouts.main')] class extends Component {
                                 <h3 class="text-xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-base transition-colors"
                                     itemprop="headline">
                                     <a href="{{ route('blog.show', $post->slug) }}" wire:navigate
-                                        title="Lire l'article : {{ $post->title }}">
+                                        title="{{ __('welcome.blog.read_article_title', ['title' => $post->title]) }}">
                                         {{ Str::limit($post->title, 60) }}
                                     </a>
                                 </h3>
@@ -584,10 +561,10 @@ new #[Layout('layouts.main')] class extends Component {
                 
                                 {{-- Lien de lecture --}}
                                 <a href="{{ route('blog.show', $post->slug) }}" wire:navigate
-                                    title="Lire l'article complet : {{ $post->title }}"
+                                    title="{{ __('welcome.blog.read_article_title', ['title' => $post->title]) }}"
                                     class="text-base font-semibold hover:underline inline-flex items-center"
                                     itemprop="url">
-                                    Lire l'article complet
+                                    {{ __('welcome.blog.read_more') }}
                                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                         aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -602,16 +579,15 @@ new #[Layout('layouts.main')] class extends Component {
                             <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Aucun article disponible</h3>
-                            <p class="text-gray-600">Les articles seront bientôt publiés.</p>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ __('welcome.blog.no_articles.title') }}</h3>
+                            <p class="text-gray-600">{{ __('welcome.blog.no_articles.desc') }}</p>
                         </div>
                     @endforelse
                 </div>
 
                 <div class="text-center mt-12">
-                    {{-- Version 1: Effet de remplissage élégant --}}
                     <a href="{{ route('blog.index') }}" wire:navigate
-                       title="Voir tous les articles du blog agriculture Cameroun"
+                       title="{{ __('welcome.blog.cta_title') }}"
                        class="group relative inline-block border-2 border-base text-base px-10 py-4 rounded-xl font-semibold 
                               hover:text-white transition-all duration-500 overflow-hidden
                               shadow-lg hover:shadow-xl transform hover:-translate-y-1">
@@ -627,7 +603,7 @@ new #[Layout('layouts.main')] class extends Component {
                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                      d="M19 9l-7 7-7-7"/>
                            </svg>
-                           Explorer le blog
+                           {{ __('welcome.blog.cta') }}
                        </span>
                     </a>
                 </div>
@@ -645,11 +621,10 @@ new #[Layout('layouts.main')] class extends Component {
 
             <div class="container mx-auto px-4 text-center relative z-10">
                 <h2 class="text-4xl md:text-5xl font-bold mb-6" itemprop="name">
-                    Rejoignez AgroSpace : Plateforme Agricole N°1 au Cameroun
+                    {{ __('welcome.final.title') }}
                 </h2>
                 <p class="text-xl md:text-2xl text-green-50 mb-8 max-w-3xl mx-auto" itemprop="description">
-                    Inscrivez-vous gratuitement et valorisez vos activités agricoles au sein d'un écosystème
-                    professionnel durable et innovant
+                    {{ __('welcome.final.description') }}
                 </p>
 
                 <meta itemprop="price" content="0">
@@ -658,7 +633,7 @@ new #[Layout('layouts.main')] class extends Component {
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <a href="{{ route('register') }}" wire:navigate
-                        title="Créer un compte AgroSpace gratuitement - Inscription rapide"
+                        title="{{ __('welcome.final.button_title') }}"
                         class="group relative bg-white text-base px-12 py-6 rounded-2xl font-bold text-lg 
                                hover:bg-accent hover:text-white transition-all duration-500 
                                shadow-2xl hover:shadow-3xl transform hover:scale-105
@@ -675,13 +650,12 @@ new #[Layout('layouts.main')] class extends Component {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                             </svg>
-                            Commencer gratuitement
+                            {{ __('welcome.final.button') }}
                         </span>
                     </a>
                 </div>
                 <p class="text-sm text-green-100 mt-6">
-                    ✓ Inscription 100% gratuite et rapide (moins d'1 minute) • ✓ Aucune carte bancaire requise • ✓ Accès
-                    immédiat à toutes les fonctionnalités
+                    {{ __('welcome.final.note') }}
                 </p>
             </div>
         </section>
@@ -690,3 +664,4 @@ new #[Layout('layouts.main')] class extends Component {
         <x-layouts.footer />
     </div>
 </div>
+

@@ -2,54 +2,54 @@
 
 use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
-use App\Helpers\SEO;             // <-- helper already created
+use App\Helpers\SEO;
 
 new #[Layout('layouts.main')] class extends Component
 {
     public function mount()
     {
         /* ----------  SEO  ---------- */
-        SEO::setTitle('Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles');
-        SEO::setDescription('Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.');
-        SEO::setKeywords('producteur agricole Cameroun, AgroSpace producteur, vendre produits agricoles, plateforme producteurs, agriculture locale Cameroun, sans intermédiaire');
+        SEO::setTitle(__('producer.seo.title'));
+        SEO::setDescription(__('producer.seo.description'));
+        SEO::setKeywords(__('producer.seo.keywords'));
         SEO::setCanonical(url()->current());
-        SEO::setImage(asset('images/agrospace.png'));   // 1200×630
+        SEO::setImage(asset('images/agrospace.png'));
         SEO::setType('website');
     }
 }; ?>
 
 @push('meta')
     {{-- Primary Meta Tags --}}
-    <title>Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles</title>
-    <meta name="title" content="Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles">
-    <meta name="description" content="Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.">
-    <meta name="keywords" content="producteur agricole Cameroun, AgroSpace producteur, vendre produits agricoles, plateforme producteurs, agriculture locale Cameroun, sans intermédiaire">
+    <title>{{ __('producer.seo.title') }}</title>
+    <meta name="title" content="{{ __('producer.seo.title') }}">
+    <meta name="description" content="{{ __('producer.seo.description') }}">
+    <meta name="keywords" content="{{ __('producer.seo.keywords') }}">
     <meta name="robots" content="index, follow">
-    <meta name="language" content="fr">
+    <meta name="language" content="{{ app()->getLocale() }}">
     <meta name="author" content="AgroSpace">
     <link rel="canonical" href="{{ url()->current() }}">
 
     {{-- Open Graph / Facebook --}}
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles">
-    <meta property="og:description" content="Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.">
+    <meta property="og:title" content="{{ __('producer.seo.title') }}">
+    <meta property="og:description" content="{{ __('producer.seo.description') }}">
     <meta property="og:image" content="{{ asset('images/agrospace.png') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="AgroSpace">
-    <meta property="og:locale" content="fr_CM">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'fr' ? 'fr_CM' : 'en_CM' }}">
 
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ url()->current() }}">
-    <meta name="twitter:title" content="Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles">
-    <meta name="twitter:description" content="Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.">
+    <meta name="twitter:title" content="{{ __('producer.seo.title') }}">
+    <meta name="twitter:description" content="{{ __('producer.seo.description') }}">
     <meta name="twitter:image" content="{{ asset('images/agrospace.png') }}">
 
     {{-- Geo-tags --}}
     <meta name="geo.region" content="CM">
-    <meta name="geo.placename" content="Cameroun">
+    <meta name="geo.placename" content="{{ __('producer.cameroon') }}">
     <meta name="geo.position" content="3.848;11.5021">
     <meta name="ICBM" content="3.848, 11.5021">
 @endpush
@@ -69,25 +69,25 @@ new #[Layout('layouts.main')] class extends Component
                 <!-- Left Content -->
                 <div class="text-white space-y-6 animate-fade-in-up">
                     <div class="inline-block bg-white/20 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                        🌾 Espace Producteurs
+                        🌾 {{ __('producer.hero.badge') }}
                     </div>
                     {{-- SEO : only H1 of the page --}}
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                        Vous produisez, <span class="text-yellow-300">AgroSpace</span> vous connecte à vos futurs clients
+                        {{ __('producer.hero.title') }} <span class="text-yellow-300">AgroSpace</span> {{ __('producer.hero.title_continuation') }}
                     </h1>
                     <p class="text-lg md:text-xl text-green-50 leading-relaxed">
-                        Valorisez vos produits agricoles, gagnez en visibilité et trouvez de nouvelles opportunités sans intermédiaires.
+                        {{ __('producer.hero.subtitle') }}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-5 pt-8">
-                        {{-- Bouton Principal --}}
+                        {{-- Primary Button --}}
                         <a href="{{ route('register', ['type' => 'producteur']) }}"  wire:navigate
-                           title="Devenir Producteur sur AgroSpace - Inscription gratuite"
+                           title="{{ __('producer.hero.primary_button_title') }}"
                            class="group relative bg-gradient-to-br from-white to-yellow-50 text-base px-8 py-4 rounded-2xl font-bold transition-all duration-700 hover:scale-105 overflow-hidden shadow-2xl hover:shadow-3xl border-2 border-yellow-100">
                            
-                           {{-- Effet de particules --}}
+                           {{-- Particle effect --}}
                            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-200/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                            
-                           {{-- Animation de lumière --}}
+                           {{-- Light animation --}}
                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                            
                            <span class="relative z-10 flex items-center justify-center gap-4 text-lg">
@@ -95,22 +95,22 @@ new #[Layout('layouts.main')] class extends Component
                                     fill="currentColor" viewBox="0 0 20 20">
                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
                                </svg>
-                               Devenir Producteur
+                               {{ __('producer.hero.primary_button') }}
                            </span>
                         </a>
                     
-                        {{-- Bouton Secondaire --}}
+                        {{-- Secondary Button --}}
                         <a href="{{ route('features') }}"  wire:navigate
-                           title="Découvrir la plateforme AgroSpace"
+                           title="{{ __('producer.hero.secondary_button_title') }}"
                            class="group relative bg-transparent border-2 border-white/70 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-700 overflow-hidden hover:border-white backdrop-blur-md hover:backdrop-blur-lg">
                            
-                           {{-- Fond gradient animé --}}
+                           {{-- Animated gradient background --}}
                            <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                            
-                           {{-- Bordure animée --}}
+                           {{-- Animated border --}}
                            <div class="absolute -inset-0.5 bg-gradient-to-r from-green-400/50 via-yellow-400/50 to-green-400/50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:animate-pulse"></div>
                            
-                           {{-- Effet de remplissage --}}
+                           {{-- Fill effect --}}
                            <div class="absolute inset-0 bg-white transform -translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out"></div>
                            
                            <span class="relative z-10 flex items-center justify-center gap-4 group-hover:text-base transition-colors duration-500">
@@ -119,7 +119,7 @@ new #[Layout('layouts.main')] class extends Component
                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                </svg>
-                               Explorer AgroSpace
+                               {{ __('producer.hero.secondary_button') }}
                            </span>
                         </a>
                     </div>
@@ -128,19 +128,19 @@ new #[Layout('layouts.main')] class extends Component
                             <svg class="w-5 h-5 text-green-200" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
-                            <span>100% Gratuit</span>
+                            {{ __('producer.hero.benefits.free') }}
                         </div>
                         <div class="flex items-center gap-2">
                             <svg class="w-5 h-5 text-green-200" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
-                            <span>Sans intermédiaires</span>
+                            {{ __('producer.hero.benefits.no_intermediaries') }}
                         </div>
                         <div class="flex items-center gap-2">
                             <svg class="w-5 h-5 text-green-200" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                             </svg>
-                            <span>Simple & Rapide</span>
+                            {{ __('producer.hero.benefits.simple_fast') }}
                         </div>
                     </div>
                 </div>
@@ -163,23 +163,18 @@ new #[Layout('layouts.main')] class extends Component
         </div>
     </section>
 
-    <!-- AVANTAGES SECTION -->
+    <!-- BENEFITS SECTION -->
     <section class="py-20 bg-white" itemscope itemtype="https://schema.org/ItemList">
         <div class="container mx-auto px-4">
             <header class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Les avantages pour les producteurs agricoles</h2>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ __('producer.benefits.title') }}</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    AgroSpace vous donne tous les outils pour faire grandir votre activité et toucher de nouveaux clients
+                    {{ __('producer.benefits.subtitle') }}
                 </p>
             </header>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                @foreach([
-                    ['emoji' => '👁️', 'title' => 'Visibilité régionale et nationale', 'text' => 'Soyez découvert par de nouveaux clients dans votre région et au-delà grâce à notre plateforme.'],
-                    ['emoji' => '⚙️', 'title' => 'Gestion simple de vos offres', 'text' => 'Créez, modifiez ou supprimez vos annonces facilement depuis votre tableau de bord.'],
-                    ['emoji' => '💬', 'title' => 'Communication directe', 'text' => 'Discutez, négociez et construisez des relations durables avec vos clients via la messagerie intégrée.'],
-                    ['emoji' => '📊', 'title' => 'Analysez vos statistiques', 'text' => 'Tableau de bord détaillé pour suivre vos performances et optimiser votre visibilité.']
-                ] as $avantage)
+                @foreach(__('producer.benefits.items') as $avantage)
                 <article class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 border-t-4 border-base group"
                          itemprop="itemListElement" itemscope itemtype="https://schema.org/Service">
                     <div class="w-16 h-16 bg-base/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -193,40 +188,18 @@ new #[Layout('layouts.main')] class extends Component
         </div>
     </section>
 
-    <!-- TÉMOIGNAGES SECTION -->
+    <!-- TESTIMONIALS SECTION -->
     <section class="py-20 bg-emerald-50">
         <div class="container mx-auto px-4">
             <header class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Ils font déjà confiance à AgroSpace</h2>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ __('producer.testimonials.title') }}</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Découvrez les témoignages de producteurs qui ont transformé leur activité grâce à notre plateforme
+                    {{ __('producer.testimonials.subtitle') }}
                 </p>
             </header>
 
             <div class="max-w-5xl mx-auto" x-data="{
-                testimonials: [
-                    {
-                        name: 'Marie Kouam',
-                        location: 'Productrice Bio - Bafoussam',
-                        text: 'Grâce à AgroSpace, j\'ai trouvé un partenaire en 3 jours ! Mes légumes bio sont maintenant distribués dans 5 restaurants de la région. La plateforme est simple et les clients sont sérieux.',
-                        avatar: '👩🏾‍🌾',
-                        rating: 5
-                    },
-                    {
-                        name: 'Jean Nkeng',
-                        location: 'Éleveur de volailles - Douala',
-                        text: 'Avant AgroSpace, je perdais beaucoup de temps à chercher des clients. Maintenant, ce sont eux qui me contactent directement. J\'ai augmenté mes ventes de 40% en 2 mois !',
-                        avatar: '👨🏾‍🌾',
-                        rating: 5
-                    },
-                    {
-                        name: 'Aïcha Mohamadou',
-                        location: 'Coopérative laitière - Maroua',
-                        text: 'Nous avons multiplié nos ventes par 3 en 6 mois. AgroSpace nous a permis d\'atteindre de nouveaux marchés sans frais d\'intermédiaires. C\'est révolutionnaire pour nous !',
-                        avatar: '👩🏾‍💼',
-                        rating: 5
-                    }
-                ],
+                testimonials: @json(__('producer.testimonials.items')),
                 currentIndex: 0
             }" x-init="setInterval(() => { currentIndex = (currentIndex + 1) % testimonials.length }, 6000)">
                 
@@ -279,7 +252,7 @@ new #[Layout('layouts.main')] class extends Component
                             <button @click="currentIndex = index" 
                                     :class="currentIndex === index ? 'bg-base w-12' : 'bg-gray-300 w-3'"
                                     class="h-3 rounded-full transition-all duration-300"
-                                    :aria-label="'Témoignage ' + (index + 1)"></button>
+                                    :aria-label="'{{ __('producer.testimonials.testimonial') }} ' + (index + 1)"></button>
                         </template>
                     </div>
                 </div>
@@ -287,34 +260,28 @@ new #[Layout('layouts.main')] class extends Component
 
             <div class="text-center mt-12">
                 <a href="{{ route('register', ['type' => 'producteur']) }}" wire:navigate
-                   title="Rejoindre AgroSpace maintenant - Inscription gratuite"
+                   title="{{ __('producer.testimonials.join_button_title') }}"
                    class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
-                    Rejoindre AgroSpace maintenant
+                    {{ __('producer.testimonials.join_button') }}
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- FONCTIONNALITÉS SECTION -->
+    <!-- FEATURES SECTION -->
     <section class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <header class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Tout ce dont vous avez besoin pour développer votre activité</h2>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ __('producer.features.title') }}</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Des outils simples et puissants pour gérer votre présence en ligne et connecter avec vos clients
+                    {{ __('producer.features.subtitle') }}
                 </p>
             </header>
 
             <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
                 <!-- Features List -->
                 <div class="space-y-6">
-                    @foreach([
-                        ['icon' => 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4', 'title' => '📦 Créez vos offres facilement', 'text' => 'Publiez vos produits en quelques clics avec photos et descriptions détaillées.'],
-                        ['icon' => 'M12 6v6m0 0v6m0-6h6m-6 0H6', 'title' => '🖼️ Ajoutez photos et descriptions', 'text' => 'Mettez en valeur vos produits avec des visuels attrayants et des informations complètes.'],
-                        ['icon' => 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z', 'title' => '🧭 Indiquez votre localisation', 'text' => 'Les clients locaux vous trouvent facilement grâce à la carte interactive.'],
-                        ['icon' => 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z', 'title' => '💬 Échangez directement', 'text' => 'Messagerie instantanée pour négocier et construire des relations durables.'],
-                        ['icon' => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', 'title' => '📊 Analysez vos statistiques', 'text' => 'Tableau de bord détaillé pour suivre vos performances et optimiser votre visibilité.']
-                    ] as $feature)
+                    @foreach(__('producer.features.items') as $feature)
                     <div class="flex items-start gap-4 p-6 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
                         <div class="flex-shrink-0 w-12 h-12 bg-base/10 rounded-lg flex items-center justify-center">
                             <svg class="w-6 h-6 text-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -336,8 +303,8 @@ new #[Layout('layouts.main')] class extends Component
                         <div class="bg-gradient-to-r from-base to-green-600 p-6 text-white">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <h3 class="text-xl font-bold">Tableau de Bord Producteur</h3>
-                                    <p class="text-sm text-green-100">Gérez votre activité en un clin d'œil</p>
+                                    <h3 class="text-xl font-bold">{{ __('producer.features.dashboard.title') }}</h3>
+                                    <p class="text-sm text-green-100">{{ __('producer.features.dashboard.subtitle') }}</p>
                                 </div>
                                 <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -350,26 +317,26 @@ new #[Layout('layouts.main')] class extends Component
                         <!-- Stats Cards -->
                         <div class="p-6 grid grid-cols-2 gap-4">
                             <div class="bg-green-50 p-4 rounded-xl">
-                                <p class="text-sm text-gray-600 mb-1">Offres actives</p>
+                                <p class="text-sm text-gray-600 mb-1">{{ __('producer.features.dashboard.active_offers') }}</p>
                                 <p class="text-3xl font-bold text-base">12</p>
                             </div>
                             <div class="bg-blue-50 p-4 rounded-xl">
-                                <p class="text-sm text-gray-600 mb-1">Vues ce mois</p>
+                                <p class="text-sm text-gray-600 mb-1">{{ __('producer.features.dashboard.views_this_month') }}</p>
                                 <p class="text-3xl font-bold text-blue-600">348</p>
                             </div>
                             <div class="bg-yellow-50 p-4 rounded-xl">
-                                <p class="text-sm text-gray-600 mb-1">Messages</p>
+                                <p class="text-sm text-gray-600 mb-1">{{ __('producer.features.dashboard.messages') }}</p>
                                 <p class="text-3xl font-bold text-yellow-600">27</p>
                             </div>
                             <div class="bg-purple-50 p-4 rounded-xl">
-                                <p class="text-sm text-gray-600 mb-1">Connexions</p>
+                                <p class="text-sm text-gray-600 mb-1">{{ __('producer.features.dashboard.connections') }}</p>
                                 <p class="text-3xl font-bold text-purple-600">8</p>
                             </div>
                         </div>
 
                         <!-- Chart Area -->
                         <div class="p-6 border-t">
-                            <p class="text-sm text-gray-600 mb-4 font-semibold">Activité des 7 derniers jours</p>
+                            <p class="text-sm text-gray-600 mb-4 font-semibold">{{ __('producer.features.dashboard.activity_title') }}</p>
                             <div class="h-32 flex items-end justify-around gap-2">
                                 <div class="w-full bg-gradient-to-t from-base to-secondary rounded-t-lg" style="height: 60%"></div>
                                 <div class="w-full bg-gradient-to-t from-base to-secondary rounded-t-lg" style="height: 80%"></div>
@@ -386,22 +353,18 @@ new #[Layout('layouts.main')] class extends Component
         </div>
     </section>
 
-    <!-- PARCOURS SECTION -->
+    <!-- PROCESS SECTION -->
     <section class="py-20 bg-[#FAF7F0]">
         <div class="container mx-auto px-4">
             <header class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Comment ça marche ?</h2>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ __('producer.process.title') }}</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Rejoignez AgroSpace en 3 étapes simples et commencez à développer votre activité dès aujourd'hui
+                    {{ __('producer.process.subtitle') }}
                 </p>
             </header>
 
             <div class="grid md:grid-cols-3 gap-8 mb-12">
-                @foreach([
-                    ['step' => 1, 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', 'title' => 'Créez votre compte producteur', 'text' => 'Inscrivez-vous gratuitement, renseignez vos informations et ajoutez votre photo de profil.'],
-                    ['step' => 2, 'icon' => 'M12 6v6m0 0v6m0-6h6m-6 0H6', 'title' => 'Publiez votre première offre', 'text' => 'Ajoutez vos produits, prix indicatifs, photos et localisation en quelques clics.'],
-                    ['step' => 3, 'icon' => 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z', 'title' => 'Recevez vos premiers contacts', 'text' => 'Discutez directement via la messagerie intégrée et finalisez vos ventes.']
-                ] as $step)
+                @foreach(__('producer.process.steps') as $step)
                 <div class="relative">
                     <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all h-full">
                         <div class="absolute -top-6 left-8 w-16 h-16 bg-gradient-to-br from-base to-secondary rounded-full flex items-center justify-center shadow-xl">
@@ -431,31 +394,27 @@ new #[Layout('layouts.main')] class extends Component
 
             <div class="text-center">
                 <a href="{{ route('register', ['type' => 'producteur']) }}"  wire:navigate
-                   title="Commencer gratuitement sur AgroSpace"
+                   title="{{ __('producer.process.start_button_title') }}"
                    class="inline-block bg-base text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-green-800 transition-all shadow-xl hover:shadow-2xl hover:scale-105">
-                    Commencer gratuitement
+                    {{ __('producer.process.start_button') }}
                 </a>
-                <p class="text-sm text-gray-600 mt-4">✓ Aucune carte bancaire requise • ✓ Inscription en 2 minutes</p>
+                <p class="text-sm text-gray-600 mt-4">{{ __('producer.process.footer_note') }}</p>
             </div>
         </div>
     </section>
 
-    <!-- CHIFFRES & IMPACT SECTION -->
+    <!-- STATS & IMPACT SECTION -->
     <section class="py-20 bg-gradient-to-br from-secondary/20 to-green-100">
         <div class="container mx-auto px-4">
             <header class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Une communauté agricole en pleine croissance</h2>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ __('producer.stats.title') }}</h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Des chiffres qui témoignent de la confiance des producteurs africains
+                    {{ __('producer.stats.subtitle') }}
                 </p>
             </header>
 
             <div class="grid md:grid-cols-3 gap-8">
-                @foreach([
-                    ['value' => '+500', 'label' => 'Producteurs inscrits', 'desc' => 'Et le nombre ne cesse de croître chaque jour'],
-                    ['value' => '+1,200', 'label' => 'Connexions créées', 'desc' => 'Entre producteurs et consommateurs locaux'],
-                    ['value' => '+30', 'label' => 'Régions couvertes', 'desc' => 'À travers tout le Cameroun et au-delà']
-                ] as $stat)
+                @foreach(__('producer.stats.items') as $stat)
                 <article class="bg-white p-10 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 text-center"
                          itemscope itemtype="https://schema.org/Number">
                     <div class="w-20 h-20 bg-base/10 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -472,26 +431,19 @@ new #[Layout('layouts.main')] class extends Component
 
             <!-- Trust badges -->
             <div class="mt-16 text-center">
-                <p class="text-gray-600 mb-6 font-semibold">Ils nous font confiance :</p>
+                <p class="text-gray-600 mb-6 font-semibold">{{ __('producer.stats.trust_title') }}</p>
                 <div class="flex flex-wrap justify-center items-center gap-8 opacity-60">
+                    @foreach(__('producer.stats.trust_badges') as $badge)
                     <div class="bg-white px-8 py-4 rounded-lg shadow">
-                        <p class="text-lg font-bold text-gray-700">Coopératives Agricoles</p>
+                        <p class="text-lg font-bold text-gray-700">{{ $badge }}</p>
                     </div>
-                    <div class="bg-white px-8 py-4 rounded-lg shadow">
-                        <p class="text-lg font-bold text-gray-700">Fermiers Indépendants</p>
-                    </div>
-                    <div class="bg-white px-8 py-4 rounded-lg shadow">
-                        <p class="text-lg font-bold text-gray-700">Éleveurs</p>
-                    </div>
-                    <div class="bg-white px-8 py-4 rounded-lg shadow">
-                        <p class="text-lg font-bold text-gray-700">Apiculteurs</p>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA FINAL SECTION -->
+    <!-- FINAL CTA SECTION -->
     <section class="py-20 gradient-cta text-white relative overflow-hidden">
         <div class="absolute inset-0 opacity-10" aria-hidden="true">
             <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
@@ -499,51 +451,51 @@ new #[Layout('layouts.main')] class extends Component
         
         <div class="container mx-auto px-4 text-center relative z-10">
             <h2 class="text-4xl md:text-5xl font-bold mb-6">
-                Rejoignez la communauté AgroSpace et valorisez vos produits agricoles dès aujourd'hui
+                {{ __('producer.cta.title') }}
             </h2>
             <p class="text-xl md:text-2xl text-green-50 mb-10 max-w-3xl mx-auto">
-                Des milliers de producteurs ont déjà choisi AgroSpace pour développer leur activité. Pourquoi pas vous ?
+                {{ __('producer.cta.subtitle') }}
             </p>
             <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                {{-- Bouton Producteur --}}
+                {{-- Producer Button --}}
                 <a href="{{ route('register', ['type' => 'producteur']) }}"  wire:navigate
-                   title="S'inscrire comme Producteur sur AgroSpace - Inscription gratuite"
+                   title="{{ __('producer.cta.producer_button_title') }}"
                    class="group relative bg-white text-base px-12 py-6 rounded-xl font-bold text-xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 overflow-hidden">
                    
-                   {{-- Effet de brillance au survol --}}
+                   {{-- Shine effect on hover --}}
                    <div class="absolute inset-0 bg-gradient-to-r from-yellow-200 to-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12 -translate-x-full group-hover:translate-x-full"></div>
                    
-                   {{-- Texte avec transition de couleur --}}
+                   {{-- Text with color transition --}}
                    <span class="relative z-10 group-hover:text-yellow-900 transition-colors duration-300">
-                       S'inscrire comme Producteur
+                       {{ __('producer.cta.producer_button') }}
                    </span>
                    
-                   {{-- Icône flèche --}}
+                   {{-- Arrow icon --}}
                    <svg class="w-5 h-5 ml-2 relative z-10 inline-block transform group-hover:translate-x-1 transition-transform duration-300" 
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                    </svg>
                 </a>
             
-                {{-- Bouton Découvrir --}}
+                {{-- Discover Button --}}
                 <a href="{{ route('offers-list') }}"  wire:navigate
-                   title="Découvrir les offres agricoles sur AgroSpace"
+                   title="{{ __('producer.cta.discover_button_title') }}"
                    class="group relative bg-transparent border-2 border-white text-white px-12 py-6 rounded-xl font-bold text-xl hover:shadow-2xl transition-all duration-300 overflow-hidden">
                    
-                   {{-- Fond qui se remplit au survol --}}
+                   {{-- Background that fills on hover --}}
                    <div class="absolute inset-0 bg-white transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"></div>
                    
-                   {{-- Bordure animée --}}
+                   {{-- Animated border --}}
                    <div class="absolute inset-0 border-2 border-transparent bg-gradient-to-r from-yellow-400 to-green-400 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10">
                        <div class="absolute inset-[2px] bg-gray-900 rounded-xl"></div>
                    </div>
                    
-                   {{-- Texte avec changement de couleur --}}
+                   {{-- Text with color change --}}
                    <span class="relative z-10 group-hover:text-base transition-colors duration-300">
-                       Découvrir les offres
+                       {{ __('producer.cta.discover_button') }}
                    </span>
                    
-                   {{-- Icône œil --}}
+                   {{-- Eye icon --}}
                    <svg class="w-5 h-5 ml-2 relative z-10 inline-block transform group-hover:scale-110 transition-transform duration-300" 
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -554,12 +506,10 @@ new #[Layout('layouts.main')] class extends Component
                 </a>
             </div>
             <p class="text-sm text-green-100 mt-8">
-                ✓ Gratuit à vie • ✓ Aucune commission • ✓ Support dédié 7j/7
+                {{ __('producer.cta.footer_note') }}
             </p>
         </div>
     </section>
-
-    
 
     <!-- FOOTER -->
     <x-layouts.footer/>

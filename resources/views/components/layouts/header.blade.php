@@ -5,41 +5,47 @@
             <!-- Logo -->
             <a href="{{ route('home') }}" wire:navigate
              class="flex items-center space-x-2 group">
-                <img src="{{ asset('images/logo.png') }}" alt="Agrospace" class="w-12 h-12">
-                <span class="text-2xl font-bold text-primary">AgroSpace</span>
+                <img src="{{ asset('images/logo.png') }}" alt="{{ __('layout.header.logo_alt') }}" class="w-12 h-12">
+                <span class="text-2xl font-bold text-primary">{{ __('layout.header.site_title') }}</span>
             </a>
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
                 <nav class="flex items-center space-x-8">
                     <a href="{{ route('home') }}" wire:navigate
-                        class="nav-link-v4 {{ request()->routeIs('home') ? 'active' : '' }}">
-                        Accueil
+                        class="nav-link-v4 {{ request()->routeIs('home') ? 'active text-primary font-semibold' : 'text-gray-700 hover:text-primary' }}"
+                        @if (request()->routeIs('home')) aria-current="page" @endif>
+                        {{ __('layout.header.nav.home') }}
                     </a>
 
                     <a href="{{ route('features') }}" wire:navigate
-                        class="nav-link-v4 {{ request()->routeIs('features') ? 'active' : '' }}">
-                        Fonctionnalités
+                        class="nav-link-v4 {{ request()->routeIs('features') ? 'active text-primary font-semibold' : 'text-gray-700 hover:text-primary' }}"
+                        @if (request()->routeIs('features')) aria-current="page" @endif>
+                        {{ __('layout.header.nav.features') }}
                     </a>
 
                     <a href="{{ route('producer.page') }}" wire:navigate
-                        class="nav-link-v4 {{ request()->routeIs('producer.page') ? 'active' : '' }}">
-                        Producteurs
+                        class="nav-link-v4 {{ request()->routeIs('producer.page') ? 'active text-primary font-semibold' : 'text-gray-700 hover:text-primary' }}"
+                        @if (request()->routeIs('producer.page')) aria-current="page" @endif>
+                        {{ __('layout.header.nav.producers') }}
                     </a>
 
                     <a href="{{ route('consumer.page') }}" wire:navigate
-                        class="nav-link-v4 {{ request()->routeIs('consumer.page') ? 'active' : '' }}">
-                        Consommateurs
+                        class="nav-link-v4 {{ request()->routeIs('consumer.page') ? 'active text-primary font-semibold' : 'text-gray-700 hover:text-primary' }}"
+                        @if (request()->routeIs('consumer.page')) aria-current="page" @endif>
+                        {{ __('layout.header.nav.consumers') }}
                     </a>
 
                     <a href="{{ route('blog.index') }}" wire:navigate
-                        class="nav-link-v4 {{ request()->routeIs('blog.*') ? 'active' : '' }}">
-                        Blog
+                        class="nav-link-v4 {{ request()->routeIs('blog.*') ? 'active text-primary font-semibold' : 'text-gray-700 hover:text-primary' }}"
+                        @if (request()->routeIs('blog.*')) aria-current="page" @endif>
+                        {{ __('layout.header.nav.blog') }}
                     </a>
 
                     <a href="{{ route('about.page') }}" wire:navigate
-                        class="nav-link-v4 {{ request()->routeIs('about.page') ? 'active' : '' }}">
-                        À propos
+                        class="nav-link-v4 {{ request()->routeIs('about.page') ? 'active text-primary font-semibold' : 'text-gray-700 hover:text-primary' }}"
+                        @if (request()->routeIs('about.page')) aria-current="page" @endif>
+                        {{ __('layout.header.nav.about') }}
                     </a>
                 </nav>
 
@@ -124,11 +130,11 @@
                                 <p class="text-sm font-semibold text-gray-800">{{ auth()->user()->name }}</p>
                                 <p class="text-xs text-gray-500">
                                     @if (auth()->user()->role->name === 'producer')
-                                        Producteur
+                                        {{ __('layout.header.role.producer') }}
                                     @elseif(auth()->user()->role->name === 'consumer')
-                                        Consommateur
+                                        {{ __('layout.header.role.consumer') }}
                                     @else
-                                        Administrateur
+                                        {{ __('layout.header.role.admin') }}
                                     @endif
                                 </p>
                             </div>
@@ -178,8 +184,9 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-semibold text-gray-800">Tableau de bord</p>
-                                        <p class="text-xs text-gray-500">Vue d'ensemble</p>
+                                        <p class="text-sm font-semibold text-gray-800">
+                                            {{ __('layout.header.user.dashboard') }}</p>
+                                        <p class="text-xs text-gray-500">{{ __('layout.header.user.dashboard_sub') }}</p>
                                     </div>
                                 </a>
 
@@ -194,8 +201,9 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-semibold text-gray-800">Mon Profil</p>
-                                        <p class="text-xs text-gray-500">Informations personnelles</p>
+                                        <p class="text-sm font-semibold text-gray-800">
+                                            {{ __('layout.header.user.profile') }}</p>
+                                        <p class="text-xs text-gray-500">{{ __('layout.header.user.profile_sub') }}</p>
                                     </div>
                                 </a>
 
@@ -211,8 +219,9 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-semibold text-gray-800">Mes Offres</p>
-                                            <p class="text-xs text-gray-500">Gérer mes produits</p>
+                                            <p class="text-sm font-semibold text-gray-800">
+                                                {{ __('layout.header.user.offers') }}</p>
+                                            <p class="text-xs text-gray-500">{{ __('layout.header.user.offers_sub') }}</p>
                                         </div>
                                     </a>
                                 @endif
@@ -229,8 +238,10 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-semibold text-gray-800">Mes Demandes</p>
-                                            <p class="text-xs text-gray-500">Gérer mes recherches</p>
+                                            <p class="text-sm font-semibold text-gray-800">
+                                                {{ __('layout.header.user.demands') }}</p>
+                                            <p class="text-xs text-gray-500">{{ __('layout.header.user.demands_sub') }}
+                                            </p>
                                         </div>
                                     </a>
                                 @endif
@@ -246,8 +257,9 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-semibold text-gray-800">Messages</p>
-                                        <p class="text-xs text-gray-500">Conversations</p>
+                                        <p class="text-sm font-semibold text-gray-800">
+                                            {{ __('layout.header.user.messages') }}</p>
+                                        <p class="text-xs text-gray-500">{{ __('layout.header.user.messages_sub') }}</p>
                                     </div>
                                 </a>
 
@@ -262,8 +274,9 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-semibold text-gray-800">Paramètres</p>
-                                        <p class="text-xs text-gray-500">Configuration</p>
+                                        <p class="text-sm font-semibold text-gray-800">
+                                            {{ __('layout.header.user.settings') }}</p>
+                                        <p class="text-xs text-gray-500">{{ __('layout.header.user.settings_sub') }}</p>
                                     </div>
                                 </a>
                             </div>
@@ -281,7 +294,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.847.632 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                        <span>Connexion</span>
+                        <span>{{ __('layout.header.auth.login') }}</span>
                     </a>
 
                     <a href="{{ route('register') }}" wire:navigate
@@ -293,13 +306,14 @@
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
-                        <span>Inscription</span>
+                        <span>{{ __('layout.header.auth.register') }}</span>
                     </a>
                 @endauth
             </div>
 
             <!-- Mobile Menu Button -->
-            <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-gray-700 focus:outline-none">
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-gray-700 focus:outline-none"
+                aria-label="{{ __('layout.header.mobile_menu') }}">
                 <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -321,38 +335,44 @@
             {{-- Navigation Links --}}
             <nav class="space-y-1">
                 <a href="{{ route('home') }}" @click="mobileMenuOpen = false" wire:navigate
-                    class="mobile-nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
-                    Accueil
+                    class="mobile-nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
+                    @if (request()->routeIs('home')) aria-current="page" @endif>
+                    {{ __('layout.header.nav.home') }}
                 </a>
 
                 <a href="{{ route('features') }}" @click="mobileMenuOpen = false" wire:navigate
-                    class="mobile-nav-link {{ request()->routeIs('features') ? 'active' : '' }}">
-                    Fonctionnalités
+                    class="mobile-nav-link {{ request()->routeIs('features') ? 'active' : '' }}"
+                    @if (request()->routeIs('features')) aria-current="page" @endif>
+                    {{ __('layout.header.nav.features') }}
                 </a>
 
                 <a href="{{ route('producer.page') }}" @click="mobileMenuOpen = false" wire:navigate
-                    class="mobile-nav-link {{ request()->routeIs('producer.page') ? 'active' : '' }}">
-                    Producteurs
+                    class="mobile-nav-link {{ request()->routeIs('producer.page') ? 'active' : '' }}"
+                    @if (request()->routeIs('producer.page')) aria-current="page" @endif>
+                    {{ __('layout.header.nav.producers') }}
                 </a>
 
                 <a href="{{ route('consumer.page') }}" @click="mobileMenuOpen = false" wire:navigate
-                    class="mobile-nav-link {{ request()->routeIs('consumer.page') ? 'active' : '' }}">
-                    Consommateurs
+                    class="mobile-nav-link {{ request()->routeIs('consumer.page') ? 'active' : '' }}"
+                    @if (request()->routeIs('consumer.page')) aria-current="page" @endif>
+                    {{ __('layout.header.nav.consumers') }}
                 </a>
 
                 <a href="{{ route('about.page') }}" @click="mobileMenuOpen = false" wire:navigate
-                    class="mobile-nav-link {{ request()->routeIs('about.page') ? 'active' : '' }}">
-                    À propos
+                    class="mobile-nav-link {{ request()->routeIs('about.page') ? 'active' : '' }}"
+                    @if (request()->routeIs('about.page')) aria-current="page" @endif>
+                    {{ __('layout.header.nav.about') }}
                 </a>
 
                 <a href="{{ route('blog.index') }}" @click="mobileMenuOpen = false" wire:navigate
-                    class="mobile-nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}">
-                    Blog
+                    class="mobile-nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}"
+                    @if (request()->routeIs('blog.*')) aria-current="page" @endif>
+                    {{ __('layout.header.nav.blog') }}
                 </a>
             </nav>
 
             @auth
-            @livewire('notifications.notification-bell')
+                @livewire('notifications.notification-bell')
                 <div class="border-t border-gray-200 pt-4 mt-4">
                     {{-- User Info Card --}}
                     <div
@@ -382,13 +402,13 @@
                         <a href="{{ route('dashboard') }}" @click="mobileMenuOpen = false" wire:navigate
                             class="mobile-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                             <span class="mr-2">📊</span>
-                            <span>Tableau de bord</span>
+                            <span>{{ __('layout.header.user.dashboard') }}</span>
                         </a>
 
                         <a href="{{ route('profile') }}" @click="mobileMenuOpen = false" wire:navigate
                             class="mobile-nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">
                             <span class="mr-2">👤</span>
-                            <span>Mon Profil</span>
+                            <span>{{ __('layout.header.user.profile') }}</span>
                         </a>
 
                         @if (auth()->user()->isProducer())
@@ -403,8 +423,9 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-semibold text-gray-800">Mes Offres</p>
-                                    <p class="text-xs text-gray-500">Gérer mes produits</p>
+                                    <p class="text-sm font-semibold text-gray-800">{{ __('layout.header.user.offers') }}
+                                    </p>
+                                    <p class="text-xs text-gray-500">{{ __('layout.header.user.offers_sub') }}</p>
                                 </div>
                             </a>
                         @endif
@@ -421,8 +442,9 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-semibold text-gray-800">Mes Demandes</p>
-                                    <p class="text-xs text-gray-500">Gérer mes recherches</p>
+                                    <p class="text-sm font-semibold text-gray-800">{{ __('layout.header.user.demands') }}
+                                    </p>
+                                    <p class="text-xs text-gray-500">{{ __('layout.header.user.demands_sub') }}</p>
                                 </div>
                             </a>
                         @endif
@@ -430,16 +452,14 @@
                         <a href="{{ route('chats') }}" @click="mobileMenuOpen = false" wire:navigate
                             class="mobile-nav-link {{ request()->routeIs('chats') ? 'active' : '' }}">
                             <span class="mr-2">💬</span>
-                            <span>Messages</span>
+                            <span>{{ __('layout.header.user.messages') }}</span>
                         </a>
 
                         <a href="{{ route('settings') }}" @click="mobileMenuOpen = false" wire:navigate
                             class="mobile-nav-link {{ request()->routeIs('settings') ? 'active' : '' }}">
                             <span class="mr-2">⚙️</span>
-                            <span>Paramètres</span>
+                            <span>{{ __('layout.header.user.settings') }}</span>
                         </a>
-
-
                     </nav>
                 </div>
             @else
@@ -457,7 +477,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                         </svg>
-                        <span>Connexion</span>
+                        <span>{{ __('layout.header.auth.login') }}</span>
                     </a>
 
                     {{-- Register Button --}}
@@ -473,7 +493,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                         </svg>
-                        <span>Créer un compte</span>
+                        <span>{{ __('layout.header.auth.register') }}</span>
                     </a>
                 </div>
             @endauth

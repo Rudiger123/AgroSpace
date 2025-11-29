@@ -4,6 +4,10 @@ use Livewire\Volt\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use App\Helpers\SEO;
+use App\Models\Contact;
+use App\Models\User;
+use App\Notifications\NewContactNotification;
+use Illuminate\Support\Facades\Notification;
 
 new #[Layout('layouts.main')] class extends Component {
     #[Rule('required|min:3|max:255')]
@@ -32,7 +36,21 @@ new #[Layout('layouts.main')] class extends Component {
     public function submit()
     {
         $this->validate();
-        // Simulation d'envoi (Mail::to(...))
+
+        // Créer le contact
+        $contact = Contact::create([
+            'name' => $this->name,
+            'email' => $this->email,
+            'subject' => $this->subject,
+            'message' => $this->message,
+            'status' => 'new',
+        ]);
+        // Notifier les admins
+        $admins = User::whereHas('role', function ($query) {
+            $query->where('name', 'admin');
+        })->get();
+
+        Notification::send($admins, new NewContactNotification($contact));
         $this->reset(['name', 'email', 'subject', 'message']);
         $this->success = true;
     }
@@ -197,7 +215,8 @@ new #[Layout('layouts.main')] class extends Component {
                             <div class="mb-10">
                                 <h2 class="text-3xl font-bold text-gray-900 mb-3">Envoyez-nous un message</h2>
                                 <p class="text-gray-600">Remplissez le formulaire ci-dessous. Les champs marqués d'un
-                                    <span class="text-red-500">*</span> sont obligatoires.</p>
+                                    <span class="text-red-500">*</span> sont obligatoires.
+                                </p>
                             </div>
 
                             @if ($success)
@@ -407,19 +426,6 @@ new #[Layout('layouts.main')] class extends Component {
 
     <x-layouts.footer />
 
-    {{-- Bouton Scroll Top --}}
-    <div x-data="{ show: false }" @scroll.window="show = window.scrollY > 500" class="fixed bottom-8 right-8 z-50">
-        <button x-show="show" x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-y-0"
-            x-transition:leave-end="opacity-0 translate-y-10" @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
-            class="bg-green-600 text-white w-12 h-12 rounded-full shadow-lg hover:bg-green-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-green-500/30">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18">
-                </path>
-            </svg>
-        </button>
-    </div>
     {{-- Styles d'animation personnalisés --}}
     <style>
         @keyframes blob {
