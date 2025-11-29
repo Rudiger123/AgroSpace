@@ -102,6 +102,8 @@ Route::get('/2fa-challenge', TwoFactorChallenge::class)
     ->middleware('guest')
     ->name('2fa.challenge');
 
+Volt::route('/documentation', 'docs.documentation')->name('documentation');
+
 Volt::route('/', 'welcome')->name('home');
 Volt::route('/features', 'features')->name('features');
 Volt::route('/about', 'about-page')->name('about.page');
@@ -114,6 +116,7 @@ Route::prefix('blog')->name('blog.')->group(function () {
     // Affichage d'un article individuel
     Route::get('/{slug}', BlogShowEnhanced::class)->name('show');
 });
+
 // Public Newsletter Routes
 Route::get('/newsletter/unsubscribe/{token}', UnsubscribeConfirmation::class)
     ->name('newsletter.unsubscribe');

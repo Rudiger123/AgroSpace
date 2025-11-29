@@ -102,7 +102,7 @@ class ContactsManagement extends Component
     {
         $this->selectedContact = Contact::with('repliedBy')->findOrFail($contactId);
         $this->contactId = $contactId;
-        
+
         // Marquer comme ouvert si nouveau
         if ($this->selectedContact->status === 'new') {
             $this->selectedContact->update(['status' => 'opened']);
@@ -120,7 +120,7 @@ class ContactsManagement extends Component
         $this->selectedUsers = [];
         $this->ccToSender = true;
         $this->sendCopyToMe = false;
-        
+
         $this->showReplyModal = true;
     }
 
@@ -133,19 +133,19 @@ class ContactsManagement extends Component
             $contact = Contact::findOrFail($this->contactId);
 
             // Envoyer l'email aux utilisateurs sélectionnés
-                Mail::send('emails.contact-reply', [
-                    'contact' => $contact,
-                    'replyMessage' => $this->replyMessage,
-                    'recipient' => $contact->email,
-                ], function ($message) use ($contact) {
-                    $message->to($contact->email, $contact->name)
-                            ->subject('Réponse: ' . $contact->subject . ' - AgroSpace');
-                    
-                    // CC au sender si demandé
-                    if ($this->ccToSender) {
-                        $message->cc($contact->email, $contact->name);
-                    }
-                });
+            Mail::send('emails.contact-reply', [
+                'contact' => $contact,
+                'replyMessage' => $this->replyMessage,
+                'recipient' => $contact->email,
+            ], function ($message) use ($contact) {
+                $message->to($contact->email, $contact->name)
+                        ->subject('Réponse: ' . $contact->subject . ' - AgroSpace');
+
+                // CC au sender si demandé
+                if ($this->ccToSender) {
+                    $message->cc($contact->email, $contact->name);
+                }
+            });
 
             // Copie à l'expéditeur
             if ($this->sendCopyToMe) {
@@ -192,7 +192,7 @@ class ContactsManagement extends Component
     {
         try {
             Contact::findOrFail($this->contactId)->delete();
-            
+
             $this->dispatch('contact-deleted', [
                 'message' => 'Message supprimé avec succès!'
             ]);
@@ -211,7 +211,7 @@ class ContactsManagement extends Component
         try {
             $count = count($this->selectedContacts);
             Contact::whereIn('id', $this->selectedContacts)->delete();
-            
+
             $this->selectedContacts = [];
             $this->selectAll = false;
 
@@ -302,7 +302,7 @@ class ContactsManagement extends Component
             'avg_response_time' => Contact::whereNotNull('replied_at')->get()->avg(function ($contact) {
                 return $contact->replied_at->diffInHours($contact->created_at);
             }),
-            'response_rate' => Contact::count() > 0 
+            'response_rate' => Contact::count() > 0
                 ? round((Contact::where('status', 'replied')->count() / Contact::count()) * 100, 1)
                 : 0,
         ];

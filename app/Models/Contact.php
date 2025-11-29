@@ -140,7 +140,7 @@ class Contact extends Model
      */
     public function getStatusColorAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'new' => 'blue',
             'opened' => 'amber',
             'replied' => 'green',
@@ -154,7 +154,7 @@ class Contact extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'new' => 'Nouveau',
             'opened' => 'Ouvert',
             'replied' => 'Répondu',
