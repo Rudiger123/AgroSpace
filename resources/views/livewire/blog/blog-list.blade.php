@@ -16,7 +16,7 @@
                 <!-- Left Content -->
                 <div class="text-white space-y-6 animate-fade-in-up">
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                        {{ __('blog.list.hero.title', ['highlight' => '<span class="text-secondary">' . __('blog.list.hero.highlight') . '</span>']) }}
+                        {{ __('blog.list.hero.title') }}
                     </h1>
                     <p class="text-lg md:text-xl text-gray-50 leading-relaxed">
                         {{ __('blog.list.hero.description') }}

@@ -15,7 +15,6 @@ class AdminNewsletterSend extends Component
     public $recipients = [];
     public $selectedTemplate;
 
-
     protected $rules = [
         'subject' => 'required|string|max:255',
         'message' => 'required|string|min:10',
@@ -27,13 +26,34 @@ class AdminNewsletterSend extends Component
         'message.min' => 'Le message doit contenir au moins 10 caractères',
     ];
 
+    // Méthode pour obtenir les messages traduits
+    protected function getTranslatedMessages()
+    {
+        return [
+            'subject.required' => __('newsletter.subject_required'),
+            'message.required' => __('newsletter.message_required'),
+            'message.min' => __('newsletter.message_min'),
+        ];
+    }
+
+    // protected $templates = [
+    //     'welcome' => [
+    //         'subject' => '🎉 ' . __('newsletter.template_welcome_subject'),
+    //         'message' => "\n\n" . __('newsletter.template_welcome_message'),
+    //     ],
+    //     'special_offer' => [
+    //         'subject' => '🎁 ' . __('newsletter.template_offer_subject'),
+    //         'message' => "\n\n" . __('newsletter.template_offer_message'),
+    //     ],
+    // ];
+
     protected $templates = [
         'welcome' => [
             'subject' => '🎉 Bienvenue sur Agrospace !',
             'message' => "\n\nNous sommes ravis de vous accueillir sur Agrospace, la plateforme qui connecte les producteurs et consommateurs du secteur agropastoral au Cameroun.\n\nVotre compte {role} est maintenant actif. Vous pouvez dès maintenant :\n• Explorer les offres et demandes\n• Publier vos propres annonces\n• Échanger avec la communauté\n• Accéder à nos ressources et actualités\n\nBesoin d'aide ? Notre équipe est là pour vous accompagner.\n\nCordialement,\nL'équipe Agrospace 🌾",
         ],
         'special_offer' => [
-           'subject' => '🎁 Offre spéciale Agrospace',
+            'subject' => '🎁 Offre spéciale Agrospace',
             'message' => "\n\nProfitez de notre offre spéciale ! Le meilleur de l'agropastoralisme est là.\n\n[Détails de la promotion]\n\nValable jusqu'au [date]\n\nCordialement,\nL'équipe Agrospace 🌾",
         ],
     ];
@@ -45,7 +65,6 @@ class AdminNewsletterSend extends Component
         $activeSubscribers = NewsletterSubscriber::active()->get();
 
         foreach ($activeSubscribers as $subscriber) {
-            // NOTE: Assurez-vous que le SendNewsletterJob existe et fonctionne
             SendNewsletterJob::dispatch($subscriber, $this->subject, $this->message);
         }
 
@@ -53,8 +72,8 @@ class AdminNewsletterSend extends Component
         $this->close();
 
         $this->dispatch('toast', [
-            'title' => 'Newsletter en cours d\'envoi !',
-            'message' => "La newsletter a été mise en file d'attente pour {$activeSubscribers->count()} abonnés.",
+            'title' => __('newsletter.send_success_title'),
+            'message' => __("newsletter.send_success_message", ['count' => $activeSubscribers->count()]),
             'type' => 'success',
         ]);
     }
@@ -62,7 +81,6 @@ class AdminNewsletterSend extends Component
     #[On('openEmailModal')]
     public function open()
     {
-        // On cible tous les abonnés actifs pour l'envoi en masse
         $this->recipients = NewsletterSubscriber::active()->get();
         $this->show = true;
     }

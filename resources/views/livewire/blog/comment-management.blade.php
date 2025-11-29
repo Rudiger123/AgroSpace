@@ -1,8 +1,8 @@
 <div class="p-6 space-y-6">
     <div class="flex items-center justify-between border-b pb-4 mb-4">
         <div>
-            <h1 class="text-3xl font-extrabold text-gray-900">✨ Gestion des Commentaires</h1>
-            <p class="text-sm text-gray-500 mt-1">Modérez et gérez tous les commentaires du blog</p>
+            <h1 class="text-3xl font-extrabold text-gray-900">✨ {{ __('comments.management.title') }}</h1>
+            <p class="text-sm text-gray-500 mt-1">{{ __('comments.management.subtitle') }}</p>
         </div>
         @if (count($selected) > 0)
             <button wire:click="bulkDelete"
@@ -12,42 +12,42 @@
                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                     </path>
                 </svg>
-                <span>Supprimer ({{ count($selected) }})</span>
+                <span>{{ __('comments.actions.delete_selected', ['count' => count($selected)]) }}</span>
             </button>
         @endif
     </div>
 
     <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4">Filtrage et Recherche</h2>
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">{{ __('comments.filters.title') }}</h2>
         <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
             <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-700 mb-1">🔍 Rechercher</label>
-                <input type="text" wire:model.live.debounce.300ms="search" placeholder="Contenu, auteur, email..."
+                <label class="block text-sm font-medium text-gray-700 mb-1">🔍 {{ __('comments.filters.search') }}</label>
+                <input type="text" wire:model.live.debounce.300ms="search" placeholder="{{ __('comments.filters.search_placeholder') }}"
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 shadow-sm transition duration-150">
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">🏷️ Statut</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">🏷️ {{ __('comments.filters.status') }}</label>
                 <select wire:model.live="status"
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 shadow-sm transition duration-150 bg-white">
-                    <option value="all">Tous</option>
-                    <option value="pending">En attente</option>
-                    <option value="approved">Approuvés</option>
-                    <option value="rejected">Rejetés</option>
-                    <option value="spam">Spam</option>
+                    <option value="all">{{ __('comments.status.all') }}</option>
+                    <option value="pending">{{ __('comments.status.pending') }}</option>
+                    <option value="approved">{{ __('comments.status.approved') }}</option>
+                    <option value="rejected">{{ __('comments.status.rejected') }}</option>
+                    <option value="spam">{{ __('comments.status.spam') }}</option>
                 </select>
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">📰 Article</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">📰 {{ __('comments.filters.post') }}</label>
                 <select wire:model.live="post_id"
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 shadow-sm transition duration-150 bg-white">
-                    <option value="">Tous les articles</option>
+                    <option value="">{{ __('comments.filters.all_posts') }}</option>
                     @foreach ($posts as $post)
                         <option value="{{ $post->id }}">{{ Str::limit($post->title, 25) }}</option>
                     @endforeach
                 </select>
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">🔢 Par page</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">🔢 {{ __('comments.filters.per_page') }}</label>
                 <select wire:model.live="perPage"
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 shadow-sm transition duration-150 bg-white">
                     <option value="10">10</option>
@@ -70,43 +70,43 @@
                                 class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                            Commentaire
+                            {{ __('comments.table.comment') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider cursor-pointer"
                             wire:click="sortBy('post_id')">
-                            Article
+                            {{ __('comments.table.post') }}
                             @if ($sortField === 'post_id')
                                 <span class="ml-1">{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                             @endif
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                            Auteur
+                            {{ __('comments.table.author') }}
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider cursor-pointer"
                             wire:click="sortBy('status')">
-                            Statut
+                            {{ __('comments.table.status') }}
                             @if ($sortField === 'status')
                                 <span class="ml-1">{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                             @endif
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
-                            ❤️ Likes
+                            ❤️ {{ __('comments.table.likes') }}
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
-                            ⚠️ Signal.
+                            ⚠️ {{ __('comments.table.reports') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                            IP
+                            {{ __('comments.table.ip') }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider cursor-pointer"
                             wire:click="sortBy('created_at')">
-                            Date
+                            {{ __('comments.table.date') }}
                             @if ($sortField === 'created_at')
                                 <span class="ml-1">{{ $sortDirection === 'asc' ? '↑' : '↓' }}</span>
                             @endif
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
-                            Actions
+                            {{ __('comments.table.actions') }}
                         </th>
                     </tr>
                 </thead>
@@ -122,30 +122,37 @@
                                 </p>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <p class="text-sm text-gray-700 font-medium">{{ Str::limit($comment->post?->title, 10) ?? 'N/A' }}</p>
+                                <p class="text-sm text-gray-700 font-medium">{{ Str::limit($comment->post?->title, 10) ?? __('comments.table.na') }}</p>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div>
                                     <p class="text-sm font-semibold text-gray-800">
-                                        {{ $comment->user?->name ?? ($comment->author_name ?? 'Anonyme') }}</p>
+                                        {{ $comment->user?->name ?? ($comment->author_name ?? __('comments.table.anonymous')) }}</p>
                                     <p class="text-xs text-gray-500">
-                                        {{ $comment->user?->email ?? ($comment->author_email ?? 'N/A') }}</p>
+                                        {{ $comment->user?->email ?? ($comment->author_email ?? __('comments.table.na')) }}</p>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 @if ($comment->status === 'pending')
                                     <span
-                                        class="inline-flex px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 shadow-sm">En
-                                        attente</span>
+                                        class="inline-flex px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800 shadow-sm">
+                                        {{ __('comments.status.pending') }}
+                                    </span>
                                 @elseif($comment->status === 'approved')
                                     <span
-                                        class="inline-flex px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 shadow-sm">Approuvé</span>
+                                        class="inline-flex px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 shadow-sm">
+                                        {{ __('comments.status.approved') }}
+                                    </span>
                                 @elseif($comment->status === 'rejected')
                                     <span
-                                        class="inline-flex px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800 shadow-sm">Rejeté</span>
+                                        class="inline-flex px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800 shadow-sm">
+                                        {{ __('comments.status.rejected') }}
+                                    </span>
                                 @elseif($comment->status === 'spam')
                                     <span
-                                        class="inline-flex px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800 shadow-sm">Spam</span>
+                                        class="inline-flex px-3 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800 shadow-sm">
+                                        {{ __('comments.status.spam') }}
+                                    </span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">
@@ -160,7 +167,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span
-                                    class="text-xs text-gray-600 font-mono">{{ $comment->ip_address ?? 'N/A' }}</span>
+                                    class="text-xs text-gray-600 font-mono">{{ $comment->ip_address ?? __('comments.table.na') }}</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <p class="text-sm text-gray-600">
@@ -169,7 +176,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <div class="flex items-center justify-center space-x-2">
-                                    <button wire:click="openDetails({{ $comment->id }})" title="Détails"
+                                    <button wire:click="openDetails({{ $comment->id }})" title="{{ __('comments.actions.details') }}"
                                         class="text-blue-600 hover:text-blue-800 transition transform hover:scale-110 p-1 rounded-full hover:bg-blue-50">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
@@ -181,7 +188,7 @@
                                         </svg>
                                     </button>
                                     @if ($comment->status !== 'approved')
-                                        <button wire:click="approve({{ $comment->id }})" title="Approuver"
+                                        <button wire:click="approve({{ $comment->id }})" title="{{ __('comments.actions.approve') }}"
                                             class="text-green-600 hover:text-green-800 transition transform hover:scale-110 p-1 rounded-full hover:bg-green-50">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -191,7 +198,7 @@
                                         </button>
                                     @endif
                                     @if ($comment->status !== 'rejected')
-                                        <button wire:click="reject({{ $comment->id }})" title="Rejeter"
+                                        <button wire:click="reject({{ $comment->id }})" title="{{ __('comments.actions.reject') }}"
                                             class="text-red-600 hover:text-red-800 transition transform hover:scale-110 p-1 rounded-full hover:bg-red-50">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -200,7 +207,7 @@
                                             </svg>
                                         </button>
                                     @endif
-                                    <button wire:click="markSpam({{ $comment->id }})" title="Spam"
+                                    <button wire:click="markSpam({{ $comment->id }})" title="{{ __('comments.actions.spam') }}"
                                         class="text-gray-600 hover:text-gray-800 transition transform hover:scale-110 p-1 rounded-full hover:bg-gray-100">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
@@ -209,7 +216,7 @@
                                             </path>
                                         </svg>
                                     </button>
-                                    <button wire:click="delete({{ $comment->id }})" title="Supprimer"
+                                    <button wire:click="delete({{ $comment->id }})" title="{{ __('comments.actions.delete') }}"
                                         class="text-red-600 hover:text-red-800 transition transform hover:scale-110 p-1 rounded-full hover:bg-red-50">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
@@ -231,8 +238,8 @@
                                             d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
                                         </path>
                                     </svg>
-                                    <p class="text-gray-500 text-lg font-medium">Aucun commentaire trouvé</p>
-                                    <p class="text-sm text-gray-400 mt-1">Veuillez ajuster vos filtres de recherche.</p>
+                                    <p class="text-gray-500 text-lg font-medium">{{ __('comments.table.no_comments') }}</p>
+                                    <p class="text-sm text-gray-400 mt-1">{{ __('comments.table.adjust_filters') }}</p>
                                 </div>
                             </td>
                         </tr>
@@ -251,17 +258,16 @@
 
 @push('scripts')
     <script>
-        // ... (Les scripts SweetAlert restent inchangés et sont déjà très bien pour l'UX !)
         window.addEventListener('confirm-delete', event => {
             Swal.fire({
-                title: 'Êtes-vous sûr ?',
-                text: "Cette action est irréversible !",
+                title: '{{ __("comments.messages.confirm_delete_title") }}',
+                text: '{{ __("comments.messages.confirm_delete_text") }}',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#6b7280',
-                confirmButtonText: 'Oui, supprimer',
-                cancelButtonText: 'Annuler'
+                confirmButtonText: '{{ __("comments.actions.confirm_delete") }}',
+                cancelButtonText: '{{ __("comments.actions.cancel") }}'
             }).then((result) => {
                 if (result.isConfirmed) {
                     @this.call('confirmDelete', event.detail.id);
@@ -271,14 +277,14 @@
 
         window.addEventListener('confirm-bulk-delete', () => {
             Swal.fire({
-                title: 'Supprimer les commentaires sélectionnés ?',
-                text: "Cette action est irréversible !",
+                title: '{{ __("comments.messages.confirm_bulk_delete_title") }}',
+                text: '{{ __("comments.messages.confirm_bulk_delete_text") }}',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#6b7280',
-                confirmButtonText: 'Oui, supprimer tout',
-                cancelButtonText: 'Annuler'
+                confirmButtonText: '{{ __("comments.actions.confirm_bulk_delete") }}',
+                cancelButtonText: '{{ __("comments.actions.cancel") }}'
             }).then((result) => {
                 if (result.isConfirmed) {
                     @this.call('confirmBulkDelete');
@@ -289,7 +295,7 @@
         window.addEventListener('comment-approved', event => {
             Swal.fire({
                 icon: 'success',
-                title: 'Approuvé',
+                title: '{{ __("comments.messages.approved_title") }}',
                 text: event.detail.message,
                 timer: 2000,
                 showConfirmButton: false
@@ -299,7 +305,7 @@
         window.addEventListener('comment-rejected', event => {
             Swal.fire({
                 icon: 'info',
-                title: 'Rejeté',
+                title: '{{ __("comments.messages.rejected_title") }}',
                 text: event.detail.message,
                 timer: 2000,
                 showConfirmButton: false
@@ -309,7 +315,7 @@
         window.addEventListener('comment-spam', event => {
             Swal.fire({
                 icon: 'warning',
-                title: 'Spam',
+                title: '{{ __("comments.messages.spam_title") }}',
                 text: event.detail.message,
                 timer: 2000,
                 showConfirmButton: false
@@ -319,7 +325,7 @@
         window.addEventListener('comment-deleted', event => {
             Swal.fire({
                 icon: 'success',
-                title: 'Supprimé',
+                title: '{{ __("comments.messages.deleted_title") }}',
                 text: event.detail.message,
                 timer: 2000,
                 showConfirmButton: false
@@ -329,7 +335,7 @@
         window.addEventListener('comments-deleted', event => {
             Swal.fire({
                 icon: 'success',
-                title: 'Supprimés',
+                title: '{{ __("comments.messages.bulk_deleted_title") }}',
                 text: event.detail.message,
                 timer: 2000,
                 showConfirmButton: false

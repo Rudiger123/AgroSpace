@@ -25,7 +25,7 @@
         <!-- Background pattern -->
         <div class="absolute inset-0 opacity-10">
             <div class="absolute inset-0"
-                style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot ;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.4&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+                style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.4&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
             </div>
         </div>
 
@@ -48,7 +48,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
-                    <span>Blog</span>
+                    <span>{{ __('blog.breadcrumb.blog') }}</span>
                 </a>
                 @if ($post->category)
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -90,7 +90,7 @@
                 <button @click="showAuthorModal = true"
                     class="flex items-center space-x-3 hover:bg-white/10 rounded-xl p-2 -ml-2 transition group">
                     <div class="relative">
-                        <img src="{{ $post->author->avatar_url ?? 'https://ui-avatars.com/api/?name= ' . urlencode($post->author->name) . '&background=22c55e&color=fff' }}"
+                        <img src="{{ $post->author->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($post->author->name) . '&background=22c55e&color=fff' }}"
                             alt="{{ $post->author->name }}"
                             class="w-14 h-14 rounded-full ring-4 ring-white/20 group-hover:ring-white/40 transition">
                         @if ($post->author->is_verified ?? false)
@@ -124,7 +124,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span>{{ $post->reading_time ?? 5 }} min de lecture</span>
+                        <span>{{ $post->reading_time ?? 5 }} {{ __('blog.meta.reading_time') }}</span>
                     </div>
                     @if ($viewsCount > 0)
                         <div class="flex items-center space-x-2">
@@ -135,7 +135,7 @@
                                     d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
                                 </path>
                             </svg>
-                            <span>{{ number_format($viewsCount) }} vues</span>
+                            <span>{{ number_format($viewsCount) }} {{ __('blog.meta.views') }}</span>
                         </div>
                     @endif
                 </div>
@@ -156,7 +156,6 @@
     </header>
 
     <!-- Actions flottantes (sticky) -->
-    {{-- <div class="sticky top-20 z-40 bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-200"> --}}
     <div class="sticky top-20 z-40 bg-transparent">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex items-center justify-between">
@@ -203,7 +202,7 @@
                             d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z">
                         </path>
                     </svg>
-                    <span class = "md:block hidden">Partager</span>
+                    <span class="md:block hidden">{{ __('blog.actions.share') }}</span>
                 </button>
             </div>
         </div>
@@ -240,12 +239,13 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15 19l-7-7 7-7"></path>
                         </svg>
-                        <span class="font-medium">Article précédent</span>
+                        <span class="font-medium">{{ __('blog.navigation.previous') }}</span>
                     </div>
                     <h3 class="font-bold text-gray-900 group-hover:text-green-600 transition line-clamp-2 text-lg">
                         {{ $previousPost->title }}
                     </h3>
-                    <p class="text-sm text-gray-500 mt-2">{{ $previousPost->reading_time ?? 5 }} min de lecture</p>
+                    <p class="text-sm text-gray-500 mt-2">{{ $previousPost->reading_time ?? 5 }}
+                        {{ __('blog.meta.reading_time') }}</p>
                 </a>
             @endif
 
@@ -253,7 +253,7 @@
                 <a href="{{ route('blog.show', $nextPost->slug) }}" wire:navigate
                     class="group bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-2xl hover:border-green-200 transition-all transform hover:-translate-y-1 {{ !isset($previousPost) ? 'md:col-start-2' : '' }}">
                     <div class="flex items-center justify-end space-x-2 text-sm text-gray-500 mb-3">
-                        <span class="font-medium">Article suivant</span>
+                        <span class="font-medium">{{ __('blog.navigation.next') }}</span>
                         <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
@@ -264,7 +264,8 @@
                         class="font-bold text-gray-900 text-right group-hover:text-green-600 transition line-clamp-2 text-lg">
                         {{ $nextPost->title }}
                     </h3>
-                    <p class="text-sm text-gray-500 mt-2 text-right">{{ $nextPost->reading_time ?? 5 }} min de lecture
+                    <p class="text-sm text-gray-500 mt-2 text-right">{{ $nextPost->reading_time ?? 5 }}
+                        {{ __('blog.meta.reading_time') }}
                     </p>
                 </a>
             @endif
@@ -279,7 +280,7 @@
                             d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
                         </path>
                     </svg>
-                    <h3 class="text-3xl font-bold text-gray-900">Articles similaires</h3>
+                    <h3 class="text-3xl font-bold text-gray-900">{{ __('blog.related_posts.title') }}</h3>
                 </div>
                 <div class="grid md:grid-cols-2 gap-6">
                     @foreach ($relatedPosts as $related)
@@ -314,7 +315,7 @@
                                     <div class="flex items-center space-x-3 text-xs text-gray-500">
                                         <span>{{ $related->formatted_published_date ?? $related->published_at->format('d M Y') }}</span>
                                         <span>•</span>
-                                        <span>{{ $related->reading_time ?? 5 }} min</span>
+                                        <span>{{ $related->reading_time ?? 5 }} {{ __('blog.meta.min') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -333,12 +334,12 @@
                             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
                         </path>
                     </svg>
-                    <span>Commentaires ({{ number_format($commentsCount) }})</span>
+                    <span>{{ __('blog.comments.title', ['count' => number_format($commentsCount)]) }}</span>
                 </h3>
                 @if (isset($comments) && $comments->count() > 5)
                     <button wire:click="$toggle('showAllComments')"
                         class="text-sm text-green-600 hover:text-green-700 font-semibold">
-                        {{ $showAllComments ?? false ? 'Voir moins' : 'Voir tous les commentaires' }}
+                        {{ $showAllComments ?? false ? __('blog.comments.see_less') : __('blog.comments.see_all') }}
                     </button>
                 @endif
             </div>
@@ -355,7 +356,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
                                         </svg>
-                                        <span>Réponse à un commentaire</span>
+                                        <span>{{ __('blog.comments.replying_to') }}</span>
                                     </p>
                                     <button type="button" wire:click="cancelReply"
                                         class="text-blue-700 hover:text-blue-900 transition">
@@ -369,11 +370,11 @@
                         @endif
 
                         <div class="flex items-start space-x-4">
-                            <img src="{{ auth()->user()->avatar_url ?? 'https://ui-avatars.com/api/?name= ' . urlencode(auth()->user()->name) . '&background=22c55e&color=fff' }}"
+                            <img src="{{ auth()->user()->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=22c55e&color=fff' }}"
                                 alt="{{ auth()->user()->name }}"
                                 class="w-12 h-12 rounded-full ring-2 ring-green-500 flex-shrink-0">
                             <div class="flex-1">
-                                <textarea wire:model="commentContent" placeholder="Partagez votre avis ou posez une question..."
+                                <textarea wire:model="commentContent" placeholder="{{ __('blog.comments.placeholder') }}"
                                     class="w-full
                                     px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent
                                     transition-all resize-none"
@@ -389,11 +390,14 @@
                                 <button type="submit"
                                     class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition font-semibold flex items-center space-x-2 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
                                     @if ($replyingTo ?? false)
-                                        <span wire:loading.remove wire:target="addComment">Répondre</span>
+                                        <span wire:loading.remove
+                                            wire:target="addComment">{{ __('blog.comments.reply') }}</span>
                                     @else
-                                        <span wire:loading.remove wire:target="addComment">Publier</span>
+                                        <span wire:loading.remove
+                                            wire:target="addComment">{{ __('blog.comments.publish') }}</span>
                                     @endif
-                                    <span wire:loading wire:target="addComment">publication...</span>
+                                    <span wire:loading
+                                        wire:target="addComment">{{ __('blog.comments.publishing') }}</span>
                                     <svg wire:loading.remove wire:target="addComment" class="w-5 h-5" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -402,12 +406,12 @@
                                 </button>
                                 <button type="button" wire:click="$set('commentContent', '')"
                                     class="px-4 py-2 text-gray-600 hover:text-gray-800 transition">
-                                    Annuler
+                                    {{ __('blog.comments.cancel') }}
                                 </button>
                             </div>
                             <div class="text-sm text-gray-500">
                                 <span x-data="{ count: $wire.commentContent.length }" x-init="$watch('$wire.commentContent', value => count = value.length)" x-text="count"></span>
-                                / 500 caractères
+                                / 500 {{ __('blog.comments.characters') }}
                             </div>
                         </div>
                     </form>
@@ -422,8 +426,8 @@
                                 </path>
                             </svg>
                         </div>
-                        <h4 class="font-bold text-blue-900 mb-2 text-lg">Connectez-vous pour commenter</h4>
-                        <p class="text-blue-700 mb-4">Partagez votre expérience avec la communauté AgroSpace
+                        <h4 class="font-bold text-blue-900 mb-2 text-lg">{{ __('blog.comments.login_to_comment') }}</h4>
+                        <p class="text-blue-700 mb-4">{{ __('blog.comments.login_description') }}
                         </p>
                         <a href="{{ route('login') }}"
                             class="inline-flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition font-semibold shadow-lg hover:shadow-xl">
@@ -432,7 +436,7 @@
                                     d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
                                 </path>
                             </svg>
-                            <span>Se connecter</span>
+                            <span>{{ __('blog.comments.login') }}</span>
                         </a>
                     </div>
                 </div>
@@ -443,7 +447,7 @@
                 @forelse(($comments ?? collect())->take($showAllComments ?? false ? -1 : 5) as $comment)
                     <div
                         class="flex items-start space-x-4 p-4 {{ $comment->parent_id ? 'ml-8 bg-gray-50 rounded-xl' : 'bg-white' }}">
-                        <img src="{{ $comment->user->avatar_url ?? 'https://ui-avatars.com/api/?name= ' . urlencode($comment->user->name) . '&background=22c55e&color=fff' }}"
+                        <img src="{{ $comment->user->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($comment->user->name) . '&background=22c55e&color=fff' }}"
                             alt="{{ $comment->user->name }}"
                             class="w-10 h-10 rounded-full ring-2 ring-green-500 flex-shrink-0">
                         <div class="flex-1">
@@ -463,7 +467,7 @@
                                 @auth
                                     <button wire:click="replyTo({{ $comment->id }})"
                                         class="text-sm text-green-600 hover:text-green-700 font-medium transition">
-                                        Répondre
+                                        {{ __('blog.comments.reply') }}
                                     </button>
                                 @endauth
                                 @if ($comment->replies_count > 0)
@@ -475,7 +479,7 @@
                                                 d="M19 9l-7 7-7-7"></path>
                                         </svg>
                                         <span>{{ $comment->replies_count }}
-                                            réponse{{ $comment->replies_count > 1 ? 's' : '' }}</span>
+                                            {{ trans_choice('blog.comments.replies', $comment->replies_count) }}</span>
                                     </button>
                                 @endif
                             </div>
@@ -486,7 +490,7 @@
                                     @foreach ($comment->replies as $reply)
                                         <div
                                             class="flex items-start space-x-3 p-3 bg-white rounded-xl border border-gray-100">
-                                            <img src="{{ $reply->user->avatar_url ?? 'https://ui-avatars.com/api/?name= ' . urlencode($reply->user->name) . '&background=22c55e&color=fff' }}"
+                                            <img src="{{ $reply->user->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($reply->user->name) . '&background=22c55e&color=fff' }}"
                                                 alt="{{ $reply->user->name }}"
                                                 class="w-8 h-8 rounded-full ring-1 ring-green-500 flex-shrink-0">
                                             <div class="flex-1">
@@ -512,7 +516,7 @@
                                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
                             </path>
                         </svg>
-                        <p class="text-gray-500">Aucun commentaire pour le moment. Soyez le premier à commenter !</p>
+                        <p class="text-gray-500">{{ __('blog.comments.no_comments') }}</p>
                     </div>
                 @endforelse
 
@@ -520,7 +524,7 @@
                     <div class="text-center pt-6 border-t border-gray-100">
                         <button wire:click="$set('showAllComments', true)"
                             class="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105 font-semibold shadow-lg">
-                            Voir les {{ $comments->count() - 5 }} commentaires restants
+                            {{ __('blog.comments.see_remaining', ['count' => $comments->count() - 5]) }}
                         </button>
                     </div>
                 @endif
@@ -549,7 +553,7 @@
             <!-- Header -->
             <div class="px-8 py-6 border-b border-green-200 bg-gradient-to-r from-green-50 to-green-100">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-2xl font-bold text-gray-900">À propos de l'auteur</h2>
+                    <h2 class="text-2xl font-bold text-gray-900">{{ __('blog.author_modal.title') }}</h2>
                     <button @click="showAuthorModal = false"
                         class="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-full hover:bg-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -563,12 +567,13 @@
             <!-- Contenu -->
             <div class="p-8 overflow-y-auto max-h-[calc(90vh-120px)]">
                 <div class="flex items-center space-x-6 mb-6">
-                    <img src="{{ $post->author->avatar_url ?? 'https://ui-avatars.com/api/?name= ' . urlencode($post->author->name) . '&background=22c55e&color=fff' }}"
+                    <img src="{{ $post->author->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($post->author->name) . '&background=22c55e&color=fff' }}"
                         alt="{{ $post->author->name }}"
                         class="w-24 h-24 rounded-full ring-4 ring-green-500 shadow-xl">
                     <div>
                         <h3 class="text-2xl font-bold text-gray-900">{{ $post->author->name }}</h3>
-                        <p class="text-green-600 font-semibold">{{ $post->author->role->name ?? 'Producteur' }}</p>
+                        <p class="text-green-600 font-semibold">
+                            {{ $post->author->role->name ?? __('blog.author_modal.default_role') }}</p>
                         @if ($post->author->is_verified ?? false)
                             <div class="flex items-center space-x-1 mt-1">
                                 <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
@@ -576,7 +581,8 @@
                                         d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                         clip-rule="evenodd" />
                                 </svg>
-                                <span class="text-sm text-blue-600 font-medium">Compte vérifié</span>
+                                <span
+                                    class="text-sm text-blue-600 font-medium">{{ __('blog.author_modal.verified') }}</span>
                             </div>
                         @endif
                     </div>
@@ -584,40 +590,21 @@
 
                 <div class="prose prose-green max-w-none">
                     <p class="text-gray-700 mb-4">
-                        {{ $post->author->bio ?? 'Passionné par l\'agriculture et la transmission des savoirs.' }}</p>
+                        {{ $post->author->bio ?? __('blog.author_modal.default_bio') }}</p>
 
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="bg-green-50 rounded-xl p-4 text-center">
-                            <div class="text-2xl font-bold text-green-600">{{ $post->author->posts()->count() ?? 0 }}</div>
-                            <div class="text-sm text-gray-600">Articles publiés</div>
+                            <div class="text-2xl font-bold text-green-600">{{ $post->author->posts()->count() ?? 0 }}
+                            </div>
+                            <div class="text-sm text-gray-600">{{ __('blog.author_modal.published_posts') }}</div>
                         </div>
                         <div class="bg-blue-50 rounded-xl p-4 text-center">
-                            <div class="text-2xl font-bold text-blue-600">{{ \App\Models\NewsletterSubscriber::count() }}</div>
-                            <div class="text-sm text-gray-600">Abonnés</div>
+                            <div class="text-2xl font-bold text-blue-600">
+                                {{ \App\Models\NewsletterSubscriber::count() }}</div>
+                            <div class="text-sm text-gray-600">{{ __('blog.author_modal.subscribers') }}</div>
                         </div>
                     </div>
 
-                    {{-- social Links --}}
-                    {{-- @if ($post->author->social_links ?? false)
-                        <div class="flex space-x-3">
-                            @foreach ($post->author->social_links as $platform => $link)
-                                <a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
-                                    class="w-10 h-10 bg-gray-100 hover:bg-green-500 text-gray-600 hover:text-white rounded-full flex items-center justify-center transition-all transform hover:scale-110">
-                                    @if ($platform === 'twitter')
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-                                        </svg>
-                                    @elseif($platform === 'linkedin')
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                                        </svg>
-                                    @endif
-                                </a>
-                            @endforeach
-                        </div>
-                    @endif --}}
                     @php
                         $socials = [
                             'twitter' => 'lien du compte twitter',
@@ -668,7 +655,7 @@
             <!-- Header -->
             <div class="px-8 py-6 border-b border-green-200 bg-gradient-to-r from-green-50 to-green-100 rounded-t-3xl">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-2xl font-bold text-gray-900">Partager l'article</h2>
+                    <h2 class="text-2xl font-bold text-gray-900">{{ __('blog.share_modal.title') }}</h2>
                     <button @click="showShareModal = false"
                         class="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-full hover:bg-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -681,7 +668,7 @@
 
             <!-- Contenu -->
             <div class="p-8">
-                <p class="text-gray-600 mb-6">Partagez cet article avec votre communauté</p>
+                <p class="text-gray-600 mb-6">{{ __('blog.share_modal.description') }}</p>
 
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <button wire:click="share('facebook')"
@@ -723,15 +710,17 @@
 
                 <div class="relative" x-data="{ pageUrl: '' }" x-init="pageUrl = window.location.href">
                     <input type="text" x-model="pageUrl"
-                           class="w-full px-4 py-3 pr-12 bg-gray-100 border border-gray-200 rounded-xl text-sm
-                                  focus:ring-2 focus:ring-green-500 focus:border-transparent" readonly>
-                    <button @click="navigator.clipboard.writeText(pageUrl);
-                                   $dispatch('toast',{type:'success',message:'Lien copié !'})"
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-gray-600
+                        class="w-full px-4 py-3 pr-12 bg-gray-100 border border-gray-200 rounded-xl text-sm
+                                  focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        readonly>
+                    <button
+                        @click="navigator.clipboard.writeText(pageUrl);
+                                   $dispatch('toast',{type:'success',message:'{{ __('blog.share_modal.link_copied') }}'})"
+                        class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-gray-600
                                    hover:text-green-600 transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
                     </button>
                 </div>
@@ -740,6 +729,6 @@
     </div>
 
     <div x-data
-     @open-share-window.window="if($event.detail.url){ window.open($event.detail.url,'_blank','noopener,noreferrer'); }">
-</div>
+        @open-share-window.window="if($event.detail.url){ window.open($event.detail.url,'_blank','noopener,noreferrer'); }">
+    </div>
 </div>

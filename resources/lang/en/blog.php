@@ -14,7 +14,7 @@ return [
         'save_error' => 'Error during save.',
         'no_selection' => 'No items selected.'
     ],
-    
+
     'success' => [
         'comment_added' => 'Comment added successfully!',
         'liked' => 'Article liked!',
@@ -30,7 +30,7 @@ return [
         'featured' => 'Article featured!',
         'unfeatured' => 'Article unfeatured!'
     ],
-    
+
     // Validation
     'validation' => [
         'comment_required' => 'Please enter a comment.',
@@ -45,7 +45,7 @@ return [
         'image_invalid' => 'Image must be a valid image file.',
         'image_max' => 'Image must not exceed 2MB.'
     ],
-    
+
     // Buttons and actions
     'actions' => [
         'like' => 'Like',
@@ -76,7 +76,7 @@ return [
         'feature' => 'Feature',
         'unfeature' => 'Unfeature'
     ],
-    
+
     // Statuses
     'status' => [
         'published' => 'Published',
@@ -88,7 +88,7 @@ return [
         'spam' => 'Spam',
         'all' => 'All'
     ],
-    
+
     // Filters and sorting
     'filters' => [
         'search' => 'Search...',
@@ -102,7 +102,7 @@ return [
         'all_categories' => 'All categories',
         'all_authors' => 'All authors'
     ],
-    
+
     'sort_options' => [
         'recent' => 'Most recent',
         'popular' => 'Most popular',
@@ -113,7 +113,7 @@ return [
         'published_at' => 'Publication date',
         'created_at' => 'Creation date'
     ],
-    
+
     // Metrics and statistics
     'metrics' => [
         'views' => 'Views',
@@ -135,7 +135,7 @@ return [
         'categories_count' => 'Categories',
         'active_authors' => 'Active authors'
     ],
-    
+
     // User interface
     'ui' => [
         'no_posts' => 'No posts found.',
@@ -156,7 +156,7 @@ return [
         'popular_tags' => 'Popular tags',
         'communication_channels' => 'Communication channels'
     ],
-    
+
     // Forms
     'forms' => [
         'title' => 'Title',
@@ -175,7 +175,7 @@ return [
         'generate_slug' => 'Generate slug',
         'upload_image' => 'Upload image'
     ],
-    
+
     // Sharing
     'share' => [
         'title' => 'Share this article',
@@ -187,7 +187,7 @@ return [
             'email' => 'Email'
         ]
     ],
-    
+
     // Analytics
     'analytics' => [
         'title' => 'Blog Analytics',
@@ -200,7 +200,7 @@ return [
         'shares_by_platform' => 'Shares by platform',
         'export_csv' => 'Export to CSV'
     ],
-    
+
     // Comment management
     'comments' => [
         'management' => 'Comment management',
@@ -214,7 +214,7 @@ return [
         'ip_address' => 'IP Address',
         'user_agent' => 'User Agent'
     ],
-    
+
     // Post management
     'posts' => [
         'management' => 'Post management',
@@ -269,10 +269,10 @@ return [
             'no_articles' => 'No articles found according to filters.',
         ],
     ],
-    
+
     'list' => [
         'hero' => [
-            'title' => 'News & :highlight from the agropastoral world',
+            'title' => 'News & Innovations from the agropastoral world',
             'highlight' => 'Innovations',
             'description' => 'Discover trends, tips, and inspiring stories from the Agrospace community.',
             'explore_articles' => 'Explore articles',
@@ -336,7 +336,7 @@ return [
             'signup_info' => 'Sign up for free and connect with producers and consumers near you.',
         ],
     ],
-    
+
     'manager' => [
         'title' => 'Blog Management',
         'description' => 'Create, edit and manage your articles with style',
@@ -509,5 +509,62 @@ return [
                 'back_to_edit' => 'Back to editing',
             ],
         ],
+    ],
+
+    'breadcrumb' => [
+        'blog' => 'Blog',
+    ],
+
+    'meta' => [
+        'reading_time' => 'min read',
+        'views' => 'views',
+        'min' => 'min',
+    ],
+
+    'actions' => [
+        'share' => 'Share',
+    ],
+
+    'navigation' => [
+        'previous' => 'Previous article',
+        'next' => 'Next article',
+    ],
+
+    'related_posts' => [
+        'title' => 'Related articles',
+    ],
+
+    'comments' => [
+        'title' => 'Comments (:count)',
+        'see_all' => 'See all comments',
+        'see_less' => 'See less',
+        'see_remaining' => 'See remaining :count comments',
+        'replying_to' => 'Replying to a comment',
+        'placeholder' => 'Share your opinion or ask a question...',
+        'reply' => 'Reply',
+        'publish' => 'Publish',
+        'publishing' => 'publishing...',
+        'cancel' => 'Cancel',
+        'characters' => 'characters',
+        'login_to_comment' => 'Login to comment',
+        'login_description' => 'Share your experience with the AgroSpace community',
+        'login' => 'Login',
+        'no_comments' => 'No comments yet. Be the first to comment!',
+        'replies' => ':count reply|:count replies',
+    ],
+
+    'author_modal' => [
+        'title' => 'About the author',
+        'default_role' => 'Producer',
+        'verified' => 'Verified account',
+        'default_bio' => 'Passionate about agriculture and knowledge sharing.',
+        'published_posts' => 'Published articles',
+        'subscribers' => 'Subscribers',
+    ],
+
+    'share_modal' => [
+        'title' => 'Share article',
+        'description' => 'Share this article with your community',
+        'link_copied' => 'Link copied!',
     ],
 ];
