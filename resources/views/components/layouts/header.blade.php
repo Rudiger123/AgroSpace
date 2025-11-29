@@ -106,6 +106,8 @@
                     }
                 </style>
 
+                {{-- Sélecteur de langue --}}
+                <livewire:components.language-switcher />
 
 
                 <!-- Authentication Section -->
@@ -370,8 +372,17 @@
                 </a>
             </nav>
 
+
+            <div class="flex justify-center items-center">
+                <livewire:components.language-switcher />
+            </div>
+
             @auth
-                @livewire('notifications.notification-bell')
+
+                <div class="flex justify-center items-center">
+                    @livewire('notifications.notification-bell')
+                </div>
+
                 <div class="border-t border-gray-200 pt-4 mt-4">
                     {{-- User Info Card --}}
                     <div

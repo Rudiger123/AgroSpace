@@ -26,9 +26,9 @@ new #[Layout('layouts.main')] class extends Component {
 
     public function mount()
     {
-        SEO::setTitle('Contactez AgroSpace - Assistance & Partenariats | Cameroun');
-        SEO::setDescription('Une question ? Un projet ? Notre équipe dédiée est à votre écoute. Contactez AgroSpace, la plateforme leader de l\'agrobusiness au Cameroun.');
-        SEO::setKeywords('contact agrospace, support client, aide agriculture, partenariat cameroun, douala, yaoundé, service client');
+        SEO::setTitle(__('contactfull.title'));
+        SEO::setDescription(__('contactfull.description'));
+        SEO::setKeywords(__('contactfull.keywords'));
         SEO::setCanonical(url()->current());
         SEO::addImages([asset('images/agrospace.png')]);
     }
@@ -71,14 +71,13 @@ new #[Layout('layouts.main')] class extends Component {
         <div class="container mx-auto px-4 text-center text-white">
             <span
                 class="inline-block py-1 px-3 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 text-sm font-semibold mb-4">
-                👋 Équipe Support & Partenariats
+                {!! __('contactfull.header.team') !!}
             </span>
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                Contactez <span class="text-secondary">AgroSpace</span><br />
-                pour vos projets agricoles
+                {!! __('contactfull.header.title') !!}
             </h1>
             <p class="text-lg md:text-xl text-green-50 max-w-2xl mx-auto mt-4">
-                Une question ? Un projet ? Notre équipe est à votre écoute pour vous accompagner.
+                {{ __('contactfull.header.subtitle') }}
             </p>
         </div>
     </section>
@@ -91,9 +90,9 @@ new #[Layout('layouts.main')] class extends Component {
                 {{-- COLONNE GAUCHE : INFOS & ILLUSTRATION (5 colonnes) --}}
                 <div class="space-y-10">
                     <div>
-                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nos Canaux de Communication</h2>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">{{ __('contactfull.channels.title') }}</h2>
                         <p class="text-gray-600 text-lg">
-                            Choisissez le moyen qui vous convient le mieux. Notre équipe est réactive et passionnée.
+                            {{ __('contactfull.channels.description') }}
                         </p>
                     </div>
 
@@ -114,8 +113,8 @@ new #[Layout('layouts.main')] class extends Component {
                             <div>
                                 <h3
                                     class="font-bold text-gray-900 text-lg group-hover:text-green-700 transition-colors">
-                                    Siège Social</h3>
-                                <p class="text-gray-600 mt-1">Quartier Akwa, Douala<br>Littoral, Cameroun</p>
+                                    {{ __('contactfull.contact_cards.headquarters.title') }}</h3>
+                                <p class="text-gray-600 mt-1">{!! __('contactfull.contact_cards.headquarters.address') !!}</p>
                             </div>
                         </div>
 
@@ -133,11 +132,10 @@ new #[Layout('layouts.main')] class extends Component {
                             <div>
                                 <h3
                                     class="font-bold text-gray-900 text-lg group-hover:text-green-700 transition-colors">
-                                    Email</h3>
+                                    {{ __('contactfull.contact_cards.email.title') }}</h3>
                                 <p class="text-gray-600 mt-1">contact@agrospace.cm</p>
                                 <span
-                                    class="inline-block mt-2 text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-md">Réponse
-                                    < 24h</span>
+                                    class="inline-block mt-2 text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-md">{{ __('contactfull.contact_cards.email.response_time') }}</span>
                             </div>
                         </a>
 
@@ -155,9 +153,9 @@ new #[Layout('layouts.main')] class extends Component {
                             <div>
                                 <h3
                                     class="font-bold text-gray-900 text-lg group-hover:text-green-700 transition-colors">
-                                    Service Client</h3>
-                                <p class="text-gray-600 mt-1">+237 6XX XX XX XX</p>
-                                <p class="text-sm text-gray-500 mt-1">Lun-Ven: 8h - 18h • Sam: 9h - 13h</p>
+                                    {{ __('contactfull.contact_cards.customer_service.title') }}</h3>
+                                <p class="text-gray-600 mt-1">{{ __('contactfull.contact_cards.customer_service.phone') }}</p>
+                                <p class="text-sm text-gray-500 mt-1">{{ __('contactfull.contact_cards.customer_service.schedule') }}</p>
                             </div>
                         </div>
                     </div>
@@ -183,8 +181,7 @@ new #[Layout('layouts.main')] class extends Component {
                                     class="relative inline-flex rounded-full h-4 w-4 bg-green-500 border-2 border-white"></span>
                             </span>
                             <span
-                                class="absolute top-6 left-0 whitespace-nowrap text-xs font-bold text-white bg-black/50 px-2 py-1 rounded backdrop-blur-sm">Douala
-                                (Siège)</span>
+                                class="absolute top-6 left-0 whitespace-nowrap text-xs font-bold text-white bg-black/50 px-2 py-1 rounded backdrop-blur-sm">{{ __('contactfull.contact_cards.map.title') }}</span>
                         </div>
                         <div class="absolute top-1/3 right-1/3">
                             <span class="relative flex h-3 w-3">
@@ -197,7 +194,7 @@ new #[Layout('layouts.main')] class extends Component {
 
                         <div
                             class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white">
-                            <p class="font-semibold text-sm">Présent dans les 10 régions</p>
+                            <p class="font-semibold text-sm">{{ __('contactfull.contact_cards.map.regions') }}</p>
                         </div>
                     </div>
                 </div>
@@ -213,10 +210,8 @@ new #[Layout('layouts.main')] class extends Component {
 
                         <div class="relative z-10">
                             <div class="mb-10">
-                                <h2 class="text-3xl font-bold text-gray-900 mb-3">Envoyez-nous un message</h2>
-                                <p class="text-gray-600">Remplissez le formulaire ci-dessous. Les champs marqués d'un
-                                    <span class="text-red-500">*</span> sont obligatoires.
-                                </p>
+                                <h2 class="text-3xl font-bold text-gray-900 mb-3">{{ __('contactfull.form.title') }}</h2>
+                                <p class="text-gray-600">{!! __('contactfull.form.description') !!}</p>
                             </div>
 
                             @if ($success)
@@ -229,9 +224,8 @@ new #[Layout('layouts.main')] class extends Component {
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-bold text-green-800">Message envoyé !</h4>
-                                        <p class="text-green-700 text-sm">Merci de nous avoir contactés. Nous
-                                            reviendrons vers vous très vite.</p>
+                                        <h4 class="font-bold text-green-800">{{ __('contactfull.form.success.title') }}</h4>
+                                        <p class="text-green-700 text-sm">{{ __('contactfull.form.success.message') }}</p>
                                     </div>
                                 </div>
                             @endif
@@ -241,12 +235,11 @@ new #[Layout('layouts.main')] class extends Component {
                                     {{-- Nom --}}
                                     <div class="space-y-2 group">
                                         <label for="name"
-                                            class="text-sm font-semibold text-gray-700 group-focus-within:text-green-600 transition-colors">Nom
-                                            complet <span class="text-red-500">*</span></label>
+                                            class="text-sm font-semibold text-gray-700 group-focus-within:text-green-600 transition-colors">{{ __('contactfull.fields.full_name') }} <span class="text-red-500">{{ __('contactfull.fields.required') }}</span></label>
                                         <div class="relative">
                                             <input type="text" id="name" wire:model="name"
                                                 class="w-full pl-4 pr-4 py-4 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:border-green-500 focus:ring-4 transition-all duration-300 outline-none font-medium placeholder-gray-400"
-                                                placeholder="Ex: Jean Dupont">
+                                                placeholder="{{ __('contactfull.placeholders.name') }}">
                                             @error('name')
                                                 <span
                                                     class="absolute -bottom-6 left-0 text-red-500 text-xs font-medium">{{ $message }}</span>
@@ -257,12 +250,11 @@ new #[Layout('layouts.main')] class extends Component {
                                     {{-- Email --}}
                                     <div class="space-y-2 group">
                                         <label for="email"
-                                            class="text-sm font-semibold text-gray-700 group-focus-within:text-green-600 transition-colors">Email
-                                            <span class="text-red-500">*</span></label>
+                                            class="text-sm font-semibold text-gray-700 group-focus-within:text-green-600 transition-colors">{{ __('contactfull.fields.email') }} <span class="text-red-500">{{ __('contactfull.fields.required') }}</span></label>
                                         <div class="relative">
                                             <input type="email" id="email" wire:model="email"
                                                 class="w-full pl-4 pr-4 py-4 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:border-green-500 focus:ring-4 transition-all duration-300 outline-none font-medium placeholder-gray-4000"
-                                                placeholder="Ex: jean@exemple.com">
+                                                placeholder="{{ __('contactfull.placeholders.email') }}">
                                             @error('email')
                                                 <span
                                                     class="absolute -bottom-6 left-0 text-red-500 text-xs font-medium">{{ $message }}</span>
@@ -274,17 +266,16 @@ new #[Layout('layouts.main')] class extends Component {
                                 {{-- Sujet --}}
                                 <div class="space-y-2 group">
                                     <label for="subject"
-                                        class="text-sm font-semibold text-gray-700 group-focus-within:text-green-600 transition-colors">Sujet
-                                        <span class="text-red-500">*</span></label>
+                                        class="text-sm font-semibold text-gray-700 group-focus-within:text-green-600 transition-colors">{{ __('contactfull.fields.subject') }} <span class="text-red-500">{{ __('contactfull.fields.required') }}</span></label>
                                     <div class="relative">
                                         <select id="subject" wire:model="subject"
                                             class="w-full pl-4 pr-10 py-4 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-300 outline-none font-medium appearance-none cursor-pointer @error('subject') border-red-500 @enderror">
-                                            <option value="">Choisir un sujet...</option>
-                                            <option value="Support technique">🛠️ Support Technique</option>
-                                            <option value="Question générale">ℹ️ Question Générale</option>
-                                            <option value="Partenariat">🤝 Partenariat & Business</option>
-                                            <option value="Presse">📢 Presse & Médias</option>
-                                            <option value="Autre">✨ Autre demande</option>
+                                            <option value="">{{ __('contactfull.fields.choose_subject') }}</option>
+                                            <option value="{{ __('contactfull.subjects.technical_support') }}">{{ __('contactfull.subjects.technical_support') }}</option>
+                                            <option value="{{ __('contactfull.subjects.general_question') }}">{{ __('contactfull.subjects.general_question') }}</option>
+                                            <option value="{{ __('contactfull.subjects.partnership') }}">{{ __('contactfull.subjects.partnership') }}</option>
+                                            <option value="{{ __('contactfull.subjects.press') }}">{{ __('contactfull.subjects.press') }}</option>
+                                            <option value="{{ __('contactfull.subjects.other') }}">{{ __('contactfull.subjects.other') }}</option>
                                         </select>
                                         <div
                                             class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
@@ -304,12 +295,11 @@ new #[Layout('layouts.main')] class extends Component {
                                 {{-- Message --}}
                                 <div class="space-y-2 group">
                                     <label for="message"
-                                        class="text-sm font-semibold text-gray-700 group-focus-within:text-green-600 transition-colors">Message
-                                        <span class="text-red-500">*</span></label>
+                                        class="text-sm font-semibold text-gray-700 group-focus-within:text-green-600 transition-colors">{{ __('contactfull.fields.message') }} <span class="text-red-500">{{ __('contactfull.fields.required') }}</span></label>
                                     <div class="relative">
                                         <textarea id="message" wire:model="message" rows="5"
                                             class="w-full pl-4 pr-4 py-4 bg-gray-50 border-transparent rounded-xl focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all duration-300 outline-none font-medium placeholder-gray-400 resize-none @error('message') border-red-500 @enderror"
-                                            placeholder="Dites-nous tout..."></textarea>
+                                            placeholder="{{ __('contactfull.placeholders.message') }}"></textarea>
                                         @error('message')
                                             <span
                                                 class="absolute -bottom-6 left-0 text-red-500 text-xs font-medium">{{ $message }}</span>
@@ -324,7 +314,7 @@ new #[Layout('layouts.main')] class extends Component {
                                         <span
                                             class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></span>
                                         <span wire:loading.remove class="flex items-center gap-2">
-                                            Envoyer le message
+                                            {{ __('contactfull.buttons.send_message') }}
                                             <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform"
                                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -341,7 +331,7 @@ new #[Layout('layouts.main')] class extends Component {
                                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                                 </path>
                                             </svg>
-                                            Traitement en cours...
+                                            {{ __('contactfull.buttons.sending') }}
                                         </span>
                                     </button>
                                 </div>
@@ -369,31 +359,19 @@ new #[Layout('layouts.main')] class extends Component {
 
         <div class="container mx-auto px-4 relative z-10">
             <div class="text-center mb-16">
-                <span class="text-green-600 font-bold tracking-wider uppercase text-sm">Support</span>
-                <h2 class="text-4xl font-extrabold text-gray-900 mt-2 mb-4">Questions Fréquentes</h2>
+                <span class="text-green-600 font-bold tracking-wider uppercase text-sm">{{ __('contactfull.faq.title') }}</span>
+                <h2 class="text-4xl font-extrabold text-gray-900 mt-2 mb-4">{{ __('contactfull.faq.heading') }}</h2>
                 <p class="text-xl text-gray-500 max-w-2xl mx-auto">
-                    Avant de nous écrire, vérifiez si la réponse à votre question ne se trouve pas déjà ici.
+                    {{ __('contactfull.faq.subtitle') }}
                 </p>
             </div>
 
             <div class="max-w-3xl mx-auto grid gap-4" x-data="{ activeAccordion: null }">
                 @foreach ([
-        1 => [
-            'q' => 'Comment s\'inscrire sur AgroSpace ?',
-            'a' => 'L\'inscription est entièrement gratuite et ne prend que 2 minutes. Cliquez sur le bouton "S\'inscrire" en haut à droite, sélectionnez votre profil (Producteur ou Acheteur) et remplissez les informations de base.',
-        ],
-        2 => [
-            'q' => 'La publication des offres est-elle payante ?',
-            'a' => 'Non ! Vous pouvez publier vos premières offres gratuitement pour tester la plateforme. Des options de mise en avant (Premium) sont disponibles pour ceux qui souhaitent vendre plus rapidement.',
-        ],
-        3 => [
-            'q' => 'Comment garantissez-vous la fiabilité des vendeurs ?',
-            'a' => 'Nous vérifions l\'identité de chaque producteur lors de l\'inscription (CNI, localisation). De plus, notre système de notation communautaire permet d\'identifier les vendeurs de confiance.',
-        ],
-        4 => [
-            'q' => 'Puis-je modifier ou supprimer mon annonce ?',
-            'a' => 'Absolument. Depuis votre tableau de bord, vous avez un contrôle total sur vos annonces : modification du prix, des photos, de la description ou suppression définitive.',
-        ],
+        1 => __('contactfull.questions.registration'),
+        2 => __('contactfull.questions.pricing'),
+        3 => __('contactfull.questions.reliability'),
+        4 => __('contactfull.questions.management'),
     ] as $id => $faq)
                     <div
                         class="group border border-gray-200 rounded-2xl bg-white overflow-hidden hover:border-green-300 transition-colors duration-300">
@@ -401,7 +379,7 @@ new #[Layout('layouts.main')] class extends Component {
                             @click="activeAccordion = activeAccordion === {{ $id }} ? null : {{ $id }}"
                             class="flex justify-between items-center w-full p-6 text-left focus:outline-none">
                             <span
-                                class="text-lg font-bold text-gray-900 group-hover:text-green-700 transition-colors">{{ $faq['q'] }}</span>
+                                class="text-lg font-bold text-gray-900 group-hover:text-green-700 transition-colors">{{ $faq['question'] }}</span>
                             <span
                                 class="ml-6 flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 group-hover:bg-green-100 transition-colors">
                                 <svg class="w-4 h-4 text-gray-600 group-hover:text-green-600 transform transition-transform duration-300"
@@ -414,7 +392,7 @@ new #[Layout('layouts.main')] class extends Component {
                         </button>
                         <div x-show="activeAccordion === {{ $id }}" x-collapse
                             class="bg-gray-50 px-6 pb-6 text-gray-600 leading-relaxed border-t border-gray-100">
-                            {{ $faq['a'] }}
+                            {{ $faq['answer'] }}
                         </div>
                     </div>
                 @endforeach

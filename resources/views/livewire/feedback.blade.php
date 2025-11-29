@@ -28,9 +28,9 @@ new #[Layout('layouts.main')] class extends Component {
 
     public function mount()
     {
-        SEO::setTitle('Contactez AgroSpace - Assistance & Partenariats | Cameroun');
-        SEO::setDescription('Une question ? Un projet ? Notre équipe dédiée est à votre écoute. Contactez AgroSpace, la plateforme leader de l\'agrobusiness au Cameroun.');
-        SEO::setKeywords('contact agrospace, support client, aide agriculture, partenariat cameroun, douala, yaoundé, service client');
+        SEO::setTitle(__('contact.title'));
+        SEO::setDescription(__('contact.description'));
+        SEO::setKeywords(__('contact.keywords'));
         SEO::setCanonical(url()->current());
         SEO::addImages([asset('images/agrospace.png')]);
     }
@@ -100,8 +100,8 @@ new #[Layout('layouts.main')] class extends Component {
                     </svg>
                 </div>
                 <div>
-                    <p class="font-bold text-sm">Message envoyé !</p>
-                    <p class="text-green-100 text-xs">Nous vous recontactons rapidement</p>
+                    <p class="font-bold text-sm">{{ __('contact.success.title') }}</p>
+                    <p class="text-green-100 text-xs">{{ __('contact.success.message') }}</p>
                 </div>
             </div>
         </div>
@@ -118,8 +118,8 @@ new #[Layout('layouts.main')] class extends Component {
             {{-- EN-TÊTE DU FORMULAIRE --}}
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="text-xl font-bold text-gray-900">Contact Rapide</h3>
-                    <p class="text-sm text-gray-600">Remplissez ce formulaire rapide</p>
+                    <h3 class="text-xl font-bold text-gray-900">{{ __('contact.quick_contact') }}</h3>
+                    <p class="text-sm text-gray-600">{{ __('contact.fill_form') }}</p>
                 </div>
                 <button @click="$wire.toggleForm()"
                     class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
@@ -134,7 +134,7 @@ new #[Layout('layouts.main')] class extends Component {
             <form wire:submit="submit" class="space-y-4">
                 {{-- Nom --}}
                 <div class="space-y-2">
-                    <label class="text-sm font-semibold text-gray-700">Nom complet *</label>
+                    <label class="text-sm font-semibold text-gray-700">{{ __('contact.full_name') }}</label>
                     <input type="text" wire:model="name"
                         class="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-green-500 focus:ring-2 transition-all duration-200 outline-none text-sm placeholder-gray-400">
                     @error('name')
@@ -144,7 +144,7 @@ new #[Layout('layouts.main')] class extends Component {
 
                 {{-- Email --}}
                 <div class="space-y-2">
-                    <label class="text-sm font-semibold text-gray-700">Email *</label>
+                    <label class="text-sm font-semibold text-gray-700">{{ __('contact.email') }}</label>
                     <input type="email" wire:model="email"
                         class="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-green-500 focus:ring-2 transition-all duration-200 outline-none text-sm placeholder-gray-400">
                     @error('email')
@@ -154,15 +154,15 @@ new #[Layout('layouts.main')] class extends Component {
 
                 {{-- Sujet --}}
                 <div class="space-y-2">
-                    <label class="text-sm font-semibold text-gray-700">Sujet *</label>
+                    <label class="text-sm font-semibold text-gray-700">{{ __('contact.subject') }}</label>
                     <select wire:model="subject"
                         class="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-green-500 focus:ring-2 transition-all duration-200 outline-none text-sm appearance-none">
-                        <option value="">Choisir un sujet...</option>
-                        <option value="Support technique">🛠️ Support Technique</option>
-                        <option value="Question générale">ℹ️ Question Générale</option>
-                        <option value="Partenariat">🤝 Partenariat</option>
-                        <option value="Presse">📢 Presse</option>
-                        <option value="Autre">✨ Autre</option>
+                        <option value="">{{ __('contact.choose_subject') }}</option>
+                        <option value="{{ __('contact.subjects.technical_support') }}">{{ __('contact.subjects.technical_support') }}</option>
+                        <option value="{{ __('contact.subjects.general_question') }}">{{ __('contact.subjects.general_question') }}</option>
+                        <option value="{{ __('contact.subjects.partnership') }}">{{ __('contact.subjects.partnership') }}</option>
+                        <option value="{{ __('contact.subjects.press') }}">{{ __('contact.subjects.press') }}</option>
+                        <option value="{{ __('contact.subjects.other') }}">{{ __('contact.subjects.other') }}</option>
                     </select>
                     @error('subject')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -171,7 +171,7 @@ new #[Layout('layouts.main')] class extends Component {
 
                 {{-- Message --}}
                 <div class="space-y-2">
-                    <label class="text-sm font-semibold text-gray-700">Message *</label>
+                    <label class="text-sm font-semibold text-gray-700">{{ __('contact.message') }}</label>
                     <textarea wire:model="message" rows="3"
                         class="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-green-500 focus:ring-2 transition-all duration-200 outline-none text-sm placeholder-gray-400 resize-none"></textarea>
                     @error('message')
@@ -182,8 +182,8 @@ new #[Layout('layouts.main')] class extends Component {
                 {{-- Bouton d'envoi --}}
                 <button type="submit" wire:loading.attr="disabled"
                     class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                    <span wire:loading.remove>Envoyer le message</span>
-                    <span wire:loading>Envoi en cours...</span>
+                    <span wire:loading.remove>{{ __('contact.send_message') }}</span>
+                    <span wire:loading>{{ __('contact.sending') }}</span>
                     <svg wire:loading.remove class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -202,7 +202,7 @@ new #[Layout('layouts.main')] class extends Component {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                     </svg>
-                    Contact rapide
+                    {{ __('contact.tooltip') }}
                 </div>
                 <div class="absolute top-full right-4 -mt-1 border-4 border-transparent border-t-gray-900"></div>
             </div>
