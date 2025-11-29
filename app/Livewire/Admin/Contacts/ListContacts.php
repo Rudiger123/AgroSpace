@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin\Contacts;
 
 use App\Models\Contact;
-use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -19,7 +18,9 @@ class ListContacts extends Component
     public $search = '';
     public $statusFilter = 'all';
     public $perPage = 10;
-    public $openViewModal, $openReplyModal, $openDeleteModal;
+    public $openViewModal;
+    public $openReplyModal;
+    public $openDeleteModal;
     public $selectedResponse = null;
 
     protected $queryString = [
@@ -55,10 +56,10 @@ class ListContacts extends Component
     public function markAsOpened($contactId)
     {
         $contact = Contact::findOrFail($contactId);
-        
+
         if ($contact->status === 'new') {
             $contact->update(['status' => 'opened']);
-            
+
             $this->dispatch('contact-updated');
         }
     }
@@ -80,7 +81,7 @@ class ListContacts extends Component
     {
         try {
             $contact = Contact::findOrFail($contactId);
-            
+
             // Envoyer l'email de réponse
             Mail::send('emails.contact-reply', [
                 'contact' => $contact,
@@ -120,7 +121,7 @@ class ListContacts extends Component
             ->paginate($this->perPage);
 
         $newMessagesCount = Contact::newMessages()->count();
-        
+
         $stats = [
             'total' => Contact::count(),
             'new' => Contact::where('status', 'new')->count(),

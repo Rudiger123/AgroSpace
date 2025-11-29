@@ -2,7 +2,7 @@
 
 return [
     'cameroon' => 'Cameroon',
-    
+
     'seo' => [
         'title' => 'Producer Space - AgroSpace Cameroon | Value Your Agricultural Products',
         'description' => 'Join AgroSpace as an agricultural producer in Cameroon. Publish your offers, gain visibility, find new customers without intermediaries. 100% free registration.',

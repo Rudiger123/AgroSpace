@@ -19,9 +19,11 @@ return new class extends Migration
             $table->timestamp('replied_at')->nullable();
             $table->foreignId('replied_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
-            
+
+            // Index pour améliorer les performances
             $table->index('status');
             $table->index('created_at');
+            $table->index('email');
         });
     }
 

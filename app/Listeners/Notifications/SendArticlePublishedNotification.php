@@ -3,8 +3,6 @@
 namespace App\Listeners\Notifications;
 
 use App\Events\Notifications\ArticlePublished;
-use App\Models\NewsletterSubscriber;
-use App\Models\User;
 use App\Notifications\ArticlePublishedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -32,19 +30,19 @@ class SendArticlePublishedNotification implements ShouldQueue
     {
         // Get all active newsletter subscribers
         $subscribers = \App\Models\NewsletterSubscriber::whereNull('unsubscribe_token')->get();
-    
+
         // Get registered users who enabled blog notifications through their preferences
-        $users = \App\Models\User::whereHas('preferences', function($query) {
-                $query->where('notify_articles', true);
-            })
+        $users = \App\Models\User::whereHas('preferences', function ($query) {
+            $query->where('notify_articles', true);
+        })
             ->with('preferences') // Charger les préférences pour éviter les requêtes N+1
             ->get();
-    
+
         // Combine both collections
         $recipients = $subscribers->merge($users);
-    
+
         \Log::info("Envoi de notifications à " . $recipients->count() . " destinataires");
-    
+
         // Send notification to each recipient
         foreach ($recipients as $recipient) {
             try {

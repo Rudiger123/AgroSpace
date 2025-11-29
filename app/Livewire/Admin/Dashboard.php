@@ -154,7 +154,7 @@ class Dashboard extends Component
 
         return [
             'user_growth' => [
-                'dates' => $userGrowth->pluck('date')->map(fn($d) => \Carbon\Carbon::parse($d)->format('d/m')),
+                'dates' => $userGrowth->pluck('date')->map(fn ($d) => \Carbon\Carbon::parse($d)->format('d/m')),
                 'counts' => $userGrowth->pluck('count'),
             ],
             'offers_by_category' => [
@@ -166,7 +166,7 @@ class Dashboard extends Component
                 'counts' => $usersByRole->pluck('count'),
             ],
             'daily_activity' => [
-                'dates' => $dailyActivity->pluck('date')->map(fn($d) => \Carbon\Carbon::parse($d)->format('d/m')),
+                'dates' => $dailyActivity->pluck('date')->map(fn ($d) => \Carbon\Carbon::parse($d)->format('d/m')),
                 'counts' => $dailyActivity->pluck('count'),
             ],
         ];
@@ -220,7 +220,7 @@ class Dashboard extends Component
 
         return [
             'offer_views' => [
-                'dates' => $offerViews->pluck('date')->map(fn($d) => \Carbon\Carbon::parse($d)->format('d/m')),
+                'dates' => $offerViews->pluck('date')->map(fn ($d) => \Carbon\Carbon::parse($d)->format('d/m')),
                 'views' => $offerViews->pluck('views'),
             ],
             'rating_distribution' => [
@@ -233,7 +233,7 @@ class Dashboard extends Component
             ],
             'monthly_performance' => [
                 'months' => $monthlyPerformance->map(
-                    fn($item) =>
+                    fn ($item) =>
                     \Carbon\Carbon::create((int)$item->year, (int)$item->month)->format('M Y')
                 ),
                 'total' => $monthlyPerformance->pluck('total'),
@@ -271,7 +271,7 @@ class Dashboard extends Component
 
         return [
             'demand_trend' => [
-                'dates' => $demandTrend->pluck('date')->map(fn($d) => \Carbon\Carbon::parse($d)->format('d/m')),
+                'dates' => $demandTrend->pluck('date')->map(fn ($d) => \Carbon\Carbon::parse($d)->format('d/m')),
                 'counts' => $demandTrend->pluck('count'),
             ],
             'demand_status' => [
@@ -357,7 +357,9 @@ class Dashboard extends Component
     private function calculateConversionRate()
     {
         $total = $this->user->offers()->count();
-        if ($total === 0) return 0;
+        if ($total === 0) {
+            return 0;
+        }
 
         $sold = $this->user->offers()->where('statut', 'vendue')->count();
         return round(($sold / $total) * 100, 2);
@@ -481,36 +483,56 @@ class Dashboard extends Component
 
     private function getMainChartTitle()
     {
-        if ($this->user->isAdmin()) return 'Croissance des Utilisateurs';
-        if ($this->user->isProducer()) return 'Vues des Offres';
+        if ($this->user->isAdmin()) {
+            return 'Croissance des Utilisateurs';
+        }
+        if ($this->user->isProducer()) {
+            return 'Vues des Offres';
+        }
         return 'Évolution des Demandes';
     }
 
     private function getMainChartLabel()
     {
-        if ($this->user->isAdmin()) return 'Nouveaux utilisateurs';
-        if ($this->user->isProducer()) return 'Vues';
+        if ($this->user->isAdmin()) {
+            return 'Nouveaux utilisateurs';
+        }
+        if ($this->user->isProducer()) {
+            return 'Vues';
+        }
         return 'Demandes';
     }
 
     private function getMainChartKey()
     {
-        if ($this->user->isAdmin()) return 'user_growth';
-        if ($this->user->isProducer()) return 'offer_views';
+        if ($this->user->isAdmin()) {
+            return 'user_growth';
+        }
+        if ($this->user->isProducer()) {
+            return 'offer_views';
+        }
         return 'demand_trend';
     }
 
     private function getSecondaryChartTitle()
     {
-        if ($this->user->isAdmin()) return 'Utilisateurs par Rôle';
-        if ($this->user->isProducer()) return 'Distribution des Notes';
+        if ($this->user->isAdmin()) {
+            return 'Utilisateurs par Rôle';
+        }
+        if ($this->user->isProducer()) {
+            return 'Distribution des Notes';
+        }
         return 'Statut des Demandes';
     }
 
     private function getSecondaryChartKey()
     {
-        if ($this->user->isAdmin()) return 'users_by_role';
-        if ($this->user->isProducer()) return 'rating_distribution';
+        if ($this->user->isAdmin()) {
+            return 'users_by_role';
+        }
+        if ($this->user->isProducer()) {
+            return 'rating_distribution';
+        }
         return 'demand_status';
     }
 
@@ -531,8 +553,12 @@ class Dashboard extends Component
 
     private function getBarChartTitle()
     {
-        if ($this->user->isAdmin()) return 'Activité Mensuelle';
-        if ($this->user->isProducer()) return 'Performances Mensuelles';
+        if ($this->user->isAdmin()) {
+            return 'Activité Mensuelle';
+        }
+        if ($this->user->isProducer()) {
+            return 'Performances Mensuelles';
+        }
         return 'Réponses par Demande';
     }
 
@@ -568,8 +594,12 @@ class Dashboard extends Component
 
     private function getTopItemsTitle()
     {
-        if ($this->user->isAdmin()) return 'Top Producteurs';
-        if ($this->user->isProducer()) return 'Mes Meilleures Offres';
+        if ($this->user->isAdmin()) {
+            return 'Top Producteurs';
+        }
+        if ($this->user->isProducer()) {
+            return 'Mes Meilleures Offres';
+        }
         return 'Mes Demandes Actives';
     }
 

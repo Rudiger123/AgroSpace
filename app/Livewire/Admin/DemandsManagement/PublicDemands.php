@@ -229,11 +229,21 @@ class PublicDemands extends Component
     public function countActiveFilters()
     {
         $count = 0;
-        if (!empty($this->search)) $count++;
-        if (!empty($this->categoryFilter)) $count++;
-        if (!empty($this->regionFilter)) $count++;
-        if (!empty($this->urgencyFilter)) $count++;
-        if ($this->sortBy !== 'latest') $count++;
+        if (!empty($this->search)) {
+            $count++;
+        }
+        if (!empty($this->categoryFilter)) {
+            $count++;
+        }
+        if (!empty($this->regionFilter)) {
+            $count++;
+        }
+        if (!empty($this->urgencyFilter)) {
+            $count++;
+        }
+        if ($this->sortBy !== 'latest') {
+            $count++;
+        }
 
         return $count;
     }

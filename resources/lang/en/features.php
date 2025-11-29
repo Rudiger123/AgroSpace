@@ -8,7 +8,7 @@ return [
         'og_title' => 'AgroSpace Features - Cameroon Agricultural Platform',
         'og_description' => 'Discover all AgroSpace features: offer publication, demand management, instant messaging, interactive map, dashboard, blog.',
     ],
-    
+
     'geo' => [
         'cameroon' => 'Cameroon',
     ],

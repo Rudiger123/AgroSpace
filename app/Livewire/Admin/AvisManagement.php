@@ -5,7 +5,6 @@ namespace App\Livewire\Admin;
 use App\Models\Avis;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +42,7 @@ class AvisManagement extends Component
     {
         $userId = Auth::id();
         $baseQuery = Avis::query();
-        
+
         if (!$this->isAdmin) {
             $baseQuery->where('producer_id', $userId);
         }

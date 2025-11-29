@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class SendDemandCreatedNotification implements ShouldQueue
 {
     use InteractsWithQueue;
-    
+
     public $queue = 'notifications';
     public $connection = 'redis';
     public $tries = 1;
@@ -65,7 +65,7 @@ class SendDemandCreatedNotification implements ShouldQueue
                     try {
                         // Vérifier si la notification existe déjà (protection supplémentaire)
                         $notificationExists = $this->notificationAlreadyExists($admin, $event->demand->id);
-                        
+
                         if ($notificationExists) {
                             Log::warning('⚠️ Notification déjà envoyée', [
                                 'admin_id' => $admin->id,
@@ -80,12 +80,11 @@ class SendDemandCreatedNotification implements ShouldQueue
                         ));
 
                         $notificationsSent++;
-                        
+
                         Log::debug('✅ Notification envoyée', [
                             'admin_id' => $admin->id,
                             'demand_id' => $event->demand->id
                         ]);
-
                     } catch (\Exception $e) {
                         Log::error('❌ Erreur envoi notification à un admin', [
                             'admin_id' => $admin->id,
@@ -102,19 +101,17 @@ class SendDemandCreatedNotification implements ShouldQueue
                     'notifications_sent' => $notificationsSent,
                     'notifications_skipped' => $admins->count() - $notificationsSent
                 ]);
-
             } finally {
                 $lock->release();
                 Log::info('🔓 Verrou libéré', ['demand_id' => $event->demand->id]);
             }
-
         } catch (\Exception $e) {
             Log::error('💥 Erreur critique dans le listener', [
                 'demand_id' => $event->demand->id ?? 'unknown',
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            
+
             // Relancer l'exception pour marquer le job comme échoué
             throw $e;
         }

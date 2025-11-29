@@ -8,7 +8,7 @@ return [
         'og_title' => 'Fonctionnalités AgroSpace - Plateforme Agricole Cameroun',
         'og_description' => 'Découvrez toutes les fonctionnalités d\'AgroSpace : publication d\'offres, gestion des demandes, messagerie instantanée, carte interactive, tableau de bord, blog.',
     ],
-    
+
     'geo' => [
         'cameroon' => 'Cameroun',
     ],

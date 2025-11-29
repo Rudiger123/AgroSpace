@@ -1,4 +1,5 @@
 <?php
+
 return [
     'meta' => [
         'title' => 'AgroSpace - Agricultural Platform in Cameroon | Connect Producers & Consumers',

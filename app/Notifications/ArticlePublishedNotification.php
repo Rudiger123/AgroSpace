@@ -39,22 +39,22 @@ class ArticlePublishedNotification extends Notification implements ShouldQueue
         // For registered users, check their preferences
         if ($notifiable instanceof User) {
             $channels = ['database'];
-            
+
             // Load preferences if not loaded
             if (!$notifiable->relationLoaded('preferences')) {
                 $notifiable->load('preferences');
             }
-            
+
             $preferences = $notifiable->preferences ?? new \App\Models\UserPreference(\App\Models\UserPreference::getDefaults());
-            
+
             if ($preferences->email_notifications && $preferences->notify_articles) {
                 $channels[] = 'mail';
             }
-            
+
             if ($preferences->push_notifications && $preferences->notify_articles) {
                 $channels[] = 'broadcast';
             }
-            
+
             return $channels;
         }
 

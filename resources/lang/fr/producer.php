@@ -2,7 +2,7 @@
 
 return [
     'cameroon' => 'Cameroun',
-    
+
     'seo' => [
         'title' => 'Espace Producteurs - AgroSpace Cameroun | Valorisez vos Produits Agricoles',
         'description' => 'Rejoignez AgroSpace en tant que producteur agricole au Cameroun. Publiez vos offres, gagnez en visibilité, trouvez de nouveaux clients sans intermédiaire. Inscription 100% gratuite.',

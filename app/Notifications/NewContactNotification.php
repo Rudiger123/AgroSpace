@@ -23,7 +23,7 @@ class NewContactNotification extends Notification implements ShouldQueue
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('📩 Nouveau message de contact - ' . $this->contact->subject)
             ->greeting('Bonjour Admin,')
             ->line('Vous avez reçu un nouveau message de contact.')
