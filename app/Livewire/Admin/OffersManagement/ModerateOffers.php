@@ -324,7 +324,7 @@ class ModerateOffers extends Component
                         'producerName' => $offer->producer->name,
                         'offerTitle' => $offer->titre,
                         'validationNote' => 'Validation automatique en masse',
-                        'offerUrl' => route('offers.show', $offer->id)
+                        'offerUrl' => route('offers-list', ['search' => $offer->titre])
                     ])->render();
 
                     Mail::send([], [], function ($message) use ($offer, $emailContent) {

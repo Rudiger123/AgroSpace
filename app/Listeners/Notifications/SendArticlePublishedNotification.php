@@ -29,7 +29,7 @@ class SendArticlePublishedNotification implements ShouldQueue
     public function handle(ArticlePublished $event): void
     {
         // Get all active newsletter subscribers
-        $subscribers = \App\Models\NewsletterSubscriber::whereNull('unsubscribe_token')->get();
+        $subscribers = \App\Models\NewsletterSubscriber::whereNull('unsubscribed_at')->get();
 
         // Get registered users who enabled blog notifications through their preferences
         $users = \App\Models\User::whereHas('preferences', function ($query) {
@@ -43,15 +43,17 @@ class SendArticlePublishedNotification implements ShouldQueue
 
         \Log::info("Envoi de notifications à " . $recipients->count() . " destinataires");
 
-        // Send notification to each recipient
-        foreach ($recipients as $recipient) {
-            try {
-                $recipient->notify(new ArticlePublishedNotification($event->article, $event->author));
-                \Log::info("Notification envoyée à: " . ($recipient->email ?? $recipient->id));
-            } catch (\Exception $e) {
-                \Log::error("Erreur envoi notification: " . $e->getMessage());
-            }
-        }
+        Notification::send($recipients, new ArticlePublishedNotification($event->article, $event->author));
+        // // Send notification to each recipient
+        // foreach ($recipients as $recipient) {
+        //     try {
+        //         $recipient->notify(new ArticlePublishedNotification($event->article, $event->author));
+                
+        //         \Log::info("Notification envoyée à: " . ($recipient->email ?? $recipient->id));
+        //     } catch (\Exception $e) {
+        //         \Log::error("Erreur envoi notification: " . $e->getMessage());
+        //     }
+        // }
     }
 
     /**

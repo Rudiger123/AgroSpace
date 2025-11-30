@@ -463,7 +463,7 @@
 
         <!-- Pagination moderne -->
         @if ($posts->hasPages())
-            <div class="mt-12 flex justify-center">
+            <div class="mt-12 flex justify-center w-full">
                 <div class="bg-agro-white rounded-2xl shadow-lg border border-primary-100 px-8 py-4">
                     {{ $posts->links() }}
                 </div>

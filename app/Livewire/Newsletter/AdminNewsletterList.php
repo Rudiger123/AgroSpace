@@ -32,7 +32,7 @@ class AdminNewsletterList extends Component
         'subscriptions' => [],
         'unsubscriptions' => [],
     ];
-    
+
     public $statusBreakdown = [];
 
     protected $queryString = [

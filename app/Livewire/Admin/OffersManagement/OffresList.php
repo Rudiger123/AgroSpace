@@ -15,6 +15,7 @@ use Livewire\Attributes\Title;
 use Namu\WireChat\Facades\WireChat;
 use Namu\WireChat\Livewire\Widgets\WireChat as WidgetsWireChat;
 use Namu\WireChat\Livewire\Concerns\Widget;
+use Namu\WireChat\Models\Message;
 
 #[Layout("layouts.app")]
 #[Title("Offers Public")]
@@ -90,6 +91,22 @@ class OffresList extends Component
         // Rediriger vers la messagerie ou ouvrir modal de contact
         if ($model) {
             $createdConversation = Auth::user()->createConversationWith($model);
+
+
+            $response_title = $offre->titre;
+            $response_date = $offre->created_at->format('d/m/Y');
+    
+            $message = Message::create([
+                'reply_id' => null,
+                'conversation_id' => $createdConversation->id,
+                'sendable_type' => Auth::user()->getMorphClass(),
+                'sendable_id' => Auth::id(),
+                'type' => 'text',
+                'body' => "Bonjour, je vous contacte à propos de votre offre : **\"{$response_title}\"** du $response_date. Je suis intéréssé. Discutons des détails pour finaliser l'échange.",
+            ]);
+    
+            $createdConversation->updated_at = now();
+            $createdConversation->save();
 
             if ($createdConversation) {
                 // redirect to conversation

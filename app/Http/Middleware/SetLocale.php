@@ -79,17 +79,17 @@ class SetLocale
     protected function detectBrowserLocale(Request $request): ?string
     {
         $acceptLanguage = $request->header('Accept-Language');
-        
+
         if (!$acceptLanguage) {
             return null;
         }
 
         // Parser le header Accept-Language
         $languages = explode(',', $acceptLanguage);
-        
+
         foreach ($languages as $language) {
             $locale = substr($language, 0, 2);
-            
+
             if ($this->isLocaleSupported($locale)) {
                 return $locale;
             }

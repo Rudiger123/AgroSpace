@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Blog;
 
+use App\Events\Notifications\ArticlePublished;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
@@ -106,9 +107,19 @@ class BlogManager extends Component
     public function resetForm()
     {
         $this->reset([
-            'title', 'slug', 'excerpt', 'content', 'category_id', 'tags',
-            'featured_image', 'existing_image', 'published', 'published_at',
-            'meta_title', 'meta_description', 'selectedPost'
+            'title',
+            'slug',
+            'excerpt',
+            'content',
+            'category_id',
+            'tags',
+            'featured_image',
+            'existing_image',
+            'published',
+            'published_at',
+            'meta_title',
+            'meta_description',
+            'selectedPost'
         ]);
 
         $this->published_at = now()->format('Y-m-d\TH:i');
@@ -184,8 +195,8 @@ class BlogManager extends Component
             if ($this->showCreateModal) {
                 $postData['author_id'] = Auth::id();
                 $this->selectedPost = Post::create($postData);
-
                 $message = __('blog.success.saved');
+                event(new ArticlePublished($this->selectedPost, Auth::user()));
             }
             if ($this->showEditModal) {
                 $this->selectedPost->update($postData);
@@ -344,8 +355,8 @@ class BlogManager extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('title', 'like', '%' . $this->search . '%')
-                  ->orWhere('content', 'like', '%' . $this->search . '%')
-                  ->orWhere('excerpt', 'like', '%' . $this->search . '%');
+                    ->orWhere('content', 'like', '%' . $this->search . '%')
+                    ->orWhere('excerpt', 'like', '%' . $this->search . '%');
             });
         }
 
@@ -374,7 +385,7 @@ class BlogManager extends Component
         }
 
         return $query->orderBy($this->sortBy, $this->sortDirection)
-                    ->paginate(10);
+            ->paginate(10);
     }
 
     public function getCategoriesProperty()

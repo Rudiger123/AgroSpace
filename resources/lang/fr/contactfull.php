@@ -4,18 +4,18 @@ return [
     'title' => 'Contactez AgroSpace - Assistance & Partenariats | Cameroun',
     'description' => 'Une question ? Un projet ? Notre équipe dédiée est à votre écoute. Contactez AgroSpace, la plateforme leader de l\'agrobusiness au Cameroun.',
     'keywords' => 'contact agrospace, support client, aide agriculture, partenariat cameroun, douala, yaoundé, service client',
-    
+
     'header' => [
         'team' => '👋 Équipe Support & Partenariats',
         'title' => 'Contactez <span class="text-secondary">AgroSpace</span><br />pour vos projets agricoles',
         'subtitle' => 'Une question ? Un projet ? Notre équipe est à votre écoute pour vous accompagner.'
     ],
-    
+
     'channels' => [
         'title' => 'Nos Canaux de Communication',
         'description' => 'Choisissez le moyen qui vous convient le mieux. Notre équipe est réactive et passionnée.'
     ],
-    
+
     'contact_cards' => [
         'headquarters' => [
             'title' => 'Siège Social',
@@ -35,7 +35,7 @@ return [
             'regions' => 'Présent dans les 10 régions'
         ]
     ],
-    
+
     'form' => [
         'title' => 'Envoyez-nous un message',
         'description' => 'Remplissez le formulaire ci-dessous. Les champs marqués d\'un <span class="text-red-500">*</span> sont obligatoires.',
@@ -44,7 +44,7 @@ return [
             'message' => 'Merci de nous avoir contactés. Nous reviendrons vers vous très vite.'
         ]
     ],
-    
+
     'fields' => [
         'full_name' => 'Nom complet',
         'email' => 'Email',
@@ -53,7 +53,7 @@ return [
         'choose_subject' => 'Choisir un sujet...',
         'required' => '*'
     ],
-    
+
     'subjects' => [
         'technical_support' => '🛠️ Support Technique',
         'general_question' => 'ℹ️ Question Générale',
@@ -61,24 +61,24 @@ return [
         'press' => '📢 Presse & Médias',
         'other' => '✨ Autre demande'
     ],
-    
+
     'buttons' => [
         'send_message' => 'Envoyer le message',
         'sending' => 'Traitement en cours...'
     ],
-    
+
     'placeholders' => [
         'name' => 'Ex: Jean Dupont',
         'email' => 'Ex: jean@exemple.com',
         'message' => 'Dites-nous tout...'
     ],
-    
+
     'faq' => [
         'title' => 'Support',
         'heading' => 'Questions Fréquentes',
         'subtitle' => 'Avant de nous écrire, vérifiez si la réponse à votre question ne se trouve pas déjà ici.'
     ],
-    
+
     'questions' => [
         'registration' => [
             'question' => 'Comment s\'inscrire sur AgroSpace ?',
