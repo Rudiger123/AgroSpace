@@ -13,31 +13,27 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 #[Layout('layouts.app')]
-#[Title('Tableau de Bord Newsletter')]
+#[Title("Agrospace Newsletter Dashboard")]
 class AdminNewsletterList extends Component
 {
     use WithPagination;
 
     public $search = '';
-    public $filter = 'all'; // all, active, unsubscribed
+    public $filter = 'all';
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
     public $selectedSubscribers = [];
     public $selectAll = false;
-    public $dateRange = '30_days'; // 7_days, 30_days, 90_days, all_time
+    public $dateRange = '30_days';
 
-    // Data for dashboard
     public $stats = [];
     public $chartData = [
         'labels' => [],
         'subscriptions' => [],
         'unsubscriptions' => [],
     ];
-    public $statusBreakdown = [
-        'labels' => ['Abonnés', 'Désabonnés'],
-        'values' => [0, 0],
-    ];
 
+    public $statusBreakdown = [];
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -49,7 +45,10 @@ class AdminNewsletterList extends Component
 
     public function mount()
     {
-        // Chargement initial des statistiques
+        $this->statusBreakdown = [
+            'labels' => [__('newsletter.subscribed'), __('newsletter.unsubscribed')],
+            'values' => [0, 0],
+        ];
         $this->loadStats();
     }
 
@@ -59,10 +58,9 @@ class AdminNewsletterList extends Component
             '7_days' => Carbon::now()->subDays(7),
             '30_days' => Carbon::now()->subDays(30),
             '90_days' => Carbon::now()->subDays(90),
-            default => null, // All time
+            default => null,
         };
 
-        // 1. Overall Stats
         $totalSubscribers = NewsletterSubscriber::count();
         $activeSubscribers = NewsletterSubscriber::active()->count();
         $unsubscribed = $totalSubscribers - $activeSubscribers;
@@ -77,17 +75,14 @@ class AdminNewsletterList extends Component
         $this->statusBreakdown['values'] = [$activeSubscribers, $unsubscribed];
 
         if (!$startDate) {
-            // Pas de courbe si 'all_time' est sélectionné
             $this->chartData = ['labels' => [], 'subscriptions' => [], 'unsubscriptions' => []];
             $this->dispatch('stats-updated', ['statsData' => ['chartData' => $this->chartData, 'statusBreakdown' => $this->statusBreakdown]]);
             return;
         }
 
-        // 2. Trend Chart Data (Subscriptions/Unsubscriptions Over Time)
         $dateRangeCollection = collect(Carbon::parse($startDate)->daysUntil(Carbon::now()->addDay()));
         $allDates = $dateRangeCollection->map(fn ($date) => $date->format('Y-m-d'))->toArray();
 
-        // Fetch subscriptions trend
         $subscriptionsData = NewsletterSubscriber::select(
             DB::raw('DATE(created_at) as date'),
             DB::raw('COUNT(*) as count')
@@ -98,14 +93,13 @@ class AdminNewsletterList extends Component
             ->get()
             ->keyBy('date');
 
-        // Fetch unsubscriptions trend (Using 'updated_at' when status is 'unsubscribed')
         $unsubscriptionsData = NewsletterSubscriber::select(
             DB::raw('DATE(updated_at) as date'),
             DB::raw('COUNT(*) as count')
         )
             ->unsubscribed()
             ->where('updated_at', '>=', $startDate)
-            ->whereRaw('DATE(created_at) != DATE(updated_at)') // Exclure l'inscription/désinscription immédiate
+            ->whereRaw('DATE(created_at) != DATE(updated_at)')
             ->groupBy('date')
             ->orderBy('date')
             ->get()
@@ -113,6 +107,7 @@ class AdminNewsletterList extends Component
 
         $chartSubscriptions = [];
         $chartUnsubscriptions = [];
+
         foreach ($allDates as $date) {
             $chartSubscriptions[] = $subscriptionsData->get($date)['count'] ?? 0;
             $chartUnsubscriptions[] = $unsubscriptionsData->get($date)['count'] ?? 0;
@@ -124,14 +119,12 @@ class AdminNewsletterList extends Component
             'unsubscriptions' => $chartUnsubscriptions,
         ];
 
-        // Dispatch event to update Alpine.js charts
         $this->dispatch('stats-updated', ['statsData' => [
             'chartData' => $this->chartData,
             'statusBreakdown' => $this->statusBreakdown
         ]]);
     }
 
-    // Livewire hooks
     public function updatedDateRange()
     {
         $this->loadStats();
@@ -154,12 +147,11 @@ class AdminNewsletterList extends Component
 
     public function bulkSendEmail()
     {
-        // Dispatch event pour ouvrir modal d'envoi d'email en masse
         $this->dispatch('openEmailModal');
 
         $this->dispatch('toast', [
             'type' => 'info',
-            'message' => count(NewsletterSubscriber::active()->get()) . " abonnés actifs sont ciblés pour l'envoi."
+            'message' => count(NewsletterSubscriber::active()->get()) . " " . __("newsletter.active_subscribers_targeted")
         ]);
     }
 
@@ -175,11 +167,11 @@ class AdminNewsletterList extends Component
     public function confirmDelete($id)
     {
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmation de suppression',
-            'text' => 'Êtes-vous sûr de vouloir supprimer cet abonné ? Cette action est irréversible.',
+            'title' => __('newsletter.delete_confirm_title'),
+            'text' => __('newsletter.delete_confirm_text'),
             'icon' => 'warning',
-            'confirmText' => 'Oui, supprimer',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('newsletter.delete_confirm_button'),
+            'cancelText' => __('newsletter.cancel'),
             'method' => 'deleteSubscriber',
             'params' => [$id]
         ]);
@@ -191,7 +183,7 @@ class AdminNewsletterList extends Component
         NewsletterSubscriber::findOrFail($id)->delete();
 
         $this->dispatch('toast', [
-            'message' => 'L\'abonné a été supprimé.',
+            'message' => __('newsletter.subscriber_deleted'),
             'type' => 'success',
         ]);
     }
@@ -199,19 +191,24 @@ class AdminNewsletterList extends Component
     public function confirmBulkDelete()
     {
         if (empty($this->selectedSubscribers)) {
-            $this->dispatch('toast', ['message' => 'Veuillez sélectionner au moins un abonné.', 'type' => 'warning']);
+            $this->dispatch('toast', [
+                'message' => __('newsletter.select_at_least_one'),
+                'type' => 'warning'
+            ]);
             return;
         }
 
         $subscriberCount = count($this->selectedSubscribers);
-        $subscriberText = $subscriberCount > 1 ? "les {$subscriberCount} abonnés sélectionnés" : "cet abonné";
+        $subscriberText = $subscriberCount > 1
+            ? __("newsletter.selected_subscribers_count", ['count' => $subscriberCount])
+            : __("newsletter.selected_subscriber");
 
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmation de suppression multiple',
-            'text' => "Êtes-vous sûr de vouloir supprimer {$subscriberText} ? Cette action est irréversible.",
+            'title' => __('newsletter.bulk_delete_title'),
+            'text' => __("newsletter.bulk_delete_text", ['subscriber' => $subscriberText]),
             'icon' => 'warning',
-            'confirmText' => 'Oui, supprimer',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('newsletter.delete_confirm_button'),
+            'cancelText' => __('newsletter.cancel'),
             'method' => 'bulkDelete',
             'params' => []
         ]);
@@ -225,7 +222,7 @@ class AdminNewsletterList extends Component
         $this->selectAll = false;
 
         $this->dispatch('toast', [
-            'message' => "{$count} abonnés sélectionnés ont été supprimés.",
+            'message' => __("newsletter.bulk_deleted", ['count' => $count]),
             'type' => 'success',
         ]);
     }

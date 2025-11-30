@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Admin\OffersManagement;
 
+use App\Livewire\Admin\AvisManagement;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Offre;
 use App\Models\Avis;
 use App\Models\Category;
 use App\Models\Offer;
+use App\Notifications\ReviewReceived;
 use App\Services\AvisService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -15,6 +17,7 @@ use Livewire\Attributes\Title;
 use Namu\WireChat\Facades\WireChat;
 use Namu\WireChat\Livewire\Widgets\WireChat as WidgetsWireChat;
 use Namu\WireChat\Livewire\Concerns\Widget;
+use Namu\WireChat\Models\Message;
 
 #[Layout("layouts.app")]
 #[Title("Offers Public")]
@@ -91,6 +94,22 @@ class OffresList extends Component
         if ($model) {
             $createdConversation = Auth::user()->createConversationWith($model);
 
+
+            $response_title = $offre->titre;
+            $response_date = $offre->created_at->format('d/m/Y');
+    
+            $message = Message::create([
+                'reply_id' => null,
+                'conversation_id' => $createdConversation->id,
+                'sendable_type' => Auth::user()->getMorphClass(),
+                'sendable_id' => Auth::id(),
+                'type' => 'text',
+                'body' => "Bonjour, je vous contacte à propos de votre offre : **\"{$response_title}\"** du $response_date. Je suis intéréssé. Discutons des détails pour finaliser l'échange.",
+            ]);
+    
+            $createdConversation->updated_at = now();
+            $createdConversation->save();
+
             if ($createdConversation) {
                 // redirect to conversation
                 $this->handleComponentTermination(
@@ -161,8 +180,8 @@ class OffresList extends Component
                 'is_verified' => false, // Sera vérifié par admin si besoin
             ]);
 
-            event(new \App\Events\Notifications\NewReviewCreated($avis));
-
+            $this->notification($avis);
+            
             $this->showAvisModal = false;
             $this->reset(['avisproducerId', 'avisOffreId', 'avisNote', 'avisCommentaire']);
 
@@ -183,6 +202,16 @@ class OffresList extends Component
                 'type' => 'error',
                 'message' => 'Erreur : ' . $e->getMessage()
             ]);
+        }
+    }
+
+    public function notification(Avis $avis): void
+    {
+        // Le destinataire est le producteur lié à l'avis
+        $recipient = $avis->producer; // Assumant la relation 'producer'
+
+        if ($recipient) {
+            $recipient->notify(new ReviewReceived($avis));
         }
     }
 

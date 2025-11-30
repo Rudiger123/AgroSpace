@@ -40,28 +40,41 @@ class NewsletterSubscriptionForm extends Component
         'email.spoof' => "Cette adresse email semble suspecte.",
     ];
 
+    protected function getTranslatedMessages()
+    {
+        return [
+            'name.required' => __('newsletter.name_required'),
+            'name.regex' => __('newsletter.name_invalid'),
+            'email.required' => __('newsletter.email_required'),
+            'email.email' => __('newsletter.email_invalid'),
+            'email.unique' => __('newsletter.email_already_subscribed'),
+            'email.regex' => __('newsletter.email_format_invalid'),
+            'email.dns' => __('newsletter.email_domain_invalid'),
+            'email.spoof' => __('newsletter.email_suspicious'),
+        ];
+    }
+
     public function subscribe()
     {
         $this->validate();
 
-        // Assurez-vous que le modèle a bien une colonne 'status' par défaut à 'active'
         $newsletter = new NewsletterSubscriber();
         $newsletter->name = $this->name;
-        $newsletter->email =  $this->email;
+        $newsletter->email = $this->email;
         $newsletter->save();
 
         $this->reset(['name', 'email']);
 
-        // Utilisation de la session pour afficher le message après redirection ou refresh
+        $message = __('newsletter.subscription_success');
+
         session()->flash('toast', [
             'type' => 'success',
-            'message' => 'Merci de vous être abonné à notre newsletter. Bienvenue chez Agrospace !',
+            'message' => $message,
         ]);
 
-        // Dispatch pour le cas où le composant est utilisé sur la même page
         $this->dispatch('show-toast', [
             'type' => 'success',
-            'message' => 'Merci de vous être abonné à notre newsletter. Bienvenue chez Agrospace !',
+            'message' => $message,
         ]);
     }
 

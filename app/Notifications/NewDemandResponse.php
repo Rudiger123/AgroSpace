@@ -45,7 +45,7 @@ class NewDemandResponse extends Notification implements ShouldQueue
             ->line($responderName . ' a répondu à votre demande.')
             ->line($priceInfo)
             ->line('Message : "' . str($this->response->message)->limit(100) . '"')
-            ->action('Voir la proposition', route('demands-management', $this->response->demand_id))
+            ->action('Voir la proposition', route('demands-management', ["search" => $this->response->demand_id]))
             ->line('Connectez-vous pour accepter ou refuser cette offre.');
     }
 

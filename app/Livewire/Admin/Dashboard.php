@@ -616,12 +616,13 @@ class Dashboard extends Component
 
     private function getTopItemsData()
     {
+        $data = $this->getTopItems();
         if ($this->user->isAdmin()) {
-            return $this->topItems['top_producers'] ?? [];
+            return $data['top_producers'] ?? [];
         } elseif ($this->user->isProducer()) {
-            return $this->topItems['top_offers'] ?? [];
+            return $data['top_offers'] ?? [];
         } else {
-            return $this->topItems['active_demands'] ?? [];
+            return $data['active_demands'] ?? [];
         }
     }
 

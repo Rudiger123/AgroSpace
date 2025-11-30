@@ -11,11 +11,11 @@
         const subscriptionsOptions = {
             series: [
                 {
-                    name: 'Abonnements',
+                    name: '{{ __("newsletter.subscriptions") }}',
                     data: this.statsData.chartData.subscriptions,
                 },
                 {
-                    name: 'Désabonnements',
+                    name: '{{ __("newsletter.unsubscriptions") }}',
                     data: this.statsData.chartData.unsubscriptions,
                 },
             ],
@@ -37,7 +37,7 @@
                 labels: { rotate: -45, formatter: (val) => new Date(val).toLocaleDateString('fr-FR') },
                 tooltip: { enabled: false }
             },
-            yaxis: { title: { text: 'Nombre' } },
+            yaxis: { title: { text: '{{ __("newsletter.number") }}' } },
             tooltip: {
                 x: { format: 'dd MMM yyyy' },
                 y: { formatter: (val) => val.toFixed(0) }
@@ -71,7 +71,7 @@
                             show: true,
                             total: {
                                 show: true,
-                                label: 'Total Abonnés',
+                                label: '{{ __("newsletter.total_subscribers") }}',
                                 color: '#1f2937',
                                 formatter: (w) => w.globals.series.reduce((a, b) => a + b, 0).toLocaleString('fr-FR')
                             }
@@ -93,8 +93,8 @@
              xaxis: { categories: this.statsData.chartData.labels },
         });
         this.chartSubscriptions.updateSeries([
-            { name: 'Abonnements', data: this.statsData.chartData.subscriptions },
-            { name: 'Désabonnements', data: this.statsData.chartData.unsubscriptions },
+            { name: '{{ __("newsletter.subscriptions") }}', data: this.statsData.chartData.subscriptions },
+            { name: '{{ __("newsletter.unsubscriptions") }}', data: this.statsData.chartData.unsubscriptions },
         ]);
 
         // Update Status Chart
@@ -107,48 +107,48 @@
     
     <div class="flex items-center justify-between border-b pb-4 mb-4">
         <div>
-            <h1 class="text-3xl font-extrabold text-gray-900">📊 Tableau de Bord Newsletter Agrospace</h1>
-            <p class="text-sm text-gray-500 mt-1">Analyse et gestion de votre liste d'abonnés</p>
+            <h1 class="text-3xl font-extrabold text-gray-900">📊 {{ __("newsletter.dashboard_title") }}</h1>
+            <p class="text-sm text-gray-500 mt-1">{{ __("newsletter.dashboard_subtitle") }}</p>
         </div>
         <div class="flex space-x-3">
             <button wire:click="bulkSendEmail"
                 class="flex items-center space-x-2 px-6 py-3 bg-green-600 text-white rounded-xl shadow-lg hover:bg-green-700 transition duration-300 transform hover:scale-[1.02]">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                <span>Envoyer Newsletter</span>
+                <span>{{ __("newsletter.send_newsletter") }}</span>
             </button>
         </div>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-2xl p-5 shadow-xl border border-gray-100">
-            <p class="text-sm font-medium text-gray-500">Total Abonnés</p>
+            <p class="text-sm font-medium text-gray-500">{{ __("newsletter.total_subscribers") }}</p>
             <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ $stats['total'] ?? 0 }}</p>
             <div class="text-xs text-gray-400 font-semibold mt-1 flex items-center">
-                Historique cumulé
+                {{ __("newsletter.total_subscribers_hint") }}
             </div>
         </div>
 
         <div class="bg-white rounded-2xl p-5 shadow-xl border border-gray-100">
-            <p class="text-sm font-medium text-gray-500">Abonnés Actifs</p>
+            <p class="text-sm font-medium text-gray-500">{{ __("newsletter.active_subscribers") }}</p>
             <p class="text-4xl font-extrabold text-green-600 mt-2">{{ $stats['active'] ?? 0 }}</p>
             <div class="text-xs text-green-500 font-semibold mt-1 flex items-center">
-                {{ $stats['active_percentage'] ?? 0 }}% de votre liste
+                {{ $stats['active_percentage'] ?? 0 }}% {{ __("newsletter.of_list") }}
             </div>
         </div>
 
         <div class="bg-white rounded-2xl p-5 shadow-xl border border-gray-100">
-            <p class="text-sm font-medium text-gray-500">Désabonnés</p>
+            <p class="text-sm font-medium text-gray-500">{{ __("newsletter.unsubscribed") }}</p>
             <p class="text-4xl font-extrabold text-red-600 mt-2">{{ $stats['unsubscribed'] ?? 0 }}</p>
             <div class="text-xs text-gray-400 font-semibold mt-1 flex items-center">
-                Ciblage exclu
+                {{ __("newsletter.excluded") }}
             </div>
         </div>
 
         <div class="bg-white rounded-2xl p-5 shadow-xl border border-gray-100">
-            <p class="text-sm font-medium text-gray-500">Taux d'Activité</p>
+            <p class="text-sm font-medium text-gray-500">{{ __("newsletter.activity_rate") }}</p>
             <p class="text-4xl font-extrabold text-blue-600 mt-2">{{ $stats['active_percentage'] ?? 0 }}%</p>
             <div class="text-xs text-gray-400 font-semibold mt-1 flex items-center">
-                (Abonnés Actifs / Total)
+                ({{ __("newsletter.active_over_total") }})
             </div>
         </div>
     </div>
@@ -157,43 +157,43 @@
         
         <div class="lg:col-span-2 bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-800">📈 Tendance d'Abonnement</h2>
+                <h2 class="text-xl font-bold text-gray-800">📈 {{ __("newsletter.subscription_trend") }}</h2>
                 <select wire:model.live="dateRange" class="px-3 py-1 text-sm border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
-                    <option value="7_days">7 derniers jours</option>
-                    <option value="30_days">30 derniers jours</option>
-                    <option value="90_days">90 derniers jours</option>
-                    <option value="all_time">Depuis le début (sans courbe)</option>
+                    <option value="7_days">{{ __("newsletter.last_7_days") }}</option>
+                    <option value="30_days">{{ __("newsletter.last_30_days") }}</option>
+                    <option value="90_days">{{ __("newsletter.last_90_days") }}</option>
+                    <option value="all_time">{{ __("newsletter.all_time") }}</option>
                 </select>
             </div>
             <div wire:ignore id="subscriptionsChart" @class(['min-h-[350px]', $dateRange == 'all_time' ? 'hidden' : ''])></div>
             <div @class(['p-10 text-center text-gray-500 italic', $dateRange == 'all_time' ? '' : 'hidden'])>
-                La tendance n'est pas disponible pour 'Depuis le début'. Veuillez choisir une plage de jours.
+                {{ __("newsletter.trend_unavailable") }}
             </div>
         </div>
 
         <div class="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">🟢 Répartition des Statuts</h2>
+            <h2 class="text-xl font-bold text-gray-800 mb-4">🟢 {{ __("newsletter.status_breakdown") }}</h2>
             <div wire:ignore id="statusChart"></div>
         </div>
     </div>
 
     <div class="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
         <div class="p-6 border-b border-gray-200 bg-gray-50">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">Liste Détaillée des Abonnés</h2>
+            <h2 class="text-xl font-bold text-gray-800 mb-4">{{ __("newsletter.subscriber_list") }}</h2>
             <div class="flex flex-col lg:flex-row gap-4">
                 <div class="flex-1">
                     <input
                         type="text"
                         wire:model.live.debounce.300ms="search"
-                        placeholder="🔍 Rechercher par nom ou email..."
+                        placeholder="{{ __("newsletter.search_placeholder") }}"
                         class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 shadow-sm transition duration-150"
                     >
                 </div>
                 <div class="flex gap-4">
                     <select wire:model.live="filter" class="px-4 py-2 border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 shadow-sm bg-white">
-                        <option value="all">Tous les Statuts</option>
-                        <option value="active">Abonnés Actifs</option>
-                        <option value="unsubscribed">Désabonnés</option>
+                        <option value="all">{{ __("newsletter.all_statuses") }}</option>
+                        <option value="active">{{ __("newsletter.active_subscribers") }}</option>
+                        <option value="unsubscribed">{{ __("newsletter.unsubscribed") }}</option>
                     </select>
 
                     <button wire:click='confirmBulkDelete'
@@ -204,7 +204,7 @@
                         ])
                         {{ count($selectedSubscribers) === 0 ? 'disabled' : '' }}
                     >
-                        🗑️ Supprimer ({{ count($selectedSubscribers) }})
+                        🗑️ {{ __("newsletter.delete") }} ({{ count($selectedSubscribers) }})
                     </button>
                 </div>
             </div>
@@ -218,19 +218,19 @@
                             <input type="checkbox" wire:model.live="selectAll" class="rounded text-green-600 border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50">
                         </th>
                         <th wire:click="sortBy('name')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-green-600 transition duration-150">
-                            Nom {!! $sortField == 'name' ? ($sortDirection == 'asc' ? ' ▲' : ' ▼') : '' !!}
+                            {{ __("newsletter.name") }} {!! $sortField == 'name' ? ($sortDirection == 'asc' ? ' ▲' : ' ▼') : '' !!}
                         </th>
                         <th wire:click="sortBy('email')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-green-600 transition duration-150">
-                            Email {!! $sortField == 'email' ? ($sortDirection == 'asc' ? ' ▲' : ' ▼') : '' !!}
+                            {{ __("newsletter.email") }} {!! $sortField == 'email' ? ($sortDirection == 'asc' ? ' ▲' : ' ▼') : '' !!}
                         </th>
                         <th wire:click="sortBy('created_at')" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-green-600 transition duration-150">
-                            Inscrit le {!! $sortField == 'created_at' ? ($sortDirection == 'asc' ? ' ▲' : ' ▼') : '' !!}
+                            {{ __("newsletter.subscribed_on") }} {!! $sortField == 'created_at' ? ($sortDirection == 'asc' ? ' ▲' : ' ▼') : '' !!}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Statut
+                            {{ __("newsletter.status") }}
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
+                            {{ __("newsletter.actions") }}
                         </th>
                     </tr>
                 </thead>
@@ -252,9 +252,9 @@
                                     @endempty"
                                 >
                                     @empty($subscriber->unsubscribed_at)
-                                    Abonné
+                                    {{ __("newsletter.subscribed") }}
                                         @else
-                                        Désabonné
+                                        {{ __("newsletter.unsubscribed") }}
                                     @endempty
                                 </span>
                             </td>
@@ -262,16 +262,16 @@
                                 <button
                                     wire:click="confirmDelete({{ $subscriber->id }})"
                                     class="text-red-600 hover:text-red-900 hover:underline transition duration-150"
-                                    title="Supprimer définitivement"
+                                    title="{{ __("newsletter.delete_confirm") }}"
                                 >
-                                    🗑️ Supprimer
+                                    🗑️ {{ __("newsletter.delete") }}
                                 </button>
                             </td>
                         </tr>
                     @empty
                         <tr>
                             <td colspan="6" class="px-6 py-8 text-center text-gray-500 italic bg-gray-50">
-                                Aucun abonné ne correspond à votre recherche ou filtre.
+                                {{ __("newsletter.no_results") }}
                             </td>
                         </tr>
                     @endforelse
@@ -299,7 +299,7 @@
                         confirmButtonColor: '#16a34a', // primary: 600
                         cancelButtonColor: '#6b7280', // gray: 500
                         confirmButtonText: event.confirmText,
-                        cancelButtonText: event.cancelText || 'Annuler'
+                        cancelButtonText: event.cancelText || '{{ __("newsletter.cancel") }}'
                     }).then((result) => {
                         if (result.isConfirmed) {
                             Livewire.dispatch(event.method, { params: event.params });

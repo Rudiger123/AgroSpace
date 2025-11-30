@@ -5,7 +5,11 @@ namespace App\Livewire\Admin\DemandsManagement;
 use App\Events\Notifications\DemandCreated;
 use App\Models\Demand;
 use App\Models\Category;
+use App\Models\User;
+use App\Notifications\DemandCreatedNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -156,7 +160,8 @@ class MyDemands extends Component
 
                 $message = 'Demande créée avec succès';
                 // Déclencher l'événement de notification
-                event(new DemandCreated($demand, Auth::user()));
+                // event(new DemandCreated($demand, Auth::user()));
+                $this->notification($demand, Auth::user());
             }
 
             $this->showModal = false;
@@ -173,6 +178,68 @@ class MyDemands extends Component
             ]);
         }
     }
+
+    public function notification(Demand $demand, User $user): void
+    {
+        try {
+            Log::info('🎯 Début du traitement des notifications', [
+                'demand_id' => $demand->id,
+                'user_id' => $user->id
+            ]);
+
+            // Récupérer tous les administrateurs
+            $admins = User::where('role_id', 1) // ID 1 = Administrateur
+                ->where('status', 'active') // Seulement les admins actifs
+                ->get();
+
+            Log::info('👥 Administrateurs trouvés', [
+                'count' => $admins->count(),
+                'demand_id' => $demand->id
+            ]);
+
+            $notificationsSent = 0;
+
+            // Envoyer la notification à chaque administrateur
+            foreach ($admins as $admin) {
+                try {
+                    $admin->notify(new DemandCreatedNotification(
+                        $demand,
+                        $user
+                    ));
+
+                    $notificationsSent++;
+
+                    Log::debug('✅ Notification envoyée', [
+                        'admin_id' => $admin->id,
+                        'demand_id' => $demand->id
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('❌ Erreur envoi notification à un admin', [
+                        'admin_id' => $admin->id,
+                        'demand_id' => $demand->id,
+                        'error' => $e->getMessage()
+                    ]);
+                    // Continuer avec les autres admins même si un échoue
+                }
+            }
+
+            Log::info('📊 Résumé des notifications', [
+                'demand_id' => $demand->id,
+                'admins_total' => $admins->count(),
+                'notifications_sent' => $notificationsSent,
+                'notifications_skipped' => $admins->count() - $notificationsSent
+            ]);
+        } catch (\Exception $e) {
+            Log::error('💥 Erreur critique dans le listener', [
+                'demand_id' => $demand->id ?? 'unknown',
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            throw $e;
+        }
+    }
+
 
     public function confirmDelete($id)
     {

@@ -6,6 +6,8 @@ use App\Events\Notifications\NewOfferCreated;
 use App\Models\Category;
 use App\Models\Offer;
 use App\Models\OfferPhoto;
+use App\Models\User;
+use App\Notifications\NewOfferNotification;
 use App\Services\OfferService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -185,7 +187,7 @@ class ManageOffers extends Component
             $offer = $service->createOffer($data, $this->photos);
 
             // Déclencher l'événement de notification
-            event(new NewOfferCreated($offer, Auth::user()));
+            $this->notification($offer);
 
             $this->showCreateModal = false;
             $this->resetForm();
@@ -201,6 +203,16 @@ class ManageOffers extends Component
                 'type' => 'error',
                 'message' => 'Erreur : ' . $e->getMessage()
             ]);
+        }
+    }
+
+    public function notification(Offer $offer): void
+    {
+        // Get recipients based on business logic
+        $recipients = User::where('role_id', 1)->get();
+        // Send notification to each recipient
+        foreach ($recipients as $recipient) {
+            $recipient->notify(new NewOfferNotification($offer, Auth::user()));
         }
     }
 
@@ -232,6 +244,8 @@ class ManageOffers extends Component
 
             $this->showEditModal = false;
             $this->resetForm();
+
+            $this->notification($offer);
 
             $this->dispatch('toast', [
                 'type' => 'success',

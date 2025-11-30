@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
-// Note: Assurez-vous d'avoir les modèles View, Reaction et Share configurés.
-// Pour cet exemple, nous supposons qu'ils existent et gèrent le polymorphisme.
-
 #[Layout('layouts.app')]
 #[Title('Blog Analytics')]
 class BlogAnalytics extends Component
@@ -25,13 +22,13 @@ class BlogAnalytics extends Component
     public $dateTo;
     public $selectedPost = null;
     public $selectedAuthor = null;
-    public $statusFilter = 'all'; // Statut de commentaire
+    public $statusFilter = 'all';
 
     public $stats = [];
     public $chartData = [
-        'labels' => [], // Dates for X-axis
-        'views' => [],  // Views data
-        'comments' => [] // Comments data
+        'labels' => [],
+        'views' => [],
+        'comments' => []
     ];
     public $topPosts = [];
     public $reactionBreakdown = [
@@ -47,7 +44,6 @@ class BlogAnalytics extends Component
 
     public function mount()
     {
-        // Initialisation par défaut sur les 30 derniers jours
         if (empty($this->dateFrom)) {
             $this->dateFrom = Carbon::now()->subDays(30)->format('Y-m-d');
         }
@@ -61,14 +57,12 @@ class BlogAnalytics extends Component
     {
         return view('livewire.blog.blog-analytics', [
             'posts' => Post::select('id', 'title')->get(),
-            // Assurez-vous que le modèle User existe et a des posts
             'authors' => \App\Models\User::whereHas('posts')->select('id', 'name')->get()
         ]);
     }
 
     public function loadStats()
     {
-        // Clé de cache dynamique incluant tous les filtres
         $cacheKey = "blog_analytics_" . implode('_', [
             $this->dateFrom,
             $this->dateTo,
@@ -81,20 +75,17 @@ class BlogAnalytics extends Component
             $start = Carbon::parse($this->dateFrom)->startOfDay();
             $end = Carbon::parse($this->dateTo)->endOfDay();
 
-            // 1. Base Query for Posts (to filter Views, Reactions, Shares)
             $postQuery = Post::query()
                 ->when($this->selectedPost, fn ($q) => $q->where('id', $this->selectedPost))
                 ->when($this->selectedAuthor, fn ($q) => $q->where('author_id', $this->selectedAuthor));
 
             $postIds = $postQuery->pluck('id');
 
-            // 2. Comments Base Query (Filtered by date, post/author, and status)
             $commentsQuery = Comment::query()
                 ->whereBetween('created_at', [$start, $end])
                 ->whereIn('post_id', $postIds)
                 ->when($this->statusFilter !== 'all', fn ($q) => $q->where('status', $this->statusFilter));
 
-            // 3. Main Stats
             $stats = [
                 'total_posts' => $postQuery->count(),
                 'total_comments' => $commentsQuery->count(),
@@ -111,11 +102,9 @@ class BlogAnalytics extends Component
                     ->count(),
             ];
 
-            // 4. Chart Data (Views/Comments Over Time)
             $dateRange = collect(Carbon::parse($this->dateFrom)->daysUntil(Carbon::parse($this->dateTo)->addDay()));
             $allDates = $dateRange->map(fn ($date) => $date->format('Y-m-d'))->toArray();
 
-            // Fetch views trend
             $viewsData = View::select(
                 DB::raw('DATE(created_at) as date'),
                 DB::raw('COUNT(*) as count')
@@ -128,7 +117,6 @@ class BlogAnalytics extends Component
                 ->get()
                 ->keyBy('date');
 
-            // Fetch comments trend
             $commentsData = Comment::select(
                 DB::raw('DATE(created_at) as date'),
                 DB::raw('COUNT(*) as count')
@@ -148,14 +136,12 @@ class BlogAnalytics extends Component
                 $chartComments[] = $commentsData->get($date)['count'] ?? 0;
             }
 
-
             $chartData = [
                 'labels' => $allDates,
                 'views' => $chartViews,
                 'comments' => $chartComments,
             ];
 
-            // 5. Top Posts by Engagement (Comments and Views)
             $topPosts = Post::select('id', 'title')
                 ->withCount([
                     'comments' => fn ($q) => $q->whereBetween('created_at', [$start, $end]),
@@ -166,8 +152,6 @@ class BlogAnalytics extends Component
                 ->take(5)
                 ->get();
 
-
-            // 6. Reaction Breakdown (Donut Chart Data)
             $reactionRaw = Reaction::select('type', DB::raw('COUNT(*) as count'))
                 ->whereIn('reactable_id', $postIds)
                 ->where('reactable_type', Post::class)
@@ -180,7 +164,6 @@ class BlogAnalytics extends Component
                 'values' => $reactionRaw->pluck('count')->toArray(),
             ];
 
-            // 7. Shares by Platform
             $sharesPlatformRaw = Share::select('platform', DB::raw('COUNT(*) as count'))
                 ->whereBetween('created_at', [$start, $end])
                 ->groupBy('platform')
@@ -190,7 +173,6 @@ class BlogAnalytics extends Component
                 'labels' => $sharesPlatformRaw->pluck('platform')->toArray(),
                 'values' => $sharesPlatformRaw->pluck('count')->toArray(),
             ];
-
 
             return compact('stats', 'chartData', 'topPosts', 'reactionBreakdown', 'sharesPlatform');
         });
@@ -204,7 +186,6 @@ class BlogAnalytics extends Component
 
     public function refreshStats()
     {
-        // Oublie la clé de cache pour forcer le recalcul
         Cache::forget("blog_analytics_" . implode('_', [
             $this->dateFrom,
             $this->dateTo,
@@ -213,7 +194,6 @@ class BlogAnalytics extends Component
             $this->statusFilter,
         ]));
         $this->loadStats();
-        // Le dispatch va recharger les scripts pour mettre à jour les graphiques
         $this->dispatch('stats-updated', ['statsData' => [
             'chartData' => $this->chartData,
             'reactionBreakdown' => $this->reactionBreakdown,
@@ -221,7 +201,6 @@ class BlogAnalytics extends Component
         ]]);
     }
 
-    // Les méthodes updated* déclenchent la mise à jour des stats et des graphiques
     public function updatedDateFrom()
     {
         $this->loadStats();
@@ -259,9 +238,8 @@ class BlogAnalytics extends Component
 
     public function exportCsv()
     {
-        // Logique d'exportation simple (peut être améliorée pour inclure plus de données)
-        $csv = "Statistiques du blog du {$this->dateFrom} au {$this->dateTo}\n";
-        $csv .= "Articles,Commentaires,Commentaires en attente,Vues,J'aime,Partages\n";
+        $csv = __('blog.analytics.export_csv') . " {$this->dateFrom} " . __('blog.filters.date_to') . " {$this->dateTo}\n";
+        $csv .= __('blog.metrics.total_posts') . "," . __('blog.metrics.total_comments') . "," . __('blog.metrics.pending_comments') . "," . __('blog.metrics.total_views') . "," . __('blog.metrics.total_likes') . "," . __('blog.metrics.total_shares') . "\n";
         $csv .= "{$this->stats['total_posts']},{$this->stats['total_comments']},{$this->stats['pending_comments']},{$this->stats['total_views']},{$this->stats['total_reactions']},{$this->stats['total_shares']}\n";
 
         return response()->stream(

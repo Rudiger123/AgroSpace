@@ -16,9 +16,9 @@
                                 </svg>
                             </svg>
                         </span>
-                        <span> Gestion du Blog</span>
+                        <span> {{ __('blog.manager.title') }}</span>
                     </h1>
-                    <p class="text-gray-500 mt-1"> Créez, éditez et gérez vos articles avec style</p>
+                    <p class="text-gray-500 mt-1"> {{ __('blog.manager.description') }}</p>
                 </div>
 
 
@@ -30,7 +30,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
                             </path>
                         </svg>
-                        <span>Nouvel Article</span>
+                        <span>{{ __('blog.manager.actions.new_article') }}</span>
                     </button>
                     <!-- comments manager -->
                     <a href="{{ route('admin.blog.comments.index') }}" wire:navigate
@@ -46,7 +46,7 @@
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
-                        <span class="hidden xs:inline">Analytics</span>
+                        <span class="hidden xs:inline">{{ __('blog.manager.actions.analytics') }}</span>
                     </a>
 
                 </div>
@@ -59,7 +59,7 @@
                 class="bg-gradient-to-br from-agro-green to-primary-600 rounded-xl p-6 text-agro-white shadow-xl transform hover:scale-105 transition-all duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-agro-beige text-sm font-inter">Total Articles</p>
+                        <p class="text-agro-beige text-sm font-inter">{{ __('blog.manager.stats.total_posts') }}</p>
                         <p class="text-3xl font-bold font-poppins">{{ $posts->total() }}</p>
                     </div>
                     <svg class="w-8 h-8 opacity-50" fill="currentColor" viewBox="0 0 20 20">
@@ -75,7 +75,7 @@
                 class="bg-primary-100 rounded-xl p-6 text-agro-green shadow-xl transform hover:scale-105 transition-all duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-green-700 text-sm font-inter">Publiés</p>
+                        <p class="text-green-700 text-sm font-inter">{{ __('blog.manager.stats.published') }}</p>
                         <p class="text-3xl font-bold font-poppins">
                             {{ \App\Models\Post::where('published', true)->count() }}</p>
                     </div>
@@ -90,7 +90,7 @@
                 class="bg-gradient-to-br from-earth-200 to-earth-600 rounded-xl p-6 text-agro-white shadow-xl transform hover:scale-105 transition-all duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-primary-100 text-sm font-inter">Brouillons</p>
+                        <p class="text-primary-100 text-sm font-inter">{{ __('blog.manager.stats.drafts') }}</p>
                         <p class="text-3xl font-bold font-poppins">
                             {{ \App\Models\Post::where('published', false)->count() }}</p>
                     </div>
@@ -104,7 +104,7 @@
                 class="bg-gradient-to-br from-secondary to-primary-600 rounded-xl p-6 text-agro-white shadow-xl transform hover:scale-105 transition-all duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-primary-100 text-sm font-inter">Vues totales</p>
+                        <p class="text-primary-100 text-sm font-inter">{{ __('blog.manager.stats.total_views') }}</p>
                         <p class="text-3xl font-bold font-poppins">
                             {{ number_format(\App\Models\Post::sum('views_count')) }}</p>
                     </div>
@@ -124,10 +124,10 @@
                 <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                     <!-- Recherche -->
                     <div class="lg:col-span-2">
-                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">Rechercher</label>
+                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">{{ __('blog.manager.filters.search.label') }}</label>
                         <div class="relative">
                             <input type="text" wire:model.live.debounce.500ms="search"
-                                placeholder="Titre, contenu, auteur..."
+                                placeholder="{{ __('blog.manager.filters.search.placeholder') }}"
                                 class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
                             <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary-400"
                                 fill="currentColor" viewBox="0 0 20 20">
@@ -150,10 +150,10 @@
 
                     <!-- Catégorie -->
                     <div>
-                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">Catégorie</label>
+                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">{{ __('blog.manager.filters.category.label') }}</label>
                         <select wire:model.live="filterCategory"
                             class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                            <option value="">Toutes les catégories</option>
+                            <option value="">{{ __('blog.manager.filters.category.all') }}</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->icon }} {{ $category->name }}
                                 </option>
@@ -163,23 +163,23 @@
 
                     <!-- Statut -->
                     <div>
-                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">Statut</label>
+                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">{{ __('blog.manager.filters.status.label') }}</label>
                         <select wire:model.live="filterStatus"
                             class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                            <option value="">Tous les statuts</option>
-                            <option value="published">Publiés</option>
-                            <option value="draft">Brouillons</option>
-                            <option value="scheduled">Programmés</option>
+                            <option value="">{{ __('blog.manager.filters.status.all') }}</option>
+                            <option value="published">{{ __('blog.manager.filters.status.published') }}</option>
+                            <option value="draft">{{ __('blog.manager.filters.status.draft') }}</option>
+                            <option value="scheduled">{{ __('blog.manager.filters.status.scheduled') }}</option>
                         </select>
                     </div>
 
                     <!-- Auteur -->
                     @if (Auth::user()->isAdmin() && $authors->count() > 0)
                         <div>
-                            <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">Auteur</label>
+                            <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">{{ __('blog.manager.filters.author.label') }}</label>
                             <select wire:model.live="filterAuthor"
                                 class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                                <option value="">Tous les auteurs</option>
+                                <option value="">{{ __('blog.manager.filters.author.all') }}</option>
                                 @foreach ($authors as $author)
                                     <option value="{{ $author->id }}">{{ $author->name }}</option>
                                 @endforeach
@@ -192,15 +192,15 @@
                 <div class="mt-6 flex flex-wrap gap-3">
                     <button wire:click="$set('filterStatus', '')"
                         class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 {{ empty($filterStatus) ? 'bg-agro-green text-agro-white shadow-lg' : 'bg-primary-100 text-agro-gray hover:bg-primary-200' }}">
-                        Tous les articles
+                        {{ __('blog.manager.filters.quick_filters.all_posts') }}
                     </button>
                     <button wire:click="$set('filterStatus', 'published')"
                         class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 {{ $filterStatus === 'published' ? 'bg-agro-green text-agro-white shadow-lg' : 'bg-primary-100 text-agro-gray hover:bg-primary-200' }}">
-                        Publiés
+                        {{ __('blog.manager.filters.quick_filters.published') }}
                     </button>
                     <button wire:click="$set('filterStatus', 'draft')"
                         class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 {{ $filterStatus === 'draft' ? 'bg-agro-green text-agro-white shadow-lg' : 'bg-primary-100 text-agro-gray hover:bg-primary-200' }}">
-                        Brouillons
+                        {{ __('blog.manager.filters.quick_filters.drafts') }}
                     </button>
                     <button wire:click="$set('sortDirection', $sortDirection === 'asc' ? 'desc' : 'asc')"
                         class="px-4 py-2 rounded-full text-sm font-medium bg-primary-100 text-agro-gray hover:bg-primary-200 transition-all duration-300">
@@ -212,7 +212,7 @@
                                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                 clip-rule="evenodd" />
                         </svg>
-                        {{ $sortDirection === 'asc' ? 'Plus ancien' : 'Plus récent' }}
+                        {{ $sortDirection === 'asc' ? __('blog.manager.filters.quick_filters.oldest') : __('blog.manager.filters.quick_filters.newest') }}
                     </button>
                 </div>
             </div>
@@ -253,7 +253,8 @@
                             class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="flex gap-2">
                                 <button wire:click="preview({{ $post->id }})"
-                                    class="w-10 h-10 bg-agro-white bg-opacity-90 hover:bg-agro-white text-agro-green rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                                    class="w-10 h-10 bg-agro-white bg-opacity-90 hover:bg-agro-white text-agro-green rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                                    title="{{ __('blog.manager.articles.actions.preview') }}">
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                                         <path fill-rule="evenodd"
@@ -263,7 +264,8 @@
                                 </button>
                                 @can('update', $post)
                                     <button wire:click="openEditModal({{ $post->id }})"
-                                        class="w-10 h-10 bg-agro-white bg-opacity-90 hover:bg-agro-white text-agro-green rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                                        class="w-10 h-10 bg-agro-white bg-opacity-90 hover:bg-agro-white text-agro-green rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                                        title="{{ __('blog.manager.articles.actions.edit') }}">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                             <path
                                                 d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
@@ -281,7 +283,7 @@
                                 <svg class="w-2 h-2 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                     <circle cx="10" cy="10" r="10" />
                                 </svg>
-                                {{ $post->published ? 'Publié' : 'Brouillon' }}
+                                {{ $post->published ? __('blog.manager.articles.status.published') : __('blog.manager.articles.status.draft') }}
                             </span>
                             @if ($post->is_featured)
                                 <span class="inline-block  px-4 py-2">
@@ -321,7 +323,7 @@
                                             d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                                             clip-rule="evenodd" />
                                     </svg>
-                                    {{ $post->published_at?->format('d/m/Y') ?? 'Non publié' }}
+                                    {{ $post->published_at?->format('d/m/Y') ?? __('blog.manager.articles.meta.not_published') }}
                                 </span>
                             </div>
                             @if ($post->category)
@@ -382,7 +384,7 @@
                                 <button wire:click="togglePublish({{ $post->id }})"
                                     class="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110
                                                {{ $post->published ? 'bg-green-100 text-green-600 hover:bg-green-200' : 'bg-green-100 text-green-600 hover:bg-green-200' }}"
-                                    title="{{ $post->published ? 'Dépublier' : 'Publier' }}">
+                                    title="{{ $post->published ? __('blog.manager.articles.actions.unpublish') : __('blog.manager.articles.actions.publish') }}">
                                     <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
                                             d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
@@ -392,7 +394,7 @@
                                 @can('update', $post)
                                     <button wire:click="toggleFeatured({{ $post->id }})"
                                         class="p-2 {{ $post->is_featured ? 'text-yellow-600 bg-yellow-50' : 'text-gray-600 hover:bg-gray-50' }} rounded-lg transition"
-                                        title="{{ $post->is_featured ? 'Retirer de la vedette' : 'Mettre en vedette' }}">
+                                        title="{{ $post->is_featured ? __('blog.manager.articles.actions.unfeature') : __('blog.manager.articles.actions.feature') }}">
                                         <svg class="w-5 h-5" fill="{{ $post->is_featured ? 'currentColor' : 'none' }}"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -404,7 +406,7 @@
                                 @can('delete', $post)
                                     <button wire:click="confirmDelete({{ $post->id }})"
                                         class="w-8 h-8 rounded-full flex items-center justify-center bg-red-100 text-red-600 hover:bg-red-200 transition-all duration-300 transform hover:scale-110"
-                                        title="Supprimer">
+                                        title="{{ __('blog.manager.articles.actions.delete') }}">
                                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd"
                                                 d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
@@ -440,9 +442,9 @@
                                 </svg>
                             </div>
                         </div>
-                        <h3 class="text-2xl font-bold text-agro-gray mb-4 font-poppins">Aucun article trouvé</h3>
+                        <h3 class="text-2xl font-bold text-agro-gray mb-4 font-poppins">{{ __('blog.manager.articles.no_results.title') }}</h3>
                         <p class="text-agro-gray mb-8 font-inter">
-                            Commencez votre aventure blogging en créant votre premier article magnifique.
+                            {{ __('blog.manager.articles.no_results.description') }}
                         </p>
                         <button wire:click="openCreateModal"
                             class="group bg-gradient-to-r from-agro-green to-primary-700 hover:from-primary-700 hover:to-base text-agro-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-agro-green focus:ring-opacity-50 font-poppins">
@@ -452,7 +454,7 @@
                                     d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                                     clip-rule="evenodd" />
                             </svg>
-                            Créer mon premier article
+                            {{ __('blog.manager.articles.no_results.create_first') }}
                         </button>
                     </div>
                 </div>
@@ -461,7 +463,7 @@
 
         <!-- Pagination moderne -->
         @if ($posts->hasPages())
-            <div class="mt-12 flex justify-center">
+            <div class="mt-12 flex justify-center w-full">
                 <div class="bg-agro-white rounded-2xl shadow-lg border border-primary-100 px-8 py-4">
                     {{ $posts->links() }}
                 </div>
@@ -469,7 +471,6 @@
         @endif
     </div>
 
-    <!-- Modal Créer/Éditer Offre -->
     <!-- Modal Créer/Éditer Article -->
     <div x-show="$wire.showCreateModal || $wire.showEditModal" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-cloak
@@ -506,11 +507,11 @@
                             </div>
                             <div class="pt-1">
                                 <h3 class="text-3xl font-black text-white mb-2 tracking-tight"
-                                    x-text="$wire.showCreateModal ? '✨ Créer un Nouvel Article' : '✏️ Modifier l\'Article'">
+                                    x-text="$wire.showCreateModal ? '{{ __('blog.manager.modals.create.title') }}' : '{{ __('blog.manager.modals.edit.title') }}'">
                                 </h3>
-                                {{-- <p class="text-green-100 text-base font-medium max-w-md leading-relaxed">
-                                    {{ $showEditModal ? 'Mettez à jour les informations de votre article pour tenir votre communauté informée' : 'Partagez vos connaissances et inspirez la communauté AgroSpace' }}
-                                </p> --}}
+                                <p class="text-green-100 text-base font-medium max-w-md leading-relaxed">
+                                    {{ $showEditModal ? __('blog.manager.modals.edit.description') : __('blog.manager.modals.create.description') }}
+                                </p>
                             </div>
                         </div>
                         <button wire:click="closeModals"
@@ -551,8 +552,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="text-xl font-bold text-gray-900">Informations Principales</h4>
-                                <p class="text-sm text-gray-600">Les détails essentiels de votre article</p>
+                                <h4 class="text-xl font-bold text-gray-900">{{ __('blog.manager.modals.sections.main_info.title') }}</h4>
+                                <p class="text-sm text-gray-600">{{ __('blog.manager.modals.sections.main_info.description') }}</p>
                             </div>
                         </div>
 
@@ -567,7 +568,7 @@
                                             d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
                                         </path>
                                     </svg>
-                                    <span>Titre de l'Article</span>
+                                    <span>{{ __('blog.manager.modals.sections.main_info.fields.title') }}</span>
                                     <span class="text-red-500">*</span>
                                 </label>
                                 <div class="relative">
@@ -611,7 +612,7 @@
                                             d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
                                         </path>
                                     </svg>
-                                    <span>URL (Slug)</span>
+                                    <span>{{ __('blog.manager.modals.sections.main_info.fields.slug') }}</span>
                                     <span class="text-red-500">*</span>
                                 </label>
                                 <div class="relative">
@@ -633,7 +634,7 @@
                                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    <span>Généré automatiquement à partir du titre</span>
+                                    <span>{{ __('blog.manager.modals.sections.main_info.fields.slug_info') }}</span>
                                 </p>
                                 @error('slug')
                                     <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
@@ -662,8 +663,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="text-xl font-bold text-gray-900">Classification</h4>
-                                <p class="text-sm text-gray-600">Catégorie et tags pour organiser votre contenu</p>
+                                <h4 class="text-xl font-bold text-gray-900">{{ __('blog.manager.modals.sections.classification.title') }}</h4>
+                                <p class="text-sm text-gray-600">{{ __('blog.manager.modals.sections.classification.description') }}</p>
                             </div>
                         </div>
 
@@ -678,12 +679,12 @@
                                             d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
                                         </path>
                                     </svg>
-                                    <span>Catégorie</span>
+                                    <span>{{ __('blog.manager.modals.sections.classification.fields.category') }}</span>
                                 </label>
                                 <div class="relative">
                                     <select wire:model="category_id" id="category_id"
                                         class="w-full pl-12 pr-10 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-300 text-base bg-white hover:border-blue-300 group-hover:shadow-lg appearance-none cursor-pointer">
-                                        <option value="">🗂️ Sélectionner une catégorie</option>
+                                        <option value="">🗂️ {{ __('blog.manager.modals.sections.classification.fields.category') }}</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->icon ?? '📁' }}
                                                 {{ $category->name }}</option>
@@ -729,7 +730,7 @@
                                             d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
                                         </path>
                                     </svg>
-                                    <span>Tags</span>
+                                    <span>{{ __('blog.manager.modals.sections.classification.fields.tags') }}</span>
                                 </label>
                                 <div class="relative">
                                     <select wire:model="tags" id="tags" multiple
@@ -754,7 +755,7 @@
                                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    <span>Maintenez Ctrl (Cmd sur Mac) pour sélectionner plusieurs tags</span>
+                                    <span>{{ __('blog.manager.modals.sections.classification.fields.tags_info') }}</span>
                                 </p>
                                 @error('tags')
                                     <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
@@ -783,8 +784,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="text-xl font-bold text-gray-900">Image de Couverture</h4>
-                                <p class="text-sm text-gray-600">Choisissez une image attractive pour votre article</p>
+                                <h4 class="text-xl font-bold text-gray-900">{{ __('blog.manager.modals.sections.featured_image.title') }}</h4>
+                                <p class="text-sm text-gray-600">{{ __('blog.manager.modals.sections.featured_image.description') }}</p>
                             </div>
                         </div>
 
@@ -822,10 +823,8 @@
                                             </svg>
                                         </div>
                                         <div class="text-center">
-                                            <p class="text-base font-bold text-gray-900 mb-1">Cliquez pour télécharger
-                                                ou
-                                                glissez-déposez</p>
-                                            <p class="text-sm text-gray-500">PNG, JPG, GIF jusqu'à 2MB</p>
+                                            <p class="text-base font-bold text-gray-900 mb-1">{{ __('blog.manager.modals.sections.featured_image.upload.click_to_upload') }}</p>
+                                            <p class="text-sm text-gray-500">{{ __('blog.manager.modals.sections.featured_image.upload.formats') }}</p>
                                         </div>
                                         <input type="file" wire:model="featured_image" id="featured_image"
                                             accept="image/*" class="hidden">
@@ -858,8 +857,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="text-xl font-bold text-gray-900">Résumé</h4>
-                                <p class="text-sm text-gray-600">Un aperçu concis de votre article</p>
+                                <h4 class="text-xl font-bold text-gray-900">{{ __('blog.manager.modals.sections.excerpt.title') }}</h4>
+                                <p class="text-sm text-gray-600">{{ __('blog.manager.modals.sections.excerpt.description') }}</p>
                             </div>
                         </div>
 
@@ -871,12 +870,12 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                                 </svg>
-                                <span>Description Courte</span>
+                                <span>{{ __('blog.manager.modals.sections.excerpt.fields.excerpt') }}</span>
                             </label>
                             <div class="relative">
                                 <textarea wire:model="excerpt" id="excerpt" rows="4"
                                     class="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-yellow-100 focus:border-yellow-500 transition-all duration-300 text-base resize-none bg-white hover:border-yellow-300 group-hover:shadow-lg placeholder-gray-400"
-                                    placeholder="Rédigez un résumé captivant de votre article (optionnel, généré automatiquement si vide)..."></textarea>
+                                    placeholder="{{ __('blog.manager.modals.sections.excerpt.fields.excerpt_info') }}"></textarea>
                                 <div class="absolute bottom-4 right-4 text-xs text-gray-400 bg-white px-2 py-1 rounded-lg"
                                     x-data="{ length: $wire.entangle('excerpt').length }">
                                     <span x-text="length"></span>/200
@@ -888,7 +887,7 @@
                                         d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                                         clip-rule="evenodd"></path>
                                 </svg>
-                                <span>Sera généré automatiquement depuis le contenu si laissé vide</span>
+                                <span>{{ __('blog.manager.modals.sections.excerpt.fields.excerpt_info') }}</span>
                             </p>
                             @error('excerpt')
                                 <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
@@ -917,8 +916,8 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h4 class="text-xl font-bold text-gray-900">Contenu de l'Article</h4>
-                                    <p class="text-sm text-gray-600">Rédigez le corps de votre article</p>
+                                    <h4 class="text-xl font-bold text-gray-900">{{ __('blog.manager.modals.sections.content.title') }}</h4>
+                                    <p class="text-sm text-gray-600">{{ __('blog.manager.modals.sections.content.description') }}</p>
                                 </div>
                             </div>
                             <!-- Toolbar Preview -->
@@ -929,7 +928,7 @@
                                         d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
                                     </path>
                                 </svg>
-                                <span class="text-xs font-medium text-gray-600">Markdown supporté</span>
+                                <span class="text-xs font-medium text-gray-600">{{ __('blog.manager.modals.sections.content.fields.markdown_support') }}</span>
                             </div>
                         </div>
 
@@ -942,7 +941,7 @@
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                     </path>
                                 </svg>
-                                <span>Texte Principal</span>
+                                <span>{{ __('blog.manager.modals.sections.content.fields.content') }}</span>
                                 <span class="text-red-500">*</span>
                             </label>
                             <div wire:ignore>
@@ -968,7 +967,7 @@ Votre contenu en **gras** ou *italique*
                                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    <span>Utilisez le format Markdown pour le formatage</span>
+                                    <span>{{ __('blog.manager.modals.sections.content.fields.markdown_support') }}</span>
                                 </p>
                                 <div class="text-xs text-gray-400" x-data="{ length: $wire.entangle('content').length }">
                                     <span x-text="length"></span> caractères
@@ -1000,8 +999,8 @@ Votre contenu en **gras** ou *italique*
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="text-xl font-bold text-gray-900">Options de Publication</h4>
-                                <p class="text-sm text-gray-600">Planifiez la publication de votre article</p>
+                                <h4 class="text-xl font-bold text-gray-900">{{ __('blog.manager.modals.sections.publishing.title') }}</h4>
+                                <p class="text-sm text-gray-600">{{ __('blog.manager.modals.sections.publishing.description') }}</p>
                             </div>
                         </div>
 
@@ -1023,8 +1022,8 @@ Votre contenu en **gras** ou *italique*
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-base font-bold text-gray-900">Publier maintenant</p>
-                                            <p class="text-xs text-gray-500">L'article sera visible immédiatement</p>
+                                            <p class="text-base font-bold text-gray-900">{{ __('blog.manager.modals.sections.publishing.fields.publish_now') }}</p>
+                                            <p class="text-xs text-gray-500">{{ __('blog.manager.modals.sections.publishing.fields.publish_now_info') }}</p>
                                         </div>
                                     </div>
                                     <div class="relative">
@@ -1056,7 +1055,7 @@ Votre contenu en **gras** ou *italique*
                                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                         </path>
                                     </svg>
-                                    <span>Date et Heure de Publication</span>
+                                    <span>{{ __('blog.manager.modals.sections.publishing.fields.publish_date') }}</span>
                                 </label>
                                 <div class="relative">
                                     <input type="datetime-local" wire:model="published_at" id="published_at"
@@ -1076,7 +1075,7 @@ Votre contenu en **gras** ou *italique*
                                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    <span>Laissez vide pour publication immédiate</span>
+                                    <span>{{ __('blog.manager.modals.sections.publishing.fields.publish_date_info') }}</span>
                                 </p>
                                 @error('published_at')
                                     <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
@@ -1104,9 +1103,8 @@ Votre contenu en **gras** ou *italique*
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="text-xl font-bold text-gray-900">Optimisation SEO</h4>
-                                <p class="text-sm text-gray-600">Améliorez votre visibilité sur les moteurs de
-                                    recherche
+                                <h4 class="text-xl font-bold text-gray-900">{{ __('blog.manager.modals.sections.seo.title') }}</h4>
+                                <p class="text-sm text-gray-600">{{ __('blog.manager.modals.sections.seo.description') }}
                                 </p>
                             </div>
                         </div>
@@ -1122,7 +1120,7 @@ Votre contenu en **gras** ou *italique*
                                             d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
                                         </path>
                                     </svg>
-                                    <span>Meta Title</span>
+                                    <span>{{ __('blog.manager.modals.sections.seo.fields.meta_title') }}</span>
                                 </label>
                                 <div class="relative">
                                     <input type="text" wire:model="meta_title" id="meta_title"
@@ -1149,7 +1147,7 @@ Votre contenu en **gras** ou *italique*
                                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    <span>Idéalement entre 50-60 caractères</span>
+                                    <span>{{ __('blog.manager.modals.sections.seo.fields.meta_title_info') }}</span>
                                 </p>
                                 @error('meta_title')
                                     <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
@@ -1172,7 +1170,7 @@ Votre contenu en **gras** ou *italique*
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                                     </svg>
-                                    <span>Meta Description</span>
+                                    <span>{{ __('blog.manager.modals.sections.seo.fields.meta_description') }}</span>
                                 </label>
                                 <div class="relative">
                                     <textarea wire:model="meta_description" id="meta_description" rows="3"
@@ -1192,7 +1190,7 @@ Votre contenu en **gras** ou *italique*
                                             d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    <span>Optimal entre 150-160 caractères pour un affichage complet</span>
+                                    <span>{{ __('blog.manager.modals.sections.seo.fields.meta_description_info') }}</span>
                                 </p>
                                 @error('meta_description')
                                     <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
@@ -1224,8 +1222,8 @@ Votre contenu en **gras** ou *italique*
                                         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <div>
-                                    <p class="text-xs font-semibold text-blue-900">Sauvegarde automatique</p>
-                                    <p class="text-xs text-blue-600">Vos modifications sont enregistrées</p>
+                                    <p class="text-xs font-semibold text-blue-900">{{ __('blog.manager.modals.actions.auto_save') }}</p>
+                                    <p class="text-xs text-blue-600">{{ __('blog.manager.modals.actions.auto_save_info') }}</p>
                                 </div>
                             </div>
 
@@ -1240,7 +1238,7 @@ Votre contenu en **gras** ou *italique*
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
-                                <span>Annuler</span>
+                                <span>{{ __('blog.manager.modals.actions.cancel') }}</span>
                             </button>
 
                             <button type="submit" wire:loading.attr="disabled"
@@ -1269,10 +1267,10 @@ Votre contenu en **gras** ou *italique*
 
                                     <span wire:loading.remove wire:target="save" class="text-lg">
                                         <span
-                                            x-text="$wire.showCreateModal ? '✨ Créer l\'Article' : '💾 Mettre à Jour'"></span>
+                                            x-text="$wire.showCreateModal ? '{{ __('blog.manager.modals.actions.create') }}' : '{{ __('blog.manager.modals.actions.update') }}'"></span>
                                     </span>
                                     <span wire:loading wire:target="save" class="text-lg">
-                                        Enregistrement en cours...
+                                        {{ __('blog.manager.modals.actions.saving') }}
                                     </span>
                                 </div>
 
@@ -1385,19 +1383,19 @@ Votre contenu en **gras** ou *italique*
                         </svg>
                     </div>
 
-                    <h3 class="text-xl font-semibold text-agro-gray mb-2 font-poppins">Confirmer la suppression</h3>
+                    <h3 class="text-xl font-semibold text-agro-gray mb-2 font-poppins">{{ __('blog.manager.delete_modal.title') }}</h3>
                     <p class="text-gray-600 mb-6 font-inter">
-                        Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.
+                        {{ __('blog.manager.delete_modal.description') }}
                     </p>
 
                     <div class="flex items-center justify-center gap-4">
                         <button wire:click="closeModals"
                             class="px-6 py-3 text-sm font-medium text-agro-gray bg-white border border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-200 font-inter">
-                            Annuler
+                            {{ __('blog.manager.delete_modal.cancel') }}
                         </button>
                         <button wire:click="delete({{ $selectedPost->id ?? 0 }})" wire:loading.attr="disabled"
                             class="px-6 py-3 text-sm font-medium text-white bg-red-600 border border-transparent rounded-xl hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 font-inter">
-                            <span wire:loading.remove>Supprimer</span>
+                            <span wire:loading.remove>{{ __('blog.manager.delete_modal.confirm') }}</span>
                             <span wire:loading>
                                 <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -1463,10 +1461,9 @@ Votre contenu en **gras** ou *italique*
                                 <div>
                                     <h2
                                         class="text-2xl font-black text-white tracking-tight flex items-center space-x-2">
-                                        <span>✨ Prévisualisation</span>
+                                        <span>{{ __('blog.manager.preview_modal.title') }}</span>
                                     </h2>
-                                    <p class="text-green-100 text-sm font-medium">Aperçu de votre article avant
-                                        publication</p>
+                                    <p class="text-green-100 text-sm font-medium">{{ __('blog.manager.preview_modal.description') }}</p>
                                 </div>
                             </div>
 
@@ -1474,7 +1471,8 @@ Votre contenu en **gras** ou *italique*
                             <div class="flex items-center space-x-3">
                                 <!-- Bouton Plein Écran -->
                                 <button onclick="document.querySelector('.modal-content').requestFullscreen()"
-                                    class="p-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-xl transition-all transform hover:scale-110">
+                                    class="p-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-xl transition-all transform hover:scale-110"
+                                    title="{{ __('blog.manager.preview_modal.fullscreen') }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4">
@@ -1504,7 +1502,7 @@ Votre contenu en **gras** ou *italique*
                                     d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                                 </path>
                             </svg>
-                            <span>Vue Bureau</span>
+                            <span>{{ __('blog.manager.preview_modal.desktop_view') }}</span>
                         </button>
                         {{-- <button
                             class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-semibold text-sm flex items-center space-x-2">
@@ -1513,7 +1511,7 @@ Votre contenu en **gras** ou *italique*
                                     d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z">
                                 </path>
                             </svg>
-                            <span>Vue Mobile</span>
+                            <span>{{ __('blog.manager.preview_modal.mobile_view') }}</span>
                         </button> --}}
                     </div>
                 </div>
@@ -1668,10 +1666,8 @@ Votre contenu en **gras** ou *italique*
                                                         </svg>
                                                     </div>
                                                     <div>
-                                                        <h4 class="text-xl font-bold text-gray-900">Partagez cet
-                                                            article</h4>
-                                                        <p class="text-sm text-gray-600">Faites découvrir ce contenu à
-                                                            votre communauté</p>
+                                                        <h4 class="text-xl font-bold text-gray-900">{{ __('blog.manager.preview_modal.share.title') }}</h4>
+                                                        <p class="text-sm text-gray-600">{{ __('blog.manager.preview_modal.share.description') }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center space-x-3">
@@ -1717,12 +1713,12 @@ Votre contenu en **gras** ou *italique*
                             <!-- Call to Action -->
                             <div
                                 class="mt-8 bg-gradient-to-r from-green-600 via-green-500 to-yellow-500 rounded-3xl p-8 shadow-2xl text-center text-white">
-                                <h3 class="text-2xl font-black mb-3">Prêt à publier votre article ?</h3>
-                                <p class="text-green-100 mb-6">Partagez vos connaissances avec la communauté AgroSpace
+                                <h3 class="text-2xl font-black mb-3">{{ __('blog.manager.preview_modal.cta.title') }}</h3>
+                                <p class="text-green-100 mb-6">{{ __('blog.manager.preview_modal.cta.description') }}
                                 </p>
                                 <button wire:click="closeModals"
                                     class="px-8 py-4 bg-white text-green-600 rounded-xl font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg">
-                                    Retour à l'édition
+                                    {{ __('blog.manager.preview_modal.cta.back_to_edit') }}
                                 </button>
                             </div>
                         </div>

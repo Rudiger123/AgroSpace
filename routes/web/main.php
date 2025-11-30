@@ -31,6 +31,10 @@ use Livewire\Volt\Volt;
  * Les Routes protegées
  */
 Route::middleware(['auth', 'verified', '2fa'])->group(function () {
+
+    /**
+     * Routes accéssible par l'utilisateur connécté
+     */
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
     Route::get('/profile/settings', ProfileManagement::class)->name('profile');
@@ -47,6 +51,9 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
 
     Route::get('/settings', PreferencesManager::class)->name('settings');
 
+    /**
+     * Routes Administration
+     */
     Route::prefix('/admin')->middleware('role:admin')->group(function () {
         //Gestion des Utilisateurs
         Route::get('/users', UsersManagement::class)->name('users-management');
@@ -84,10 +91,16 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
             ->name('admin.newsletter.list');
     });
 
+    /**
+     * routes consumer
+     */
     Route::prefix('/consumer')->middleware('role:consumer')->group(function () {
         Route::get('/my-demands', MyDemands::class)->name('demands-management');
     });
 
+    /**
+     * routes Producer
+     */
     Route::prefix('/producer')->middleware('role:producer')->group(function () {
         Route::get('/my-offers', ManageOffers::class)->name('offers-management');
     });
@@ -101,9 +114,7 @@ Route::middleware(['auth', 'verified', '2fa'])->group(function () {
 Route::get('/2fa-challenge', TwoFactorChallenge::class)
     ->middleware('guest')
     ->name('2fa.challenge');
-
 Volt::route('/documentation', 'docs.documentation')->name('documentation');
-
 Volt::route('/', 'welcome')->name('home');
 Volt::route('/features', 'features')->name('features');
 Volt::route('/about', 'about-page')->name('about.page');
@@ -112,7 +123,6 @@ Volt::route('/producers', 'producer-page')->name('producer.page');
 Route::prefix('blog')->name('blog.')->group(function () {
     // Page principale du blog - liste des articles
     Route::get('/', BlogList::class)->name('index');
-
     // Affichage d'un article individuel
     Route::get('/{slug}', BlogShowEnhanced::class)->name('show');
 });

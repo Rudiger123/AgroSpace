@@ -139,15 +139,15 @@ class BlogShowEnhanced extends Component
         $this->validate([
             'commentContent' => 'required|string|min:3|max:1000',
         ], [
-            'commentContent.required' => 'Veuillez saisir un commentaire.',
-            'commentContent.min' => 'Le commentaire doit contenir au moins 3 caractères.',
-            'commentContent.max' => 'Le commentaire ne peut pas dépasser 1000 caractères.',
+            'commentContent.required' => __('blog.validation.comment_required'),
+            'commentContent.min' => __('blog.validation.comment_min'),
+            'commentContent.max' => __('blog.validation.comment_max'),
         ]);
 
         if (!Auth::check()) {
             $this->dispatch('showAlert', [
                 'type' => 'error',
-                'message' => 'Vous devez être connecté pour commenter.'
+                'message' => __('blog.errors.auth_required')
             ]);
             return;
         }
@@ -156,7 +156,7 @@ class BlogShowEnhanced extends Component
         if ($this->isSpam()) {
             $this->dispatch('showAlert', [
                 'type' => 'error',
-                'message' => 'Votre commentaire semble être du spam. Veuillez réessayer.'
+                'message' => __('blog.errors.spam_detected')
             ]);
             return;
         }
@@ -177,17 +177,12 @@ class BlogShowEnhanced extends Component
 
             $this->reset(['commentContent', 'replyingTo']);
 
-            // $this->dispatch('showAlert', [
-            //     'type' => 'success',
-            //     'message' => 'Commentaire ajouté avec succès !'
-            // ]);
-
             $this->dispatch('comment-added');
         } catch (\Exception $e) {
             report($e);
             $this->dispatch('showAlert', [
                 'type' => 'error',
-                'message' => 'Une erreur est survenue lors de l\'ajout du commentaire.'
+                'message' => __('blog.errors.comment_error')
             ]);
         }
     }
@@ -198,7 +193,7 @@ class BlogShowEnhanced extends Component
         if (!$comment || $comment->post_id !== $this->post->id) {
             $this->dispatch('showAlert', [
                 'type' => 'error',
-                'message' => 'Commentaire introuvable.'
+                'message' => __('blog.errors.comment_not_found')
             ]);
             return;
         }
@@ -218,7 +213,7 @@ class BlogShowEnhanced extends Component
         if (!Auth::check()) {
             $this->dispatch('showAlert', [
                 'type' => 'error',
-                'message' => 'Vous devez être connecté pour aimer cet article.'
+                'message' => __('blog.errors.auth_required')
             ]);
             return;
         }
@@ -227,16 +222,11 @@ class BlogShowEnhanced extends Component
             $this->post->toggleReaction(Auth::user(), 'like');
             $this->isLiked = !$this->isLiked;
             $this->likesCount = $this->isLiked ? $this->likesCount + 1 : $this->likesCount - 1;
-
-            // $this->dispatch('showAlert', [
-            //     'type' => 'success',
-            //     'message' => $this->isLiked ? 'Article aimé !' : 'Like retiré.'
-            // ]);
         } catch (\Exception $e) {
             report($e);
             $this->dispatch('showAlert', [
                 'type' => 'error',
-                'message' => 'Erreur lors de la mise à jour de la réaction.'
+                'message' => __('blog.errors.reaction_error')
             ]);
         }
     }
@@ -254,7 +244,7 @@ class BlogShowEnhanced extends Component
             $this->post->recordShare($platform, Auth::user());
             $this->sharesCount++;
 
-            /* 2  –  construire l’URL de partage */
+            /* 2  –  construire l'URL de partage */
             $postUrl   = route('blog.show', $this->post->slug, true);
             $postTitle = $this->post->title;
 
@@ -266,21 +256,21 @@ class BlogShowEnhanced extends Component
                 'email'     => 'mailto:?subject='.urlencode($postTitle).'&body='.urlencode($postUrl),
             ];
 
-            /* 3  –  demander au navigateur d’ouvrir le lien */
+            /* 3  –  demander au navigateur d'ouvrir le lien */
             $this->dispatch('openShareWindow', url: $shareLinks[$platform]);
 
             /* 4  –  feedback */
             $this->dispatch(
                 'toast',
                 type: 'success',
-                message: 'Merci d’avoir partagé cet article !'
+                message: __('blog.success.shared')
             );
         } catch (\Exception $e) {
             report($e);
             $this->dispatch(
                 'toast',
                 type: 'error',
-                message: 'Erreur lors du partage.'
+                message: __('blog.errors.share_error')
             );
         }
     }

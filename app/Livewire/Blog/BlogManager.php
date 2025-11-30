@@ -2,13 +2,16 @@
 
 namespace App\Livewire\Blog;
 
+use App\Events\Notifications\ArticlePublished;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Notifications\ArticlePublishedNotification;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -46,11 +49,11 @@ class BlogManager extends Component
     public $sortBy = 'published_at';
     public $sortDirection = 'desc';
 
+    // Règles de validation de base (sans la partie dynamique)
     protected function rules()
     {
-        return [
+        $rules = [
             'title' => 'required|string|min:3|max:255',
-            'slug' => 'required|string|unique:posts,slug,' . ($this->selectedPost?->id ?? 'NULL'),
             'excerpt' => 'nullable|string|max:500',
             'content' => 'required|string|min:10',
             'category_id' => 'nullable|exists:categories,id',
@@ -62,8 +65,16 @@ class BlogManager extends Component
             'meta_title' => 'nullable|string|max:60',
             'meta_description' => 'nullable|string|max:160',
         ];
+
+        // Ajouter la règle unique dynamiquement
+        $rules['slug'] = $this->selectedPost
+            ? 'required|string|unique:posts,slug,' . $this->selectedPost->id
+            : 'required|string|unique:posts,slug';
+
+        return $rules;
     }
 
+    // Messages d'erreur (sans traduction pour éviter l'erreur)
     protected $messages = [
         'title.required' => 'Le titre est obligatoire.',
         'title.min' => 'Le titre doit contenir au moins 3 caractères.',
@@ -75,6 +86,21 @@ class BlogManager extends Component
         'featured_image.max' => 'L\'image ne doit pas dépasser 2 Mo.',
     ];
 
+    // Méthode pour obtenir les messages traduits
+    protected function getTranslatedMessages()
+    {
+        return [
+            'title.required' => __('blog.validation.title_required'),
+            'title.min' => __('blog.validation.title_min'),
+            'slug.required' => __('blog.validation.slug_required'),
+            'slug.unique' => __('blog.validation.slug_unique'),
+            'content.required' => __('blog.validation.content_required'),
+            'content.min' => __('blog.validation.content_min'),
+            'featured_image.image' => __('blog.validation.image_invalid'),
+            'featured_image.max' => __('blog.validation.image_max'),
+        ];
+    }
+
     public function mount()
     {
         $this->resetForm();
@@ -83,9 +109,19 @@ class BlogManager extends Component
     public function resetForm()
     {
         $this->reset([
-            'title', 'slug', 'excerpt', 'content', 'category_id', 'tags',
-            'featured_image', 'existing_image', 'published', 'published_at',
-            'meta_title', 'meta_description', 'selectedPost'
+            'title',
+            'slug',
+            'excerpt',
+            'content',
+            'category_id',
+            'tags',
+            'featured_image',
+            'existing_image',
+            'published',
+            'published_at',
+            'meta_title',
+            'meta_description',
+            'selectedPost'
         ]);
 
         $this->published_at = now()->format('Y-m-d\TH:i');
@@ -130,7 +166,8 @@ class BlogManager extends Component
 
     public function save()
     {
-        $this->validate();
+        // Utiliser les messages traduits pour la validation
+        $this->validate($this->rules(), $this->getTranslatedMessages());
 
         try {
             $imagePath = $this->existing_image;
@@ -160,15 +197,30 @@ class BlogManager extends Component
             if ($this->showCreateModal) {
                 $postData['author_id'] = Auth::id();
                 $this->selectedPost = Post::create($postData);
+                $message = __('blog.success.saved');
+                // event(new ArticlePublished($this->selectedPost, Auth::user()));
 
-                event(new \App\Events\Notifications\ArticlePublished($this->selectedPost, Auth::user()));
+                // Get all active newsletter subscribers
+                $subscribers = \App\Models\NewsletterSubscriber::whereNull('unsubscribed_at')->get();
 
-                $message = 'Article créé avec succès !';
+                // Get registered users who enabled blog notifications through their preferences
+                $users = \App\Models\User::whereHas('preferences', function ($query) {
+                    $query->where('notify_articles', true);
+                })
+                    ->with('preferences') // Charger les préférences pour éviter les requêtes N+1
+                    ->get();
+
+                // Combine both collections
+                $recipients = $subscribers->merge($users);
+
+                \Log::info("Envoi de notifications à " . $recipients->count() . " destinataires");
+
+                Notification::send($recipients, new ArticlePublishedNotification($this->selectedPost, Auth::user()));
+                
             }
             if ($this->showEditModal) {
                 $this->selectedPost->update($postData);
-                event(new \App\Events\Notifications\ArticlePublished($this->selectedPost, Auth::user()));
-                $message = 'Article mis à jour avec succès !';
+                $message = __('blog.success.saved');
             }
 
             // Synchroniser les tags
@@ -184,7 +236,7 @@ class BlogManager extends Component
             ]);
         } catch (\Exception $e) {
             report($e);
-            session()->flash('error', 'Une erreur est survenue. Veuillez réessayer.');
+            session()->flash('error', __('blog.errors.save_error'));
         }
     }
 
@@ -210,7 +262,7 @@ class BlogManager extends Component
             $this->selectedPost->delete();
             $this->closeModals();
 
-            $message = 'Article supprimé avec succès !';
+            $message = __('blog.success.deleted');
 
             $this->dispatch('toast', [
                 'type' => 'success',
@@ -218,7 +270,7 @@ class BlogManager extends Component
             ]);
         } catch (\Exception $e) {
             report($e);
-            session()->flash('error', 'Erreur lors de la suppression de l\'article.');
+            session()->flash('error', __('blog.errors.delete_error'));
         }
     }
 
@@ -249,14 +301,14 @@ class BlogManager extends Component
             $post->status = $post->published ? 'published' : 'draft';
             $post->save();
 
-            $message = $post->published ? 'Article publié !' : 'Article dépublié !';
+            $message = $post->published ? __('blog.success.published') : __('blog.success.unpublished');
             $this->dispatch('toast', [
                 'type' => 'success',
                 'message' => $message
             ]);
         } catch (\Exception $e) {
             report($e);
-            session()->flash('error', 'Erreur lors de la mise à jour du statut.');
+            session()->flash('error', __('blog.errors.operation_error'));
         }
     }
 
@@ -269,8 +321,8 @@ class BlogManager extends Component
             ]);
 
             $message = $post->is_featured
-                ? 'Article mise en avant avec succès'
-                : 'Article retirée de la mise en avant';
+                ? __('blog.success.featured')
+                : __('blog.success.unfeatured');
 
             $this->dispatch('toast', [
                 'type' => 'success',
@@ -279,7 +331,7 @@ class BlogManager extends Component
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur lors de l\'opération'
+                'message' => __('blog.errors.operation_error')
             ]);
         }
     }
@@ -323,8 +375,8 @@ class BlogManager extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('title', 'like', '%' . $this->search . '%')
-                  ->orWhere('content', 'like', '%' . $this->search . '%')
-                  ->orWhere('excerpt', 'like', '%' . $this->search . '%');
+                    ->orWhere('content', 'like', '%' . $this->search . '%')
+                    ->orWhere('excerpt', 'like', '%' . $this->search . '%');
             });
         }
 
@@ -353,7 +405,7 @@ class BlogManager extends Component
         }
 
         return $query->orderBy($this->sortBy, $this->sortDirection)
-                    ->paginate(10);
+            ->paginate(10);
     }
 
     public function getCategoriesProperty()
@@ -382,8 +434,8 @@ class BlogManager extends Component
             'allTags' => $this->allTags,
             'authors' => $this->authors,
         ])->layout('layouts.app', [
-            'title' => 'Gestion du Blog',
-            'description' => 'Gérez vos articles de blog',
+            'title' => __('blog.posts.management'),
+            'description' => __('blog.posts.management'),
         ]);
     }
 }
