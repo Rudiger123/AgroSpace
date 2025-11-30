@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\DemandsManagement;
 use App\Models\Demand;
 use App\Models\Category;
 use App\Models\DemandResponse;
+use App\Notifications\NewDemandResponse;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -120,7 +121,8 @@ class PublicDemands extends Component
             // Incrémenter le compteur de contacts
             $demand = Demand::find($this->selectedDemandId);
             $demand->incrementContacts();
-            event(new \App\Events\Notifications\DemandResponseCreated($response));
+            // event(new \App\Events\Notifications\DemandResponseCreated($response));
+            $this->notification($response);
 
             $this->showResponseModal = false;
 
@@ -135,6 +137,19 @@ class PublicDemands extends Component
                 'type' => 'error',
                 'message' => 'Erreur lors de l\'envoi de la réponse: ' . $e->getMessage()
             ]);
+        }
+    }
+
+
+    public function notification(DemandResponse $response): void
+    {
+        // Le destinataire est le créateur de la demande originale
+        // On assume la relation $response->demand->user (le owner de la demande)
+        $recipient = $response->demand->user;
+
+        // On ne notifie pas si l'utilisateur répond à sa propre demande (cas rare mais possible)
+        if ($recipient && $recipient->id !== $response->user_id) {
+            $recipient->notify(new NewDemandResponse($response));
         }
     }
 

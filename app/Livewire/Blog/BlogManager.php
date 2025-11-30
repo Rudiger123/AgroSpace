@@ -6,10 +6,12 @@ use App\Events\Notifications\ArticlePublished;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Notifications\ArticlePublishedNotification;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -196,7 +198,25 @@ class BlogManager extends Component
                 $postData['author_id'] = Auth::id();
                 $this->selectedPost = Post::create($postData);
                 $message = __('blog.success.saved');
-                event(new ArticlePublished($this->selectedPost, Auth::user()));
+                // event(new ArticlePublished($this->selectedPost, Auth::user()));
+
+                // Get all active newsletter subscribers
+                $subscribers = \App\Models\NewsletterSubscriber::whereNull('unsubscribed_at')->get();
+
+                // Get registered users who enabled blog notifications through their preferences
+                $users = \App\Models\User::whereHas('preferences', function ($query) {
+                    $query->where('notify_articles', true);
+                })
+                    ->with('preferences') // Charger les préférences pour éviter les requêtes N+1
+                    ->get();
+
+                // Combine both collections
+                $recipients = $subscribers->merge($users);
+
+                \Log::info("Envoi de notifications à " . $recipients->count() . " destinataires");
+
+                Notification::send($recipients, new ArticlePublishedNotification($this->selectedPost, Auth::user()));
+                
             }
             if ($this->showEditModal) {
                 $this->selectedPost->update($postData);

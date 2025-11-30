@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Admin\OffersManagement;
 
+use App\Livewire\Admin\AvisManagement;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Offre;
 use App\Models\Avis;
 use App\Models\Category;
 use App\Models\Offer;
+use App\Notifications\ReviewReceived;
 use App\Services\AvisService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -178,8 +180,8 @@ class OffresList extends Component
                 'is_verified' => false, // Sera vérifié par admin si besoin
             ]);
 
-            event(new \App\Events\Notifications\NewReviewCreated($avis));
-
+            $this->notification($avis);
+            
             $this->showAvisModal = false;
             $this->reset(['avisproducerId', 'avisOffreId', 'avisNote', 'avisCommentaire']);
 
@@ -200,6 +202,16 @@ class OffresList extends Component
                 'type' => 'error',
                 'message' => 'Erreur : ' . $e->getMessage()
             ]);
+        }
+    }
+
+    public function notification(Avis $avis): void
+    {
+        // Le destinataire est le producteur lié à l'avis
+        $recipient = $avis->producer; // Assumant la relation 'producer'
+
+        if ($recipient) {
+            $recipient->notify(new ReviewReceived($avis));
         }
     }
 
