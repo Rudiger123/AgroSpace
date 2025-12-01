@@ -1,9 +1,9 @@
 @extends('errors.layout')
 
-@section('title', 'Parcelle Introuvable')
+@section('title', __('errors.404.title'))
 @section('code', '404')
-@section('message', 'Oups ! Cette parcelle n\'existe pas.')
-@section('description', 'Il semble que vous ayez labouré trop loin. La page que vous cherchez a peut-être été récoltée ou déplacée.')
+@section('message', __('errors.404.message'))
+@section('description', __('errors.404.description'))
 
 @section('image')
     <!-- SVG Tractor / Field Search -->

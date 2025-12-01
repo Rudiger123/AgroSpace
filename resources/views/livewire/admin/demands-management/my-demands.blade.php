@@ -6,8 +6,8 @@
             <div class="mb-8">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-900">Mes Demandes</h1>
-                        <p class="mt-2 text-sm text-gray-600">Gérez vos demandes de produits et services agricoles</p>
+                        <h1 class="text-3xl font-bold text-gray-900">{{ __('demands.my_demands') }}</h1>
+                        <p class="mt-2 text-sm text-gray-600">{{ __('demands.subtitle') }}</p>
                     </div>
                     <div class="mt-4 md:mt-0">
                         <button wire:click="openCreateModal"
@@ -16,7 +16,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 4v16m8-8H4"></path>
                             </svg>
-                            Nouvelle Demande
+                            {{ __('demands.new_demand') }}
                         </button>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-600 mb-1">Total</p>
+                            <p class="text-sm text-gray-600 mb-1">{{ __('demands.total') }}</p>
                             <p class="text-2xl font-bold text-gray-900">{{ $demands->total() }}</p>
                         </div>
                         <div class="bg-primary-100 rounded-lg p-3">
@@ -44,7 +44,7 @@
                 <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-600 mb-1">Actives</p>
+                            <p class="text-sm text-gray-600 mb-1">{{ __('demands.active') }}</p>
                             <p class="text-2xl font-bold text-green-600">
                                 {{ $demands->where('status', 'active')->count() }}</p>
                         </div>
@@ -61,7 +61,7 @@
                 <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-600 mb-1">Satisfaites</p>
+                            <p class="text-sm text-gray-600 mb-1">{{ __('demands.satisfied') }}</p>
                             <p class="text-2xl font-bold text-blue-600">
                                 {{ $demands->where('status', 'satisfied')->count() }}</p>
                         </div>
@@ -78,7 +78,7 @@
                 <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-600 mb-1">Réponses</p>
+                            <p class="text-sm text-gray-600 mb-1">{{ __('demands.responses') }}</p>
                             <p class="text-2xl font-bold text-purple-600">{{ $demands->sum('contacts_received') }}</p>
                         </div>
                         <div class="bg-purple-100 rounded-lg p-3">
@@ -97,25 +97,25 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                     <div>
-                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Rechercher..."
+                        <input type="text" wire:model.live.debounce.300ms="search" placeholder="{{ __('demands.search_placeholder') }}"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
                     </div>
 
                     <div>
                         <select wire:model.live="statusFilter"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                            <option value="all">Tous les statuts</option>
-                            <option value="active">Active</option>
-                            <option value="satisfied">Satisfaite</option>
-                            <option value="expired">Expirée</option>
-                            <option value="cancelled">Annulée</option>
+                            <option value="all">{{ __('demands.all_statuses') }}</option>
+                            <option value="active">{{ __('demands.active') }}</option>
+                            <option value="satisfied">{{ __('demands.satisfied') }}</option>
+                            <option value="expired">{{ __('demands.expired') }}</option>
+                            <option value="cancelled">{{ __('demands.cancelled') }}</option>
                         </select>
                     </div>
 
                     <div>
                         <select wire:model.live="categoryFilter"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                            <option value="">Toutes les catégories</option>
+                            <option value="">{{ __('demands.all_categories') }}</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->icon }} {{ $category->name }}</option>
                             @endforeach
@@ -125,7 +125,7 @@
                     <div>
                         <select wire:model.live="regionFilter"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                            <option value="">Toutes les régions</option>
+                            <option value="">{{ __('demands.all_regions') }}</option>
                             @foreach ($regions as $region)
                                 <option value="{{ $region }}">{{ $region }}</option>
                             @endforeach
@@ -135,10 +135,10 @@
                     <div>
                         <select wire:model.live="urgencyFilter"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                            <option value="">Toutes urgences</option>
-                            <option value="high">🔴 Haute</option>
-                            <option value="medium">🟡 Moyenne</option>
-                            <option value="low">🟢 Basse</option>
+                            <option value="">{{ __('demands.all_urgencies') }}</option>
+                            <option value="high">🔴 {{ __('demands.high') }}</option>
+                            <option value="medium">🟡 {{ __('demands.medium') }}</option>
+                            <option value="low">🟢 {{ __('demands.low') }}</option>
                         </select>
                     </div>
                 </div>
@@ -203,7 +203,7 @@
                                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                                     </path>
                                                 </svg>
-                                                Expire le {{ $demand->validity_date->format('d/m/Y') }}
+                                                {{ __('demands.expires_on') }} {{ $demand->validity_date->format('d/m/Y') }}
                                             </span>
                                         </div>
 
@@ -215,20 +215,20 @@
                                             <span
                                                 class="px-3 py-1 rounded-full text-xs font-semibold {{ $demand->urgency_badge_color }}">
                                                 @if ($demand->urgency === 'high')
-                                                    🔴 Haute
+                                                    🔴 {{ __('demands.high') }}
                                                 @elseif($demand->urgency === 'medium')
-                                                    🟡 Moyenne
+                                                    🟡 {{ __('demands.medium') }}
                                                 @else
-                                                    🟢 Basse
+                                                    🟢 {{ __('demands.low') }}
                                                 @endif
                                             </span>
                                             <span
                                                 class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-semibold">
-                                                👁️ {{ $demand->views_count }} vues
+                                                👁️ {{ $demand->views_count }} {{ __('demands.views') }}
                                             </span>
                                             <span
                                                 class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
-                                                💬 {{ $demand->responses->count() }} réponses
+                                                💬 {{ $demand->responses->count() }} {{ __('demands.responses') }}
                                             </span>
                                         </div>
                                     </div>
@@ -238,7 +238,7 @@
                             <div class="flex items-center space-x-2 mt-4 md:mt-0 md:ml-4">
                                 <button wire:click="viewDetails({{ $demand->id }})"
                                     class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
-                                    title="Voir détails">
+                                    title="{{ __('demands.view_details') }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -251,7 +251,7 @@
                                 @if ($demand->status === 'active')
                                     <button wire:click="openEditModal({{ $demand->id }})"
                                         class="p-2 text-primary-600 hover:bg-primary-50 rounded-lg transition"
-                                        title="Modifier">
+                                        title="{{ __('demands.edit') }}">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -262,7 +262,7 @@
 
                                     <button wire:click="updateStatus({{ $demand->id }}, 'satisfied')"
                                         class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition"
-                                        title="Marquer comme satisfaite">
+                                        title="{{ __('demands.mark_satisfied') }}">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -272,7 +272,7 @@
 
                                     <button wire:click="updateStatus({{ $demand->id }}, 'cancelled')"
                                         class="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition"
-                                        title="Annuler">
+                                        title="{{ __('demands.cancel') }}">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -283,7 +283,7 @@
                                 @endif
 
                                 <button wire:click="confirmDelete({{ $demand->id }})"
-                                    class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="Supprimer">
+                                    class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition" title="{{ __('demands.delete') }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
@@ -301,15 +301,15 @@
                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                             </path>
                         </svg>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Aucune demande trouvée</h3>
-                        <p class="text-gray-600 mb-6">Commencez par créer votre première demande</p>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ __('demands.no_demands_found') }}</h3>
+                        <p class="text-gray-600 mb-6">{{ __('demands.start_first_demand') }}</p>
                         <button wire:click="openCreateModal"
                             class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 4v16m8-8H4"></path>
                             </svg>
-                            Créer une demande
+                            {{ __('demands.create_demand') }}
                         </button>
                     </div>
                 @endforelse
@@ -368,10 +368,10 @@
                                     </div>
                                     <div>
                                         <h3 class="text-2xl font-bold text-white">
-                                            {{ $demandId ? 'Modifier la demande' : 'Nouvelle demande' }}
+                                            {{ $demandId ? __('demands.edit_demand') : __('demands.new_demand') }}
                                         </h3>
                                         <p class="text-sm text-primary-100 mt-1">
-                                            {{ $demandId ? 'Mettez à jour les informations de votre demande' : 'Publiez votre besoin auprès de nos producteurs' }}
+                                            {{ $demandId ? __('demands.update_info') : __('demands.publish_need') }}
                                         </p>
                                     </div>
                                 </div>
@@ -401,14 +401,14 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <h4 class="text-lg font-bold text-gray-900">Informations générales</h4>
+                                        <h4 class="text-lg font-bold text-gray-900">{{ __('demands.general_info') }}</h4>
                                     </div>
 
                                     <div class="space-y-6">
                                         {{-- Titre --}}
                                         <div class="space-y-1.5">
                                             <label class="block text-sm font-bold text-gray-800 ml-1">
-                                                Titre de la demande
+                                                {{ __('demands.demand_title') }}
                                                 <span class="text-red-500 ml-1">*</span>
                                             </label>
                                             <div class="relative">
@@ -424,7 +424,7 @@
                                                 </div>
                                                 <input type="text" wire:model="title"
                                                     class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:ring-opacity-50"
-                                                    placeholder="Ex: Recherche 500kg de maïs bio certifié">
+                                                    placeholder="{{ __('demands.title_placeholder') }}">
                                                 <div
                                                     class="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-400">
                                                     <span x-text="($wire.title || '').length"></span>/255
@@ -441,18 +441,16 @@
                                         {{-- Description --}}
                                         <div class="space-y-1.5">
                                             <label class="block text-sm font-bold text-gray-800 ml-1">
-                                                Description détaillée
+                                                {{ __('demands.detailed_description') }}
                                                 <span class="text-red-500 ml-1">*</span>
                                             </label>
                                             <div class="relative">
                                                 <textarea wire:model="description" rows="5"
                                                     class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:ring-opacity-50 resize-y min-h-[120px]"
-                                                    placeholder="Décrivez en détail ce que vous recherchez : spécifications, qualité, quantité, conditions de livraison..."></textarea>
+                                                    placeholder="{{ __('demands.description_placeholder') }}"></textarea>
                                             </div>
                                             <div class="flex items-center justify-between mt-2">
-                                                <p class="text-xs text-gray-500">Minimum 20 caractères pour une
-                                                    description
-                                                    complète</p>
+                                                <p class="text-xs text-gray-500">{{ __('demands.min_chars') }}</p>
                                                 <span class="text-xs"
                                                     :class="($wire.description || '').length >= 20 ? 'text-green-600' :
                                                         'text-gray-400'">
@@ -481,14 +479,14 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <h4 class="text-lg font-bold text-gray-900">Détails du produit</h4>
+                                        <h4 class="text-lg font-bold text-gray-900">{{ __('demands.product_details') }}</h4>
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {{-- Catégorie --}}
                                         <div class="space-y-1.5">
                                             <label class="block text-sm font-bold text-gray-800 ml-1">
-                                                Catégorie
+                                                {{ __('demands.category') }}
                                                 <span class="text-red-500 ml-1">*</span>
                                             </label>
                                             <div class="relative">
@@ -504,7 +502,7 @@
                                                 </div>
                                                 <select wire:model="category_id"
                                                     class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:ring-opacity-50">
-                                                    <option value="">Sélectionnez une catégorie</option>
+                                                    <option value="">{{ __('demands.select_category') }}</option>
                                                     @foreach ($categories as $category)
                                                         <option value="{{ $category->id }}">{{ $category->icon }}
                                                             {{ $category->name }}</option>
@@ -522,7 +520,7 @@
                                         {{-- Quantité --}}
                                         <div class="space-y-1.5">
                                             <label class="block text-sm font-bold text-gray-800 ml-1">
-                                                Quantité
+                                                {{ __('demands.quantity') }}
                                             </label>
                                             <div class="relative">
                                                 <div
@@ -537,7 +535,7 @@
                                                 </div>
                                                 <input type="text" wire:model="quantity"
                                                     class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:ring-opacity-50"
-                                                    placeholder="Ex: 500 kg, 20 sacs, 100 unités">
+                                                    placeholder="{{ __('demands.quantity_placeholder') }}">
                                             </div>
                                             @error('quantity')
                                                 <p
@@ -550,7 +548,7 @@
                                         {{-- Budget --}}
                                         <div class="space-y-1.5">
                                             <label class="block text-sm font-bold text-gray-800 ml-1">
-                                                Budget maximum
+                                                {{ __('demands.max_budget') }}
                                             </label>
                                             <div class="relative">
                                                 <div
@@ -565,7 +563,7 @@
                                                 </div>
                                                 <input type="number" wire:model="budget"
                                                     class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:ring-opacity-50"
-                                                    placeholder="Votre budget maximum">
+                                                    placeholder="{{ __('demands.budget_placeholder') }}">
                                                 <div
                                                     class="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-500">
                                                     FCFA
@@ -582,7 +580,7 @@
                                         {{-- Urgence --}}
                                         <div class="space-y-1.5">
                                             <label class="block text-sm font-bold text-gray-800 ml-1">
-                                                Niveau d'urgence
+                                                {{ __('demands.urgency_level') }}
                                                 <span class="text-red-500 ml-1">*</span>
                                             </label>
                                             <div class="relative">
@@ -597,10 +595,9 @@
                                                 </div>
                                                 <select wire:model="urgency"
                                                     class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:ring-opacity-50">
-                                                    <option value="low">🟢 Basse - Pas de délai strict</option>
-                                                    <option value="medium">🟡 Moyenne - Dans les prochaines semaines
-                                                    </option>
-                                                    <option value="high">🔴 Haute - Urgent, besoin rapide</option>
+                                                    <option value="low">🟢 {{ __('demands.low_urgency') }}</option>
+                                                    <option value="medium">🟡 {{ __('demands.medium_urgency') }}</option>
+                                                    <option value="high">🔴 {{ __('demands.high_urgency') }}</option>
                                                 </select>
                                             </div>
                                             @error('urgency')
@@ -626,14 +623,14 @@
                                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             </svg>
                                         </div>
-                                        <h4 class="text-lg font-bold text-gray-900">Localisation</h4>
+                                        <h4 class="text-lg font-bold text-gray-900">{{ __('demands.location') }}</h4>
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {{-- Région --}}
                                         <div class="space-y-1.5">
                                             <label class="block text-sm font-bold text-gray-800 ml-1">
-                                                Région
+                                                {{ __('demands.region') }}
                                                 <span class="text-red-500 ml-1">*</span>
                                             </label>
                                             <div class="relative">
@@ -649,7 +646,7 @@
                                                 </div>
                                                 <select wire:model="region"
                                                     class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:ring-opacity-50">
-                                                    <option value="">Sélectionnez une région</option>
+                                                    <option value="">{{ __('demands.select_region') }}</option>
                                                     @foreach ($regions as $reg)
                                                         <option value="{{ $reg }}">{{ $reg }}
                                                         </option>
@@ -667,7 +664,7 @@
                                         {{-- Ville --}}
                                         <div class="space-y-1.5">
                                             <label class="block text-sm font-bold text-gray-800 ml-1">
-                                                Ville
+                                                {{ __('demands.city') }}
                                                 <span class="text-red-500 ml-1">*</span>
                                             </label>
                                             <div class="relative">
@@ -683,7 +680,7 @@
                                                 </div>
                                                 <input type="text" wire:model="city"
                                                     class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200 focus:ring-opacity-50"
-                                                    placeholder="Ex: Douala, Yaoundé, Bafoussam">
+                                                    placeholder="{{ __('demands.city_placeholder') }}">
                                             </div>
                                             @error('city')
                                                 <p
@@ -707,14 +704,14 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <h4 class="text-lg font-bold text-gray-900">Validité de la demande</h4>
+                                        <h4 class="text-lg font-bold text-gray-900">{{ __('demands.demand_validity') }}</h4>
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {{-- Date de validité --}}
                                         <div class="space-y-1.5">
                                             <label class="block text-sm font-bold text-gray-800 ml-1">
-                                                Date de validité
+                                                {{ __('demands.validity_date') }}
                                                 <span class="text-red-500 ml-1">*</span>
                                             </label>
                                             <div class="relative">
@@ -739,7 +736,7 @@
                                                         stroke-width="2"
                                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                 </svg>
-                                                Jusqu'à quand votre demande reste-t-elle valable ?
+                                                {{ __('demands.validity_question') }}
                                             </p>
                                             @error('validity_date')
                                                 <p
@@ -752,7 +749,7 @@
                                         {{-- Indicateur de statut --}}
                                         <div class="space-y-1.5">
                                             <label class="block text-sm font-bold text-gray-800 ml-1">
-                                                Statut de la demande
+                                                {{ __('demands.demand_status') }}
                                             </label>
                                             <div
                                                 class="flex items-center space-x-4 p-4 bg-gray-50 border-2 border-gray-200 rounded-xl">
@@ -787,8 +784,7 @@
                                                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
                                             </path>
                                         </svg>
-                                        <span>Tous les champs marqués d'un <span class="text-red-500">*</span> sont
-                                            obligatoires</span>
+                                        <span>{{ __('demands.required_fields') }}</span>
                                     </div>
 
                                     {{-- Boutons --}}
@@ -796,7 +792,7 @@
                                         {{-- Bouton Annuler --}}
                                         <button type="button" @click="show = false" wire:loading.attr="disabled"
                                             class="px-6 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-white hover:shadow-sm transition-all focus:ring-2 focus:ring-gray-200">
-                                            Annuler
+                                            {{ __('demands.cancel') }}
                                         </button>
 
                                         {{-- Bouton Soumettre --}}
@@ -815,7 +811,7 @@
                                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                                     </path>
                                                 </svg>
-                                                <span>{{ $demandId ? 'Mise à jour...' : 'Création...' }}</span>
+                                                <span>{{ $demandId ? __('demands.updating') : __('demands.creating') }}</span>
                                             </div>
 
                                             {{-- State: Normal --}}
@@ -826,7 +822,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2" d="M5 13l4 4L19 7"></path>
                                                 </svg>
-                                                <span>{{ $demandId ? 'Mettre à jour' : 'Créer la demande' }}</span>
+                                                <span>{{ $demandId ? __('demands.update') : __('demands.create_demand') }}</span>
                                             </div>
                                         </button>
                                     </div>
@@ -861,18 +857,17 @@
                         </svg>
                     </div>
 
-                    <h3 class="text-xl font-bold text-gray-900 text-center mb-2">Supprimer la demande</h3>
-                    <p class="text-gray-600 text-center mb-6">Êtes-vous sûr de vouloir supprimer cette demande ?
-                        Cette action est irréversible.</p>
+                    <h3 class="text-xl font-bold text-gray-900 text-center mb-2">{{ __('demands.delete_demand') }}</h3>
+                    <p class="text-gray-600 text-center mb-6">{{ __('demands.delete_confirmation') }}</p>
 
                     <div class="flex space-x-3">
                         <button wire:click="$set('showDeleteModal', false)"
                             class="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition">
-                            Annuler
+                            {{ __('demands.cancel') }}
                         </button>
                         <button wire:click="deleteDemand"
                             class="flex-1 px-4 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition">
-                            Supprimer
+                            {{ __('demands.delete') }}
                         </button>
                     </div>
                 </div>
@@ -920,9 +915,9 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 class="text-2xl font-bold text-white">Détails de la demande</h3>
+                                    <h3 class="text-2xl font-bold text-white">{{ __('demands.demand_details') }}</h3>
                                     <p class="text-sm text-primary-100 mt-1">
-                                        Informations complètes et réponses reçues
+                                        {{ __('demands.complete_info_responses') }}
                                     </p>
                                 </div>
                             </div>
@@ -961,16 +956,16 @@
                                             <span
                                                 class="px-3 py-1.5 rounded-full text-xs font-semibold {{ $selectedDemand->urgency_badge_color }} border border-white/50">
                                                 @if ($selectedDemand->urgency === 'high')
-                                                    🔴 Urgence haute
+                                                    🔴 {{ __('demands.high_urgency') }}
                                                 @elseif($selectedDemand->urgency === 'medium')
-                                                    🟡 Urgence moyenne
+                                                    🟡 {{ __('demands.medium_urgency') }}
                                                 @else
-                                                    🟢 Urgence basse
+                                                    🟢 {{ __('demands.low_urgency') }}
                                                 @endif
                                             </span>
                                             <span
                                                 class="px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-200">
-                                                👁️ {{ $selectedDemand->views_count }} vues
+                                                👁️ {{ $selectedDemand->views_count }} {{ __('demands.views') }}
                                             </span>
                                         </div>
                                         <p class="text-gray-700 leading-relaxed">{{ $selectedDemand->description }}
@@ -990,7 +985,7 @@
                                             </path>
                                         </svg>
                                     </div>
-                                    <h4 class="text-lg font-bold text-gray-900">Informations détaillées</h4>
+                                    <h4 class="text-lg font-bold text-gray-900">{{ __('demands.detailed_info') }}</h4>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1004,7 +999,7 @@
                                                     d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
                                                 </path>
                                             </svg>
-                                            <span class="text-sm font-semibold">Catégorie</span>
+                                            <span class="text-sm font-semibold">{{ __('demands.category') }}</span>
                                         </div>
                                         <p class="text-gray-900 font-bold text-lg">
                                             {{ $selectedDemand->category->name }}</p>
@@ -1022,7 +1017,7 @@
                                                         d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
                                                     </path>
                                                 </svg>
-                                                <span class="text-sm font-semibold">Quantité demandée</span>
+                                                <span class="text-sm font-semibold">{{ __('demands.quantity_requested') }}</span>
                                             </div>
                                             <p class="text-gray-900 font-bold text-lg">{{ $selectedDemand->quantity }}
                                             </p>
@@ -1041,7 +1036,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             </svg>
-                                            <span class="text-sm font-semibold">Localisation</span>
+                                            <span class="text-sm font-semibold">{{ __('demands.location') }}</span>
                                         </div>
                                         <p class="text-gray-900 font-bold text-lg">{{ $selectedDemand->city }},
                                             {{ $selectedDemand->region }}</p>
@@ -1059,7 +1054,7 @@
                                                         d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
                                                     </path>
                                                 </svg>
-                                                <span class="text-sm font-semibold">Budget maximum</span>
+                                                <span class="text-sm font-semibold">{{ __('demands.max_budget') }}</span>
                                             </div>
                                             <p class="text-gray-900 font-bold text-lg">
                                                 {{ number_format($selectedDemand->budget, 0, ',', ' ') }} FCFA
@@ -1077,7 +1072,7 @@
                                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                                 </path>
                                             </svg>
-                                            <span class="text-sm font-semibold">Valide jusqu'au</span>
+                                            <span class="text-sm font-semibold">{{ __('demands.valid_until') }}</span>
                                         </div>
                                         <p class="text-gray-900 font-bold text-lg">
                                             {{ $selectedDemand->validity_date->format('d/m/Y') }}
@@ -1096,7 +1091,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                             </svg>
-                                            <span class="text-sm font-semibold">Publiée le</span>
+                                            <span class="text-sm font-semibold">{{ __('demands.published_on') }}</span>
                                         </div>
                                         <p class="text-gray-900 font-bold text-lg">
                                             {{ $selectedDemand->created_at->format('d/m/Y') }}
@@ -1120,7 +1115,7 @@
                                         </svg>
                                     </div>
                                     <div class="flex items-center gap-3">
-                                        <h4 class="text-lg font-bold text-gray-900">Réponses reçues</h4>
+                                        <h4 class="text-lg font-bold text-gray-900">{{ __('demands.received_responses') }}</h4>
                                         <span
                                             class="bg-primary-500 text-white text-sm font-semibold px-3 py-1 rounded-full">
                                             {{ $selectedDemand->responses->count() }}
@@ -1168,7 +1163,7 @@
                                                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
                                                         </path>
                                                     </svg>
-                                                    <span class="font-semibold text-gray-700">Prix proposé:</span>
+                                                    <span class="font-semibold text-gray-700">{{ __('demands.proposed_price') }}:</span>
                                                     <span class="ml-2 text-gray-900 font-bold">
                                                         {{ number_format($response->proposed_price, 0, ',', ' ') }}
                                                         FCFA
@@ -1185,7 +1180,7 @@
                                                             d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
                                                         </path>
                                                     </svg>
-                                                    <span class="font-semibold text-gray-700">Contact:</span>
+                                                    <span class="font-semibold text-gray-700">{{ __('demands.contact') }}:</span>
                                                     <span
                                                         class="ml-2 text-gray-900 font-mono">{{ $response->contact_phone }}</span>
                                                 </div>
@@ -1201,10 +1196,9 @@
                                                 d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
                                             </path>
                                         </svg>
-                                        <h5 class="text-lg font-semibold text-gray-600 mb-2">Aucune réponse pour le
-                                            moment</h5>
+                                        <h5 class="text-lg font-semibold text-gray-600 mb-2">{{ __('demands.no_responses_yet') }}</h5>
                                         <p class="text-gray-500 max-w-sm mx-auto">
-                                            Cette demande n'a pas encore reçu de réponses de la part des producteurs.
+                                            {{ __('demands.no_responses_description') }}
                                         </p>
                                     </div>
                                 @endforelse
@@ -1221,33 +1215,33 @@
             Alpine.data('demandForm', () => ({
                 getValidityStatus() {
                     const validityDate = this.$wire.get('validity_date');
-                    if (!validityDate) return '⏳ Date non définie';
+                    if (!validityDate) return '⏳ {{ __('demands.date_not_set') }}';
 
                     const today = new Date();
                     const validUntil = new Date(validityDate);
                     const diffTime = validUntil - today;
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                    if (diffDays < 0) return '❌ Expirée';
-                    if (diffDays === 0) return '🟡 Expire aujourd\'hui';
-                    if (diffDays <= 7) return '🟠 Expire bientôt';
-                    if (diffDays <= 30) return '🟢 Valide';
-                    return '✅ Longue durée';
+                    if (diffDays < 0) return '❌ {{ __('demands.expired') }}';
+                    if (diffDays === 0) return '🟡 {{ __('demands.expires_today') }}';
+                    if (diffDays <= 7) return '🟠 {{ __('demands.expires_soon') }}';
+                    if (diffDays <= 30) return '🟢 {{ __('demands.valid') }}';
+                    return '✅ {{ __('demands.long_term') }}';
                 },
 
                 getValidityDays() {
                     const validityDate = this.$wire.get('validity_date');
-                    if (!validityDate) return 'Définissez une date de validité';
+                    if (!validityDate) return '{{ __('demands.set_validity_date') }}';
 
                     const today = new Date();
                     const validUntil = new Date(validityDate);
                     const diffTime = validUntil - today;
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                    if (diffDays < 0) return 'La demande a expiré';
-                    if (diffDays === 0) return 'Expire aujourd\'hui';
-                    if (diffDays === 1) return '1 jour restant';
-                    return `${diffDays} jours restants`;
+                    if (diffDays < 0) return '{{ __('demands.demand_expired') }}';
+                    if (diffDays === 0) return '{{ __('demands.expires_today') }}';
+                    if (diffDays === 1) return '{{ __('demands.one_day_left') }}';
+                    return `${diffDays} {{ __('demands.days_left') }}`;
                 }
             }));
         });

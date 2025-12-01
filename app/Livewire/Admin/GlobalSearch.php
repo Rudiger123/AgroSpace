@@ -83,7 +83,7 @@ class GlobalSearch extends Component
                         'excerpt' => $this->getExcerpt($post->excerpt ?? strip_tags($post->content), 80),
                         'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>',
                         'color' => 'text-purple-600 bg-purple-100',
-                        'label' => 'Article',
+                        'label' => __('search.article'),
                         'url' => route('blog.show', $post->slug),
                         'author' => $post->author->name ?? 'N/A',
                         'date' => $post->created_at->format('d/m/Y'),
@@ -120,7 +120,7 @@ class GlobalSearch extends Component
                             'excerpt' => $this->getExcerpt($offer->description, 80),
                             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>',
                             'color' => 'text-green-600 bg-green-100',
-                            'label' => 'Offre',
+                            'label' => __('search.offer'),
                             'url' => route('offers-list', ['search' => $offer->titre]),
                             'author' => $offer->producer->name ?? 'N/A',
                             'date' => $offer->created_at->format('d/m/Y'),
@@ -158,7 +158,7 @@ class GlobalSearch extends Component
                             'excerpt' => $this->getExcerpt($demand->description, 80),
                             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>',
                             'color' => 'text-orange-600 bg-orange-100',
-                            'label' => 'Demande',
+                            'label' => __('search.demand'),
                             'url' => route('demands-list', ['search' => $demand->title]),
                             'author' => $demand->user->name ?? 'N/A',
                             'date' => $demand->created_at->format('d/m/Y'),
@@ -181,12 +181,12 @@ class GlobalSearch extends Component
                             'type' => 'category',
                             'id' => $category->id,
                             'title' => $category->name,
-                            'excerpt' => $category->description ?? 'Catégorie',
+                            'excerpt' => $category->description ?? __('search.category_default_desc'),
                             'icon' => $category->icon ?? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>',
                             'color' => 'text-blue-600 bg-blue-100',
-                            'label' => 'Catégorie',
+                            'label' => __('search.category'),
                             'url' => route('categories.index', ['search' => $category->name]),
-                            'author' => 'Système',
+                            'author' => __('search.system'),
                             'date' => $category->created_at->format('d/m/Y'),
                             'status' => $category->is_active ? 'active' : 'inactive',
                         ];
@@ -208,9 +208,9 @@ class GlobalSearch extends Component
                     ->get()
                     ->map(function ($user) {
                         $roleLabels = [
-                            1 => 'Administrateur',
-                            2 => 'Producteur',
-                            3 => 'Consommateur',
+                            1 => __('search.admin'),
+                            2 => __('search.producer'),
+                            3 => __('search.consumer'),
                         ];
 
                         return [
@@ -220,9 +220,9 @@ class GlobalSearch extends Component
                             'excerpt' => $user->email,
                             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>',
                             'color' => 'text-indigo-600 bg-indigo-100',
-                            'label' => $roleLabels[$user->role_id] ?? 'Utilisateur',
+                            'label' => $roleLabels[$user->role_id] ?? __('search.user'),
                             'url' => route('users-management', ['search' => $user->name]),
-                            'author' => $roleLabels[$user->role_id] ?? 'Utilisateur',
+                            'author' => $roleLabels[$user->role_id] ?? __('search.user'),
                             'date' => $user->created_at->format('d/m/Y'),
                             'status' => $user->status,
                         ];
@@ -243,13 +243,13 @@ class GlobalSearch extends Component
                         return [
                             'type' => 'comment',
                             'id' => $comment->id,
-                            'title' => 'Commentaire sur: ' . ($comment->post->title ?? 'Article supprimé'),
+                            'title' => __('search.comment_on') . ($comment->post->title ?? __('search.deleted_article')),
                             'excerpt' => $this->getExcerpt($comment->content, 80),
                             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>',
                             'color' => 'text-pink-600 bg-pink-100',
-                            'label' => 'Commentaire',
+                            'label' => __('search.comment'),
                             'url' => route('admin.blog.comments.index') . '?search=' . $comment->id,
-                            'author' => $comment->user->name ?? 'Anonyme',
+                            'author' => $comment->user->name ?? __('search.anonymous'),
                             'date' => $comment->created_at->format('d/m/Y'),
                             'status' => $comment->status,
                         ];
@@ -276,9 +276,9 @@ class GlobalSearch extends Component
                             'excerpt' => $subscriber->email,
                             'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>',
                             'color' => 'text-teal-600 bg-teal-100',
-                            'label' => 'Newsletter',
+                            'label' => __('search.newsletter'),
                             'url' => route('admin.newsletter.list') . '?search=' . $subscriber->email,
-                            'author' => 'Abonné',
+                            'author' => __('search.subscriber'),
                             'date' => $subscriber->created_at->format('d/m/Y'),
                             'status' => $subscriber->isActive() ? 'active' : 'unsubscribed',
                         ];

@@ -25,7 +25,7 @@ new #[Layout('layouts.guest')] class extends Component {
             ActivityLog::log('login_banned', "Tentative de connexion bloquée (compte banni) : {$user->email}");
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Votre compte a été définitivement suspendu. Contactez le support.',
+                'message' => __('auth.login_banned_message'),
             ]);
             return;
         }
@@ -36,14 +36,14 @@ new #[Layout('layouts.guest')] class extends Component {
             ActivityLog::log('login_suspended', "Tentative de connexion bloquée (compte suspendu) : {$user->email}");
             $this->dispatch('toast', [
                 'type' => 'warning',
-                'message' => 'Votre compte est temporairement suspendu. Vérifiez vos e-mails ou contactez le support.',
+                'message' => __('auth.login_suspended_message'),
             ]);
             return;
         }
 
         // 3. Si tout est OK on continue
         Session::regenerate();
-        ActivityLog::log('login', 'Connexion réussie');
+        ActivityLog::log('login', __('auth.login_success'));
 
         // 4. 2FA éventuel
         if ($user->hasTwoFactorEnabled()) {
@@ -56,7 +56,7 @@ new #[Layout('layouts.guest')] class extends Component {
 
         $this->dispatch('toast', [
             'type' => 'success',
-            'message' => "Bienvenue {$user->name} !",
+            'message' => __('auth.welcome_message', ['name' => $user->name]),
         ]);
 
         return redirect()->intended($this->redirectPath());
@@ -87,18 +87,17 @@ new #[Layout('layouts.guest')] class extends Component {
                     <!-- Logo -->
                     <div class="flex items-center gap-2 mb-8">
                         <img src="{{ asset('images/logo.png') }}" class="h-10 w-10"
-                            alt="Agrospace la plateforme de mise en relation des acteurs du secteur agropastorale">
-                        <span class="text-2xl font-bold text-[#16a34a]">Agrospace</span>
+                            alt="{{ __('auth.logo_alt') }}">
+                        <span class="text-2xl font-bold text-[#16a34a]">{{ __('app.name') }}</span>
                     </div>
 
                     <!-- Titre -->
                     <div class="mb-8">
                         <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">
-                            Bon retour parmi nous ! 👋
+                            {{ __('auth.welcome_back') }} 👋
                         </h1>
                         <p class="text-gray-600">
-                            Connectez-vous pour accéder à votre espace et continuer à développer votre activité
-                            agricole.
+                            {{ __('auth.login_subtitle') }}
                         </p>
                     </div>
 
@@ -107,7 +106,7 @@ new #[Layout('layouts.guest')] class extends Component {
                         <!-- Email -->
                         <div>
                             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-                                Adresse email
+                                {{ __('auth.email_address') }}
                             </label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -118,7 +117,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                     </svg>
                                 </div>
                                 <input type="email" id="email" wire:model="form.email"
-                                    placeholder="exemple@email.com"
+                                    placeholder="{{ __('auth.email_placeholder') }}"
                                     class="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#16a34a] focus:border-transparent transition"
                                     required />
                             </div>
@@ -138,14 +137,14 @@ new #[Layout('layouts.guest')] class extends Component {
                         <div>
                             <div class="flex items-center justify-between mb-2">
                                 <label for="password" class="block text-sm font-semibold text-gray-700">
-                                    Mot de passe
+                                    {{ __('auth.password') }}
                                 </label>
                                 <a href="{{ route('password.request') }}" wire:navigate
                                     class="text-sm text-[#16a34a] hover:text-[#15803d] font-medium transition">
-                                    Mot de passe oublié ?
+                                    {{ __('auth.forgot_password') }}
                                 </a>
                             </div>
-                            <div x-data.ignore="{ showPassword: false }" class="relative">
+                            <div x-data="{ showPassword: false }" class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -169,7 +168,8 @@ new #[Layout('layouts.guest')] class extends Component {
                                     <svg x-show="showPassword" x-cloak class="w-5 h-5" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M3 3l3.59 3.59m0 0a9.953 9.953 0 012.82-1.872" />
+                                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21">
+                                    </path>
                                     </svg>
                                 </button>
                             </div>
@@ -190,14 +190,14 @@ new #[Layout('layouts.guest')] class extends Component {
                             <input type="checkbox" wire:model="form.remember" id="remember"
                                 class="w-4 h-4 text-[#16a34a] border-gray-300 rounded focus:ring-[#16a34a]" />
                             <label for="remember" class="ml-2 text-sm text-gray-700">
-                                Se souvenir de moi
+                                {{ __('auth.remember_me') }}
                             </label>
                         </div>
 
                         <!-- Submit Button -->
                         <button type="submit" wire:loading.attr="disabled"
                             class="w-full bg-[#16a34a] hover:bg-[#15803d] text-white py-4 rounded-xl font-semibold transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                            <span wire:loading.remove>Se connecter</span>
+                            <span wire:loading.remove>{{ __('auth.login') }}</span>
                             <span wire:loading class="flex items-center gap-2">
                                 <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -206,40 +206,17 @@ new #[Layout('layouts.guest')] class extends Component {
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                     </path>
                                 </svg>
-                                Connexion en cours...
+                                {{ __('auth.logging_in') }}
                             </span>
                         </button>
                     </form>
 
-                    <!-- Séparateur -->
-                    {{-- <div class="flex items-center my-6">
-                        <hr class="flex-1 border-gray-300" />
-                        <span class="px-3 text-gray-400 text-sm font-medium">OU</span>
-                        <hr class="flex-1 border-gray-300" />
-                    </div> --}}
-
-                    <!-- Boutons sociaux -->
-                    {{-- <div class="grid grid-cols-2 gap-3">
-                        <button type="button"
-                            class="flex items-center justify-center gap-2 border-2 border-gray-300 rounded-xl py-3 hover:border-[#16a34a] hover:bg-gray-50 transition-all group">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                                class="w-5 h-5" alt="Google" />
-                            <span class="font-medium text-gray-700 group-hover:text-[#16a34a]">Google</span>
-                        </button>
-                        <button type="button"
-                            class="flex items-center justify-center gap-2 border-2 border-gray-300 rounded-xl py-3 hover:border-[#16a34a] hover:bg-gray-50 transition-all group">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
-                                class="w-5 h-5" alt="Facebook" />
-                            <span class="font-medium text-gray-700 group-hover:text-[#16a34a]">Facebook</span>
-                        </button>
-                    </div> --}}
-
                     <!-- Lien inscription -->
                     <p class="text-center text-gray-600 mt-8">
-                        Vous n'avez pas encore de compte ?
+                        {{ __('auth.no_account') }}
                         <a href="{{ route('register') }}" wire:navigate
                             class="text-[#16a34a] hover:text-[#15803d] font-semibold transition">
-                            Créer un compte gratuitement
+                            {{ __('auth.create_account') }}
                         </a>
                     </p>
 
@@ -251,7 +228,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
-                            Retour à l'accueil
+                            {{ __('auth.back_home') }}
                         </a>
                     </div>
                 </div>
@@ -262,21 +239,21 @@ new #[Layout('layouts.guest')] class extends Component {
                 <div x-data="{
                     slides: [{
                             image: 'images/photo-1625246333195-78d9c38ad449.jpeg',
-                            title: 'Connectez-vous avec les producteurs locaux',
-                            subtitle: 'Accédez à des centaines d\'offres agricoles vérifiées et établissez des partenariats durables.',
-                            cta: 'Valorisez votre production dès aujourd\'hui'
+                            title: '{{ __('auth.carousel_title_1') }}',
+                            subtitle: '{{ __('auth.carousel_subtitle_1') }}',
+                            cta: '{{ __('auth.carousel_cta_1') }}'
                         },
                         {
                             image: 'images/photo-1574943320219-553eb213f72d.avif',
-                            title: 'Développez votre réseau professionnel',
-                            subtitle: 'Rejoignez une communauté de plus de 500 producteurs et consommateurs engagés.',
-                            cta: 'Faites grandir votre activité agricole'
+                            title: '{{ __('auth.carousel_title_2') }}',
+                            subtitle: '{{ __('auth.carousel_subtitle_2') }}',
+                            cta: '{{ __('auth.carousel_cta_2') }}'
                         },
                         {
                             image: 'images/photo-1500382017468-9049fed747ef.jpeg',
-                            title: 'Gagnez en visibilité et en efficacité',
-                            subtitle: 'Des outils simples et puissants pour gérer vos offres, demandes et échanges en temps réel.',
-                            cta: 'Simplifiez vos transactions agricoles'
+                            title: '{{ __('auth.carousel_title_3') }}',
+                            subtitle: '{{ __('auth.carousel_subtitle_3') }}',
+                            cta: '{{ __('auth.carousel_cta_3') }}'
                         }
                     ],
                     currentSlide: 0
@@ -300,7 +277,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                     <!-- Badge -->
                                     <div
                                         class="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold">
-                                        🌾 Agrospace - Votre réseau agricole
+                                        🌾 {{ __('auth.carousel_badge') }}
                                     </div>
 
                                     <!-- Titre principal -->
@@ -323,15 +300,15 @@ new #[Layout('layouts.guest')] class extends Component {
                                     <div class="flex gap-8 pt-6">
                                         <div class="space-y-1">
                                             <p class="text-3xl font-bold">500+</p>
-                                            <p class="text-sm text-gray-300">Producteurs actifs</p>
+                                            <p class="text-sm text-gray-300">{{ __('auth.active_producers') }}</p>
                                         </div>
                                         <div class="space-y-1">
                                             <p class="text-3xl font-bold">1,200+</p>
-                                            <p class="text-sm text-gray-300">Connexions créées</p>
+                                            <p class="text-sm text-gray-300">{{ __('auth.connections_created') }}</p>
                                         </div>
                                         <div class="space-y-1">
                                             <p class="text-3xl font-bold">30+</p>
-                                            <p class="text-sm text-gray-300">Régions couvertes</p>
+                                            <p class="text-sm text-gray-300">{{ __('auth.covered_regions') }}</p>
                                         </div>
                                     </div>
                                 </div>

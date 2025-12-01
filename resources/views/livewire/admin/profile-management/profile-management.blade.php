@@ -11,9 +11,9 @@
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
                         </span>
-                        <span>Mon Profil</span>
+                        <span>{{ __('profile.my_profile') }}</span>
                     </h1>
-                    <p class="text-gray-500 mt-1">Gérez vos informations personnelles et vos préférences</p>
+                    <p class="text-gray-500 mt-1">{{ __('profile.manage_info') }}</p>
                 </div>
                 <a href="{{ route('dashboard') }}" wire:navigate
                     class="flex items-center space-x-2 text-gray-600 hover:text-primary-600 transition">
@@ -21,7 +21,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
-                    <span>Retour au dashboard</span>
+                    <span>{{ __('profile.back_to_dashboard') }}</span>
                 </a>
             </div>
         </div>
@@ -36,7 +36,7 @@
                         <div class="text-center mb-6 relative" x-data="{ uploading: false }">
                             <div class="relative inline-block">
                                 @if ($avatar)
-                                    <img src="{{ Storage::url($avatar) }}" alt="Avatar"
+                                    <img src="{{ Storage::url($avatar) }}" alt="{{ __('profile.avatar_alt') }}"
                                         class="w-24 h-24 rounded-full object-cover mx-auto ring-4 ring-primary-100">
                                 @else
                                     <div
@@ -64,14 +64,14 @@
                                     <div
                                         class="animate-spin rounded-full h-4 w-4 border-2 border-primary-500 border-t-transparent">
                                     </div>
-                                    <span class="text-sm text-gray-600">Upload...</span>
+                                    <span class="text-sm text-gray-600">{{ __('profile.uploading') }}</span>
                                 </div>
                             </div>
 
                             @if ($newAvatar)
                                 <button wire:click="updateAvatar"
                                     class="mt-3 bg-primary-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-600 transition">
-                                    Enregistrer la photo
+                                    {{ __('profile.save_photo') }}
                                 </button>
                             @endif
                         </div>
@@ -95,7 +95,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
-                                <span class="font-medium">Informations</span>
+                                <span class="font-medium">{{ __('profile.informations') }}</span>
                             </button>
 
                             <button @click="activeTab = 'statistiques'"
@@ -107,7 +107,7 @@
                                         d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
                                     </path>
                                 </svg>
-                                <span class="font-medium">Statistiques</span>
+                                <span class="font-medium">{{ __('profile.statistics') }}</span>
                             </button>
 
                             <button @click="activeTab = 'securite'"
@@ -119,7 +119,7 @@
                                         d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
                                     </path>
                                 </svg>
-                                <span class="font-medium">Sécurité</span>
+                                <span class="font-medium">{{ __('profile.security') }}</span>
                             </button>
 
                             <button @click="activeTab = 'activite'"
@@ -130,7 +130,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                 </svg>
-                                <span class="font-medium">Activité</span>
+                                <span class="font-medium">{{ __('profile.activity') }}</span>
                             </button>
 
                             <button @click="activeTab = 'danger'"
@@ -141,7 +141,7 @@
                                         d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
                                     </path>
                                 </svg>
-                                <span class="font-medium">Zone dangereuse</span>
+                                <span class="font-medium">{{ __('profile.danger_zone') }}</span>
                             </button>
                         </nav>
                     </div>
@@ -158,8 +158,8 @@
                         <div class="bg-white rounded-2xl shadow-lg p-8 glass-effect">
                             <div class="flex items-center justify-between mb-6">
                                 <div>
-                                    <h2 class="text-2xl font-bold text-gray-800">Informations personnelles</h2>
-                                    <p class="text-sm text-gray-500">Gérez vos informations de profil</p>
+                                    <h2 class="text-2xl font-bold text-gray-800">{{ __('profile.personal_info') }}</h2>
+                                    <p class="text-sm text-gray-500">{{ __('profile.manage_profile_info') }}</p>
                                 </div>
                                 @if (!$isEditing)
                                     <button wire:click="toggleEdit"
@@ -170,7 +170,7 @@
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
                                             </path>
                                         </svg>
-                                        <span>Modifier</span>
+                                        <span>{{ __('profile.edit') }}</span>
                                     </button>
                                 @endif
                             </div>
@@ -181,7 +181,7 @@
                                     <!-- Nom complet -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Nom complet <span class="text-red-500">*</span>
+                                            {{ __('profile.full_name') }} <span class="text-red-500">*</span>
                                         </label>
                                         <div class="relative">
                                             <input type="text" wire:model.defer="name"
@@ -206,12 +206,12 @@
                                     <!-- Téléphone -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Téléphone
+                                            {{ __('profile.phone') }}
                                         </label>
                                         <div class="relative">
                                             <input type="tel" wire:model.defer="phone"
                                                 :disabled="!{{ $isEditing ? 'true' : 'false' }}"
-                                                placeholder="+237 6 90 12 34 56"
+                                                placeholder="{{ __('profile.phone_placeholder') }}"
                                                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition disabled:bg-gray-100 disabled:cursor-not-allowed">
                                             <div
                                                 class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -232,12 +232,12 @@
                                     <!-- Localisation -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Localisation
+                                            {{ __('profile.location') }}
                                         </label>
                                         <div class="relative">
                                             <input type="text" wire:model.defer="location"
                                                 :disabled="!{{ $isEditing ? 'true' : 'false' }}"
-                                                placeholder="Douala, Littoral"
+                                                placeholder="{{ __('profile.location_placeholder') }}"
                                                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition disabled:bg-gray-100 disabled:cursor-not-allowed">
                                             <div
                                                 class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -260,7 +260,7 @@
                                     <!-- Email (lecture seule, modification via modal séparée) -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Email
+                                            {{ __('profile.email') }}
                                         </label>
                                         <div class="relative">
                                             <input type="email" value="{{ $email }}" disabled
@@ -268,34 +268,33 @@
                                             <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                                                 <button type="button" @click="$wire.set('activeTab', 'securite')"
                                                     class="text-primary-600 hover:text-primary-700 text-sm font-medium">
-                                                    Modifier
+                                                    {{ __('profile.modify') }}
                                                 </button>
                                             </div>
                                         </div>
-                                        <p class="text-xs text-gray-500 mt-1">Pour modifier votre email, rendez-vous
-                                            dans l'onglet Sécurité</p>
+                                        <p class="text-xs text-gray-500 mt-1">{{ __('profile.email_modify_help') }}</p>
                                     </div>
                                 </div>
 
                                 <!-- Bio -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Biographie
+                                        {{ __('profile.bio') }}
                                     </label>
                                     <textarea wire:model.defer="bio" :disabled="!{{ $isEditing ? 'true' : 'false' }}" rows="4"
-                                        placeholder="Parlez-nous de vous..."
+                                        placeholder="{{ __('profile.bio_placeholder') }}"
                                         class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition disabled:bg-gray-100 disabled:cursor-not-allowed"></textarea>
                                     @error('bio')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
-                                    <p class="text-xs text-gray-500 mt-1">Maximum 500 caractères</p>
+                                    <p class="text-xs text-gray-500 mt-1">{{ __('profile.bio_max_chars') }}</p>
                                 </div>
 
                                 @if ($isEditing)
                                     <div class="flex items-center justify-end space-x-3 pt-4 border-t">
                                         <button type="button" wire:click="toggleEdit"
                                             class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition">
-                                            Annuler
+                                            {{ __('profile.cancel') }}
                                         </button>
                                         <button type="submit"
                                             class="px-6 py-3 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition flex items-center space-x-2">
@@ -304,7 +303,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M5 13l4 4L19 7"></path>
                                             </svg>
-                                            <span>Enregistrer les modifications</span>
+                                            <span>{{ __('profile.save_changes') }}</span>
                                         </button>
                                     </div>
                                 @endif
@@ -318,7 +317,7 @@
                         x-transition:enter-end="opacity-100 transform translate-y-0" class="space-y-6">
 
                         <div class="bg-white rounded-2xl shadow-lg p-8 glass-effect">
-                            <h2 class="text-2xl font-bold text-gray-800 mb-6">Mes statistiques</h2>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-6">{{ __('profile.my_statistics') }}</h2>
 
                             @if (auth()->user()->isProducer())
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -336,9 +335,9 @@
                                             </div>
                                             <span class="text-3xl font-bold">{{ $stats['total_offers'] ?? 0 }}</span>
                                         </div>
-                                        <p class="text-white/90">Offres totales</p>
+                                        <p class="text-white/90">{{ __('profile.total_offers') }}</p>
                                         <p class="text-xs text-white/70 mt-1">{{ $stats['active_offers'] ?? 0 }}
-                                            actives</p>
+                                            {{ __('profile.active') }}</p>
                                     </div>
 
                                     <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
@@ -354,9 +353,9 @@
                                             <span
                                                 class="text-3xl font-bold">{{ $stats['conversion_rate'] ?? 0 }}%</span>
                                         </div>
-                                        <p class="text-white/90">Taux de conversion</p>
+                                        <p class="text-white/90">{{ __('profile.conversion_rate') }}</p>
                                         <p class="text-xs text-white/70 mt-1">{{ $stats['completed_offers'] ?? 0 }}
-                                            finalisées</p>
+                                            {{ __('profile.finalized') }}</p>
                                     </div>
 
                                     <div
@@ -375,9 +374,9 @@
                                             </div>
                                             <span class="text-3xl font-bold">{{ $stats['total_views'] ?? 0 }}</span>
                                         </div>
-                                        <p class="text-white/90">Vues totales</p>
+                                        <p class="text-white/90">{{ __('profile.total_views') }}</p>
                                         <p class="text-xs text-white/70 mt-1">{{ $stats['total_contacts'] ?? 0 }}
-                                            contacts</p>
+                                            {{ __('profile.contacts') }}</p>
                                     </div>
                                 </div>
                             @elseif(auth()->user()->isConsumer())
@@ -396,9 +395,9 @@
                                             </div>
                                             <span class="text-3xl font-bold">{{ $stats['total_demands'] ?? 0 }}</span>
                                         </div>
-                                        <p class="text-white/90">Demandes totales</p>
+                                        <p class="text-white/90">{{ __('profile.total_demands') }}</p>
                                         <p class="text-xs text-white/70 mt-1">{{ $stats['active_demands'] ?? 0 }}
-                                            actives</p>
+                                            {{ __('profile.active') }}</p>
                                     </div>
 
                                     <div
@@ -414,9 +413,9 @@
                                             <span
                                                 class="text-3xl font-bold">{{ $stats['fulfillment_rate'] ?? 0 }}%</span>
                                         </div>
-                                        <p class="text-white/90">Taux de satisfaction</p>
+                                        <p class="text-white/90">{{ __('profile.fulfillment_rate') }}</p>
                                         <p class="text-xs text-white/70 mt-1">{{ $stats['fulfilled_demands'] ?? 0 }}
-                                            satisfaites</p>
+                                            {{ __('profile.satisfied') }}</p>
                                     </div>
 
                                     <div class="bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl p-6 text-white">
@@ -431,8 +430,8 @@
                                             <span
                                                 class="text-3xl font-bold">{{ $stats['matching_rate'] ?? 0 }}%</span>
                                         </div>
-                                        <p class="text-white/90">Taux de matching</p>
-                                        <p class="text-xs text-white/70 mt-1">Correspondances trouvées</p>
+                                        <p class="text-white/90">{{ __('profile.matching_rate') }}</p>
+                                        <p class="text-xs text-white/70 mt-1">{{ __('profile.matches_found') }}</p>
                                     </div>
                                 </div>
                             @endif
@@ -453,13 +452,13 @@
                                         d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z">
                                     </path>
                                 </svg>
-                                <span>Modifier le mot de passe</span>
+                                <span>{{ __('profile.change_password') }}</span>
                             </h3>
 
                             <form wire:submit.prevent="updatePassword" class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Mot de passe actuel <span class="text-red-500">*</span>
+                                        {{ __('profile.current_password') }} <span class="text-red-500">*</span>
                                     </label>
                                     <div class="relative" x-data="{ show: false }">
                                         <input :type="show ? 'text' : 'password'" wire:model.defer="current_password"
@@ -489,7 +488,7 @@
 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Nouveau mot de passe <span class="text-red-500">*</span>
+                                        {{ __('profile.new_password') }} <span class="text-red-500">*</span>
                                     </label>
                                     <div class="relative" x-data="{ show: false }">
                                         <input :type="show ? 'text' : 'password'" wire:model.defer="new_password"
@@ -515,12 +514,12 @@
                                     @error('new_password')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
-                                    <p class="text-xs text-gray-500 mt-1">Minimum 8 caractères</p>
+                                    <p class="text-xs text-gray-500 mt-1">{{ __('profile.password_min_length') }}</p>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Confirmer le nouveau mot de passe <span class="text-red-500">*</span>
+                                        {{ __('profile.confirm_new_password') }} <span class="text-red-500">*</span>
                                     </label>
                                     <input type="password" wire:model.defer="new_password_confirmation"
                                         class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
@@ -528,7 +527,7 @@
 
                                 <button type="submit"
                                     class="w-full bg-primary-500 text-white py-3 rounded-xl hover:bg-primary-600 transition font-medium">
-                                    Mettre à jour le mot de passe
+                                    {{ __('profile.update_password') }}
                                 </button>
                             </form>
                         </div>
@@ -542,7 +541,7 @@
                                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                                     </path>
                                 </svg>
-                                <span>Modifier l'adresse email</span>
+                                <span>{{ __('profile.change_email') }}</span>
                             </h3>
                             <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
                                 <div class="flex">
@@ -553,10 +552,8 @@
                                             clip-rule="evenodd"></path>
                                     </svg>
                                     <div>
-                                        <p class="text-sm text-yellow-700 font-medium">Attention</p>
-                                        <p class="text-sm text-yellow-600">La modification de votre email vous
-                                            déconnectera. Vous devrez vérifier votre nouveau email avant de vous
-                                            reconnecter.</p>
+                                        <p class="text-sm text-yellow-700 font-medium">{{ __('profile.attention') }}</p>
+                                        <p class="text-sm text-yellow-600">{{ __('profile.email_change_warning') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -564,7 +561,7 @@
                             <form wire:submit.prevent="updateEmail" class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Email actuel
+                                        {{ __('profile.current_email') }}
                                     </label>
                                     <input type="email" value="{{ $email }}" disabled
                                         class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-100 cursor-not-allowed">
@@ -572,10 +569,10 @@
 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Nouvel email <span class="text-red-500">*</span>
+                                        {{ __('profile.new_email') }} <span class="text-red-500">*</span>
                                     </label>
                                     <input type="email" wire:model.defer="new_email"
-                                        placeholder="nouveau@email.com"
+                                        placeholder="{{ __('profile.new_email_placeholder') }}"
                                         class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                     @error('new_email')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -584,7 +581,7 @@
 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Confirmer avec votre mot de passe <span class="text-red-500">*</span>
+                                        {{ __('profile.confirm_with_password') }} <span class="text-red-500">*</span>
                                     </label>
                                     <input type="password" wire:model.defer="email_password"
                                         class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
@@ -595,7 +592,7 @@
 
                                 <button type="submit"
                                     class="w-full bg-primary-500 text-white py-3 rounded-xl hover:bg-primary-600 transition font-medium">
-                                    Modifier l'email
+                                    {{ __('profile.modify_email') }}
                                 </button>
                             </form>
                         </div>
@@ -611,10 +608,9 @@
                                                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
                                             </path>
                                         </svg>
-                                        <span>Authentification à deux facteurs</span>
+                                        <span>{{ __('profile.two_factor_auth') }}</span>
                                     </h3>
-                                    <p class="text-sm text-gray-500 mt-1">Sécurisez votre compte avec une couche
-                                        supplémentaire de protection</p>
+                                    <p class="text-sm text-gray-500 mt-1">{{ __('profile.two_factor_desc') }}</p>
                                 </div>
                                 <div class="flex items-center">
                                     @if ($twoFactorEnabled)
@@ -625,12 +621,12 @@
                                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                     clip-rule="evenodd"></path>
                                             </svg>
-                                            Activée
+                                            {{ __('profile.enabled') }}
                                         </span>
                                     @else
                                         <span
                                             class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                            Désactivée
+                                            {{ __('profile.disabled') }}
                                         </span>
                                     @endif
                                 </div>
@@ -646,9 +642,7 @@
                                                 clip-rule="evenodd"></path>
                                         </svg>
                                         <div>
-                                            <p class="text-sm text-blue-700">L'authentification à deux facteurs ajoute
-                                                une couche de sécurité supplémentaire en demandant un code à chaque
-                                                connexion.</p>
+                                            <p class="text-sm text-blue-700">{{ __('profile.two_factor_info') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -657,10 +651,10 @@
                                 <form wire:submit.prevent="enable2FA" class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Confirmer avec votre mot de passe <span class="text-red-500">*</span>
+                                            {{ __('profile.confirm_with_password') }} <span class="text-red-500">*</span>
                                         </label>
                                         <input type="password" wire:model.defer="twofa_password"
-                                            placeholder="Entrez votre mot de passe"
+                                            placeholder="{{ __('profile.password_placeholder') }}"
                                             class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                                         @error('twofa_password')
                                             <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -675,7 +669,7 @@
                                                 d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
                                             </path>
                                         </svg>
-                                        <span>Activer l'authentification à deux facteurs</span>
+                                        <span>{{ __('profile.enable_two_factor') }}</span>
                                     </button>
                                 </form>
                             @else
@@ -683,8 +677,7 @@
                                 @if ($qrCode)
                                     <div class="space-y-6">
                                         <div class="bg-gray-50 rounded-xl p-6 text-center">
-                                            <p class="text-sm text-gray-700 mb-4">Scannez ce QR code avec votre
-                                                application d'authentification (Google Authenticator, Authy, etc.)</p>
+                                            <p class="text-sm text-gray-700 mb-4">{{ __('profile.qr_code_instructions') }}</p>
                                             <div class="inline-block bg-white p-4 rounded-lg shadow-sm">
                                                 {!! $qrCodeSvg !!}
                                             </div>
@@ -700,11 +693,9 @@
                                                         d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z">
                                                     </path>
                                                 </svg>
-                                                Codes de récupération
+                                                {{ __('profile.recovery_codes') }}
                                             </h4>
-                                            <p class="text-sm text-gray-700 mb-4">Conservez ces codes en lieu sûr. Ils
-                                                vous permettront de vous connecter si vous perdez l'accès à votre
-                                                application d'authentification.</p>
+                                            <p class="text-sm text-gray-700 mb-4">{{ __('profile.recovery_codes_info') }}</p>
 
                                             <div class="grid grid-cols-2 gap-2 mb-4">
                                                 @foreach ($recoveryCodes as $code)
@@ -769,7 +760,7 @@
                                 <!-- Bouton désactivation -->
                                 <button wire:click="disable2FA"
                                     class="w-full bg-red-500 text-white py-3 rounded-xl hover:bg-red-600 transition font-medium mt-6">
-                                    Désactiver l'authentification à deux facteurs
+                                    {{ __('profile.disable_two_factor') }}
                                 </button>
                             @endif
                         </div>
@@ -781,7 +772,7 @@
                         x-transition:enter-end="opacity-100 transform translate-y-0">
 
                         <div class="bg-white rounded-2xl shadow-lg p-8 glass-effect">
-                            <h2 class="text-2xl font-bold text-gray-800 mb-6">Historique d'activité</h2>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-6">{{ __('profile.activity_history') }}</h2>
 
                             <!-- Statistiques de connexion -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -798,8 +789,8 @@
                                         <span
                                             class="text-3xl font-bold">{{ $activityStats['total_logins'] ?? 0 }}</span>
                                     </div>
-                                    <p class="text-white/90">Connexions ce mois</p>
-                                    <p class="text-xs text-white/70 mt-1">30 derniers jours</p>
+                                    <p class="text-white/90">{{ __('profile.logins_this_month') }}</p>
+                                    <p class="text-xs text-white/70 mt-1">{{ __('profile.last_30_days') }}</p>
                                 </div>
 
                                 <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl p-6 text-white">
@@ -815,11 +806,11 @@
                                             @if (isset($activityStats['last_login']))
                                                 {{ $activityStats['last_login']->diffForHumans() }}
                                             @else
-                                                N/A
+                                                {{ __('profile.n_a') }}
                                             @endif
                                         </span>
                                     </div>
-                                    <p class="text-white/90">Dernière connexion</p>
+                                    <p class="text-white/90">{{ __('profile.last_login') }}</p>
                                     <p class="text-xs text-white/70 mt-1">
                                         @if (isset($activityStats['last_login']))
                                             {{ $activityStats['last_login']->format('d/m/Y H:i') }}
@@ -845,15 +836,15 @@
                                             @endif
                                         </span>
                                     </div>
-                                    <p class="text-white/90">Jours actifs</p>
-                                    <p class="text-xs text-white/70 mt-1">Ce mois</p>
+                                    <p class="text-white/90">{{ __('profile.active_days') }}</p>
+                                    <p class="text-xs text-white/70 mt-1">{{ __('profile.this_month') }}</p>
                                 </div>
                             </div>
 
                             <!-- Graphique d'activité -->
                             @if (isset($activityStats['logins_by_day']) && count($activityStats['logins_by_day']) > 0)
                                 <div class="bg-gray-50 rounded-xl p-6 mb-6">
-                                    <h3 class="font-bold text-gray-800 mb-4">Activité des 30 derniers jours</h3>
+                                    <h3 class="font-bold text-gray-800 mb-4">{{ __('profile.activity_last_30_days') }}</h3>
                                     <div class="flex items-end justify-between h-48 space-x-1">
                                         @php
                                             $maxLogins = max($activityStats['logins_by_day']);
@@ -864,7 +855,7 @@
                                                     style="height: {{ $maxLogins > 0 ? ($count / $maxLogins) * 100 : 0 }}%">
                                                     <div
                                                         class="absolute bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap z-10">
-                                                        {{ $count }} connexion{{ $count > 1 ? 's' : '' }}
+                                                        {{ $count }} {{ __('profile.connection') }}{{ $count > 1 ? 's' : '' }}
                                                         <br>{{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
                                                     </div>
                                                 </div>
@@ -882,7 +873,7 @@
 
                             <!-- Timeline des activités récentes -->
                             <div>
-                                <h3 class="font-bold text-gray-800 mb-4">Activités récentes</h3>
+                                <h3 class="font-bold text-gray-800 mb-4">{{ __('profile.recent_activities') }}</h3>
                                 <div class="space-y-4">
                                     @forelse(auth()->user()->activityLogs()->latest()->take(10)->get() as $log)
                                         <div
@@ -956,7 +947,7 @@
                                                     <p class="text-xs text-gray-500">
                                                         {{ $log->created_at->diffForHumans() }}</p>
                                                     @if ($log->ip_address)
-                                                        <span class="text-xs text-gray-400">• IP:
+                                                        <span class="text-xs text-gray-400">• {{ __('profile.ip') }}:
                                                             {{ $log->ip_address }}</span>
                                                     @endif
                                                 </div>
@@ -970,7 +961,7 @@
                                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                                     </path>
                                                 </svg>
-                                                <p>Aucune activité enregistrée</p>
+                                                <p>{{ __('profile.no_activity') }}</p>
                                             </div>
                                         @endforelse
                                     </div>
@@ -994,8 +985,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h2 class="text-2xl font-bold text-red-600">Zone dangereuse</h2>
-                                        <p class="text-sm text-gray-600">Ces actions sont irréversibles</p>
+                                        <h2 class="text-2xl font-bold text-red-600">{{ __('profile.danger_zone') }}</h2>
+                                        <p class="text-sm text-gray-600">{{ __('profile.irreversible_actions') }}</p>
                                     </div>
                                 </div>
 
@@ -1007,35 +998,34 @@
                                                 clip-rule="evenodd"></path>
                                         </svg>
                                         <div>
-                                            <h3 class="text-sm font-medium text-red-800">Attention</h3>
+                                            <h3 class="text-sm font-medium text-red-800">{{ __('profile.warning') }}</h3>
                                             <p class="text-sm text-red-700 mt-1">
-                                                La suppression de votre compte entraînera la perte définitive de :
+                                                {{ __('profile.account_deletion_warning') }}
                                             </p>
                                             <ul class="list-disc list-inside text-sm text-red-600 mt-2 space-y-1">
-                                                <li>Toutes vos informations personnelles</li>
-                                                <li>Vos offres et demandes publiées</li>
-                                                <li>Votre historique d'activité</li>
-                                                <li>Vos messages et conversations</li>
-                                                <li>Vos statistiques</li>
+                                                <li>{{ __('profile.deletion_info_1') }}</li>
+                                                <li>{{ __('profile.deletion_info_2') }}</li>
+                                                <li>{{ __('profile.deletion_info_3') }}</li>
+                                                <li>{{ __('profile.deletion_info_4') }}</li>
+                                                <li>{{ __('profile.deletion_info_5') }}</li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="border-2 border-red-200 rounded-xl p-6">
-                                    <h3 class="text-lg font-bold text-gray-800 mb-4">Supprimer mon compte</h3>
+                                    <h3 class="text-lg font-bold text-gray-800 mb-4">{{ __('profile.delete_account') }}</h3>
                                     <p class="text-sm text-gray-600 mb-6">
-                                        Une fois votre compte supprimé, toutes vos données seront définitivement effacées.
-                                        Cette action est irréversible.
+                                        {{ __('profile.delete_account_warning') }}
                                     </p>
 
                                     <form wire:submit.prevent="confirmDelete" class="space-y-4">
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                                Confirmez avec votre mot de passe <span class="text-red-500">*</span>
+                                                {{ __('profile.confirm_with_password') }} <span class="text-red-500">*</span>
                                             </label>
                                             <input type="password" wire:model.defer="delete_password"
-                                                placeholder="Entrez votre mot de passe pour confirmer"
+                                                placeholder="{{ __('profile.password_confirm_placeholder') }}"
                                                 class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500">
                                             @error('delete_password')
                                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -1050,7 +1040,7 @@
                                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                                 </path>
                                             </svg>
-                                            <span>Supprimer définitivement mon compte</span>
+                                            <span>{{ __('profile.delete_account_confirm') }}</span>
                                         </button>
                                     </form>
                                 </div>

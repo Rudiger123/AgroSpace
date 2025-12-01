@@ -8,7 +8,6 @@ use App\Models\Category;
 use App\Models\User;
 use App\Notifications\DemandCreatedNotification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -95,7 +94,7 @@ class MyDemands extends Component
         if ($demand->user_id !== Auth::user()->id) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Vous n\'êtes pas autorisé à modifier cette demande'
+                'message' => __('demands.unauthorized_edit')
             ]);
             return;
         }
@@ -125,7 +124,7 @@ class MyDemands extends Component
                 if ($demand->user_id !== Auth::user()->id) {
                     $this->dispatch('toast', [
                         'type' => 'error',
-                        'message' => 'Action non autorisée'
+                        'message' => __('common.unauthorized_action')
                     ]);
                     return;
                 }
@@ -142,7 +141,7 @@ class MyDemands extends Component
                     'urgency' => $this->urgency,
                 ]);
 
-                $message = 'Demande modifiée avec succès';
+                $message = __('demands.update_success');
             } else {
                 $demand = Demand::create([
                     'user_id' => Auth::user()->id,
@@ -158,7 +157,7 @@ class MyDemands extends Component
                     'status' => 'active',
                 ]);
 
-                $message = 'Demande créée avec succès';
+                $message = __('demands.create_success');
                 // Déclencher l'événement de notification
                 // event(new DemandCreated($demand, Auth::user()));
                 $this->notification($demand, Auth::user());
@@ -174,7 +173,7 @@ class MyDemands extends Component
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Une erreur est survenue: ' . $e->getMessage()
+                'message' => __('common.error_occurred', ['error' => $e->getMessage()])
             ]);
         }
     }
@@ -182,7 +181,7 @@ class MyDemands extends Component
     public function notification(Demand $demand, User $user): void
     {
         try {
-            Log::info('🎯 Début du traitement des notifications', [
+            Log::info('🎯 ' . __('notifications.processing_start'), [
                 'demand_id' => $demand->id,
                 'user_id' => $user->id
             ]);
@@ -192,7 +191,7 @@ class MyDemands extends Component
                 ->where('status', 'active') // Seulement les admins actifs
                 ->get();
 
-            Log::info('👥 Administrateurs trouvés', [
+            Log::info('👥 ' . __('notifications.admins_found'), [
                 'count' => $admins->count(),
                 'demand_id' => $demand->id
             ]);
@@ -209,12 +208,12 @@ class MyDemands extends Component
 
                     $notificationsSent++;
 
-                    Log::debug('✅ Notification envoyée', [
+                    Log::debug('✅ ' . __('notifications.sent_success'), [
                         'admin_id' => $admin->id,
                         'demand_id' => $demand->id
                     ]);
                 } catch (\Exception $e) {
-                    Log::error('❌ Erreur envoi notification à un admin', [
+                    Log::error('❌ ' . __('notifications.send_error'), [
                         'admin_id' => $admin->id,
                         'demand_id' => $demand->id,
                         'error' => $e->getMessage()
@@ -223,14 +222,14 @@ class MyDemands extends Component
                 }
             }
 
-            Log::info('📊 Résumé des notifications', [
+            Log::info('📊 ' . __('notifications.summary'), [
                 'demand_id' => $demand->id,
                 'admins_total' => $admins->count(),
                 'notifications_sent' => $notificationsSent,
                 'notifications_skipped' => $admins->count() - $notificationsSent
             ]);
         } catch (\Exception $e) {
-            Log::error('💥 Erreur critique dans le listener', [
+            Log::error('💥 ' . __('notifications.critical_error'), [
                 'demand_id' => $demand->id ?? 'unknown',
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
@@ -255,7 +254,7 @@ class MyDemands extends Component
             if ($demand->user_id !== Auth::user()->id) {
                 $this->dispatch('toast', [
                     'type' => 'error',
-                    'message' => 'Action non autorisée'
+                    'message' => __('common.unauthorized_action')
                 ]);
                 return;
             }
@@ -265,12 +264,12 @@ class MyDemands extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Demande supprimée avec succès'
+                'message' => __('demands.delete_success')
             ]);
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur lors de la suppression'
+                'message' => __('common.delete_error')
             ]);
         }
     }
@@ -289,7 +288,7 @@ class MyDemands extends Component
             if ($demand->user_id !== Auth::user()->id) {
                 $this->dispatch('toast', [
                     'type' => 'error',
-                    'message' => 'Action non autorisée'
+                    'message' => __('common.unauthorized_action')
                 ]);
                 return;
             }
@@ -297,19 +296,19 @@ class MyDemands extends Component
             $demand->update(['status' => $status]);
 
             $statusLabels = [
-                'active' => 'active',
-                'satisfied' => 'satisfaite',
-                'cancelled' => 'annulée'
+                'active' => __('demands.status_active'),
+                'satisfied' => __('demands.status_satisfied'),
+                'cancelled' => __('demands.status_cancelled')
             ];
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Demande marquée comme ' . ($statusLabels[$status] ?? $status)
+                'message' => __('demands.marked_as', ['status' => $statusLabels[$status] ?? $status])
             ]);
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur lors de la mise à jour'
+                'message' => __('common.update_error')
             ]);
         }
     }

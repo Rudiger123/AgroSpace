@@ -30,41 +30,58 @@ class SendEmailModal extends Component
     ];
 
     protected $messages = [
-        'subject.required' => 'L\'objet est obligatoire',
-        'message.required' => 'Le message est obligatoire',
-        'message.min' => 'Le message doit contenir au moins 10 caractères',
-        'scheduledAt.after' => 'La date doit être dans le futur',
+        'subject.required' => 'The subject is required',
+    'message.required' => 'The message is required',
+    'message.min' => 'The message must contain at least 10 characters',
+    'scheduledAt.after' => 'The date must be in the future',
     ];
 
+    protected function getTranslatedMessages()
+    {
+        return [
+            'subject.required' => __('emails.subject_required'),
+        'message.required' => __('emails.message_required'),
+        'message.min' => __('emails.message_min'),
+        'scheduledAt.after' => __('emails.scheduled_after'),
+        ];
+    }
+
+    public function mount()
+    {
+        $this->templates = [
+         'welcome' => [
+             'subject' => __('emails.welcome_subject'),
+             'message' => __('emails.welcome_message'),
+         ],
+         'verification' => [
+             'subject' => __('emails.verification_subject'),
+             'message' => __('emails.verification_message'),
+         ],
+         'offer_approved' => [
+             'subject' => __('emails.offer_approved_subject'),
+             'message' => __('emails.offer_approved_message'),
+         ],
+         'offer_rejected' => [
+             'subject' => __('emails.offer_rejected_subject'),
+             'message' => __('emails.offer_rejected_message'),
+         ],
+         'account_suspended' => [
+             'subject' => __('emails.account_suspended_subject'),
+             'message' => __('emails.account_suspended_message'),
+         ],
+         'newsletter' => [
+             'subject' => __('emails.newsletter_subject'),
+             'message' => __('emails.newsletter_message'),
+         ],
+         'promotion' => [
+             'subject' => __('emails.promotion_subject'),
+             'message' => __('emails.promotion_message'),
+         ],
+    ];
+    }
+
     protected $templates = [
-        'welcome' => [
-            'subject' => '🎉 Bienvenue sur Agrospace !',
-            'message' => "Bonjour {nom},\n\nNous sommes ravis de vous accueillir sur Agrospace, la plateforme qui connecte les producteurs et consommateurs du secteur agropastoral au Cameroun.\n\nVotre compte {role} est maintenant actif. Vous pouvez dès maintenant :\n• Explorer les offres et demandes\n• Publier vos propres annonces\n• Échanger avec la communauté\n• Accéder à nos ressources et actualités\n\nBesoin d'aide ? Notre équipe est là pour vous accompagner.\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'verification' => [
-            'subject' => '✅ Vérification de votre compte Agrospace',
-            'message' => "Bonjour {nom},\n\nFélicitations ! Votre compte Agrospace a été vérifié avec succès.\n\nVous bénéficiez maintenant de tous les avantages :\n✓ Badge vérifié sur votre profil\n✓ Visibilité accrue\n✓ Accès prioritaire aux fonctionnalités\n\nContinuez à développer votre activité sur Agrospace !\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'offer_approved' => [
-            'subject' => '📦 Votre offre a été approuvée !',
-            'message' => "Bonjour {nom},\n\nBonne nouvelle ! Votre offre vient d'être approuvée et est maintenant visible par tous les utilisateurs d'Agrospace.\n\nConsultez les statistiques de votre offre depuis votre tableau de bord pour suivre son évolution.\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'offer_rejected' => [
-            'subject' => '❌ Votre offre nécessite des modifications',
-            'message' => "Bonjour {nom},\n\nNous avons examiné votre offre et elle nécessite quelques ajustements avant d'être publiée.\n\nMotif : [À compléter]\n\nVeuillez apporter les modifications nécessaires et soumettre à nouveau votre offre.\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'account_suspended' => [
-            'subject' => '⏸ Suspension temporaire de votre compte',
-            'message' => "Bonjour {nom},\n\nVotre compte Agrospace a été temporairement suspendu suite à [raison].\n\nPour réactiver votre compte, veuillez nous contacter à support@agrospace.cm.\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'newsletter' => [
-            'subject' => '📰 Newsletter Agrospace - [Mois Année]',
-            'message' => "Bonjour {nom},\n\nDécouvrez les actualités du mois :\n\n• Nouveauté 1\n• Nouveauté 2\n• Nouveauté 3\n\nRestez connecté avec Agrospace !\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
-        'promotion' => [
-            'subject' => '🎁 Offre spéciale Agrospace',
-            'message' => "Bonjour {nom},\n\nProfitez de notre offre spéciale !\n\n[Détails de la promotion]\n\nValable jusqu'au [date]\n\nCordialement,\nL'équipe Agrospace 🌾",
-        ],
+
     ];
 
     #[On('openSendEmailModal')]
@@ -97,7 +114,7 @@ class SendEmailModal extends Component
         if ($this->sendCopy) {
             Auth::user()->notify(new AdminNotification($this->subject, $this->message));
         }
-        $message = count($this->recipients) . " utilisateur(s) sélectionné(s) pour l'envoi d'email.";
+        $message = count($this->recipients) . ' ' . __('emails.users_selected_for_email');
 
         $this->dispatch('toast', [
             'type' => 'success',
@@ -131,7 +148,7 @@ class SendEmailModal extends Component
     public function saveDraft()
     {
         // Sauvegarder en brouillon
-        session()->flash('success', 'Brouillon sauvegardé !');
+        session()->flash('success', __('emails.draft_saved'));
     }
 
     public function close()

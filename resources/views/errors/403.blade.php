@@ -1,9 +1,9 @@
 @extends('errors.layout')
 
-@section('title', 'Accès Refusé')
+@section('title', __('errors.403.title'))
 @section('code', '403')
-@section('message', 'Zone Restreinte')
-@section('description', 'Désolé, cette zone de l\'exploitation est réservée au personnel autorisé. Vous n\'avez pas les clés du hangar.')
+@section('message', __('errors.403.message'))
+@section('description', __('errors.403.description'))
 
 @section('image')
     <!-- SVG Padlock / Fence -->

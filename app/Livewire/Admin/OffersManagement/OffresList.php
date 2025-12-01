@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin\OffersManagement;
 
-use App\Livewire\Admin\AvisManagement;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Offre;
@@ -97,16 +96,19 @@ class OffresList extends Component
 
             $response_title = $offre->titre;
             $response_date = $offre->created_at->format('d/m/Y');
-    
+
             $message = Message::create([
                 'reply_id' => null,
                 'conversation_id' => $createdConversation->id,
                 'sendable_type' => Auth::user()->getMorphClass(),
                 'sendable_id' => Auth::id(),
                 'type' => 'text',
-                'body' => "Bonjour, je vous contacte à propos de votre offre : **\"{$response_title}\"** du $response_date. Je suis intéréssé. Discutons des détails pour finaliser l'échange.",
+                'body' => __('offers.list.contact_message', [
+                    'title' => $response_title,
+                    'date' => $response_date
+                ]),
             ]);
-    
+
             $createdConversation->updated_at = now();
             $createdConversation->save();
 
@@ -122,7 +124,7 @@ class OffresList extends Component
         }
         $this->dispatch('toast', [
             'type' => 'info',
-            'message' => 'Vous pouvez maintenant discuter avec le producteur de cette offre'
+            'message' => __('offers.list.contact_toast')
         ]);
 
         // TODO: Implémenter la redirection vers le chat
@@ -138,7 +140,7 @@ class OffresList extends Component
         if (Auth::id() === $producerId) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Vous ne pouvez pas vous noter vous-même'
+                'message' => __('offers.list.self_review_error')
             ]);
             return;
         }
@@ -150,7 +152,7 @@ class OffresList extends Component
         if (!$service->canUserLeaveAvis(Auth::user(), $producer)) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Vous avez déjà noté ce producteur'
+                'message' => __('offers.list.already_reviewed_error')
             ]);
             return;
         }
@@ -181,13 +183,13 @@ class OffresList extends Component
             ]);
 
             $this->notification($avis);
-            
+
             $this->showAvisModal = false;
             $this->reset(['avisproducerId', 'avisOffreId', 'avisNote', 'avisCommentaire']);
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Merci pour votre avis !'
+                'message' => __('offers.list.review_submitted_success')
             ]);
 
             // Recharger les détails si modal ouverte
@@ -200,7 +202,7 @@ class OffresList extends Component
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('offers.list.error') . $e->getMessage()
             ]);
         }
     }

@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'search_placeholder' => 'Rechercher...',
+    'start_typing' => 'Commencez à taper pour rechercher',
+    'search_categories' => 'Articles, offres, demandes, utilisateurs...',
+    'results_found' => 'résultat trouvé|résultats trouvés',
+    'no_results' => 'Aucun résultat trouvé',
+    'try_other_keywords' => 'Essayez avec d\'autres mots-clés',
+    'navigate' => 'Naviguer',
+    'select' => 'Sélectionner',
+    'close' => 'Fermer',
+    'global_search' => 'Recherche globale AgroSpace',
+    'press_escape_close' => 'Appuyez sur Échap pour fermer',
+
+        'article' => 'Article',
+        'offer' => 'Offer',
+        'demand' => 'Demand',
+        'category' => 'Category',
+        'category_default_desc' => 'Category',
+        'user' => 'User',
+        'admin' => 'Administrator',
+        'producer' => 'Producer',
+        'consumer' => 'Consumer',
+        'comment' => 'Comment',
+        'comment_on' => 'Comment on: ',
+        'deleted_article' => 'Deleted article',
+        'anonymous' => 'Anonymous',
+        'newsletter' => 'Newsletter',
+        'subscriber' => 'Subscriber',
+        'system' => 'System',
+    ];

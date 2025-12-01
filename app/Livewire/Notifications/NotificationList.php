@@ -99,7 +99,7 @@ class NotificationList extends Component
 
         $this->dispatch('showToast', [
             'type' => 'success',
-            'message' => 'Toutes les notifications ont été marquées comme lues',
+            'message' => __('notifications.all_marked_read'),
         ]);
     }
 
@@ -130,7 +130,7 @@ class NotificationList extends Component
 
             $this->dispatch('showToast', [
                 'type' => 'success',
-                'message' => 'Notification supprimée',
+                'message' => __('notifications.deleted'),
             ]);
         }
     }

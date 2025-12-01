@@ -10,7 +10,7 @@ use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.app')]
-#[Title('Gestion des Avis')]
+#[Title('Review Management')]
 class AvisManagement extends Component
 {
     use WithPagination;
@@ -102,7 +102,7 @@ class AvisManagement extends Component
         $avis->save();
         $this->showToggleVisibilityModal = false;
         $this->loadStats();
-        $this->dispatch('toast', ['type' => 'success', 'message' => "L'avis a été " . ($avis->is_visible ? 'rendu visible' : 'masqué') . " avec succès."]);
+        $this->dispatch('toast', ['type' => 'success', 'message' => __('reviews.visibility_toggled', ['status' => $avis->is_visible ? 'visible' : 'hidden'])]);
     }
 
     public function openDeleteModal($avisId)
@@ -123,7 +123,7 @@ class AvisManagement extends Component
         $this->showDeleteModal = false;
         $this->selectedAvis = null;
         $this->loadStats();
-        $this->dispatch('toast', ['type' => 'success', 'message' => "L'avis a été supprimé avec succès."]);
+        $this->dispatch('toast', ['type' => 'success', 'message' => __('reviews.deleted_success')]);
     }
 
     public function openDetailsModal($avisId)

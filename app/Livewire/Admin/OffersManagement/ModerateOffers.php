@@ -123,7 +123,7 @@ class ModerateOffers extends Component
 
                 Mail::send([], [], function ($message) use ($offer, $emailContent) {
                     $message->to($offer->producer->email)
-                        ->subject('✅ Votre offre a été validée - ' . config('app.name'))
+                        ->subject(__('offers.moderation.validated_subject') . config('app.name'))
                         ->html($emailContent);
                 });
             }
@@ -132,11 +132,11 @@ class ModerateOffers extends Component
             $this->resetModals();
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => '✅ Offre validée avec succès et producteur notifié par email.'
+                'message' => __('offers.moderation.validated_success')
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->dispatch('toast', ['type' => 'error', 'message' => 'Erreur : ' . $e->getMessage()]);
+            $this->dispatch('toast', ['type' => 'error', 'message' => __('offers.moderation.error') . $e->getMessage()]);
         }
     }
 
@@ -166,7 +166,7 @@ class ModerateOffers extends Component
 
                 Mail::send([], [], function ($message) use ($offer, $emailContent) {
                     $message->to($offer->producer->email)
-                        ->subject('❌ Votre offre a été rejetée - ' . config('app.name'))
+                        ->subject(__('offers.moderation.rejected_subject') . config('app.name'))
                         ->html($emailContent);
                 });
             }
@@ -175,11 +175,11 @@ class ModerateOffers extends Component
             $this->resetModals();
             $this->dispatch('toast', [
                 'type' => 'warning',
-                'message' => '⚠️ Offre rejetée et producteur notifié par email.'
+                'message' => __('offers.moderation.rejected_success')
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->dispatch('toast', ['type' => 'error', 'message' => 'Erreur : ' . $e->getMessage()]);
+            $this->dispatch('toast', ['type' => 'error', 'message' => __('offers.moderation.error') . $e->getMessage()]);
         }
     }
 
@@ -199,19 +199,19 @@ class ModerateOffers extends Component
 
                 Mail::send([], [], function ($message) use ($offer, $emailContent) {
                     $message->to($offer->producer->email)
-                        ->subject('🚫 Suspension de votre offre - ' . config('app.name'))
+                        ->subject(__('offers.moderation.suspended_subject') . config('app.name'))
                         ->html($emailContent);
                 });
 
                 $this->dispatch('toast', [
                     'type' => 'warning',
-                    'message' => '🚫 Offre suspendue et producteur notifié par email.'
+                    'message' => __('offers.moderation.suspended_success')
                 ]);
             } else {
-                $this->dispatch('toast', ['type' => 'success', 'message' => "✅ Statut mis à jour : $status"]);
+                $this->dispatch('toast', ['type' => 'success', 'message' => __('offers.moderation.status_updated', ['status' => $status])]);
             }
         } catch (\Exception $e) {
-            $this->dispatch('toast', ['type' => 'error', 'message' => 'Erreur de mise à jour.']);
+            $this->dispatch('toast', ['type' => 'error', 'message' => __('offers.moderation.status_error')]);
         }
     }
 
@@ -242,7 +242,7 @@ class ModerateOffers extends Component
 
                 Mail::send([], [], function ($message) use ($producerEmail, $emailContent) {
                     $message->to($producerEmail)
-                        ->subject('🗑️ Suppression de votre offre - ' . config('app.name'))
+                        ->subject(__('offers.moderation.deleted_subject') . config('app.name'))
                         ->html($emailContent);
                 });
             }
@@ -250,10 +250,10 @@ class ModerateOffers extends Component
             $this->resetModals();
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => '🗑️ Offre supprimée définitivement et producteur notifié par email.'
+                'message' => __('offers.moderation.deleted_success')
             ]);
         } catch (\Exception $e) {
-            $this->dispatch('toast', ['type' => 'error', 'message' => 'Erreur : ' . $e->getMessage()]);
+            $this->dispatch('toast', ['type' => 'error', 'message' => __('offers.moderation.error') . $e->getMessage()]);
         }
     }
 
@@ -278,17 +278,17 @@ class ModerateOffers extends Component
 
                 Mail::send([], [], function ($message) use ($producer, $emailContent) {
                     $message->to($producer->email)
-                        ->subject('🚫 Suspension de votre compte - ' . config('app.name'))
+                        ->subject(__('offers.moderation.producer_suspended_subject') . config('app.name'))
                         ->html($emailContent);
                 });
             }
 
             $this->dispatch('toast', [
                 'type' => 'warning',
-                'message' => "🚫 Producteur {$producer->name} suspendu. {$suspendedCount} offre(s) désactivée(s). Email de notification envoyé."
+                'message' => __('offers.moderation.producer_suspended_success', ['name' => $producer->name, 'count' => $suspendedCount])
             ]);
         } catch (\Exception $e) {
-            $this->dispatch('toast', ['type' => 'error', 'message' => 'Erreur lors de la suspension : ' . $e->getMessage()]);
+            $this->dispatch('toast', ['type' => 'error', 'message' => __('offers.moderation.producer_suspend_error') . $e->getMessage()]);
         }
     }
 
@@ -297,7 +297,7 @@ class ModerateOffers extends Component
         $offer = Offer::find($id);
         if ($offer) {
             $offer->update(['is_featured' => !$offer->is_featured]);
-            $message = $offer->is_featured ? '⭐ Offre mise en avant' : 'Offre retirée de la mise en avant';
+            $message = $offer->is_featured ? __('offers.moderation.featured_added') : __('offers.moderation.featured_removed');
             $this->dispatch('toast', ['type' => 'success', 'message' => $message]);
         }
     }
@@ -323,13 +323,13 @@ class ModerateOffers extends Component
                     $emailContent = view('emails.offer-validated', [
                         'producerName' => $offer->producer->name,
                         'offerTitle' => $offer->titre,
-                        'validationNote' => 'Validation automatique en masse',
+                        'validationNote' => __('offers.moderation.auto_validation_note'),
                         'offerUrl' => route('offers-list', ['search' => $offer->titre])
                     ])->render();
 
                     Mail::send([], [], function ($message) use ($offer, $emailContent) {
                         $message->to($offer->producer->email)
-                            ->subject('✅ Votre offre a été validée - ' . config('app.name'))
+                            ->subject(__('offers.moderation.validated_subject') . config('app.name'))
                             ->html($emailContent);
                     });
                 }
@@ -338,10 +338,10 @@ class ModerateOffers extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => "✅ {$count} offre(s) validée(s) en masse. Notifications envoyées."
+                'message' => __('offers.moderation.bulk_validated_success', ['count' => $count])
             ]);
         } catch (\Exception $e) {
-            $this->dispatch('toast', ['type' => 'error', 'message' => 'Erreur validation en masse : ' . $e->getMessage()]);
+            $this->dispatch('toast', ['type' => 'error', 'message' => __('offers.moderation.bulk_error') . $e->getMessage()]);
         }
     }
 
@@ -419,7 +419,7 @@ class ModerateOffers extends Component
 
         $chartCategoryData = [
             'series' => $topCategories->pluck('total')->toArray(),
-            'labels' => $topCategories->map(fn ($item) => $item->category->name ?? 'Inconnu')->toArray()
+            'labels' => $topCategories->map(fn ($item) => $item->category->name ?? __('offers.moderation.unknown'))->toArray()
         ];
 
         // Évolution des offres (7 derniers jours)

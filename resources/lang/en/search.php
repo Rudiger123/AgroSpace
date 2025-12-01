@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'search_placeholder' => 'Search...',
+    'start_typing' => 'Start typing to search',
+    'search_categories' => 'Articles, offers, requests, users...',
+    'results_found' => 'result found|results found',
+    'no_results' => 'No results found',
+    'try_other_keywords' => 'Try with other keywords',
+    'navigate' => 'Navigate',
+    'select' => 'Select',
+    'close' => 'Close',
+    'global_search' => 'AgroSpace Global Search',
+    'press_escape_close' => 'Press Escape to close',
+
+        'article' => 'Article',
+        'offer' => 'Offer',
+        'demand' => 'Demand',
+        'category' => 'Category',
+        'category_default_desc' => 'Category',
+        'user' => 'User',
+        'admin' => 'Administrator',
+        'producer' => 'Producer',
+        'consumer' => 'Consumer',
+        'comment' => 'Comment',
+        'comment_on' => 'Comment on: ',
+        'deleted_article' => 'Deleted article',
+        'anonymous' => 'Anonymous',
+        'newsletter' => 'Newsletter',
+        'subscriber' => 'Subscriber',
+        'system' => 'System',
+    ];

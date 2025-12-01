@@ -22,10 +22,10 @@
                         </div>
                         <div>
                             <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
-                                Gestion des Utilisateurs
+                                {{ __('users.management.title') }}
                             </h1>
                             <p class="text-sm sm:text-base text-green-100 mt-1">
-                                Administrez tous les comptes de la plateforme AgroSpace
+                                {{ __('users.management.subtitle') }}
                             </p>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                 </path>
                             </svg>
-                            <span>Exporter</span>
+                            <span>{{ __('users.export') }}</span>
                         </button>
 
                         <button wire:click="$dispatch('openCreateUserModal')"
@@ -49,7 +49,7 @@
                                     d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">
                                 </path>
                             </svg>
-                            <span>Nouvel Utilisateur</span>
+                            <span>{{ __('users.new_user') }}</span>
                         </button>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                     class="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-all border-l-4 border-gray-500 group hover:scale-105">
                     <div class="flex items-center justify-between">
                         <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">Total</p>
+                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">{{ __('users.stats.total') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-gray-900">{{ $totalUsers }}</p>
                         </div>
                         <div
@@ -80,7 +80,7 @@
                     class="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-all border-l-4 border-green-500 group hover:scale-105">
                     <div class="flex items-center justify-between">
                         <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">Actifs</p>
+                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">{{ __('users.stats.active') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-green-600">{{ $activeUsers }}</p>
                         </div>
                         <div
@@ -99,7 +99,7 @@
                     class="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-all border-l-4 border-emerald-500 group hover:scale-105">
                     <div class="flex items-center justify-between">
                         <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">Producteurs</p>
+                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">{{ __('users.stats.producers') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-emerald-600">{{ $producers }}</p>
                         </div>
                         <div
@@ -114,7 +114,7 @@
                     class="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-all border-l-4 border-blue-500 group hover:scale-105">
                     <div class="flex items-center justify-between">
                         <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">Consommateurs</p>
+                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">{{ __('users.stats.consumers') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-blue-600">{{ $consumers }}</p>
                         </div>
                         <div
@@ -129,7 +129,7 @@
                     class="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-all border-l-4 border-purple-500 group hover:scale-105">
                     <div class="flex items-center justify-between">
                         <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">Vérifiés</p>
+                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">{{ __('users.stats.verified') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-purple-600">{{ $verifiedUsers }}</p>
                         </div>
                         <div
@@ -149,7 +149,7 @@
                     class="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transition-all border-l-4 border-indigo-500 group hover:scale-105">
                     <div class="flex items-center justify-between">
                         <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">Ce mois</p>
+                            <p class="text-xs sm:text-sm text-gray-600 font-medium mb-1">{{ __('users.stats.this_month') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-indigo-600">{{ $newUsersThisMonth }}</p>
                         </div>
                         <div
@@ -170,7 +170,7 @@
                 <div class="bg-white rounded-2xl shadow-lg p-6">
                     <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                         <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                        Répartition par Rôle
+                        {{ __('users.charts.role_distribution') }}
                     </h3>
                     <div id="rolesChart"></div>
                 </div>
@@ -179,7 +179,7 @@
                 <div class="bg-white rounded-2xl shadow-lg p-6">
                     <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                         <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                        Top 5 Régions
+                        {{ __('users.charts.top_regions') }}
                     </h3>
                     <div id="regionsChart"></div>
                 </div>
@@ -188,7 +188,7 @@
                 <div class="bg-white rounded-2xl shadow-lg p-6">
                     <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                         <div class="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-                        Croissance (6 mois)
+                        {{ __('users.charts.growth') }}
                     </h3>
                     <div id="growthChart"></div>
                 </div>
@@ -206,7 +206,7 @@
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                             <input type="text" wire:model.live.debounce.300ms="search"
-                                placeholder="Rechercher par nom, email ou téléphone..."
+                                placeholder="{{ __('users.search.placeholder') }}"
                                 class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all" />
                         </div>
                     </div>
@@ -215,23 +215,23 @@
                     <div class="flex flex-wrap gap-3">
                         <select wire:model.live="filterRole"
                             class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white font-medium">
-                            <option value="">Tous les rôles</option>
-                            <option value="producer">👨‍🌾 Producteurs</option>
-                            <option value="consumer">🛒 Consommateurs</option>
-                            <option value="admin">👨‍💼 Administrateurs</option>
+                            <option value="">{{ __('users.filters.all_roles') }}</option>
+                            <option value="producer">{{ __('users.filters.producers') }}</option>
+                            <option value="consumer">{{ __('users.filters.consumers') }}</option>
+                            <option value="admin">{{ __('users.filters.admins') }}</option>
                         </select>
 
                         <select wire:model.live="filterStatus"
                             class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white font-medium">
-                            <option value="">Tous les statuts</option>
-                            <option value="active">✅ Actifs</option>
-                            <option value="suspended">⏸ Suspendus</option>
-                            <option value="banned">🚫 Bannis</option>
+                            <option value="">{{ __('users.filters.all_statuses') }}</option>
+                            <option value="active">{{ __('users.filters.active') }}</option>
+                            <option value="suspended">{{ __('users.filters.suspended') }}</option>
+                            <option value="banned">{{ __('users.filters.banned') }}</option>
                         </select>
 
                         <select wire:model.live="filterRegion"
                             class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white font-medium hidden sm:block">
-                            <option value="">Toutes les régions</option>
+                            <option value="">{{ __('users.filters.all_regions') }}</option>
                             @foreach (['Adamaoua', 'Centre', 'Est', 'Extrême-Nord', 'Littoral', 'Nord', 'Nord-Ouest', 'Ouest', 'Sud', 'Sud-Ouest'] as $region)
                                 <option value="{{ $region }}">{{ $region }}</option>
                             @endforeach
@@ -244,7 +244,7 @@
                                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
                                 </path>
                             </svg>
-                            <span class="hidden sm:inline">Réinitialiser</span>
+                            <span class="hidden sm:inline">{{ __('users.filters.reset') }}</span>
                         </button>
                     </div>
                 </div>
@@ -258,7 +258,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            {{ count($selectedUsers) }} utilisateur(s) sélectionné(s)
+                            {{ trans_choice('users.selected_count', count($selectedUsers), ['count' => count($selectedUsers)]) }}
                         </p>
                         <div class="flex flex-wrap gap-2">
                             <button wire:click="confirmBulkSendEmail"
@@ -268,7 +268,7 @@
                                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                                     </path>
                                 </svg>
-                                Envoyer email
+                                {{ __('users.actions.send_email') }}
                             </button>
                             <button wire:click="confirmBulkSuspend"
                                 class="px-3 py-2 bg-white border-2 border-orange-300 text-orange-700 rounded-lg text-sm font-semibold hover:bg-orange-50 transition-all flex items-center gap-1.5">
@@ -277,7 +277,7 @@
                                         d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
                                     </path>
                                 </svg>
-                                Suspendre
+                                {{ __('users.actions.suspend') }}
                             </button>
                             <button wire:click="confirmBulkDelete"
                                 class="px-3 py-2 bg-white border-2 border-red-300 text-red-700 rounded-lg text-sm font-semibold hover:bg-red-50 transition-all flex items-center gap-1.5">
@@ -286,7 +286,7 @@
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                     </path>
                                 </svg>
-                                Supprimer
+                                {{ __('users.actions.delete') }}
                             </button>
                         </div>
                     </div>
@@ -305,27 +305,27 @@
                                 </th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                    Utilisateur
+                                    {{ __('users.table.user') }}
                                 </th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden sm:table-cell">
-                                    Rôle
+                                    {{ __('users.table.role') }}
                                 </th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden md:table-cell">
-                                    Statut
+                                    {{ __('users.table.status') }}
                                 </th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden lg:table-cell">
-                                    Localisation
+                                    {{ __('users.table.location') }}
                                 </th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider hidden xl:table-cell">
-                                    Dernière connexion
+                                    {{ __('users.table.last_login') }}
                                 </th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                    Actions
+                                    {{ __('users.table.actions') }}
                                 </th>
                             </tr>
                         </thead>
@@ -376,24 +376,23 @@
                                                 'producer' => [
                                                     'class' =>
                                                         'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border border-green-200',
-                                                    'label' => '👨‍🌾 Producteur',
+                                                    'label' => __('users.roles.producer'),
                                                 ],
                                                 'consumer' => [
                                                     'class' =>
                                                         'bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 border border-blue-200',
-                                                    'label' => '🛒 Consommateur',
+                                                    'label' => __('users.roles.consumer'),
                                                 ],
                                                 'admin' => [
                                                     'class' =>
                                                         'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border border-purple-200',
-                                                    'label' => '👨‍💼 Admin',
+                                                    'label' => __('users.roles.admin'),
                                                 ],
                                                 default => [
                                                     'class' => 'bg-gray-100 text-gray-700',
-                                                    'label' => $user->role->name ?? 'Utilisateur',
+                                                    'label' => $user->role->name ?? __('users.roles.user'),
                                                 ],
                                             };
-                                            //$roleConfig = $user->getRoleBadge();
                                         @endphp
 
                                         <span
@@ -415,9 +414,9 @@
                                     <td class="px-6 py-4 hidden lg:table-cell">
                                         <div class="text-sm">
                                             <p class="font-semibold text-gray-900 flex items-center gap-1">
-                                                📍 {{ $user->region ?? 'N/A' }}
+                                                📍 {{ $user->region ?? __('users.location.na') }}
                                             </p>
-                                            <p class="text-gray-500 text-xs">{{ $user->city ?? 'N/A' }}</p>
+                                            <p class="text-gray-500 text-xs">{{ $user->city ?? __('users.location.na') }}</p>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 hidden xl:table-cell">
@@ -441,12 +440,12 @@
                                                             d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
                                                         </path>
                                                     </svg>
-                                                    Jamais connecté
+                                                    {{ __('users.never_connected') }}
                                                 </p>
                                             @endif
                                             <p class="text-xs text-gray-500 mt-1">
-                                                <span class="font-semibold">{{ $user->offers_count }}</span> offres •
-                                                <span class="font-semibold">{{ $user->demands_count }}</span> demandes
+                                                <span class="font-semibold">{{ $user->offers_count }}</span> {{ __('users.offers') }} •
+                                                <span class="font-semibold">{{ $user->demands_count }}</span> {{ __('users.demands') }}
                                             </p>
                                         </div>
                                     </td>
@@ -455,7 +454,7 @@
                                             {{-- Voir --}}
                                             <button wire:click="viewUser({{ $user->id }})"
                                                 class="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-all"
-                                                title="Voir le profil">
+                                                title="{{ __('users.actions.view_profile') }}">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -471,7 +470,7 @@
                                             @if (!$user->isAdmin())
                                                 <button wire:click="editUser({{ $user->id }})"
                                                     class="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-all"
-                                                    title="Modifier">
+                                                    title="{{ __('users.actions.edit') }}">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -485,7 +484,7 @@
                                                 <div class="relative">
                                                     <button @click="open = !open"
                                                         class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
-                                                        title="Plus d'actions">
+                                                        title="{{ __('users.actions.more_actions') }}">
                                                         <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -513,7 +512,7 @@
                                                                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                                                                 </path>
                                                             </svg>
-                                                            Envoyer un email
+                                                            {{ __('users.actions.send_email') }}
                                                         </button>
 
                                                         @if (!$user->email_verified_at)
@@ -527,7 +526,7 @@
                                                                         d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
                                                                     </path>
                                                                 </svg>
-                                                                Vérifier l'utilisateur
+                                                                {{ __('users.actions.verify_user') }}
                                                             </button>
                                                         @endif
 
@@ -542,7 +541,7 @@
                                                                         d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
                                                                     </path>
                                                                 </svg>
-                                                                Suspendre
+                                                                {{ __('users.actions.suspend') }}
                                                             </button>
                                                         @elseif($user->status === 'suspended')
                                                             <button
@@ -555,7 +554,7 @@
                                                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
                                                                     </path>
                                                                 </svg>
-                                                                Réactiver
+                                                                {{ __('users.actions.reactivate') }}
                                                             </button>
                                                         @endif
 
@@ -568,7 +567,7 @@
                                                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z">
                                                                 </path>
                                                             </svg>
-                                                            Voir l'historique
+                                                            {{ __('users.actions.view_history') }}
                                                         </button>
 
                                                         <div class="border-t border-gray-100 my-2"></div>
@@ -582,13 +581,13 @@
                                                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                                                 </path>
                                                             </svg>
-                                                            Supprimer
+                                                            {{ __('users.actions.delete') }}
                                                         </button>
                                                     </div>
                                                 </div>
                                             @else
                                                 {{-- Pour les admins, seulement voir --}}
-                                                <span class="text-xs text-gray-400 italic ml-2">Admin</span>
+                                                <span class="text-xs text-gray-400 italic ml-2">{{ __('users.admin') }}</span>
                                             @endif
                                         </div>
                                     </td>
@@ -607,10 +606,9 @@
                                                     </path>
                                                 </svg>
                                             </div>
-                                            <p class="text-xl font-bold text-gray-900 mb-2">Aucun utilisateur trouvé
+                                            <p class="text-xl font-bold text-gray-900 mb-2">{{ __('users.no_users_found') }}
                                             </p>
-                                            <p class="text-sm text-gray-500">Essayez de modifier vos critères de
-                                                recherche</p>
+                                            <p class="text-sm text-gray-500">{{ __('users.try_modify_search') }}</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -646,7 +644,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <h2 class="text-2xl font-bold text-white">Historique</h2>
+                                <h2 class="text-2xl font-bold text-white">{{ __('users.history.title') }}</h2>
                                 <p class="text-green-100 text-sm">{{ $selectedUser->name }}</p>
                             </div>
                         </div>
@@ -667,16 +665,16 @@
                                     <tr>
                                         <th
                                             class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                            Type</th>
+                                            {{ __('users.history.type') }}</th>
                                         <th
                                             class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                            Titre</th>
+                                            {{ __('users.history.title') }}</th>
                                         <th
                                             class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                            Date</th>
+                                            {{ __('users.history.date') }}</th>
                                         <th
                                             class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                            Statut</th>
+                                            {{ __('users.history.status') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-100">
@@ -695,7 +693,7 @@
                                                                 </path>
                                                             </svg>
                                                         </div>
-                                                        <span class="text-sm font-bold text-green-700">Offre</span>
+                                                        <span class="text-sm font-bold text-green-700">{{ __('users.history.offer') }}</span>
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-900">
@@ -705,14 +703,14 @@
                                                 <td class="px-6 py-4">
                                                     <span
                                                         class="px-3 py-1 rounded-lg text-xs font-bold bg-green-100 text-green-800 border border-green-200">
-                                                        {{ $offer->statut ?? 'Actif' }}
+                                                        {{ $offer->statut ?? __('users.history.active') }}
                                                     </span>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
                                                 <td colspan="4" class="px-6 py-8 text-center text-gray-400 italic">
-                                                    Aucune offre créée
+                                                    {{ __('users.history.no_offers') }}
                                                 </td>
                                             </tr>
                                         @endforelse
@@ -733,7 +731,7 @@
                                                                 </path>
                                                             </svg>
                                                         </div>
-                                                        <span class="text-sm font-bold text-blue-700">Demande</span>
+                                                        <span class="text-sm font-bold text-blue-700">{{ __('users.history.demand') }}</span>
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-4 text-sm font-medium text-gray-900">
@@ -743,14 +741,14 @@
                                                 <td class="px-6 py-4">
                                                     <span
                                                         class="px-3 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200">
-                                                        {{ $demand->status ?? 'En attente' }}
+                                                        {{ $demand->status ?? __('users.history.pending') }}
                                                     </span>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
                                                 <td colspan="4" class="px-6 py-8 text-center text-gray-400 italic">
-                                                    Aucune demande faite
+                                                    {{ __('users.history.no_demands') }}
                                                 </td>
                                             </tr>
                                         @endforelse
@@ -764,7 +762,7 @@
                     <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end">
                         <button @click="showHistory = false"
                             class="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl hover:scale-105">
-                            Fermer
+                            {{ __('users.history.close') }}
                         </button>
                     </div>
                 </div>
@@ -794,9 +792,9 @@
                                 },
                                 labels: rolesData.map(item => {
                                     const labels = {
-                                        'producer': '👨‍🌾 Producteurs',
-                                        'consumer': '🛒 Consommateurs',
-                                        'admin': '👨‍💼 Admins'
+                                        'producer': '{{ __('users.roles.producer') }}',
+                                        'consumer': '{{ __('users.roles.consumer') }}',
+                                        'admin': '{{ __('users.roles.admin') }}'
                                     };
                                     return labels[item.role] || item.role;
                                 }),
@@ -819,7 +817,7 @@
                         if (regionsData.length > 0) {
                             const regionsChart = new ApexCharts(document.querySelector("#regionsChart"), {
                                 series: [{
-                                    name: 'Utilisateurs',
+                                    name: '{{ __('users.charts.users') }}',
                                     data: regionsData.map(item => item.count)
                                 }],
                                 chart: {
@@ -848,7 +846,7 @@
                         if (growthData.length > 0) {
                             const growthChart = new ApexCharts(document.querySelector("#growthChart"), {
                                 series: [{
-                                    name: 'Nouveaux utilisateurs',
+                                    name: '{{ __('users.charts.new_users') }}',
                                     data: growthData.map(item => item.count)
                                 }],
                                 chart: {

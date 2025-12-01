@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 #[Layout('layouts.app')]
-#[Title('Gestion des Contacts')]
+#[Title('Contact Management')]
 class ContactsManagement extends Component
 {
     use WithPagination;
@@ -53,9 +53,18 @@ class ContactsManagement extends Component
     ];
 
     protected $messages = [
-        'replyMessage.required' => 'Veuillez saisir un message de réponse.',
-        'replyMessage.min' => 'Le message doit contenir au moins 10 caractères.',
+        'replyMessage_required' => 'Please enter a reply message.',
+        'replyMssage_min' => 'The message must contain at least 10 characters.',
     ];
+
+    // Méthode pour obtenir les messages traduits
+    protected function getTranslatedMessages()
+    {
+        return [
+           'replyMessage.required' => __('contacts.reply_message_required'),
+           'replyMessage.min' => __('contacts.reply_message_min'),
+        ];
+    }
 
     // Lifecycle hooks
     public function mount()
@@ -139,7 +148,7 @@ class ContactsManagement extends Component
                 'recipient' => $contact->email,
             ], function ($message) use ($contact) {
                 $message->to($contact->email, $contact->name)
-                        ->subject('Réponse: ' . $contact->subject . ' - AgroSpace');
+                        ->subject(__('contacts.reply_subject') . $contact->subject . ' - AgroSpace');
 
                 // CC au sender si demandé
                 if ($this->ccToSender) {
@@ -155,7 +164,7 @@ class ContactsManagement extends Component
                     'recipient' => Auth::user(),
                 ], function ($message) use ($contact) {
                     $message->to(Auth::user()->email, Auth::user()->name)
-                            ->subject('[Copie] Réponse: ' . $contact->subject);
+                            ->subject('[Copy] ' . __('contacts.reply_subject') . $contact->subject);
                 });
             }
 
@@ -168,13 +177,13 @@ class ContactsManagement extends Component
             ]);
 
             $this->dispatch('contact-replied', [
-                'message' => "Réponse envoyée avec succès à $contact->name !"
+                'message' => __('contacts.reply_sent_success') . $contact->name . '!'
             ]);
 
             $this->closeReplyModal();
         } catch (\Exception $e) {
             $this->dispatch('contact-error', [
-                'message' => 'Erreur lors de l\'envoi: ' . $e->getMessage()
+                'message' => __('contacts.reply_send_error') . $e->getMessage()
             ]);
         }
     }
@@ -194,13 +203,13 @@ class ContactsManagement extends Component
             Contact::findOrFail($this->contactId)->delete();
 
             $this->dispatch('contact-deleted', [
-                'message' => 'Message supprimé avec succès!'
+                'message' => __('contacts.contact_deleted_success')
             ]);
 
             $this->closeDeleteModal();
         } catch (\Exception $e) {
             $this->dispatch('contact-error', [
-                'message' => 'Erreur lors de la suppression.'
+                'message' => __('contacts.contact_delete_error')
             ]);
         }
     }
@@ -216,11 +225,11 @@ class ContactsManagement extends Component
             $this->selectAll = false;
 
             $this->dispatch('contacts-deleted', [
-                'message' => $count . ' message(s) supprimé(s) avec succès!'
+                'message' => $count . ' ' . __('contacts.contacts_deleted_success')
             ]);
         } catch (\Exception $e) {
             $this->dispatch('contact-error', [
-                'message' => 'Erreur lors de la suppression multiple.'
+                'message' => __('contacts.contacts_delete_error')
             ]);
         }
     }
@@ -232,7 +241,7 @@ class ContactsManagement extends Component
         $contact->update(['status' => 'closed']);
 
         $this->dispatch('contact-updated', [
-            'message' => 'Statut mis à jour!'
+            'message' => __('contacts.status_updated')
         ]);
 
         if ($this->showViewModal) {

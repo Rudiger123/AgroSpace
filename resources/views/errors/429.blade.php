@@ -1,9 +1,9 @@
 @extends('errors.layout')
 
-@section('title', 'Trop de requêtes')
+@section('title', __('errors.429.title'))
 @section('code', '429')
-@section('message', 'Doucement sur la pédale !')
-@section('description', 'Vous envoyez trop de demandes au serveur. Laissez un peu de temps à la nature pour respirer.')
+@section('message', __('errors.429.message'))
+@section('description', __('errors.429.description'))
 
 @section('image')
     <!-- SVG Speedometer -->

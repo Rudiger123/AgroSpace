@@ -58,11 +58,11 @@ class DemandsManage extends Component
         $demand = Demand::findOrFail($id);
 
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmer la vérification',
-            'text' => "Êtes-vous sûr de vouloir vérifier la demande \"{$demand->title}\" ?",
+            'title' => __('demands.verify_confirm_title'),
+            'text' => __('demands.verify_confirm_text', ['title' => $demand->title]),
             'icon' => 'question',
-            'confirmText' => 'Oui, vérifier',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('demands.verify_confirm_button'),
+            'cancelText' => __('common.cancel'),
             'method' => 'DemandVerified',
             'params' => ['demandId' => $id]
         ]);
@@ -80,7 +80,7 @@ class DemandsManage extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Demande vérifiée avec succès'
+                'message' => __('demands.verify_success')
             ]);
 
             // Rafraîchir les graphiques
@@ -88,7 +88,7 @@ class DemandsManage extends Component
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur lors de la vérification'
+                'message' => __('demands.verify_error')
             ]);
         }
     }
@@ -104,7 +104,7 @@ class DemandsManage extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Vérification retirée'
+                'message' => __('demands.unverify_success')
             ]);
 
             // Rafraîchir les graphiques
@@ -112,7 +112,7 @@ class DemandsManage extends Component
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur lors de l\'opération'
+                'message' => __('common.operation_error')
             ]);
         }
     }
@@ -133,15 +133,15 @@ class DemandsManage extends Component
             }
 
             $statusLabels = [
-                'active' => 'active',
-                'satisfied' => 'satisfaite',
-                'expired' => 'expirée',
-                'cancelled' => 'annulée'
+                'active' => __('demands.status_active'),
+                'satisfied' => __('demands.status_satisfied'),
+                'expired' => __('demands.status_expired'),
+                'cancelled' => __('demands.status_cancelled')
             ];
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Statut changé en : ' . ($statusLabels[$status] ?? $status)
+                'message' => __('demands.status_changed', ['status' => $statusLabels[$status] ?? $status])
             ]);
 
             // Rafraîchir les graphiques
@@ -149,7 +149,7 @@ class DemandsManage extends Component
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur lors de la mise à jour'
+                'message' => __('common.update_error')
             ]);
         }
     }
@@ -170,7 +170,7 @@ class DemandsManage extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Demande supprimée avec succès'
+                'message' => __('demands.delete_success')
             ]);
 
             // Rafraîchir les graphiques
@@ -178,7 +178,7 @@ class DemandsManage extends Component
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur lors de la suppression'
+                'message' => __('common.delete_error')
             ]);
         }
     }
@@ -191,7 +191,7 @@ class DemandsManage extends Component
 
         $this->dispatch('toast', [
             'type' => 'success',
-            'message' => "$count demande(s) expirée(s) mise(s) à jour"
+            'message' => __('demands.expired_updated', ['count' => $count])
         ]);
 
         // Rafraîchir les graphiques
@@ -262,7 +262,7 @@ class DemandsManage extends Component
             ->get()
             ->map(function ($item) {
                 return [
-                    'name' => $item->category->name ?? 'Inconnu',
+                    'name' => $item->category->name ?? __('common.unknown'),
                     'total' => $item->total
                 ];
             })
@@ -270,7 +270,7 @@ class DemandsManage extends Component
 
         // Données par défaut si vide
         if (empty($categoryChartData)) {
-            $categoryChartData = [['name' => 'Aucune donnée', 'total' => 0]];
+            $categoryChartData = [['name' => __('common.no_data'), 'total' => 0]];
         }
 
         return view('livewire.admin.demands-management.demands-manage', [

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 
 #[Layout('layouts.app')]
-#[Title('Gestion des Utilisateurs - Agrospace')]
+#[Title("users management")]
 class UsersManagement extends Component
 {
     use WithPagination;
@@ -219,7 +219,7 @@ class UsersManagement extends Component
         if ($user && $user->isAdmin()) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Vous ne pouvez pas modifier un administrateur.'
+                'message' => __('users.errors.cannot_edit_admin')
             ]);
             return;
         }
@@ -239,17 +239,17 @@ class UsersManagement extends Component
         if (!$user) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Utilisateur non trouvé.'
+                'message' => __('users.errors.user_not_found')
             ]);
             return;
         }
 
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmer la vérification',
-            'text' => "Êtes-vous sûr de vouloir vérifier l'utilisateur \"{$user->name}\" ?",
+            'title' => __('users.verify.confirm_title'),
+            'text' => __("users.verify.confirm_text", ['name' => $user->name]),
             'icon' => 'question',
-            'confirmText' => 'Oui, vérifier',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('users.verify.confirm_button'),
+            'cancelText' => __('users.verify.cancel_button'),
             'method' => 'verifyUser',
             'params' => ['userId' => $userId]
         ]);
@@ -268,12 +268,12 @@ class UsersManagement extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => "L'utilisateur {$user->name} a été vérifié avec succès."
+                'message' => __("users.verify.success", ['name' => $user->name])
             ]);
         } catch (\Exception $e) {
             $this->dispatch('alert', [
-                'title' => 'Erreur',
-                'text' => 'Une erreur est survenue lors de la vérification : ' . $e->getMessage(),
+                'title' => __('users.errors.error'),
+                'text' => __('users.verify.error') . $e->getMessage(),
                 'icon' => 'error'
             ]);
         }
@@ -286,7 +286,7 @@ class UsersManagement extends Component
         if (!$user) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Utilisateur non trouvé.'
+                'message' => __('users.errors.user_not_found')
             ]);
             return;
         }
@@ -295,17 +295,17 @@ class UsersManagement extends Component
         if ($user->isAdmin()) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Vous ne pouvez pas suspendre un administrateur.'
+                'message' => __('users.errors.cannot_suspend_admin')
             ]);
             return;
         }
 
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmer la suspension',
-            'text' => "Êtes-vous sûr de vouloir suspendre l'utilisateur \"{$user->name}\" ? Il recevra une notification par email et sera déconnecté immédiatement.",
+            'title' => __('users.suspend.confirm_title'),
+            'text' => __("users.suspend.confirm_text", ['name' => $user->name]),
             'icon' => 'warning',
-            'confirmText' => 'Oui, suspendre',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('users.suspend.confirm_button'),
+            'cancelText' => __('users.suspend.cancel_button'),
             'method' => 'suspendUser',
             'params' => ['userId' => $userId]
         ]);
@@ -334,12 +334,12 @@ class UsersManagement extends Component
 
             $this->dispatch('toast', [
                 'type' => 'warning',
-                'message' => "L'utilisateur {$user->name} a été suspendu et déconnecté. Une notification lui a été envoyée."
+                'message' => __("users.suspend.success", ['name' => $user->name])
             ]);
         } catch (\Exception $e) {
             $this->dispatch('alert', [
-                'title' => 'Erreur',
-                'text' => 'Une erreur est survenue lors de la suspension : ' . $e->getMessage(),
+                'title' => __('users.errors.error'),
+                'text' => __('users.suspend.error') . $e->getMessage(),
                 'icon' => 'error'
             ]);
         }
@@ -352,17 +352,17 @@ class UsersManagement extends Component
         if (!$user) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Utilisateur non trouvé.'
+                'message' => __('users.errors.user_not_found')
             ]);
             return;
         }
 
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmer la réactivation',
-            'text' => "Êtes-vous sûr de vouloir réactiver l'utilisateur \"{$user->name}\" ? Il recevra une notification par email.",
+            'title' => __('users.reactivate.confirm_title'),
+            'text' => __("users.reactivate.confirm_text", ['name' => $user->name]),
             'icon' => 'question',
-            'confirmText' => 'Oui, réactiver',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('users.reactivate.confirm_button'),
+            'cancelText' => __('users.reactivate.cancel_button'),
             'method' => 'reactivateUser',
             'params' => ['userId' => $userId]
         ]);
@@ -388,12 +388,12 @@ class UsersManagement extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => "L'utilisateur {$user->name} a été réactivé. Une notification lui a été envoyée."
+                'message' => __("users.reactivate.success", ['name' => $user->name])
             ]);
         } catch (\Exception $e) {
             $this->dispatch('alert', [
-                'title' => 'Erreur',
-                'text' => 'Une erreur est survenue lors de la réactivation : ' . $e->getMessage(),
+                'title' => __('users.errors.error'),
+                'text' => __('users.reactivate.error') . $e->getMessage(),
                 'icon' => 'error'
             ]);
         }
@@ -415,7 +415,7 @@ class UsersManagement extends Component
                 $user->tokens()->delete();
             }
         } catch (\Exception $e) {
-            \Log::error('Erreur lors de la déconnexion de l\'utilisateur : ' . $e->getMessage());
+            \Log::error(__('users.errors.logout_error') . $e->getMessage());
         }
     }
 
@@ -426,7 +426,7 @@ class UsersManagement extends Component
         if (!$user) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Utilisateur non trouvé.'
+                'message' => __('users.errors.user_not_found')
             ]);
             return;
         }
@@ -435,17 +435,17 @@ class UsersManagement extends Component
         if ($user->isAdmin()) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Vous ne pouvez pas supprimer un administrateur.'
+                'message' => __('users.errors.cannot_delete_admin')
             ]);
             return;
         }
 
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmer la suppression',
-            'text' => "Êtes-vous sûr de vouloir supprimer l'utilisateur \"{$user->name}\" ? Cette action est irréversible.",
+            'title' => __('users.delete.confirm_title'),
+            'text' => __("users.delete.confirm_text", ['name' => $user->name]),
             'icon' => 'warning',
-            'confirmText' => 'Oui, supprimer',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('users.delete.confirm_button'),
+            'cancelText' => __('users.delete.cancel_button'),
             'method' => 'deleteUser',
             'params' => ['userId' => $userId]
         ]);
@@ -484,14 +484,14 @@ class UsersManagement extends Component
 
                     $this->dispatch('toast', [
                         'type' => 'success',
-                        'message' => "L'utilisateur \"{$userName}\" a été supprimé avec succès."
+                        'message' => __("users.delete.success", ['name' => $userName])
                     ]);
                 }
             });
         } catch (\Exception $e) {
             $this->dispatch('alert', [
-                'title' => 'Erreur',
-                'text' => 'Une erreur est survenue lors de la suppression : ' . $e->getMessage(),
+                'title' => __('users.errors.error'),
+                'text' => __('users.delete.error') . $e->getMessage(),
                 'icon' => 'error'
             ]);
         }
@@ -517,22 +517,22 @@ class UsersManagement extends Component
     {
         if (empty($this->selectedUsers)) {
             $this->dispatch('alert', [
-                'title' => 'Aucune sélection',
-                'text' => 'Veuillez sélectionner au moins un utilisateur.',
+                'title' => __('users.bulk.no_selection'),
+                'text' => __('users.bulk.email_no_selection'),
                 'icon' => 'warning'
             ]);
             return;
         }
 
         $count = count($this->selectedUsers);
-        $userText = $count > 1 ? "ces {$count} utilisateurs" : "cet utilisateur";
+        $userText = $count > 1 ? __("users.bulk.these_users", ['count' => $count]) : __("users.bulk.this_user");
 
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmer l\'envoi d\'email',
-            'text' => "Êtes-vous sûr de vouloir envoyer un email à {$userText} ?",
+            'title' => __('users.bulk.email_confirm_title'),
+            'text' => __("users.bulk.email_confirm_text", ['userText' => $userText]),
             'icon' => 'question',
-            'confirmText' => 'Oui, envoyer',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('users.bulk.email_confirm_button'),
+            'cancelText' => __('users.bulk.cancel_button'),
             'method' => 'bulkSendEmail',
             'params' => []
         ]);
@@ -549,7 +549,7 @@ class UsersManagement extends Component
 
         $this->dispatch('toast', [
             'type' => 'info',
-            'message' => count($this->selectedUsers) . " utilisateur(s) sélectionné(s) pour l'envoi d'email."
+            'message' => trans_choice('users.bulk.email_selected_count', count($this->selectedUsers), ['count' => count($this->selectedUsers)])
         ]);
     }
 
@@ -557,22 +557,22 @@ class UsersManagement extends Component
     {
         if (empty($this->selectedUsers)) {
             $this->dispatch('alert', [
-                'title' => 'Aucune sélection',
-                'text' => 'Veuillez sélectionner au moins un utilisateur.',
+                'title' => __('users.bulk.no_selection'),
+                'text' => __('users.bulk.suspend_no_selection'),
                 'icon' => 'warning'
             ]);
             return;
         }
 
         $count = count($this->selectedUsers);
-        $userText = $count > 1 ? "ces {$count} utilisateurs" : "cet utilisateur";
+        $userText = $count > 1 ? __("users.bulk.these_users", ['count' => $count]) : __("users.bulk.this_user");
 
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmer la suspension multiple',
-            'text' => "Êtes-vous sûr de vouloir suspendre {$userText} ? Ils recevront tous une notification par email et seront déconnectés.",
+            'title' => __('users.bulk.suspend_confirm_title'),
+            'text' => __("users.bulk.suspend_confirm_text", ['userText' => $userText]),
             'icon' => 'warning',
-            'confirmText' => 'Oui, suspendre',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('users.bulk.suspend_confirm_button'),
+            'cancelText' => __('users.bulk.cancel_button'),
             'method' => 'bulkSuspend',
             'params' => []
         ]);
@@ -615,12 +615,12 @@ class UsersManagement extends Component
 
             $this->dispatch('toast', [
                 'type' => 'warning',
-                'message' => "{$affected} utilisateur(s) suspendu(s) et déconnecté(s). Notifications envoyées."
+                'message' => trans_choice('users.bulk.suspend_success', $affected, ['count' => $affected])
             ]);
         } catch (\Exception $e) {
             $this->dispatch('alert', [
-                'title' => 'Erreur',
-                'text' => 'Une erreur est survenue : ' . $e->getMessage(),
+                'title' => __('users.errors.error'),
+                'text' => __('users.bulk.suspend_error') . $e->getMessage(),
                 'icon' => 'error'
             ]);
         }
@@ -630,22 +630,22 @@ class UsersManagement extends Component
     {
         if (empty($this->selectedUsers)) {
             $this->dispatch('alert', [
-                'title' => 'Aucune sélection',
-                'text' => 'Veuillez sélectionner au moins un utilisateur à supprimer.',
+                'title' => __('users.bulk.no_selection'),
+                'text' => __('users.bulk.delete_no_selection'),
                 'icon' => 'warning'
             ]);
             return;
         }
 
         $count = count($this->selectedUsers);
-        $userText = $count > 1 ? "ces {$count} utilisateurs" : "cet utilisateur";
+        $userText = $count > 1 ? __("users.bulk.these_users", ['count' => $count]) : __("users.bulk.this_user");
 
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmer la suppression multiple',
-            'text' => "Êtes-vous sûr de vouloir supprimer {$userText} ? Cette action est irréversible.",
+            'title' => __('users.bulk.delete_confirm_title'),
+            'text' => __("users.bulk.delete_confirm_text", ['userText' => $userText]),
             'icon' => 'warning',
-            'confirmText' => 'Oui, supprimer',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('users.bulk.delete_confirm_button'),
+            'cancelText' => __('users.bulk.cancel_button'),
             'method' => 'bulkDelete',
             'params' => []
         ]);
@@ -690,13 +690,13 @@ class UsersManagement extends Component
 
                 $this->dispatch('toast', [
                     'type' => 'success',
-                    'message' => "{$count} utilisateur(s) supprimé(s) définitivement."
+                    'message' => trans_choice('users.bulk.delete_success', $count, ['count' => $count])
                 ]);
             });
         } catch (\Exception $e) {
             $this->dispatch('alert', [
-                'title' => 'Erreur',
-                'text' => 'Une erreur est survenue : ' . $e->getMessage(),
+                'title' => __('users.errors.error'),
+                'text' => __('users.bulk.delete_error') . $e->getMessage(),
                 'icon' => 'error'
             ]);
         }
@@ -716,19 +716,19 @@ class UsersManagement extends Component
             $file = fopen('php://output', 'w');
 
             fputcsv($file, [
-                'ID',
-                'Nom',
-                'Email',
-                'Téléphone',
-                'Rôle',
-                'Statut',
-                'Région',
-                'Ville',
-                'Vérifié',
-                'Date d\'inscription',
-                'Dernière connexion',
-                'Offres',
-                'Demandes'
+                __('users.export.id'),
+                __('users.export.name'),
+                __('users.export.email'),
+                __('users.export.phone'),
+                __('users.export.role'),
+                __('users.export.status'),
+                __('users.export.region'),
+                __('users.export.city'),
+                __('users.export.verified'),
+                __('users.export.registration_date'),
+                __('users.export.last_login'),
+                __('users.export.offers'),
+                __('users.export.demands')
             ]);
 
             foreach ($users as $user) {
@@ -741,9 +741,9 @@ class UsersManagement extends Component
                     $user->status,
                     $user->region,
                     $user->city,
-                    $user->email_verified_at ? 'Oui' : 'Non',
+                    $user->email_verified_at ? __('users.export.yes') : __('users.export.no'),
                     $user->created_at->format('Y-m-d H:i:s'),
-                    $user->last_login_at ? $user->last_login_at->format('Y-m-d H:i:s') : 'Jamais',
+                    $user->last_login_at ? $user->last_login_at->format('Y-m-d H:i:s') : __('users.export.never'),
                     $user->offers_count ?? 0,
                     $user->demands_count ?? 0,
                 ]);

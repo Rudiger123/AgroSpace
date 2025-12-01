@@ -71,7 +71,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Informations
+                                {{ __('users.info') }}
                             </button>
                             <button @click="activeTab = 'activity'"
                                 :class="activeTab === 'activity' ? 'border-green-600 text-green-600' :
@@ -82,7 +82,7 @@
                                         d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
                                     </path>
                                 </svg>
-                                Activité
+                                {{ __('users.activity') }}
                             </button>
                             <button @click="activeTab = 'history'"
                                 :class="activeTab === 'history' ? 'border-green-600 text-green-600' :
@@ -92,7 +92,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Historique
+                                {{ __('users.history') }}
                             </button>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                                             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                                         </path>
                                     </svg>
-                                    Coordonnées
+                                    {{ __('users.contact_info') }}
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="flex items-center gap-3 bg-white p-4 rounded-lg shadow-sm">
@@ -127,7 +127,7 @@
                                             </svg>
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-xs text-gray-500 font-medium">Email</p>
+                                            <p class="text-xs text-gray-500 font-medium">{{ __('users.email') }}</p>
                                             <p class="text-sm font-semibold text-gray-900 truncate">{{ $user->email }}
                                             </p>
                                         </div>
@@ -144,9 +144,9 @@
                                             </svg>
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-xs text-gray-500 font-medium">Téléphone</p>
+                                            <p class="text-xs text-gray-500 font-medium">{{ __('users.phone') }}</p>
                                             <p class="text-sm font-semibold text-gray-900">
-                                                {{ $user->phone ?? 'Non renseigné' }}</p>
+                                                {{ $user->phone ?? __('users.not_provided') }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -164,18 +164,18 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     </svg>
-                                    Localisation
+                                    {{ __('users.location') }}
                                 </h3>
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="bg-white p-4 rounded-lg shadow-sm">
-                                        <p class="text-xs text-gray-500 mb-1 font-medium">Région</p>
+                                        <p class="text-xs text-gray-500 mb-1 font-medium">{{ __('users.region') }}</p>
                                         <p class="text-lg font-bold text-gray-900">
-                                            {{ $user->region ?? 'Non renseignée' }}</p>
+                                            {{ $user->region ?? __('users.not_provided') }}</p>
                                     </div>
                                     <div class="bg-white p-4 rounded-lg shadow-sm">
-                                        <p class="text-xs text-gray-500 mb-1 font-medium">Ville</p>
+                                        <p class="text-xs text-gray-500 mb-1 font-medium">{{ __('users.city') }}</p>
                                         <p class="text-lg font-bold text-gray-900">
-                                            {{ $user->city ?? 'Non renseignée' }}</p>
+                                            {{ $user->city ?? __('users.not_provided') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@
                                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
                                             </path>
                                         </svg>
-                                        Biographie
+                                        {{ __('users.bio') }}
                                     </h3>
                                     <div class="bg-white p-4 rounded-lg shadow-sm">
                                         <p class="text-gray-700 leading-relaxed">{{ $user->bio }}</p>
@@ -209,18 +209,18 @@
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                         </path>
                                     </svg>
-                                    Détails du compte
+                                    {{ __('users.account_details') }}
                                 </h3>
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="bg-white p-4 rounded-lg shadow-sm">
-                                        <p class="text-xs text-gray-500 font-medium">Inscrit le</p>
+                                        <p class="text-xs text-gray-500 font-medium">{{ __('users.registered_at') }}</p>
                                         <p class="text-sm font-semibold text-gray-900">
                                             {{ $user->created_at->format('d/m/Y') }}</p>
                                         <p class="text-xs text-gray-400 mt-1">{{ $user->created_at->diffForHumans() }}
                                         </p>
                                     </div>
                                     <div class="bg-white p-4 rounded-lg shadow-sm">
-                                        <p class="text-xs text-gray-500 font-medium">Dernière activité</p>
+                                        <p class="text-xs text-gray-500 font-medium">{{ __('users.last_activity') }}</p>
                                         <p class="text-sm font-semibold text-gray-900">{{ $user->last_active }}</p>
                                     </div>
                                 </div>
@@ -239,8 +239,8 @@
                                         <span
                                             class="text-3xl font-bold text-green-600">{{ $user->offers_count ?? 0 }}</span>
                                     </div>
-                                    <p class="text-sm font-semibold text-gray-700">Offres publiées</p>
-                                    <p class="text-xs text-gray-500">Total des annonces</p>
+                                    <p class="text-sm font-semibold text-gray-700">{{ __('users.offers_published') }}</p>
+                                    <p class="text-xs text-gray-500">{{ __('users.total_ads') }}</p>
                                 </div>
 
                                 <div
@@ -250,8 +250,8 @@
                                         <span
                                             class="text-3xl font-bold text-blue-600">{{ $user->demands_count ?? 0 }}</span>
                                     </div>
-                                    <p class="text-sm font-semibold text-gray-700">Demandes créées</p>
-                                    <p class="text-xs text-gray-500">Recherches actives</p>
+                                    <p class="text-sm font-semibold text-gray-700">{{ __('users.demands_created') }}</p>
+                                    <p class="text-xs text-gray-500">{{ __('users.active_searches') }}</p>
                                 </div>
 
                                 <div
@@ -261,8 +261,8 @@
                                         <span
                                             class="text-3xl font-bold text-purple-600">{{ $user->messages_count ?? 0 }}</span>
                                     </div>
-                                    <p class="text-sm font-semibold text-gray-700">Messages échangés</p>
-                                    <p class="text-xs text-gray-500">Conversations</p>
+                                    <p class="text-sm font-semibold text-gray-700">{{ __('users.messages_exchanged') }}</p>
+                                    <p class="text-xs text-gray-500">{{ __('users.conversations') }}</p>
                                 </div>
                             </div>
 
@@ -276,7 +276,7 @@
                                                 d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
                                             </path>
                                         </svg>
-                                        Offres récentes
+                                        {{ __('users.recent_offers') }}
                                     </h4>
                                     <div class="space-y-3">
                                         @foreach ($user->offers->take(5) as $offer)
@@ -297,7 +297,7 @@
                                                         {{ $offer->title }}</p>
                                                     <p class="text-xs text-gray-500">
                                                         {{ $offer->created_at->format('d/m/Y') }} •
-                                                        {{ $offer->category->name ?? 'Non renseigné' }}
+                                                        {{ $offer->category->name ?? __('users.not_provided') }}
                                                 </div>
                                                 <div class="text-right">
                                                     <span
@@ -318,7 +318,7 @@
                                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
                                             </path>
                                         </svg>
-                                        Demandes récentes
+                                        {{ __('users.recent_demands') }}
                                     </h4>
                                     <div class="space-y-3">
                                         @foreach ($user->demands->take(5) as $demand)
@@ -333,7 +333,7 @@
                                                         {{ $demand->title }}</p>
                                                     <p class="text-xs text-gray-500">
                                                         {{ $demand->created_at->format('d/m/Y') }} •
-                                                        {{ $demand->category->name ?? 'Non renseigné' }}
+                                                        {{ $demand->category->name ?? __('users.not_provided') }}
                                                 </div>
                                                 <div class="text-right">
                                                     <span
@@ -356,9 +356,8 @@
                                             </path>
                                         </svg>
                                     </div>
-                                    <p class="text-gray-600 font-medium">Aucune activité pour le moment</p>
-                                    <p class="text-sm text-gray-400 mt-1">L'utilisateur n'a pas encore publié d'offres
-                                        ou de demandes</p>
+                                    <p class="text-gray-600 font-medium">{{ __('users.no_activity') }}</p>
+                                    <p class="text-sm text-gray-400 mt-1">{{ __('users.no_offers_demands') }}</p>
                                 </div>
                             @endif
                         </div>
@@ -374,8 +373,8 @@
                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
                                 </div>
-                                <p class="text-lg font-semibold text-gray-600 mb-2">Historique des actions</p>
-                                <p class="text-sm text-gray-400">Cette fonctionnalité sera disponible prochainement</p>
+                                <p class="text-lg font-semibold text-gray-600 mb-2">{{ __('users.action_history') }}</p>
+                                <p class="text-sm text-gray-400">{{ __('users.feature_coming_soon') }}</p>
                             </div>
                         </div>
                     </div>
@@ -391,7 +390,7 @@
                                             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                                         </path>
                                     </svg>
-                                    Envoyer un email
+                                    {{ __('users.send_email') }}
                                 </button>
 
                                 <button wire:click="editUser"
@@ -401,13 +400,13 @@
                                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
                                         </path>
                                     </svg>
-                                    Modifier
+                                    {{ __('users.edit') }}
                                 </button>
                             </div>
 
                             <button @click="$wire.close()"
                                 class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-semibold">
-                                Fermer
+                                {{ __('users.close') }}
                             </button>
                         </div>
                     </div>

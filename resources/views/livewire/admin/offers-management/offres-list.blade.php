@@ -10,17 +10,17 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center">
                     <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-fadeIn">
-                        🌾 Découvrez Nos Offres Agricoles
+                        {{ __('offers.title') }}
                     </h1>
                     <p class="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-                        Trouvez des produits frais directement auprès des producteurs locaux
+                        {{ __('offers.subtitle') }}
                     </p>
 
                     <!-- Barre de recherche principale -->
                     <div class="max-w-3xl mx-auto">
                         <div class="relative">
                             <input type="text" wire:model.live.debounce.500ms="search"
-                                placeholder="Rechercher un produit, une catégorie, une région..."
+                                placeholder="{{ __('offers.search_placeholder') }}"
                                 class="w-full px-6 py-4 pl-14 text-gray-800 rounded-2xl shadow-2xl focus:ring-4 focus:ring-primary-300 focus:outline-none">
                             <svg class="w-6 h-6 text-gray-400 absolute left-5 top-1/2 transform -translate-y-1/2"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,14 +29,14 @@
                             </svg>
                             <button
                                 class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-primary-500 text-white px-6 py-2 rounded-xl hover:bg-primary-600 transition font-semibold">
-                                Rechercher
+                                {{ __('offers.search_button') }}
                             </button>
                         </div>
                     </div>
 
                     <!-- Quick filters -->
                     <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-                        <span class="text-primary-200 text-sm">Catégories populaires :</span>
+                        <span class="text-primary-200 text-sm">{{ __('offers.popular_categories') }}</span>
                         @foreach ($categories as $category)
                             <button wire:click="$set('filterCategorie', '{{ $category->id }}')"
                                 class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-full text-sm font-medium transition backdrop-blur-sm">
@@ -58,7 +58,7 @@
                                 d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
                             </path>
                         </svg>
-                        <span>Offres en Vedette</span>
+                        <span>{{ __('offers.featured_offers') }}</span>
                     </h2>
                 </div>
 
@@ -75,7 +75,7 @@
                                             d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
                                         </path>
                                     </svg>
-                                    <span>Vedette</span>
+                                    <span>{{ __('offers.featured') }}</span>
                                 </span>
                             </div>
 
@@ -141,10 +141,21 @@
                                     </div>
                                     <button wire:click="openDetailsModal({{ $offre->id }})"
                                         class="text-primary-600 hover:text-primary-700 font-semibold text-sm">
-                                        Voir →
+                                        {{ __('offers.view') }} →
                                     </button>
                                 </div>
                             </div>
+
+                            <!-- Bouton Contact -->
+                            <button wire:click="contactproducer({{ $offre->id }})"
+                                class="w-full mt-4 bg-primary-500 text-white py-3 rounded-xl hover:bg-primary-600 transition font-semibold shadow-lg hover:shadow-xl flex items-center justify-center space-x-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                    </path>
+                                </svg>
+                                <span>{{ __('offers.contact') }}</span>
+                            </button>
                         </div>
                     @endforeach
                 </div>
@@ -161,7 +172,7 @@
                     <!-- Résultats -->
                     <div class="flex items-center space-x-4">
                         <p class="text-gray-600">
-                            <span class="font-bold text-gray-800">{{ $offres->total() }}</span> offre(s) trouvée(s)
+                            <span class="font-bold text-gray-800">{{ $offres->total() }}</span> {{ __('offers.found') }}
                         </p>
                     </div>
 
@@ -176,26 +187,26 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
                                 </svg>
-                                <span class="text-sm font-medium">Trier</span>
+                                <span class="text-sm font-medium">{{ __('offers.sort') }}</span>
                             </button>
 
                             <div x-show="open" @click.away="open = false" x-transition
                                 class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50">
                                 <button wire:click="sortBy('date_publication')"
                                     class="w-full text-left px-4 py-2 hover:bg-gray-50 transition text-sm">
-                                    📅 Plus récentes
+                                    📅 {{ __('offers.latest') }}
                                 </button>
                                 <button wire:click="sortBy('prix')"
                                     class="w-full text-left px-4 py-2 hover:bg-gray-50 transition text-sm">
-                                    💰 Prix croissant
+                                    💰 {{ __('offers.price_asc') }}
                                 </button>
                                 <button wire:click="$set('sortBy', 'prix'); $set('sortDirection', 'desc')"
                                     class="w-full text-left px-4 py-2 hover:bg-gray-50 transition text-sm">
-                                    💎 Prix décroissant
+                                    💎 {{ __('offers.price_desc') }}
                                 </button>
                                 <button wire:click="sortBy('views_count')"
                                     class="w-full text-left px-4 py-2 hover:bg-gray-50 transition text-sm">
-                                    👁️ Plus populaires
+                                    👁️ {{ __('offers.popular') }}
                                 </button>
                             </div>
                         </div>
@@ -208,7 +219,7 @@
                                     d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
                                 </path>
                             </svg>
-                            <span class="text-sm font-medium">Filtres</span>
+                            <span class="text-sm font-medium">{{ __('offers.filters') }}</span>
                         </button>
 
                         <!-- Vue -->
@@ -242,10 +253,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <!-- Catégorie -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Catégorie</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('offers.category') }}</label>
                             <select wire:model.live="filterCategorie"
                                 class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
-                                <option value="">Toutes les catégories</option>
+                                <option value="">{{ __('offers.all_categories') }}</option>
                                 @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->icon }} {{ $category->name }}
                                 </option>
@@ -255,10 +266,10 @@
 
                         <!-- Région -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Région</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('offers.region') }}</label>
                             <select wire:model.live="filterRegion"
                                 class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
-                                <option value="">Toutes les régions</option>
+                                <option value="">{{ __('offers.all_regions') }}</option>
                                 @foreach ($regions as $region)
                                     <option value="{{ $region }}">{{ $region }}</option>
                                 @endforeach
@@ -267,14 +278,14 @@
 
                         <!-- Prix min -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Prix min (FCFA)</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('offers.min_price') }}</label>
                             <input type="number" wire:model.live.debounce.500ms="filterPrixMin" placeholder="0"
                                 class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                         </div>
 
                         <!-- Prix max -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Prix max (FCFA)</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('offers.max_price') }}</label>
                             <input type="number" wire:model.live.debounce.500ms="filterPrixMax"
                                 placeholder="1000000"
                                 class="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
@@ -285,7 +296,7 @@
                     <div class="mt-4 flex justify-end">
                         <button wire:click="resetFilters"
                             class="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition font-medium text-sm">
-                            Réinitialiser les filtres
+                            {{ __('offers.reset_filters') }}
                         </button>
                     </div>
                 </div>
@@ -357,7 +368,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                                     </svg>
-                                    {{ $offre->quantite }} {{ $offre->unite }} disponible(s)
+                                    {{ $offre->quantite }} {{ $offre->unite }} {{ __('offers.available') }}
                                 </p>
                             </div>
 
@@ -409,7 +420,7 @@
                                         d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
                                     </path>
                                 </svg>
-                                <span>Contacter</span>
+                                <span>{{ __('offers.contact') }}</span>
                             </button>
                         </div>
                     </div>
@@ -422,8 +433,8 @@
                                     d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
                                 </path>
                             </svg>
-                            <h3 class="text-xl font-bold text-gray-700 mb-2">Aucune offre trouvée</h3>
-                            <p class="text-gray-500">Essayez de modifier vos filtres ou revenez plus tard</p>
+                            <h3 class="text-xl font-bold text-gray-700 mb-2">{{ __('offers.no_offer_found') }}</h3>
+                            <p class="text-gray-500">{{ __('offers.try_changing_filters') }}</p>
                         </div>
                     </div>
                 @endforelse
@@ -445,8 +456,7 @@
                                         <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
-                                            </path>
+                                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                                         </svg>
                                     </div>
                                 @endif
@@ -484,8 +494,7 @@
                                         <svg class="w-4 h-4 mr-2 text-primary-500" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
-                                            </path>
+                                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                                         </svg>
                                         {{ $offre->quantite }} {{ $offre->unite }}
                                     </div>
@@ -507,7 +516,7 @@
                                                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
                                             </path>
                                         </svg>
-                                        {{ $offre->views_count }} vues
+                                        {{ $offre->views_count }} {{ __('offers.views') }}
                                     </div>
                                     <div class="flex items-center text-sm text-gray-600">
                                         <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor"
@@ -547,11 +556,11 @@
                                     <div class="flex items-center space-x-2">
                                         <button wire:click="openDetailsModal({{ $offre->id }})"
                                             class="px-4 py-2 border-2 border-primary-500 text-primary-600 rounded-xl hover:bg-primary-50 transition font-medium">
-                                            Détails
+                                            {{ __('offers.details') }}
                                         </button>
                                         <button wire:click="contactproducer({{ $offre->id }})"
                                             class="px-4 py-2 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition font-medium">
-                                            Contacter
+                                            {{ __('offers.contact') }}
                                         </button>
                                     </div>
                                 </div>
@@ -584,7 +593,7 @@
                 <!-- Header -->
                 <div
                     class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10 rounded-t-2xl">
-                    <h3 class="text-2xl font-bold text-gray-800">Détails de l'offre</h3>
+                    <h3 class="text-2xl font-bold text-gray-800">{{ __('offers.offer_details') }}</h3>
                     <button wire:click="$set('showDetailsModal', false)"
                         class="p-2 hover:bg-gray-100 rounded-lg transition">
                         <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -662,14 +671,14 @@
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                         </path>
                                     </svg>
-                                    Description
+                                    {{ __('offers.description') }}
                                 </h3>
                                 <p class="text-gray-700 leading-relaxed">{{ $selectedOffre->description }}</p>
                             </div>
 
                             <!-- Détails -->
                             <div class="bg-gray-50 rounded-xl p-5 space-y-3">
-                                <h3 class="font-bold text-gray-800 mb-4">Informations détaillées</h3>
+                                <h3 class="font-bold text-gray-800 mb-4">{{ __('offers.details') }}</h3>
 
                                 <div class="flex items-center justify-between py-2 border-b border-gray-200">
                                     <span class="text-gray-600 flex items-center">
@@ -679,7 +688,7 @@
                                                 d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
                                             </path>
                                         </svg>
-                                        Quantité disponible
+                                        {{ __('offers.available_quantity') }}
                                     </span>
                                     <span class="font-bold text-gray-800">{{ $selectedOffre->quantite }}
                                         {{ $selectedOffre->unite }}</span>
@@ -695,7 +704,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         </svg>
-                                        Localisation
+                                        {{ __('offers.location') }}
                                     </span>
                                     <span class="font-bold text-gray-800">{{ $selectedOffre->region }},
                                         {{ $selectedOffre->localisation }}</span>
@@ -709,7 +718,7 @@
                                                 d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
                                             </path>
                                         </svg>
-                                        Contact
+                                        {{ __('offers.contact') }}
                                     </span>
                                     <span class="font-bold text-gray-800">{{ $selectedOffre->contact }}</span>
                                 </div>
@@ -722,7 +731,7 @@
                                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                             </path>
                                         </svg>
-                                        Publiée le
+                                        {{ __('offers.published_on') }}
                                     </span>
                                     <span
                                         class="font-bold text-gray-800">{{ $selectedOffre->date_publication->format('d/m/Y') }}</span>
@@ -741,7 +750,7 @@
                                                 d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0">
                                             </path>
                                         </svg>
-                                        Conditions de livraison
+                                        {{ __('offers.delivery_conditions') }}
                                     </h3>
                                     <p class="text-gray-700 text-sm">{{ $selectedOffre->conditions_livraison }}</p>
                                 </div>
@@ -749,7 +758,7 @@
 
                             <!-- Producteur -->
                             <div class="bg-gradient-to-br from-primary-50 to-green-50 rounded-xl p-5">
-                                <h3 class="font-bold text-gray-800 mb-4">À propos du producteur</h3>
+                                <h3 class="font-bold text-gray-800 mb-4">{{ __('offers.about_producer') }}</h3>
                                 <div class="flex items-center space-x-4 mb-4">
                                     <img src="{{ $selectedOffre->producer->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($selectedOffre->producer->name) }}"
                                         class="w-16 h-16 rounded-full ring-4 ring-white shadow">
@@ -771,7 +780,7 @@
                                             @endfor
                                             <span
                                                 class="text-sm text-gray-600 ml-2">{{ number_format($noteMoyenne, 1) }}
-                                                ({{ $nombreAvis }} avis)</span>
+                                                ({{ $nombreAvis }} {{ __('offers.reviews') }})</span>
                                         </div>
                                         @if ($selectedOffre->producer->bio)
                                             <p class="text-sm text-gray-600">{{ $selectedOffre->producer->bio }}</p>
@@ -782,7 +791,7 @@
                                 <button
                                     wire:click="openAvisModal({{ $selectedOffre->producer_id }}, {{ $selectedOffre->id }})"
                                     class="w-full bg-white text-primary-600 py-2 rounded-xl hover:bg-primary-50 transition font-medium text-sm border-2 border-primary-200">
-                                    ⭐ Laisser un avis 
+                                    ⭐ {{ __('offers.leave_review') }} 
                                 </button>
                             </div>
                         </div>
@@ -797,7 +806,7 @@
                                         d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
                                     </path>
                                 </svg>
-                                Avis des clients
+                                {{ __('offers.customer_reviews') }}
                             </h3>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -839,7 +848,7 @@
                                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                             clip-rule="evenodd"></path>
                                                     </svg>
-                                                    Achat vérifié
+                                                    {{ __('offers.verified_purchase') }}
                                                 </span>
                                             </div>
                                         @endif
@@ -855,7 +864,7 @@
                     class="sticky bottom-0 bg-white border-t px-6 py-4 flex items-center justify-between rounded-b-2xl">
                     <button wire:click="$set('showDetailsModal', false)"
                         class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-medium">
-                        Fermer
+                        {{ __('offers.close') }}
                     </button>
                     <button wire:click="contactproducer({{ $selectedOffre->id }})"
                         class="px-8 py-3 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition font-semibold shadow-lg hover:shadow-xl flex items-center space-x-2">
@@ -864,7 +873,7 @@
                                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
                             </path>
                         </svg>
-                        <span>Contacter le producteur</span>
+                        <span>{{ __('offers.contact_producer') }}</span>
                     </button>
                 </div>
             </div>
@@ -891,15 +900,15 @@
                     </svg>
                 </div>
 
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Laisser un avis</h3>
-                <p class="text-gray-600">Partagez votre expérience avec ce producteur</p>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ __('offers.leave_review') }}</h3>
+                <p class="text-gray-600">{{ __('offers.share_experience') }}</p>
             </div>
 
             <form wire:submit.prevent="submitAvis" class="space-y-6">
                 <!-- Notation par étoiles -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-3 text-center">
-                        Votre note <span class="text-red-500">*</span>
+                        {{ __('offers.your_rating') }} <span class="text-red-500">*</span>
                     </label>
                     <div class="flex items-center justify-center space-x-2">
                         @for ($i = 1; $i <= 5; $i++)
@@ -918,11 +927,11 @@
                         @endfor
                     </div>
                     <p class="text-center mt-2 text-sm font-medium"
-                        x-text="$wire.avisNote === 5 ? '😍 Excellent' : 
-                        $wire.avisNote === 4 ? '😊 Très bien' : 
-                        $wire.avisNote === 3 ? '😐 Bien' : 
-                        $wire.avisNote === 2 ? '😕 Moyen' : 
-                        $wire.avisNote === 1 ? '😞 Décevant' : ''">
+                        x-text="$wire.avisNote === 5 ? '😍 {{ __("offers.excellent") }}' : 
+                        $wire.avisNote === 4 ? '😊 {{ __("offers.very_good") }}' : 
+                        $wire.avisNote === 3 ? '😐 {{ __("offers.good") }}' : 
+                        $wire.avisNote === 2 ? '😕 {{ __("offers.average") }}' : 
+                        $wire.avisNote === 1 ? '😞 {{ __("offers.disappointing") }}' : ''">
                     </p>
                     @error('avisNote')
                         <p class="text-center text-sm text-red-600 mt-2">{{ $message }}</p>
@@ -932,14 +941,14 @@
                 <!-- Commentaire -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Votre commentaire (optionnel)
+                        {{ __('offers.your_comment') }} ({{ __('offers.optional') }})
                     </label>
-                    <textarea wire:model="avisCommentaire" rows="4" placeholder="Partagez votre expérience avec ce producteur..."
+                    <textarea wire:model="avisCommentaire" rows="4" placeholder="{{ __('offers.share_experience') }}"
                         class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition resize-none"></textarea>
                     @error('avisCommentaire')
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
-                    <p class="text-xs text-gray-500 mt-1">Maximum 500 caractères</p>
+                    <p class="text-xs text-gray-500 mt-1">{{ __('offers.max_500_characters') }}</p>
                 </div>
 
                 <!-- Note d'information -->
@@ -952,7 +961,7 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                         <p class="text-sm text-blue-700">
-                            Votre avis sera publié publiquement et aidera d'autres utilisateurs à faire leur choix.
+                            {{ __('offers.review_info') }}
                         </p>
                     </div>
                 </div>
@@ -961,7 +970,7 @@
                 <div class="flex items-center justify-end space-x-3 pt-4">
                     <button type="button" wire:click="$set('showAvisModal', false)"
                         class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-medium">
-                        Annuler
+                        {{ __('offers.cancel') }}
                     </button>
                     <button type="submit" wire:loading.attr="disabled"
                         class="px-6 py-3 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2">
@@ -969,7 +978,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
                             </path>
                         </svg>
-                        <span wire:loading.remove>Publier l'avis</span>
+                        <span wire:loading.remove>{{ __('offers.publish_review') }}</span>
                         <span wire:loading class="flex items-center">
                             <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -978,7 +987,7 @@
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                 </path>
                             </svg>
-                            Publication...
+                            {{ __('offers.publishing') }}...
                         </span>
                     </button>
                 </div>
@@ -1025,8 +1034,8 @@
                     const data = event;
                     Swal.fire({
                         icon: data.type,
-                        title: data.type === 'success' ? 'Succès!' : data.type === 'info' ?
-                            'Information' : 'Erreur!',
+                        title: data.type === 'success' ? '{{ __("offers.success") }}' : data.type === 'info' ?
+                            '{{ __("offers.info") }}' : '{{ __("offers.error") }}',
                         text: data.message,
                         timer: data.type === 'success' ? 3000 : null,
                         showConfirmButton: data.type !== 'success',

@@ -5,8 +5,8 @@
          <div class="bg-agro-white rounded-xl shadow-lg p-6 mb-6 border border-primary-100">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-agro-green font-poppins"># Gestion des Tags</h1>
-                    <p class="text-agro-gray mt-2 font-inter">Organisez et catégorisez vos contenus avec style</p>
+                    <h1 class="text-3xl font-bold text-agro-green font-poppins"># {{ __('tags.title') }}</h1>
+                    <p class="text-agro-gray mt-2 font-inter">{{ __('tags.subtitle') }}</p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-4 animate-slide-up animation-delay-400">
                     <button wire:click="create" 
@@ -15,7 +15,7 @@
                         <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
-                        Nouveau Tag
+                        {{ __('tags.new_tag') }}
                     </button>
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" 
@@ -24,7 +24,7 @@
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
                             </svg>
-                            Plus d'actions
+                            {{ __('tags.more_actions') }}
                         </button>
                         <div x-show="open" 
                              @click.away="open = false"
@@ -42,7 +42,7 @@
                                     <svg class="w-4 h-4 mr-3 text-primary-600 group-hover:text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                                     </svg>
-                                    Exporter CSV
+                                    {{ __('tags.export_csv') }}
                                 </button>
                                 <button wire:click="$set('showImportModal', true)" 
                                         class="group flex items-center px-4 py-3 text-sm text-agro-gray hover:bg-primary-50 w-full text-left transition-colors duration-200">
@@ -50,7 +50,7 @@
                                     <svg class="w-4 h-4 mr-3 text-primary-600 group-hover:text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                                     </svg>
-                                    Importer CSV
+                                    {{ __('tags.import_csv') }}
                                 </button>
                                 @if(count($selectedTags) > 0)
                                     <button wire:click="$set('showBulkModal', true)" 
@@ -59,7 +59,7 @@
                                         <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                         </svg>
-                                        Supprimer la sélection ({{ count($selectedTags) }})
+                                        {{ __('tags.delete_selected', ['count' => count($selectedTags)]) }}
                                     </button>
                                 @endif
                             </div>
@@ -78,7 +78,7 @@
                         <div class="relative">
                             <input type="text" 
                                    wire:model.debounce.500ms="search" 
-                                   placeholder="Rechercher un tag..."
+                                   placeholder="{{ __('tags.search_placeholder') }}"
                                    class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
                             <!-- SVG Search -->
                             <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,10 +100,10 @@
                     <div>
                         <select wire:model="sortField" 
                         class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
-                            <option value="name">Trier par nom</option>
-                            <option value="created_at">Date de création</option>
-                            <option value="color">Couleur</option>
-                            <option value="is_active">Statut</option>
+                            <option value="name">{{ __('tags.sort_by_name') }}</option>
+                            <option value="created_at">{{ __('tags.sort_by_date') }}</option>
+                            <option value="color">{{ __('tags.sort_by_color') }}</option>
+                            <option value="is_active">{{ __('tags.sort_by_status') }}</option>
                         </select>
                     </div>
 
@@ -111,7 +111,7 @@
                     <div>
                         <button wire:click="sortBy('{{ $sortField }}')" 
                                 class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 bg-primary-100 hover:bg-primary-200 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 font-inter font-medium">
-                            <span>Ordre</span>
+                            <span>{{ __('tags.sort_order') }}</span>
                             <!-- SVG Sort -->
                             <svg class="w-5 h-5 text-agro-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4"></path>
@@ -124,15 +124,15 @@
                 <div class="mt-6 flex flex-wrap gap-3">
                     <button wire:click="$set('search', '')" 
                             class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 {{ empty($search) ? 'bg-agro-green text-agro-white' : 'bg-primary-100 text-agro-gray hover:bg-primary-200' }}">
-                        Tous les tags
+                        {{ __('tags.filter_all') }}
                     </button>
                     <button wire:click="$set('search', 'is:active')" 
                             class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 {{ $search === 'is:active' ? 'bg-agro-green text-agro-white' : 'bg-primary-100 text-agro-gray hover:bg-primary-200' }}">
-                        Actifs
+                        {{ __('tags.filter_active') }}
                     </button>
                     <button wire:click="$set('search', 'is:inactive')" 
                             class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 {{ $search === 'is:inactive' ? 'bg-agro-green text-agro-white' : 'bg-primary-100 text-agro-gray hover:bg-primary-200' }}">
-                        Inactifs
+                        {{ __('tags.filter_inactive') }}
                     </button>
                 </div>
             </div>
@@ -143,7 +143,7 @@
             <div class="bg-gradient-to-br from-agro-green to-primary-700 rounded-xl p-6 text-agro-white shadow-xl transform hover:scale-105 transition-all duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-agro-beige text-sm font-inter">Total Tags</p>
+                        <p class="text-agro-beige text-sm font-inter">{{ __('tags.stats.total') }}</p>
                         <p class="text-3xl font-bold font-poppins">{{ $tags->total() }}</p>
                     </div>
                     <!-- SVG Hashtag -->
@@ -155,7 +155,7 @@
             <div class="bg-gradient-to-br from-agro-yellow to-yellow-500 rounded-xl p-6 text-agro-green shadow-xl transform hover:scale-105 transition-all duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-yellow-700 text-sm font-inter">Actifs</p>
+                        <p class="text-yellow-700 text-sm font-inter">{{ __('tags.stats.active') }}</p>
                         <p class="text-3xl font-bold font-poppins">{{ \App\Models\Tag::where('is_active', true)->count() }}</p>
                     </div>
                     <!-- SVG Check Circle -->
@@ -167,7 +167,7 @@
             <div class="bg-gradient-to-br from-earth-500 to-earth-600 rounded-xl p-6 text-agro-white shadow-xl transform hover:scale-105 transition-all duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-earth-100 text-sm font-inter">Sélectionnés</p>
+                        <p class="text-earth-100 text-sm font-inter">{{ __('tags.stats.selected') }}</p>
                         <p class="text-3xl font-bold font-poppins">{{ count($selectedTags) }}</p>
                     </div>
                     <!-- SVG Hand Pointer -->
@@ -179,7 +179,7 @@
             <div class="bg-gradient-to-br from-secondary to-primary-600 rounded-xl p-6 text-agro-white shadow-xl transform hover:scale-105 transition-all duration-300">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-primary-100 text-sm font-inter">Couleurs</p>
+                        <p class="text-primary-100 text-sm font-inter">{{ __('tags.stats.colors') }}</p>
                         <p class="text-3xl font-bold font-poppins">{{ \App\Models\Tag::whereNotNull('color')->count() }}</p>
                     </div>
                     <!-- SVG Palette -->
@@ -238,7 +238,7 @@
                                             <svg class="w-4 h-4 mr-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                             </svg>
-                                            Modifier
+                                            {{ __('tags.actions.edit') }}
                                         </button>
                                         <button wire:click="duplicate({{ $tag->id }})" 
                                                 class="flex items-center px-4 py-2 text-sm text-agro-gray hover:bg-primary-50 w-full text-left transition-colors duration-200">
@@ -246,7 +246,7 @@
                                             <svg class="w-4 h-4 mr-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                                             </svg>
-                                            Dupliquer
+                                            {{ __('tags.actions.duplicate') }}
                                         </button>
                                         <button wire:click="confirmDelete({{ $tag->id }})" 
                                                 class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 w-full text-left transition-colors duration-200">
@@ -254,7 +254,7 @@
                                             <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                             </svg>
-                                            Supprimer
+                                            {{ __('tags.actions.delete') }}
                                         </button>
                                     </div>
                                 </div>
@@ -273,7 +273,7 @@
                                     <span class="text-sm text-agro-gray font-inter">{{ $tag->color }}</span>
                                 @else
                                     <div class="w-6 h-6 rounded-full bg-gradient-to-r from-primary-400 to-primary-600 border-2 border-agro-white shadow-lg"></div>
-                                    <span class="text-sm text-primary-500 font-inter">Couleur par défaut</span>
+                                    <span class="text-sm text-primary-500 font-inter">{{ __('tags.default_color') }}</span>
                                 @endif
                             </div>
                         </div>
@@ -298,7 +298,7 @@
                             <div class="flex items-center gap-2">
                                 <div class="w-3 h-3 rounded-full {{ $tag->is_active ? 'bg-green-500' : 'bg-gray-400' }} animate-pulse"></div>
                                 <span class="text-xs font-medium {{ $tag->is_active ? 'text-green-600' : 'text-gray-600' }} font-inter">
-                                    {{ $tag->is_active ? 'Actif' : 'Inactif' }}
+                                    {{ $tag->is_active ? __('tags.status.active') : __('tags.status.inactive') }}
                                 </span>
                             </div>
                             <span class="text-xs text-primary-500 font-inter">{{ $tag->created_at->diffForHumans() }}</span>
@@ -331,10 +331,10 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <h2 class="text-3xl font-bold font-poppins">
-                                {{ $tagId ? 'Modifier le Tag' : 'Créer un Tag' }}
+                                {{ $tagId ? __('tags.modal.edit_title') : __('tags.modal.create_title') }}
                             </h2>
                             <p class="text-agro-beige mt-2 font-inter opacity-90">
-                                {{ $tagId ? 'Mettez à jour les informations du tag' : 'Ajoutez un nouveau tag à votre collection' }}
+                                {{ $tagId ? __('tags.modal.edit_subtitle') : __('tags.modal.create_subtitle') }}
                             </p>
                         </div>
                         <button wire:click="closeModal" 
@@ -351,11 +351,11 @@
                     <!-- Nom et Slug -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">Nom *</label>
+                            <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">{{ __('tags.form.name') }} *</label>
                             <div class="relative">
                                 <input type="text" 
                                        wire:model="name" 
-                                       placeholder="Entrez le nom du tag..."
+                                       placeholder="{{ __('tags.form.name_placeholder') }}"
                                        class="w-full pl-12 pr-4 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg">
                                 <!-- SVG Hashtag -->
                                 <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -368,11 +368,11 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">Slug *</label>
+                            <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">{{ __('tags.form.slug') }} *</label>
                             <div class="relative">
                                 <input type="text" 
                                        wire:model="slug" 
-                                       placeholder="slug-automatique"
+                                       placeholder="{{ __('tags.form.slug_placeholder') }}"
                                        class="w-full pl-12 pr-4 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg bg-primary-50">
                                 <!-- SVG Link -->
                                 <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -387,10 +387,10 @@
 
                     <!-- Description -->
                     <div>
-                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">Description</label>
+                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">{{ __('tags.form.description') }}</label>
                         <textarea wire:model="description" 
                                   rows="4" 
-                                  placeholder="Décrivez ce tag en détail..."
+                                  placeholder="{{ __('tags.form.description_placeholder') }}"
                                   class="w-full px-6 py-4 border-2 border-primary-200 rounded-xl focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter text-lg resize-none"></textarea>
                         @error('description') 
                             <span class="text-red-500 text-sm mt-2 block font-inter">{{ $message }}</span> 
@@ -399,7 +399,7 @@
 
                     <!-- Couleur avec sélecteur avancé -->
                     <div>
-                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">Couleur</label>
+                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">{{ __('tags.form.color') }}</label>
                         <div class="space-y-4">
                             <!-- Sélecteur de couleur -->
                             <div class="flex items-center gap-4">
@@ -417,7 +417,7 @@
                             
                             <!-- Préréglages de couleurs -->
                             <div>
-                                <p class="text-sm font-medium text-agro-gray mb-3 font-inter">Couleurs prédéfinies :</p>
+                                <p class="text-sm font-medium text-agro-gray mb-3 font-inter">{{ __('tags.form.color_presets') }} :</p>
                                 <div class="grid grid-cols-10 gap-2">
                                     @foreach($colorPresets as $preset)
                                         <button type="button" 
@@ -438,8 +438,8 @@
                     <!-- Statut -->
                     <div class="flex items-center justify-between p-6 bg-gradient-to-r from-primary-50 to-primary-100 rounded-xl border border-primary-200">
                         <div>
-                            <label class="text-lg font-bold text-agro-gray font-inter">Statut du tag</label>
-                            <p class="text-sm text-agro-gray font-inter opacity-80">Activez ou désactivez ce tag</p>
+                            <label class="text-lg font-bold text-agro-gray font-inter">{{ __('tags.form.status') }}</label>
+                            <p class="text-sm text-agro-gray font-inter opacity-80">{{ __('tags.form.status_description') }}</p>
                         </div>
                         <button type="button" 
                                 wire:click="$set('is_active', !{{ $is_active }})"
@@ -460,7 +460,7 @@
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
-                            Annuler
+                            {{ __('tags.buttons.cancel') }}
                         </button>
                         <button type="submit" 
                                 class="px-8 py-4 bg-gradient-to-r from-agro-green to-primary-700 hover:from-primary-700 hover:to-base text-agro-white rounded-xl transition-all duration-300 font-poppins font-semibold transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-agro-green focus:ring-opacity-50 flex items-center">
@@ -468,7 +468,7 @@
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
                             </svg>
-                            {{ $tagId ? 'Mettre à jour' : 'Créer' }}
+                            {{ $tagId ? __('tags.buttons.update') : __('tags.buttons.create') }}
                         </button>
                     </div>
                 </form>
@@ -485,7 +485,7 @@
             <div class="bg-agro-white rounded-2xl shadow-2xl max-w-md w-full animate-scale-in overflow-hidden">
                 <div class="bg-gradient-to-r from-red-500 to-red-600 p-6 text-agro-white">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-2xl font-bold font-poppins">Confirmer la suppression</h3>
+                        <h3 class="text-2xl font-bold font-poppins">{{ __('tags.delete_modal.title') }}</h3>
                         <button wire:click="closeDeleteModal" 
                                 class="text-agro-white hover:text-agro-beige transition-colors duration-300">
                             <!-- SVG Close -->
@@ -503,16 +503,16 @@
                         </svg>
                     </div>
                     <p class="text-agro-gray mb-8 font-inter text-lg">
-                        Êtes-vous sûr de vouloir supprimer ce tag ? Cette action est irréversible.
+                        {{ __('tags.delete_modal.message') }}
                     </p>
                     <div class="flex gap-4 justify-center">
                         <button wire:click="closeDeleteModal" 
                                 class="px-8 py-3 border-2 border-primary-300 text-agro-gray rounded-xl hover:bg-primary-50 transition-all duration-300 font-poppins font-semibold">
-                            Annuler
+                            {{ __('tags.buttons.cancel') }}
                         </button>
                         <button wire:click="delete" 
                                 class="px-8 py-3 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-agro-white rounded-xl transition-all duration-300 font-poppins font-semibold transform hover:scale-105">
-                            Supprimer
+                            {{ __('tags.buttons.delete') }}
                         </button>
                     </div>
                 </div>
@@ -529,7 +529,7 @@
             <div class="bg-agro-white rounded-2xl shadow-2xl max-w-lg w-full animate-scale-in overflow-hidden">
                 <div class="bg-gradient-to-r from-agro-green to-primary-700 p-6 text-agro-white">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-2xl font-bold font-poppins">Importer des tags</h3>
+                        <h3 class="text-2xl font-bold font-poppins">{{ __('tags.import_modal.title') }}</h3>
                         <button wire:click="$set('showImportModal', false)" 
                                 class="text-agro-white hover:text-agro-beige transition-colors duration-300">
                             <!-- SVG Close -->
@@ -541,7 +541,7 @@
                 </div>
                 <form wire:submit.prevent="import" class="p-8">
                     <div class="mb-6">
-                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">Fichier CSV</label>
+                        <label class="block text-sm font-bold text-agro-gray mb-3 font-inter">{{ __('tags.import_modal.file_label') }}</label>
                         <div class="border-2 border-dashed border-primary-300 rounded-xl p-8 text-center hover:border-agro-green transition-colors duration-300">
                             <input type="file" 
                                    wire:model="importFile" 
@@ -553,8 +553,8 @@
                                 <svg class="w-12 h-12 text-primary-400 mb-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                 </svg>
-                                <p class="text-agro-gray font-inter">Cliquez pour choisir un fichier CSV</p>
-                                <p class="text-sm text-primary-500 font-inter mt-2">Format: nom, description, couleur, statut</p>
+                                <p class="text-agro-gray font-inter">{{ __('tags.import_modal.click_to_choose') }}</p>
+                                <p class="text-sm text-primary-500 font-inter mt-2">{{ __('tags.import_modal.format') }}</p>
                             </label>
                         </div>
                         @error('importFile') 
@@ -565,11 +565,11 @@
                         <button type="button" 
                                 wire:click="$set('showImportModal', false)" 
                                 class="px-6 py-3 border-2 border-primary-300 text-agro-gray rounded-xl hover:bg-primary-50 transition-all duration-300 font-poppins font-semibold">
-                            Annuler
+                            {{ __('tags.buttons.cancel') }}
                         </button>
                         <button type="submit" 
                                 class="px-6 py-3 bg-gradient-to-r from-agro-green to-primary-700 hover:from-primary-700 hover:to-base text-agro-white rounded-xl transition-all duration-300 font-poppins font-semibold">
-                            Importer
+                            {{ __('tags.buttons.import') }}
                         </button>
                     </div>
                 </form>
@@ -586,7 +586,7 @@
             <div class="bg-agro-white rounded-2xl shadow-2xl max-w-md w-full animate-scale-in overflow-hidden">
                 <div class="bg-gradient-to-r from-red-500 to-red-600 p-6 text-agro-white">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-2xl font-bold font-poppins">Suppression multiple</h3>
+                        <h3 class="text-2xl font-bold font-poppins">{{ __('tags.bulk_delete_modal.title') }}</h3>
                         <button wire:click="$set('showBulkModal', false)" 
                                 class="text-agro-white hover:text-agro-beige transition-colors duration-300">
                             <!-- SVG Close -->
@@ -604,17 +604,17 @@
                         </svg>
                     </div>
                     <p class="text-agro-gray mb-2 font-inter text-lg">
-                        Êtes-vous sûr de vouloir supprimer ces tags ?
+                        {{ __('tags.bulk_delete_modal.message') }}
                     </p>
-                    <p class="text-2xl font-bold text-red-600 mb-8 font-poppins">{{ count($selectedTags) }} tags</p>
+                    <p class="text-2xl font-bold text-red-600 mb-8 font-poppins">{{ count($selectedTags) }} {{ __('tags.bulk_delete_modal.tags_count') }}</p>
                     <div class="flex gap-4 justify-center">
                         <button wire:click="$set('showBulkModal', false)" 
                                 class="px-8 py-3 border-2 border-primary-300 text-agro-gray rounded-xl hover:bg-primary-50 transition-all duration-300 font-poppins font-semibold">
-                            Annuler
+                            {{ __('tags.buttons.cancel') }}
                         </button>
                         <button wire:click="bulkDelete" 
                                 class="px-8 py-3 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-agro-white rounded-xl transition-all duration-300 font-poppins font-semibold transform hover:scale-105">
-                            Supprimer tout
+                            {{ __('tags.buttons.delete_all') }}
                         </button>
                     </div>
                 </div>
@@ -631,7 +631,7 @@
                         window.dispatchEvent(new CustomEvent('notify', {
                             detail: {
                                 type: 'success',
-                                message: 'Couleur copiée !',
+                                message: '{{ __("tags.notifications.color_copied") }}',
                                 icon: 'copy'
                             }
                         }));

@@ -8,8 +8,8 @@
                     </path>
                 </svg>
             </div>
-            <h3 class="text-sm font-bold text-gray-900">C'est calme par ici</h3>
-            <p class="mt-1 text-xs text-gray-500 max-w-[200px]">Vous êtes à jour ! Aucune nouvelle notification pour le moment.</p>
+            <h3 class="text-sm font-bold text-gray-900">{{ __('notifications.list.empty_title') }}</h3>
+            <p class="mt-1 text-xs text-gray-500 max-w-[200px]">{{ __('notifications.list.empty_message') }}</p>
         </div>
     @else
         <div class="divide-y divide-gray-100">
@@ -65,7 +65,7 @@
                             >
                                 <div class="flex justify-between items-start mb-0.5">
                                     <p class="text-sm font-bold text-gray-900 truncate pr-2">
-                                        {{ $data['title'] ?? 'Notification' }}
+                                        {{ $data['title'] ?? __('notifications.list.default_title') }}
                                     </p>
                                     <span class="text-[10px] font-medium text-gray-400 whitespace-nowrap ml-2">
                                         {{ $notification->created_at->diffForHumans() }}
@@ -82,7 +82,7 @@
                                 <button
                                     wire:click.stop="markAsRead('{{ $notification->id }}')"
                                     class="p-1.5 rounded-lg hover:bg-blue-50 text-blue-600 transition-colors"
-                                    title="Marquer comme lu"
+                                    title="{{ __('notifications.list.mark_as_read') }}"
                                 >
                                     <span class="w-2 h-2 rounded-full bg-blue-600 block"></span>
                                 </button>
@@ -91,7 +91,7 @@
                             <button
                                 wire:click.stop="deleteNotification('{{ $notification->id }}')"
                                 class="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors"
-                                title="Supprimer"
+                                title="{{ __('notifications.list.delete') }}"
                             >
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 

@@ -16,24 +16,23 @@
                                     </path>
                                 </svg>
                             </div>
-                            <span>Gestion des Contacts</span>
+                            <span>{{ __('contacts.title') }}</span>
                         </h1>
-                        <p class="mt-2 text-gray-600 text-lg">Gérez vos messages et feedbacks de manière professionnelle
-                        </p>
+                        <p class="mt-2 text-gray-600 text-lg">{{ __('contacts.subtitle') }}</p>
                     </div>
 
                     {{-- Actions rapides --}}
                     <div class="flex items-center space-x-3">
                         @if (count($selectedContacts) > 0)
                             <button wire:click="deleteSelected"
-                                wire:confirm="Êtes-vous sûr de vouloir supprimer {{ count($selectedContacts) }} message(s) ?"
+                                wire:confirm="{{ __('contacts.delete_selected_confirm', ['count' => count($selectedContacts)]) }}"
                                 class="px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-all duration-200 shadow-lg shadow-red-500/30 hover:shadow-xl hover:scale-105 flex items-center space-x-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                     </path>
                                 </svg>
-                                <span>Supprimer ({{ count($selectedContacts) }})</span>
+                                <span>{{ __('contacts.delete_selected', ['count' => count($selectedContacts)]) }}</span>
                             </button>
                         @endif
 
@@ -44,7 +43,7 @@
                                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                 </path>
                             </svg>
-                            <span>Exporter</span>
+                            <span>{{ __('contacts.export') }}</span>
                         </button>
                     </div>
                 </div>
@@ -67,11 +66,11 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-sm font-medium text-gray-600 mb-1">Total Messages</p>
+                        <p class="text-sm font-medium text-gray-600 mb-1">{{ __('contacts.stats.total') }}</p>
                         <p class="text-3xl font-bold text-gray-900">{{ $stats['total'] }}</p>
                         <div class="mt-3 flex items-center text-xs text-gray-500">
                             <span class="inline-block w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
-                            Tous les statuts
+                            {{ __('contacts.stats.all_statuses') }}
                         </div>
                     </div>
                 </div>
@@ -92,11 +91,11 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-sm font-medium text-blue-100 mb-1 relative z-10">Nouveaux</p>
+                        <p class="text-sm font-medium text-blue-100 mb-1 relative z-10">{{ __('contacts.stats.new') }}</p>
                         <p class="text-3xl font-bold text-white relative z-10">{{ $stats['new'] }}</p>
                         <div class="mt-3 flex items-center text-xs text-blue-100 relative z-10">
                             <span class="inline-block w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
-                            Non lus
+                            {{ __('contacts.stats.unread') }}
                         </div>
                     </div>
                 </div>
@@ -119,11 +118,11 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-sm font-medium text-amber-100 mb-1 relative z-10">Ouverts</p>
+                        <p class="text-sm font-medium text-amber-100 mb-1 relative z-10">{{ __('contacts.stats.opened') }}</p>
                         <p class="text-3xl font-bold text-white relative z-10">{{ $stats['opened'] }}</p>
                         <div class="mt-3 flex items-center text-xs text-amber-100 relative z-10">
                             <span class="inline-block w-2 h-2 bg-white rounded-full mr-2"></span>
-                            En attente
+                            {{ __('contacts.stats.pending') }}
                         </div>
                     </div>
                 </div>
@@ -143,11 +142,11 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-sm font-medium text-green-100 mb-1 relative z-10">Répondus</p>
+                        <p class="text-sm font-medium text-green-100 mb-1 relative z-10">{{ __('contacts.stats.replied') }}</p>
                         <p class="text-3xl font-bold text-white relative z-10">{{ $stats['replied'] }}</p>
                         <div class="mt-3 flex items-center text-xs text-green-100 relative z-10">
                             <span class="inline-block w-2 h-2 bg-white rounded-full mr-2"></span>
-                            Traités
+                            {{ __('contacts.stats.processed') }}
                         </div>
                     </div>
                 </div>
@@ -166,11 +165,11 @@
                                 </svg>
                             </div>
                         </div>
-                        <p class="text-sm font-medium text-gray-600 mb-1">Fermés</p>
+                        <p class="text-sm font-medium text-gray-600 mb-1">{{ __('contacts.stats.closed') }}</p>
                         <p class="text-3xl font-bold text-gray-900">{{ $stats['closed'] }}</p>
                         <div class="mt-3 flex items-center text-xs text-gray-500">
                             <span class="inline-block w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
-                            Archivés
+                            {{ __('contacts.stats.archived') }}
                         </div>
                     </div>
                 </div>
@@ -188,7 +187,7 @@
                                 </path>
                             </svg>
                         </div>
-                        <p class="text-sm font-medium text-gray-600">Aujourd'hui</p>
+                        <p class="text-sm font-medium text-gray-600">{{ __('contacts.advanced_stats.today') }}</p>
                     </div>
                     <p class="text-2xl font-bold text-gray-900">{{ $advancedStats['today'] }}</p>
                 </div>
@@ -203,7 +202,7 @@
                                 </path>
                             </svg>
                         </div>
-                        <p class="text-sm font-medium text-gray-600">Cette semaine</p>
+                        <p class="text-sm font-medium text-gray-600">{{ __('contacts.advanced_stats.this_week') }}</p>
                     </div>
                     <p class="text-2xl font-bold text-gray-900">{{ $advancedStats['this_week'] }}</p>
                 </div>
@@ -217,7 +216,7 @@
                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <p class="text-sm font-medium text-gray-600">Temps moyen</p>
+                        <p class="text-sm font-medium text-gray-600">{{ __('contacts.advanced_stats.avg_response_time') }}</p>
                     </div>
                     <p class="text-2xl font-bold text-gray-900">
                         {{ number_format($advancedStats['avg_response_time'] ?? 0, 1) }}h</p>
@@ -232,7 +231,7 @@
                                     d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                             </svg>
                         </div>
-                        <p class="text-sm font-medium text-gray-600">Taux réponse</p>
+                        <p class="text-sm font-medium text-gray-600">{{ __('contacts.advanced_stats.response_rate') }}</p>
                     </div>
                     <p class="text-2xl font-bold text-gray-900">{{ $advancedStats['response_rate'] }}%</p>
                 </div>
@@ -243,10 +242,10 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {{-- Recherche --}}
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">🔍 Rechercher</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">{{ __('contacts.search.label') }}</label>
                         <div class="relative">
                             <input type="text" wire:model.live.debounce.300ms="search"
-                                placeholder="Nom, email, sujet, message..."
+                                placeholder="{{ __('contacts.search.placeholder') }}"
                                 class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 transition-all duration-200">
                             <svg class="w-6 h-6 text-gray-400 absolute left-4 top-3.5" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
@@ -268,14 +267,14 @@
 
                     {{-- Filtre statut --}}
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">📊 Statut</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">{{ __('contacts.status.label') }}</label>
                         <select wire:model.live="statusFilter"
                             class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 transition-all duration-200">
-                            <option value="all">🎯 Tous les statuts</option>
-                            <option value="new">🆕 Nouveaux</option>
-                            <option value="opened">👁️ Ouverts</option>
-                            <option value="replied">✅ Répondus</option>
-                            <option value="closed">❌ Fermés</option>
+                            <option value="all">{{ __('contacts.status.all') }}</option>
+                            <option value="new">{{ __('contacts.status.new') }}</option>
+                            <option value="opened">{{ __('contacts.status.opened') }}</option>
+                            <option value="replied">{{ __('contacts.status.replied') }}</option>
+                            <option value="closed">{{ __('contacts.status.closed') }}</option>
                         </select>
                     </div>
                 </div>
@@ -283,8 +282,7 @@
                 @if ($search || $statusFilter !== 'all')
                     <div class="mt-4 flex items-center justify-between pt-4 border-t border-gray-200">
                         <p class="text-sm text-gray-600">
-                            <span class="font-semibold text-indigo-600">{{ $contacts->total() }}</span> résultat(s)
-                            trouvé(s)
+                            <span class="font-semibold text-indigo-600">{{ $contacts->total() }}</span> {{ __('contacts.results_found') }}
                         </p>
                         <button wire:click="$set('search', ''); $set('statusFilter', 'all')"
                             class="text-sm text-indigo-600 hover:text-indigo-700 font-medium flex items-center space-x-1 px-3 py-1.5 hover:bg-indigo-50 rounded-lg transition-colors">
@@ -293,7 +291,7 @@
                                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
                                 </path>
                             </svg>
-                            <span>Réinitialiser</span>
+                            <span>{{ __('contacts.reset') }}</span>
                         </button>
                     </div>
                 @endif
@@ -312,7 +310,7 @@
                                 <th wire:click="sortBy('name')"
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors">
                                     <div class="flex items-center space-x-2">
-                                        <span>Contact</span>
+                                        <span>{{ __('contacts.table.contact') }}</span>
                                         @if ($sortBy === 'name')
                                             <svg class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }}"
                                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,14 +322,14 @@
                                 </th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                    Sujet & Message</th>
+                                    {{ __('contacts.table.subject_message') }}</th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                    Statut</th>
+                                    {{ __('contacts.table.status') }}</th>
                                 <th wire:click="sortBy('created_at')"
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors">
                                     <div class="flex items-center space-x-2">
-                                        <span>Date</span>
+                                        <span>{{ __('contacts.table.date') }}</span>
                                         @if ($sortBy === 'created_at')
                                             <svg class="w-4 h-4 {{ $sortDirection === 'asc' ? '' : 'rotate-180' }}"
                                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -343,7 +341,7 @@
                                 </th>
                                 <th
                                     class="px-6 py-4 text-right text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                    Actions</th>
+                                    {{ __('contacts.table.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -368,7 +366,7 @@
                                                     @if ($contact->status === 'new')
                                                         <span
                                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-500 text-white animate-pulse">
-                                                            NEW
+                                                            {{ __('contacts.status.new_badge') }}
                                                         </span>
                                                     @endif
                                                 </div>
@@ -399,25 +397,25 @@
                                                 'new' => [
                                                     'bg' => 'bg-blue-500',
                                                     'text' => 'text-white',
-                                                    'label' => 'Nouveau',
+                                                    'label' => __('contacts.status_labels.new'),
                                                     'icon' => '🆕',
                                                 ],
                                                 'opened' => [
                                                     'bg' => 'bg-amber-500',
                                                     'text' => 'text-white',
-                                                    'label' => 'Ouvert',
+                                                    'label' => __('contacts.status_labels.opened'),
                                                     'icon' => '👁️',
                                                 ],
                                                 'replied' => [
                                                     'bg' => 'bg-green-500',
                                                     'text' => 'text-white',
-                                                    'label' => 'Répondu',
+                                                    'label' => __('contacts.status_labels.replied'),
                                                     'icon' => '✅',
                                                 ],
                                                 'closed' => [
                                                     'bg' => 'bg-gray-500',
                                                     'text' => 'text-white',
-                                                    'label' => 'Fermé',
+                                                    'label' => __('contacts.status_labels.closed'),
                                                     'icon' => '❌',
                                                 ],
                                             ];
@@ -441,7 +439,7 @@
                                         <div class="flex items-center justify-end space-x-2">
                                             <button wire:click="viewContact({{ $contact->id }})"
                                                 class="p-2 text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 rounded-xl transition-all group"
-                                                title="Voir les détails">
+                                                title="{{ __('contacts.actions.view') }}">
                                                 <svg class="w-5 h-5 group-hover:scale-110 transition-transform"
                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -456,7 +454,7 @@
                                             @if ($contact->status !== 'replied')
                                                 <button wire:click="openReplyModal({{ $contact->id }})"
                                                     class="p-2 text-green-600 hover:text-green-900 hover:bg-green-50 rounded-xl transition-all group"
-                                                    title="Répondre">
+                                                    title="{{ __('contacts.actions.reply') }}">
                                                     <svg class="w-5 h-5 group-hover:scale-110 transition-transform"
                                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -468,7 +466,7 @@
 
                                             <button wire:click="openDeleteModal({{ $contact->id }})"
                                                 class="p-2 text-red-600 hover:text-red-900 hover:bg-red-50 rounded-xl transition-all group"
-                                                title="Supprimer">
+                                                title="{{ __('contacts.actions.delete') }}">
                                                 <svg class="w-5 h-5 group-hover:scale-110 transition-transform"
                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -494,10 +492,8 @@
                                                     </path>
                                                 </svg>
                                             </div>
-                                            <p class="text-gray-500 text-lg font-semibold mb-2">Aucun message trouvé
-                                            </p>
-                                            <p class="text-gray-400 text-sm">Les messages de contact apparaîtront ici
-                                            </p>
+                                            <p class="text-gray-500 text-lg font-semibold mb-2">{{ __('contacts.no_messages') }}</p>
+                                            <p class="text-gray-400 text-sm">{{ __('contacts.no_messages_description') }}</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -569,7 +565,7 @@
                     <div class="p-8 overflow-y-auto max-h-[60vh] space-y-6">
                         {{-- Sujet --}}
                         <div>
-                            <label class="text-sm font-semibold text-gray-700 mb-2 block">📝 Sujet</label>
+                            <label class="text-sm font-semibold text-gray-700 mb-2 block">{{ __('contacts.modal_view.subject') }}</label>
                             <p class="text-lg font-semibold text-gray-900 bg-gray-50 rounded-xl p-4">
                                 {{ $selectedContact->subject }}
                             </p>
@@ -577,7 +573,7 @@
 
                         {{-- Message --}}
                         <div>
-                            <label class="text-sm font-semibold text-gray-700 mb-2 block">💬 Message</label>
+                            <label class="text-sm font-semibold text-gray-700 mb-2 block">{{ __('contacts.modal_view.message') }}</label>
                             <div
                                 class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border-l-4 border-indigo-500">
                                 <p class="text-gray-700 leading-relaxed whitespace-pre-line">
@@ -588,7 +584,7 @@
                         {{-- Métadonnées --}}
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                                <p class="text-xs font-semibold text-blue-700 mb-1">Date de réception</p>
+                                <p class="text-xs font-semibold text-blue-700 mb-1">{{ __('contacts.modal_view.received_date') }}</p>
                                 <p class="text-sm text-blue-900">
                                     {{ $selectedContact->created_at->format('d/m/Y à H:i') }}</p>
                                 <p class="text-xs text-blue-600 mt-1">
@@ -596,13 +592,13 @@
                             </div>
 
                             <div class="bg-purple-50 rounded-xl p-4 border border-purple-200">
-                                <p class="text-xs font-semibold text-purple-700 mb-1">Statut actuel</p>
+                                <p class="text-xs font-semibold text-purple-700 mb-1">{{ __('contacts.modal_view.current_status') }}</p>
                                 @php
                                     $statusLabels = [
-                                        'new' => '🆕 Nouveau',
-                                        'opened' => '👁️ Ouvert',
-                                        'replied' => '✅ Répondu',
-                                        'closed' => '❌ Fermé',
+                                        'new' => __('contacts.status_labels.new'),
+                                        'opened' => __('contacts.status_labels.opened'),
+                                        'replied' => __('contacts.status_labels.replied'),
+                                        'closed' => __('contacts.status_labels.closed'),
                                     ];
                                 @endphp
                                 <p class="text-sm text-purple-900">
@@ -619,12 +615,12 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
                                     </svg>
-                                    <p class="text-sm font-semibold text-green-700">Réponse envoyée</p>
+                                    <p class="text-sm font-semibold text-green-700">{{ __('contacts.modal_view.reply_sent') }}</p>
                                 </div>
                                 <p class="text-sm text-green-900 mb-2">{{ $selectedContact->reply_message }}</p>
                                 <p class="text-xs text-green-600">
-                                    Par {{ $selectedContact->repliedBy->name ?? 'Inconnu' }}
-                                    le {{ $selectedContact->replied_at?->format('d/m/Y à H:i') }}
+                                    {{ __('contacts.modal_view.by') }} {{ $selectedContact->repliedBy->name ?? __('contacts.modal_view.unknown') }}
+                                    {{ __('contacts.modal_view.on') }} {{ $selectedContact->replied_at?->format('d/m/Y à H:i') }}
                                 </p>
                             </div>
                         @endif
@@ -635,7 +631,7 @@
                         <div class="flex items-center justify-between">
                             <button wire:click="closeViewModal"
                                 class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl font-medium transition-all">
-                                Fermer
+                                {{ __('contacts.buttons.close') }}
                             </button>
                             <div class="flex items-center space-x-3">
                                 @if ($selectedContact->status !== 'closed')
@@ -646,7 +642,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M6 18L18 6M6 6l12 12"></path>
                                         </svg>
-                                        <span>Fermer</span>
+                                        <span>{{ __('contacts.buttons.close_status') }}</span>
                                     </button>
                                 @endif
 
@@ -658,7 +654,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
                                         </svg>
-                                        <span>Répondre</span>
+                                        <span>{{ __('contacts.buttons.reply') }}</span>
                                     </button>
                                 @endif
                             </div>
@@ -694,10 +690,10 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
                                     </svg>
-                                    <span>Répondre au message</span>
+                                    <span>{{ __('contacts.modal_reply.title') }}</span>
                                 </h3>
                                 <p class="text-white/80 text-sm mt-1">
-                                    À: {{ $selectedContact->name }} ({{ $selectedContact->email }})
+                                    {{ __('contacts.modal_reply.to') }}: {{ $selectedContact->name }} ({{ $selectedContact->email }})
                                 </p>
                             </div>
                             <button wire:click="closeReplyModal"
@@ -714,7 +710,7 @@
                     <div class="p-8 overflow-y-auto max-h-[60vh] space-y-6">
                         {{-- Message original --}}
                         <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-gray-300">
-                            <p class="text-xs font-semibold text-gray-500 mb-2">MESSAGE ORIGINAL</p>
+                            <p class="text-xs font-semibold text-gray-500 mb-2">{{ __('contacts.modal_reply.original_message') }}</p>
                             <p class="text-sm font-semibold text-gray-900 mb-2">{{ $selectedContact->subject }}</p>
                             <p class="text-sm text-gray-600 line-clamp-3">{{ $selectedContact->message }}</p>
                         </div>
@@ -722,7 +718,7 @@
                         {{-- Sélection des destinataires --}}
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">
-                                👥 Sélectionner les destinataires *
+                                {{ __('contacts.modal_reply.select_recipients') }}
                             </label>
                             <div
                                 class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-48 overflow-y-auto p-4 bg-gray-50 rounded-xl border-2 border-gray-200">
@@ -758,7 +754,7 @@
 
                             @if (count($selectedUsers) > 0)
                                 <p class="mt-2 text-sm text-green-600 font-medium">
-                                    ✓ {{ count($selectedUsers) }} destinataire(s) sélectionné(s)
+                                    ✓ {{ __('contacts.modal_reply.recipients_selected', ['count' => count($selectedUsers)]) }}
                                 </p>
                             @endif
                         </div>
@@ -766,9 +762,9 @@
                         {{-- Message de réponse --}}
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">
-                                ✍️ Votre réponse *
+                                {{ __('contacts.modal_reply.your_reply') }}
                             </label>
-                            <textarea wire:model="replyMessage" rows="8" placeholder="Rédigez votre réponse ici..."
+                            <textarea wire:model="replyMessage" rows="8" placeholder="{{ __('contacts.modal_reply.reply_placeholder') }}"
                                 class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-4 focus:ring-green-100 focus:border-green-400 transition-all resize-none"></textarea>
                             @error('replyMessage')
                                 <p class="mt-2 text-sm text-red-600 flex items-center space-x-1">
@@ -780,7 +776,7 @@
                                 </p>
                             @enderror
                             <p class="mt-2 text-xs text-gray-500">
-                                {{ strlen($replyMessage) }} caractères
+                                {{ strlen($replyMessage) }} {{ __('contacts.modal_reply.characters') }}
                             </p>
                         </div>
 
@@ -790,9 +786,8 @@
                                 <input type="checkbox" wire:model="ccToSender"
                                     class="w-5 h-5 text-indigo-600 border-gray-300 rounded-lg focus:ring-indigo-500">
                                 <div class="flex-1">
-                                    <p class="text-sm font-medium text-gray-900">Mettre l'expéditeur en copie (CC)</p>
-                                    <p class="text-xs text-gray-500">{{ $selectedContact->email }} recevra également
-                                        une copie</p>
+                                    <p class="text-sm font-medium text-gray-900">{{ __('contacts.modal_reply.cc_sender') }}</p>
+                                    <p class="text-xs text-gray-500">{{ $selectedContact->email }} {{ __('contacts.modal_reply.cc_sender_description') }}</p>
                                 </div>
                             </label>
 
@@ -800,8 +795,8 @@
                                 <input type="checkbox" wire:model="sendCopyToMe"
                                     class="w-5 h-5 text-indigo-600 border-gray-300 rounded-lg focus:ring-indigo-500">
                                 <div class="flex-1">
-                                    <p class="text-sm font-medium text-gray-900">M'envoyer une copie</p>
-                                    <p class="text-xs text-gray-500">Recevoir une copie de cette réponse</p>
+                                    <p class="text-sm font-medium text-gray-900">{{ __('contacts.modal_reply.send_copy_to_me') }}</p>
+                                    <p class="text-xs text-gray-500">{{ __('contacts.modal_reply.send_copy_to_me_description') }}</p>
                                 </div>
                             </label>
                         </div>
@@ -812,7 +807,7 @@
                         <div class="flex items-center justify-between">
                             <button wire:click="closeReplyModal"
                                 class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl font-medium transition-all">
-                                Annuler
+                                {{ __('contacts.buttons.cancel') }}
                             </button>
                             <button wire:click="sendReply" wire:loading.attr="disabled"
                                 wire:loading.class="opacity-50 cursor-not-allowed"
@@ -829,8 +824,8 @@
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                     </path>
                                 </svg>
-                                <span wire:loading.remove>Envoyer la réponse</span>
-                                <span wire:loading>Envoi en cours...</span>
+                                <span wire:loading.remove>{{ __('contacts.buttons.send_reply') }}</span>
+                                <span wire:loading>{{ __('contacts.buttons.sending') }}</span>
                             </button>
                         </div>
                     </div>
@@ -869,13 +864,12 @@
 
                     {{-- Content --}}
                     <div class="px-8 py-6 text-center">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Confirmer la suppression</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ __('contacts.modal_delete.title') }}</h3>
                         <p class="text-gray-600 mb-4">
-                            Êtes-vous sûr de vouloir supprimer ce message de <span
-                                class="font-semibold text-gray-900">{{ $selectedContact->name }}</span> ?
+                            {{ __('contacts.modal_delete.confirm_message', ['name' => $selectedContact->name]) }}
                         </p>
                         <p class="text-sm text-red-600 font-medium">
-                            ⚠️ Cette action est irréversible !
+                            ⚠️ {{ __('contacts.modal_delete.warning') }}
                         </p>
                     </div>
 
@@ -883,7 +877,7 @@
                     <div class="bg-gray-50 px-8 py-6 rounded-b-3xl flex items-center justify-center space-x-4">
                         <button wire:click="closeDeleteModal"
                             class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl font-medium transition-all">
-                            Annuler
+                            {{ __('contacts.buttons.cancel') }}
                         </button>
                         <button wire:click="deleteContact"
                             class="px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium transition-all shadow-lg hover:shadow-xl flex items-center space-x-2">
@@ -892,7 +886,7 @@
                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                 </path>
                             </svg>
-                            <span>Supprimer</span>
+                            <span>{{ __('contacts.buttons.delete') }}</span>
                         </button>
                     </div>
                 </div>
@@ -906,10 +900,10 @@
             $wire.on('contact-replied', (event) => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Réponse envoyée !',
+                    title: '{{ __("contacts.notifications.reply_sent") }}',
                     text: event[0].message,
                     confirmButtonColor: '#10b981',
-                    confirmButtonText: 'Super !',
+                    confirmButtonText: '{{ __("contacts.notifications.great") }}',
                     timer: 3000
                 });
             });
@@ -917,7 +911,7 @@
             $wire.on('contact-deleted', (event) => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Supprimé !',
+                    title: '{{ __("contacts.notifications.deleted") }}',
                     text: event[0].message,
                     toast: true,
                     position: 'top-end',
@@ -929,7 +923,7 @@
             $wire.on('contacts-deleted', (event) => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Suppression multiple !',
+                    title: '{{ __("contacts.notifications.multiple_deleted") }}',
                     text: event[0].message,
                     confirmButtonColor: '#6366f1',
                     timer: 3000
@@ -939,7 +933,7 @@
             $wire.on('contact-updated', (event) => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Mis à jour !',
+                    title: '{{ __("contacts.notifications.updated") }}',
                     text: event[0].message,
                     toast: true,
                     position: 'top-end',
@@ -951,7 +945,7 @@
             $wire.on('contact-error', (event) => {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Erreur',
+                    title: '{{ __("contacts.notifications.error") }}',
                     text: event[0].message,
                     confirmButtonColor: '#ef4444'
                 });
@@ -960,8 +954,8 @@
             $wire.on('export-started', () => {
                 Swal.fire({
                     icon: 'info',
-                    title: 'Export en cours...',
-                    text: 'Votre fichier sera téléchargé dans quelques instants.',
+                    title: '{{ __("contacts.notifications.export_started") }}',
+                    text: '{{ __("contacts.notifications.export_description") }}',
                     timer: 2000,
                     showConfirmButton: false
                 });

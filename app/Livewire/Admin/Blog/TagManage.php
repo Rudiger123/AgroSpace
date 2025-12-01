@@ -42,12 +42,36 @@ class TagManage extends Component
 
     // Préréglages de couleurs
     public $colorPresets = [
-        '#22c55e', '#16a34a', '#15803d', '#166534', '#14532d',
-        '#f59e0b', '#d97706', '#b45309', '#92400e', '#78350f',
-        '#ef4444', '#dc2626', '#b91c1c', '#991b1b', '#7f1d1d',
-        '#3b82f6', '#2563eb', '#1d4ed8', '#1e40af', '#1e3a8a',
-        '#8b5cf6', '#7c3aed', '#6d28d9', '#5b21b6', '#4c1d95',
-        '#ec4899', '#db2777', '#be185d', '#9d174d', '#831843',
+        '#22c55e',
+        '#16a34a',
+        '#15803d',
+        '#166534',
+        '#14532d',
+        '#f59e0b',
+        '#d97706',
+        '#b45309',
+        '#92400e',
+        '#78350f',
+        '#ef4444',
+        '#dc2626',
+        '#b91c1c',
+        '#991b1b',
+        '#7f1d1d',
+        '#3b82f6',
+        '#2563eb',
+        '#1d4ed8',
+        '#1e40af',
+        '#1e3a8a',
+        '#8b5cf6',
+        '#7c3aed',
+        '#6d28d9',
+        '#5b21b6',
+        '#4c1d95',
+        '#ec4899',
+        '#db2777',
+        '#be185d',
+        '#9d174d',
+        '#831843',
     ];
 
     protected $rules = [
@@ -63,6 +87,15 @@ class TagManage extends Component
         'slug.required' => 'Le slug est obligatoire.',
         'slug.unique' => 'Ce tag existe déjà.',
     ];
+
+    protected function getTranslatedMessages()
+    {
+        return [
+            'name.required' => __('tags.validation.name_required'),
+            'slug.required' => __('tags.validation.slug_required'),
+            'slug.unique' => __('tags.validation.slug_unique'),
+        ];
+    }
 
     public function updatedName($value)
     {
@@ -135,14 +168,14 @@ class TagManage extends Component
             Tag::find($this->tagId)->update($data);
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Tag mis à jour avec succès !',
+                'message' => __('tags.updated_success'),
                 'icon' => 'check-circle'
             ]);
         } else {
             Tag::create($data);
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Tag créé avec succès !',
+                'message' => __('tags.created_success'),
                 'icon' => 'plus-circle'
             ]);
         }
@@ -162,7 +195,7 @@ class TagManage extends Component
         Tag::find($this->tagId)->delete();
         $this->dispatch('toast', [
             'type' => 'error',
-            'message' => 'Tag supprimé avec succès !',
+            'message' => __('tags.deleted_success'),
             'icon' => 'trash'
         ]);
         $this->closeDeleteModal();
@@ -173,7 +206,7 @@ class TagManage extends Component
         Tag::whereIn('id', $this->selectedTags)->delete();
         $this->dispatch('toast', [
             'type' => 'error',
-            'message' => count($this->selectedTags) . ' tags supprimés avec succès !',
+            'message' => count($this->selectedTags) . ' ' . __('tags.bulk_deleted_success'),
             'icon' => 'trash'
         ]);
         $this->selectedTags = [];
@@ -189,7 +222,7 @@ class TagManage extends Component
 
         $this->dispatch('toast', [
             'type' => 'success',
-            'message' => 'Statut du tag mis à jour !',
+            'message' => __('tags.status_updated'),
             'icon' => 'toggle-on'
         ]);
     }
@@ -198,13 +231,13 @@ class TagManage extends Component
     {
         $tag = Tag::find($id);
         $newTag = $tag->replicate();
-        $newTag->name = $tag->name . ' (Copie)';
+        $newTag->name = $tag->name . ' (' . __('tags.copy_suffix') . ')';
         $newTag->slug = Str::slug($newTag->name);
         $newTag->save();
 
         $this->dispatch('toast', [
             'type' => 'info',
-            'message' => 'Tag dupliqué avec succès !',
+            'message' => __('tags.duplicated_success'),
             'icon' => 'copy'
         ]);
     }
@@ -212,10 +245,10 @@ class TagManage extends Component
     public function export()
     {
         $tags = Tag::all();
-        $csv = "Nom,Slug,Description,Couleur,Statut\n";
+        $csv = __('tags.export_header') . "\n";
 
         foreach ($tags as $tag) {
-            $csv .= "{$tag->name},{$tag->slug},\"{$tag->description}\",{$tag->color}," . ($tag->is_active ? 'Actif' : 'Inactif') . "\n";
+            $csv .= "{$tag->name},{$tag->slug},\"{$tag->description}\",{$tag->color}," . ($tag->is_active ? __('tags.status_active') : __('tags.status_inactive')) . "\n";
         }
 
         return response()->stream(
@@ -225,7 +258,7 @@ class TagManage extends Component
             200,
             [
                 'Content-Type' => 'text/csv',
-                'Content-Disposition' => 'attachment; filename="tags-export-' . now()->format('Y-m-d-His') . '.csv"',
+                'Content-Disposition' => 'attachment; filename="' . __('tags.export_filename') . '-' . now()->format('Y-m-d-His') . '.csv"',
             ]
         );
     }
@@ -246,7 +279,7 @@ class TagManage extends Component
                 'slug' => Str::slug($row[0]),
                 'description' => $row[2] ?? null,
                 'color' => $row[3] ?? null,
-                'is_active' => ($row[4] ?? 'Actif') === 'Actif',
+                'is_active' => ($row[4] ?? __('tags.status_active')) === __('tags.status_active'),
             ]);
             $imported++;
         }
@@ -255,7 +288,7 @@ class TagManage extends Component
 
         $this->dispatch('toast', [
             'type' => 'success',
-            'message' => "{$imported} tags importés avec succès !",
+            'message' => "{$imported} " . __('tags.imported_success'),
             'icon' => 'upload'
         ]);
 

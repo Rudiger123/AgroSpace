@@ -59,7 +59,7 @@ class TwoFactorChallenge extends Component
         if (RateLimiter::tooManyAttempts($key, $this->maxAttempts)) {
             $seconds = RateLimiter::availableIn($key);
 
-            $this->addError('code', "Trop de tentatives. Réessayez dans {$seconds} secondes.");
+            $this->addError('code', __('auth.two_factor.too_many_attempts', ['seconds' => $seconds]));
             return;
         }
 
@@ -71,14 +71,14 @@ class TwoFactorChallenge extends Component
             $verified = $service->verifyRecoveryCode($this->user, $this->recovery_code);
 
             if (!$verified) {
-                $this->addError('recovery_code', 'Code de récupération invalide.');
+                $this->addError('recovery_code', __('auth.two_factor.invalid_recovery_code'));
             }
         } else {
             $this->validate(['code' => 'required|string|size:6']);
             $verified = $service->verifyCode($this->user, $this->code);
 
             if (!$verified) {
-                $this->addError('code', 'Code d\'authentification invalide.');
+                $this->addError('code', __('auth.two_factor.invalid_code'));
             }
         }
 
@@ -91,7 +91,7 @@ class TwoFactorChallenge extends Component
             // Après 3 tentatives, proposer les codes de récupération
             if ($this->attempts >= 3 && !$this->useRecoveryCode) {
                 $this->dispatch('suggest-recovery', [
-                    'message' => 'Vous avez fait plusieurs tentatives. Essayez un code de récupération.'
+                    'message' => __('auth.two_factor.suggest_recovery')
                 ]);
             }
 
@@ -101,7 +101,7 @@ class TwoFactorChallenge extends Component
 
                 return redirect()->route('login')->with(
                     'error',
-                    'Trop de tentatives échouées. Veuillez réessayer plus tard.'
+                    __('auth.two_factor.max_attempts_reached')
                 );
             }
 
@@ -119,7 +119,7 @@ class TwoFactorChallenge extends Component
 
         $this->dispatch('toast', [
             'type' => 'success',
-            'message' => 'Authentification réussie !'
+            'message' => __('auth.two_factor.success')
         ]);
 
         // Rediriger selon le rôle

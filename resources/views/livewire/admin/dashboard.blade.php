@@ -12,7 +12,7 @@
                     <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full blur-lg opacity-70 group-hover:opacity-100 transition-all duration-300 animate-pulse"></div>
                     <div class="relative h-20 w-20 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white p-1">
                         <img src="{{ auth()->user()->avatar_url }}" 
-                             alt="Avatar de {{ auth()->user()->name }}" 
+                             alt="{{ __('dashboard.avatar_alt', ['name' => auth()->user()->name]) }}" 
                              class="h-full w-full rounded-full object-cover transition-transform duration-300 group-hover:scale-105">
                     </div>
                     <!-- Badge de statut -->
@@ -27,10 +27,10 @@
                 <div class="space-y-2">
                     <div>
                         <h1 class="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                            Bonjour, {{ auth()->user()->name }}! 👋
+                            {{ __('dashboard.hello', ['name' => auth()->user()->name]) }} 👋
                         </h1>
                         <p class="text-gray-600 mt-1 max-w-md">
-                            Bienvenue sur votre tableau de bord. Voici un aperçu de votre activité récente.
+                            {{ __('dashboard.welcome_message') }}
                         </p>
                     </div>
                     
@@ -45,7 +45,7 @@
                             <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                             </svg>
-                            Membre depuis {{ auth()->user()->created_at->format('M Y') }}
+                            {{ __('dashboard.member_since', ['date' => auth()->user()->created_at->format('M Y')]) }}
                         </span>
                     </div>
                 </div>
@@ -57,10 +57,10 @@
                 <div class="relative">
                     <select wire:model.live="dateRange" 
                             class="appearance-none rounded-xl border-gray-200 shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm pl-4 pr-10 py-2.5 bg-white transition-all duration-200 hover:shadow-md">
-                        <option value="7">7 derniers jours</option>
-                        <option value="30">30 derniers jours</option>
-                        <option value="90">90 derniers jours</option>
-                        <option value="365">Cette année</option>
+                        <option value="7">{{ __('dashboard.last_days', ['days' => 7]) }}</option>
+                        <option value="30">{{ __('dashboard.last_days', ['days' => 30]) }}</option>
+                        <option value="90">{{ __('dashboard.last_days', ['days' => 90]) }}</option>
+                        <option value="365">{{ __('dashboard.this_year') }}</option>
                     </select>
                 </div>
             </div>
@@ -152,7 +152,7 @@
                     <div class="flex items-center space-x-2">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                             <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                            En direct
+                            {{ __('dashboard.live') }}
                         </span>
                     </div>
                 </div>
@@ -246,7 +246,7 @@
                                             show: true,
                                             total: {
                                                 show: true,
-                                                label: 'Total',
+                                                label: '{{ __('dashboard.total') }}',
                                                 fontSize: '22px',
                                                 fontWeight: 600,
                                                 color: '#1f2937',
@@ -287,7 +287,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             {{-- Radial Chart --}}
             <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300">
-                <h2 class="text-lg font-bold text-gray-900 mb-6">Taux de Réussite</h2>
+                <h2 class="text-lg font-bold text-gray-900 mb-6">{{ __('dashboard.success_rate') }}</h2>
                 
                 <div x-data="{
                     chart: null,
@@ -346,7 +346,7 @@
                                 }
                             },
                             stroke: { lineCap: 'round' },
-                            labels: ['Performance']
+                            labels: ['{{ __('dashboard.performance') }}']
                         };
                         this.chart = new ApexCharts(this.$refs.chart3, options);
                         this.chart.render();
@@ -433,7 +433,7 @@
                         <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        Activité Récente
+                        {{ __('dashboard.recent_activity') }}
                     </h2>
                 </div>
                 
@@ -442,13 +442,13 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Type
+                                    {{ __('dashboard.type') }}
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Description
+                                    {{ __('dashboard.description') }}
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Date
+                                    {{ __('dashboard.date') }}
                                 </th>
                             </tr>
                         </thead>
@@ -480,7 +480,7 @@
                                             <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
                                             </svg>
-                                            <p class="text-sm">Aucune activité récente</p>
+                                            <p class="text-sm">{{ __('dashboard.no_recent_activity') }}</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -545,7 +545,7 @@
                                             <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                                             </svg>
-                                            <p class="text-sm">Aucune donnée disponible</p>
+                                            <p class="text-sm">{{ __('dashboard.no_data_available') }}</p>
                                         </div>
                                     </td>
                                 </tr>

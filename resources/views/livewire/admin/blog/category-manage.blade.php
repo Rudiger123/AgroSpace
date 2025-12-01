@@ -5,8 +5,8 @@
             <div class="bg-agro-white rounded-xl shadow-lg p-6 mb-6 border border-primary-100">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 class="text-3xl font-bold text-agro-green font-poppins">Gestion des Catégories</h1>
-                        <p class="text-agro-gray mt-2 font-inter">Gérez vos catégories de produits agricoles</p>
+                        <h1 class="text-3xl font-bold text-agro-green font-poppins">{{ __('categories.title') }}</h1>
+                        <p class="text-agro-gray mt-2 font-inter">{{ __('categories.subtitle') }}</p>
                     </div>
                     <button wire:click="create"
                         class="mt-4 md:mt-0 bg-agro-green hover:bg-primary-700 text-agro-white px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary-300 font-poppins flex items-center">
@@ -15,7 +15,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
-                        Nouvelle Catégorie
+                        {{ __('categories.new_category') }}
                     </button>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                     <div class="flex-1">
                         <div class="relative">
                             <input type="text" wire:model.live.debounce.300ms="search"
-                                placeholder="Rechercher une catégorie..."
+                                placeholder="{{ __('categories.search_placeholder') }}"
                                 class="w-full pl-10 pr-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter">
                             <!-- SVG Search -->
                             <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-400"
@@ -40,19 +40,19 @@
                     <div class="flex gap-2">
                         <select wire:model.live="typeFilter"
                             class="px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent font-inter">
-                            <option value="">Tous les types</option>
-                            <option value="offer">Offre</option>
-                            <option value="demand">demande</option>
-                            <option value="post">article</option>
+                            <option value="">{{ __('categories.filter_all_types') }}</option>
+                            <option value="offer">{{ __('categories.type_offer') }}</option>
+                            <option value="demand">{{ __('categories.type_demand') }}</option>
+                            <option value="post">{{ __('categories.type_post') }}</option>
                         </select>
                     </div>
 
                     <div class="flex gap-2">
                         <select wire:model.live="sortField"
                             class="px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent font-inter">
-                            <option value="name">Nom</option>
-                            <option value="created_at">Date de création</option>
-                            <option value="is_active">Statut</option>
+                            <option value="name">{{ __('categories.sort_by_name') }}</option>
+                            <option value="created_at">{{ __('categories.sort_by_date') }}</option>
+                            <option value="is_active">{{ __('categories.sort_by_status') }}</option>
                         </select>
                         <button wire:click="sortBy('{{ $sortField }}')"
                             class="px-4 py-3 bg-primary-100 hover:bg-primary-200 rounded-lg transition-colors duration-300">
@@ -157,7 +157,7 @@
                     <div class="p-6 border-b border-primary-100">
                         <div class="flex items-center justify-between">
                             <h2 class="text-2xl font-bold text-agro-green font-poppins">
-                                {{ $categoryId ? 'Modifier la Catégorie' : 'Nouvelle Catégorie' }}
+                                {{ $categoryId ? __('categories.modal.edit_title') : __('categories.modal.create_title') }}
                             </h2>
                             <button wire:click="closeModal"
                                 class="text-primary-400 hover:text-primary-600 transition-colors duration-300">
@@ -173,7 +173,7 @@
                     <form wire:submit.prevent="save" class="p-6 space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">Nom *</label>
+                                <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">{{ __('categories.form.name') }} *</label>
                                 <input type="text" wire:model="name"
                                     class="w-full px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter">
                                 @error('name')
@@ -182,7 +182,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">Slug *</label>
+                                <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">{{ __('categories.form.slug') }} *</label>
                                 <input type="text" wire:model="slug"
                                     class="w-full px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter">
                                 @error('slug')
@@ -193,7 +193,7 @@
 
                         <div class="space-y-6" x-data="{ selectedtype: @entangle('type') }">
 
-                            <label class="block text-sm font-medium text-agro-gray mb-2 font-inter"> Type </label>
+                            <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">{{ __('categories.form.type') }}</label>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 {{-- Actif --}}
                                 <label class="border-2 rounded-2xl transition-all duration-200 group cursor-pointer"
@@ -218,8 +218,7 @@
                                             <p class="font-bold transition-colors"
                                                 :class="selectedtype === 'offer' ? 'text-green-700' :
                                                     'text-gray-700 group-hover:text-green-700'">
-                                                Offre</p>
-                                            {{-- <p class="text-xs text-gray-500 mt-1">Offre</p> --}}
+                                                {{ __('categories.type_offer') }}</p>
                                         </div>
                                     </div>
                                 </label>
@@ -247,8 +246,7 @@
                                             <p class="font-bold transition-colors"
                                                 :class="selectedtype === 'demand' ? 'text-orange-700' :
                                                     'text-gray-700 group-hover:text-orange-700'">
-                                                Demande</p>
-                                            {{-- <p class="text-xs text-gray-500 mt-1">Demande</p> --}}
+                                                {{ __('categories.type_demand') }}</p>
                                         </div>
                                     </div>
                                 </label>
@@ -275,8 +273,7 @@
                                             <p class="font-bold transition-colors"
                                                 :class="selectedtype === 'post' ? 'text-purple-700' :
                                                     'text-gray-700 group-hover:text-purple-700'">
-                                                Article</p>
-                                            {{-- <p class="text-xs text-gray-500 mt-1">Article</p> --}}
+                                                {{ __('categories.type_post') }}</p>
                                         </div>
                                     </div>
                                 </label>
@@ -292,10 +289,10 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div x-data="{ showPicker: false }" class="relative">
 
-                                <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">Icône</label>
+                                <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">{{ __('categories.form.icon') }}</label>
 
                                 <!-- Input -->
-                                <input type="text" wire:model="icon" placeholder="Clique pour choisir un emoji"
+                                <input type="text" wire:model="icon" placeholder="{{ __('categories.form.icon_placeholder') }}"
                                     @click="showPicker = !showPicker"
                                     class="w-full px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter cursor-pointer">
 
@@ -316,13 +313,12 @@
                                     class="absolute z-50 bg-white border rounded-2xl shadow-xl mt-2">
                                 </div>
 
-                                <p class="text-xs text-gray-500 mt-1">Clique pour sélectionner un emoji</p>
+                                <p class="text-xs text-gray-500 mt-1">{{ __('categories.form.icon_help') }}</p>
                             </div>
 
 
                             <div>
-                                <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">Couleur
-                                    *</label>
+                                <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">{{ __('categories.form.color') }} *</label>
                                 <div class="flex gap-2">
                                     <input type="color" wire:model="color"
                                         class="w-16 h-12 border border-primary-200 rounded-lg cursor-pointer">
@@ -336,7 +332,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">Description</label>
+                            <label class="block text-sm font-medium text-agro-gray mb-2 font-inter">{{ __('categories.form.description') }}</label>
                             <textarea wire:model="description" rows="4"
                                 class="w-full px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-agro-green focus:border-transparent transition-all duration-300 font-inter"></textarea>
                             @error('description')
@@ -348,18 +344,18 @@
                             <input type="checkbox" wire:model="is_active" id="is_active"
                                 class="w-4 h-4 text-agro-green border-primary-200 rounded focus:ring-agro-green">
                             <label for="is_active" class="ml-2 text-sm font-medium text-agro-gray font-inter">
-                                Catégorie active
+                                {{ __('categories.form.active_category') }}
                             </label>
                         </div>
 
                         <div class="flex justify-end gap-4 pt-6">
                             <button type="button" wire:click="closeModal"
                                 class="px-6 py-3 border border-primary-300 text-primary-700 rounded-lg hover:bg-primary-50 transition-all duration-300 font-poppins">
-                                Annuler
+                                {{ __('categories.buttons.cancel') }}
                             </button>
                             <button type="submit"
                                 class="px-6 py-3 bg-agro-green hover:bg-primary-700 text-agro-white rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-primary-300 font-poppins">
-                                {{ $categoryId ? 'Mettre à jour' : 'Créer' }}
+                                {{ $categoryId ? __('categories.buttons.update') : __('categories.buttons.create') }}
                             </button>
                         </div>
                     </form>
@@ -385,19 +381,17 @@
                                     </path>
                                 </svg>
                             </div>
-                            <h3 class="text-xl font-bold text-agro-gray mb-2 font-poppins">Confirmer la suppression
-                            </h3>
-                            <p class="text-agro-gray mb-6 font-inter">Êtes-vous sûr de vouloir supprimer cette
-                                catégorie ? Cette action est irréversible.</p>
+                            <h3 class="text-xl font-bold text-agro-gray mb-2 font-poppins">{{ __('categories.delete_modal.title') }}</h3>
+                            <p class="text-agro-gray mb-6 font-inter">{{ __('categories.delete_modal.message') }}</p>
 
                             <div class="flex gap-4 justify-center">
                                 <button wire:click="closeDeleteModal"
                                     class="px-6 py-3 border border-primary-300 text-primary-700 rounded-lg hover:bg-primary-50 transition-all duration-300 font-poppins">
-                                    Annuler
+                                    {{ __('categories.buttons.cancel') }}
                                 </button>
                                 <button wire:click="delete"
                                     class="px-6 py-3 bg-red-600 hover:bg-red-700 text-agro-white rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-300 font-poppins">
-                                    Supprimer
+                                    {{ __('categories.buttons.delete') }}
                                 </button>
                             </div>
                         </div>
@@ -430,7 +424,7 @@
             function copyColor(color) {
                 navigator.clipboard.writeText(color).then(() => {
                     // Afficher une notification
-                    showNotification('Couleur copiée !', 'success');
+                    showNotification('{{ __("categories.notifications.color_copied") }}', 'success');
                 });
             }
 

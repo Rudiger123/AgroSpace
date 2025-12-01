@@ -4,8 +4,9 @@
         {{-- Header --}}
         <div class="mb-6 sm:mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Modération des Offres</h1>
-                <p class="mt-1 text-sm text-gray-500">Supervisez, validez et analysez le flux des offres</p>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
+                    {{ __('offers.moderation_title') }}</h1>
+                <p class="mt-1 text-sm text-gray-500">{{ __('offers.moderation_subtitle') }}</p>
             </div>
             <button wire:click="bulkValidate"
                 class="inline-flex justify-center items-center px-5 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white text-sm font-medium rounded-lg hover:from-green-700 hover:to-green-800 focus:ring-4 focus:ring-green-200 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
@@ -13,7 +14,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                Validation en masse
+                {{ __('offers.bulk_validate') }}
             </button>
         </div>
 
@@ -21,7 +22,8 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4 mb-6 sm:mb-8">
             <div
                 class="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">Total</div>
+                <div class="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.total') }}
+                </div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-gray-900">{{ $stats['total'] }}</div>
                 <div class="text-xs text-blue-600 mt-1 font-medium flex items-center">
                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -29,50 +31,57 @@
                             d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    Offres
+                    {{ __('offers.offers') }}
                 </div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-orange-50 to-orange-100 p-4 sm:p-5 rounded-xl shadow-sm border border-orange-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-orange-600 text-xs font-bold uppercase tracking-wider mb-2">En Attente</div>
+                <div class="text-orange-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.pending') }}
+                </div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-orange-700">{{ $stats['pending'] }}</div>
-                <div class="text-xs text-orange-600 mt-1 font-medium">À modérer</div>
+                <div class="text-xs text-orange-600 mt-1 font-medium">{{ __('offers.to_moderate') }}</div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-5 rounded-xl shadow-sm border border-green-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-green-600 text-xs font-bold uppercase tracking-wider mb-2">Validées</div>
+                <div class="text-green-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.validated') }}
+                </div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-green-700">{{ $stats['validated'] }}</div>
-                <div class="text-xs text-green-600 mt-1 font-medium">Actives</div>
+                <div class="text-xs text-green-600 mt-1 font-medium">{{ __('offers.active') }}</div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-red-50 to-red-100 p-4 sm:p-5 rounded-xl shadow-sm border border-red-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-red-600 text-xs font-bold uppercase tracking-wider mb-2">Rejetées</div>
+                <div class="text-red-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.rejected') }}
+                </div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-red-700">{{ $stats['rejected'] }}</div>
-                <div class="text-xs text-red-600 mt-1 font-medium">Refusées</div>
+                <div class="text-xs text-red-600 mt-1 font-medium">{{ __('offers.refused') }}</div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 sm:p-5 rounded-xl shadow-sm border border-purple-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-purple-600 text-xs font-bold uppercase tracking-wider mb-2">Suspendues</div>
+                <div class="text-purple-600 text-xs font-bold uppercase tracking-wider mb-2">
+                    {{ __('offers.suspended') }}</div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-purple-700">{{ $stats['suspended'] }}</div>
-                <div class="text-xs text-purple-600 mt-1 font-medium">Bloquées</div>
+                <div class="text-xs text-purple-600 mt-1 font-medium">{{ __('offers.blocked') }}</div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 sm:p-5 rounded-xl shadow-sm border border-yellow-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-yellow-600 text-xs font-bold uppercase tracking-wider mb-2">Vedettes</div>
+                <div class="text-yellow-600 text-xs font-bold uppercase tracking-wider mb-2">
+                    {{ __('offers.featured') }}</div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-yellow-700">{{ $stats['featured'] }}</div>
-                <div class="text-xs text-yellow-600 mt-1 font-medium">En avant</div>
+                <div class="text-xs text-yellow-600 mt-1 font-medium">{{ __('offers.featured_label') }}</div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 sm:p-5 rounded-xl shadow-sm border border-blue-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-2">Aujourd'hui</div>
+                <div class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.today') }}
+                </div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-blue-700">{{ $stats['today'] }}</div>
-                <div class="text-xs text-blue-600 mt-1 font-medium">+{{ $stats['thisWeek'] }} cette semaine</div>
+                <div class="text-xs text-blue-600 mt-1 font-medium">+{{ $stats['thisWeek'] }}
+                    {{ __('offers.this_week') }}</div>
             </div>
         </div>
 
@@ -89,7 +98,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
                     </svg>
-                    Répartition par Statut
+                    {{ __('offers.status_distribution') }}
                 </h3>
                 <div id="statusChart"></div>
             </div>
@@ -102,7 +111,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
                     </svg>
-                    Top 5 Catégories
+                    {{ __('offers.top_categories') }}
                 </h3>
                 <div id="catChart"></div>
             </div>
@@ -115,7 +124,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
                     </svg>
-                    Évolution 7 derniers jours
+                    {{ __('offers.last_7_days_evolution') }}
                 </h3>
                 <div id="evolutionChart"></div>
             </div>
@@ -131,7 +140,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
-                    Top 5 Régions
+                    {{ __('offers.top_regions') }}
                 </h3>
                 <div id="regionChart"></div>
             </div>
@@ -142,7 +151,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                 <div class="lg:col-span-2 relative">
                     <input type="text" wire:model.live.debounce.300ms="search"
-                        placeholder="Rechercher titre, producteur..."
+                        placeholder="{{ __('offers.search_placeholder') }}"
                         class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
                     <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -152,25 +161,25 @@
                 </div>
                 <select wire:model.live="statusFilter"
                     class="border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2.5 transition">
-                    <option value="all">📋 Tous statuts</option>
-                    <option value="pending">⏳ En attente</option>
-                    <option value="validé">✅ Validées</option>
-                    <option value="rejeté">❌ Rejetées</option>
-                    <option value="suspendue">🚫 Suspendues</option>
+                    <option value="all">📋 {{ __('offers.all_statuses') }}</option>
+                    <option value="pending">⏳ {{ __('offers.pending') }}</option>
+                    <option value="validé">✅ {{ __('offers.validated') }}</option>
+                    <option value="rejeté">❌ {{ __('offers.rejected') }}</option>
+                    <option value="suspendue">🚫 {{ __('offers.suspended') }}</option>
                 </select>
                 <select wire:model.live="categorieFilter"
                     class="border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2.5 transition">
-                    <option value="">🏷️ Toutes catégories</option>
+                    <option value="">🏷️ {{ __('offers.all_categories') }}</option>
                     @foreach ($categories as $cat)
                         <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                     @endforeach
                 </select>
                 <select wire:model.live="sortBy"
                     class="border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2.5 transition">
-                    <option value="latest">📅 Plus récentes</option>
-                    <option value="oldest">🕐 Plus anciennes</option>
-                    <option value="price_high">💰 Prix décroissant</option>
-                    <option value="price_low">💵 Prix croissant</option>
+                    <option value="latest">📅 {{ __('offers.most_recent') }}</option>
+                    <option value="oldest">🕐 {{ __('offers.oldest') }}</option>
+                    <option value="price_high">💰 {{ __('offers.price_desc') }}</option>
+                    <option value="price_low">💵 {{ __('offers.price_asc') }}</option>
                 </select>
             </div>
         </div>
@@ -183,19 +192,19 @@
                         <tr>
                             <th
                                 class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                Offre</th>
+                                {{ __('offers.offer') }}</th>
                             <th
                                 class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                Producteur</th>
+                                {{ __('offers.producer') }}</th>
                             <th
                                 class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                Prix/Lieu</th>
+                                {{ __('offers.price_location') }}</th>
                             <th
                                 class="px-4 sm:px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                Statut</th>
+                                {{ __('offers.status') }}</th>
                             <th
                                 class="px-4 sm:px-6 py-3 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">
-                                Actions</th>
+                                {{ __('offers.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -233,10 +242,10 @@
                                                     <svg class="w-3 h-3 mr-1" fill="currentColor"
                                                         viewBox="0 0 20 20">
                                                         <path
-                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
                                                         </path>
                                                     </svg>
-                                                    Vedette
+                                                    {{ __('offers.featured') }}
                                                 </span>
                                             @endif
                                         </div>
@@ -282,7 +291,7 @@
                                     <div class="flex items-center justify-end space-x-2">
                                         <button wire:click="viewDetails({{ $offer->id }})"
                                             class="text-gray-400 hover:text-blue-600 transition p-1.5 hover:bg-blue-50 rounded-lg"
-                                            title="Détails">
+                                            title="{{ __('offers.details') }}">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -296,7 +305,7 @@
                                         @if ($offer->statut === 'en attente')
                                             <button wire:click="openValidateModal({{ $offer->id }})"
                                                 class="text-gray-400 hover:text-green-600 transition p-1.5 hover:bg-green-50 rounded-lg"
-                                                title="Valider">
+                                                title="{{ __('offers.validate') }}">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -305,7 +314,7 @@
                                             </button>
                                             <button wire:click="openRejectModal({{ $offer->id }})"
                                                 class="text-gray-400 hover:text-red-600 transition p-1.5 hover:bg-red-50 rounded-lg"
-                                                title="Rejeter">
+                                                title="{{ __('offers.reject') }}">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -335,10 +344,10 @@
                                                             stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 stroke-width="2"
-                                                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
+                                                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.519-4.674z">
                                                             </path>
                                                         </svg>
-                                                        {{ $offer->is_featured ? 'Retirer Vedette' : 'Mettre en Vedette' }}
+                                                        {{ $offer->is_featured ? __('offers.remove_featured') : __('offers.set_featured') }}
                                                     </button>
                                                 </div>
                                                 <div class="py-1">
@@ -352,7 +361,7 @@
                                                                 d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
                                                             </path>
                                                         </svg>
-                                                        Suspendre Offre
+                                                        {{ __('offers.suspend_offer') }}
                                                     </button>
                                                     <button wire:click="suspendProducer({{ $offer->producer_id }})"
                                                         class="flex items-center w-full text-left px-4 py-2.5 text-sm text-orange-600 hover:bg-orange-50 transition">
@@ -363,7 +372,7 @@
                                                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
                                                             </path>
                                                         </svg>
-                                                        Suspendre Producteur
+                                                        {{ __('offers.suspend_producer') }}
                                                     </button>
                                                 </div>
                                                 <div class="py-1">
@@ -376,7 +385,7 @@
                                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                                             </path>
                                                         </svg>
-                                                        Supprimer Définitivement
+                                                        {{ __('offers.delete_permanently') }}
                                                     </button>
                                                 </div>
                                             </div>
@@ -394,10 +403,8 @@
                                                 d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4">
                                             </path>
                                         </svg>
-                                        <p class="text-gray-500 font-medium">Aucune offre ne correspond à vos critères
-                                        </p>
-                                        <p class="text-gray-400 text-sm mt-1">Essayez d'ajuster vos filtres de
-                                            recherche</p>
+                                        <p class="text-gray-500 font-medium">{{ __('offers.no_offers_match') }}</p>
+                                        <p class="text-gray-400 text-sm mt-1">{{ __('offers.adjust_filters') }}</p>
                                     </div>
                                 </td>
                             </tr>
@@ -425,27 +432,27 @@
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900">Valider cette offre</h3>
-                <p class="text-sm text-gray-500 mt-2">Le producteur sera notifié par email de la validation</p>
+                <h3 class="text-xl font-bold text-gray-900">{{ __('offers.validate_offer') }}</h3>
+                <p class="text-sm text-gray-500 mt-2">{{ __('offers.validate_notification') }}</p>
             </div>
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Note de validation
-                        (optionnelle)</label>
+                    <label
+                        class="block text-sm font-semibold text-gray-700 mb-2">{{ __('offers.validation_note') }}</label>
                     <textarea wire:model="validationNote" rows="3"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm transition"
-                        placeholder="Ajouter un commentaire pour le producteur..."></textarea>
-                    <p class="text-xs text-gray-500 mt-1">Ce message sera inclus dans l'email de notification</p>
+                        placeholder="{{ __('offers.validation_note_placeholder') }}"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">{{ __('offers.validation_note_help') }}</p>
                 </div>
             </div>
             <div class="mt-8 flex flex-col sm:flex-row gap-3">
                 <button wire:click="resetModals"
                     class="flex-1 px-5 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-semibold transition-all">
-                    Annuler
+                    {{ __('offers.cancel') }}
                 </button>
                 <button wire:click="validateOffer"
                     class="flex-1 px-5 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 font-semibold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
-                    ✅ Valider l'offre
+                    ✅ {{ __('offers.validate_offer_button') }}
                 </button>
             </div>
         </div>
@@ -465,17 +472,17 @@
                             d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900">Rejeter cette offre</h3>
-                <p class="text-sm text-gray-500 mt-2">Le producteur sera notifié par email avec la raison du rejet</p>
+                <h3 class="text-xl font-bold text-gray-900">{{ __('offers.reject_offer') }}</h3>
+                <p class="text-sm text-gray-500 mt-2">{{ __('offers.reject_notification') }}</p>
             </div>
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        Raison du rejet <span class="text-red-500">*</span>
+                        {{ __('offers.reject_reason') }} <span class="text-red-500">*</span>
                     </label>
                     <textarea wire:model="rejectionReason" rows="4"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 text-sm transition"
-                        placeholder="Ex: Images de mauvaise qualité, description incomplète, prix non conforme..."></textarea>
+                        placeholder="{{ __('offers.reject_reason_placeholder') }}"></textarea>
                     @error('rejectionReason')
                         <span class="text-red-500 text-xs mt-1 flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -486,17 +493,17 @@
                             {{ $message }}
                         </span>
                     @enderror
-                    <p class="text-xs text-gray-500 mt-1">Minimum 10 caractères requis</p>
+                    <p class="text-xs text-gray-500 mt-1">{{ __('offers.reject_reason_help') }}</p>
                 </div>
             </div>
             <div class="mt-8 flex flex-col sm:flex-row gap-3">
                 <button wire:click="resetModals"
                     class="flex-1 px-5 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-semibold transition-all">
-                    Annuler
+                    {{ __('offers.cancel') }}
                 </button>
                 <button wire:click="rejectOffer"
                     class="flex-1 px-5 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 font-semibold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
-                    ❌ Rejeter l'offre
+                    ❌ {{ __('offers.reject_offer_button') }}
                 </button>
             </div>
         </div>
@@ -517,18 +524,18 @@
                         </path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900">Supprimer définitivement</h3>
-                <p class="text-sm text-red-600 mt-2 font-medium">⚠️ Cette action est irréversible</p>
-                <p class="text-sm text-gray-500 mt-1">Le producteur sera notifié par email avec la raison</p>
+                <h3 class="text-xl font-bold text-gray-900">{{ __('offers.delete_permanently') }}</h3>
+                <p class="text-sm text-red-600 mt-2 font-medium">⚠️ {{ __('offers.irreversible_action') }}</p>
+                <p class="text-sm text-gray-500 mt-1">{{ __('offers.delete_notification') }}</p>
             </div>
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        Motif de suppression <span class="text-red-500">*</span>
+                        {{ __('offers.deletion_reason') }} <span class="text-red-500">*</span>
                     </label>
                     <textarea wire:model="deletionReason" rows="4"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 text-sm transition"
-                        placeholder="Ex: Contenu inapproprié, violation des conditions d'utilisation, fraude..."></textarea>
+                        placeholder="{{ __('offers.deletion_reason_placeholder') }}"></textarea>
                     @error('deletionReason')
                         <span class="text-red-500 text-xs mt-1 flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -539,17 +546,17 @@
                             {{ $message }}
                         </span>
                     @enderror
-                    <p class="text-xs text-gray-500 mt-1">Minimum 5 caractères requis</p>
+                    <p class="text-xs text-gray-500 mt-1">{{ __('offers.deletion_reason_help') }}</p>
                 </div>
             </div>
             <div class="mt-8 flex flex-col sm:flex-row gap-3">
                 <button wire:click="resetModals"
                     class="flex-1 px-5 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-semibold transition-all">
-                    Annuler
+                    {{ __('offers.cancel') }}
                 </button>
                 <button wire:click="deleteOffer"
                     class="flex-1 px-5 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 font-semibold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
-                    🗑️ Supprimer
+                    🗑️ {{ __('offers.delete_button') }}
                 </button>
             </div>
         </div>
@@ -567,8 +574,9 @@
                 <div
                     class="px-4 sm:px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-gray-50 to-gray-100">
                     <div>
-                        <h3 class="text-lg sm:text-xl font-bold text-gray-900">Détails de l'offre</h3>
-                        <p class="text-xs sm:text-sm text-gray-500">Réf: #{{ $selectedOffer->id }} • Publié le
+                        <h3 class="text-lg sm:text-xl font-bold text-gray-900">{{ __('offers.offer_details') }}</h3>
+                        <p class="text-xs sm:text-sm text-gray-500">{{ __('offers.ref') }}
+                            #{{ $selectedOffer->id }} • {{ __('offers.published_on') }}
                             {{ $selectedOffer->created_at->format('d/m/Y à H:i') }}</p>
                     </div>
                     <button wire:click="resetModals"
@@ -592,7 +600,7 @@
                                     @if ($selectedOffer->photos->count() > 1)
                                         <span
                                             class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-3 py-1.5 rounded-lg backdrop-blur-sm font-medium">
-                                            +{{ $selectedOffer->photos->count() - 1 }} photos
+                                            +{{ $selectedOffer->photos->count() - 1 }} {{ __('offers.photos') }}
                                         </span>
                                     @endif
                                 @else
@@ -624,12 +632,12 @@
                                     <div class="text-center p-2 bg-white/60 rounded-lg">
                                         <span
                                             class="block font-bold text-gray-800 text-lg">{{ $selectedOffer->producer->offers->count() }}</span>
-                                        <span class="text-gray-600">Offres</span>
+                                        <span class="text-gray-600">{{ __('offers.offers') }}</span>
                                     </div>
                                     <div class="text-center p-2 bg-white/60 rounded-lg">
                                         <span
                                             class="block font-bold text-gray-800 text-lg">{{ $selectedOffer->producer->created_at->format('Y') }}</span>
-                                        <span class="text-gray-600">Membre</span>
+                                        <span class="text-gray-600">{{ __('offers.member') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -650,7 +658,8 @@
                                         {{ number_format($selectedOffer->prix, 0, ',', ' ') }}
                                         <span class="text-sm text-gray-500 font-normal">FCFA</span>
                                     </div>
-                                    <div class="text-sm text-gray-600">pour {{ $selectedOffer->quantite }}
+                                    <div class="text-sm text-gray-600">{{ __('offers.for') }}
+                                        {{ $selectedOffer->quantite }}
                                         {{ $selectedOffer->unite }}</div>
                                 </div>
                             </div>
@@ -663,24 +672,27 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M4 6h16M4 12h16M4 18h7"></path>
                                     </svg>
-                                    Description
+                                    {{ __('offers.description') }}
                                 </h5>
                                 <p class="text-sm leading-relaxed">{{ $selectedOffer->description }}</p>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                 <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition">
-                                    <span class="text-xs text-gray-500 block font-medium mb-1">📍 Localisation</span>
+                                    <span class="text-xs text-gray-500 block font-medium mb-1">📍
+                                        {{ __('offers.location') }}</span>
                                     <span
                                         class="font-semibold text-gray-900 text-sm">{{ $selectedOffer->ville }}</span>
                                 </div>
                                 <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition">
-                                    <span class="text-xs text-gray-500 block font-medium mb-1">🗺️ Région</span>
+                                    <span class="text-xs text-gray-500 block font-medium mb-1">🗺️
+                                        {{ __('offers.region') }}</span>
                                     <span
                                         class="font-semibold text-gray-900 text-sm">{{ $selectedOffer->region }}</span>
                                 </div>
                                 <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition">
-                                    <span class="text-xs text-gray-500 block font-medium mb-1">📊 Statut</span>
+                                    <span class="text-xs text-gray-500 block font-medium mb-1">📊
+                                        {{ __('offers.status') }}</span>
                                     @php
                                         $statusColor = match ($selectedOffer->statut) {
                                             'validé' => 'text-green-600',
@@ -704,7 +716,8 @@
                                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
                                     <div>
-                                        <span class="font-semibold block mb-1">Conditions de livraison :</span>
+                                        <span class="font-semibold block mb-1">{{ __('offers.delivery_conditions') }}
+                                            :</span>
                                         <p class="leading-relaxed">{{ $selectedOffer->conditions_livraison }}</p>
                                     </div>
                                 </div>
@@ -717,48 +730,37 @@
                     class="px-4 sm:px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100 border-t border-gray-200 flex flex-wrap justify-end gap-3">
                     <button wire:click="resetModals"
                         class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium shadow-sm transition-all">
-                        Fermer
+                        {{ __('offers.close') }}
                     </button>
 
                     @if ($selectedOffer->statut === 'en attente')
                         <button wire:click="openRejectModal({{ $selectedOffer->id }})"
                             class="px-4 py-2 bg-red-100 text-red-700 border border-red-200 rounded-lg hover:bg-red-200 font-medium transition-all">
-                            ❌ Rejeter
+                            ❌ {{ __('offers.reject') }}
                         </button>
                         <button wire:click="openValidateModal({{ $selectedOffer->id }})"
                             class="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 font-medium shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
-                            ✅ Valider l'offre
+                            ✅ {{ __('offers.validate_offer') }}
                         </button>
                     @endif
 
                     @if ($selectedOffer->statut === 'validé')
                         <button wire:click="updateStatus({{ $selectedOffer->id }}, 'suspendue')"
                             class="px-4 py-2 bg-purple-100 text-purple-700 border border-purple-200 rounded-lg hover:bg-purple-200 font-medium transition-all">
-                            🚫 Suspendre
-                        </button>
+                            🚫 {{ __('offers.suspend') }}
                     @endif
-                </div>
-            </div>
-        </div>
+
+
+
     @endif
-
 </div>
-
 {{-- SCRIPT D'INITIALISATION DES GRAPHIQUES --}}
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Attendre que tout soit chargé
-            setTimeout(function() {
+     // Réinitialiser les graphiques après chaque mise à jour Livewire
+            document.addEventListener('livewire:navigated', function() {
                 initCharts();
-            }, 100);
-        });
-
-        // Réinitialiser les graphiques après chaque mise à jour Livewire
-        document.addEventListener('livewire:navigated', function() {
-            initCharts();
-        });
+            });
 
         function initCharts() {
             // Données depuis le backend
@@ -819,7 +821,7 @@
                                     show: true,
                                     total: {
                                         show: true,
-                                        label: 'Total',
+                                        label: '{{ __('offers.total') }}',
                                         fontSize: '16px',
                                         fontWeight: 700,
                                         color: '#374151'
@@ -855,7 +857,7 @@
 
                 const catOptions = {
                     series: [{
-                        name: 'Offres',
+                        name: '{{ __('offers.offers') }}',
                         data: chartCategoryData.series || []
                     }],
                     xaxis: {
@@ -909,7 +911,7 @@
                     tooltip: {
                         y: {
                             formatter: function(val) {
-                                return val + ' offres';
+                                return val + ' {{ __('offers.offers') }}';
                             }
                         }
                     },
@@ -944,7 +946,7 @@
 
                 const evolutionOptions = {
                     series: [{
-                        name: 'Offres publiées',
+                        name: '{{ __('offers.published_offers') }}',
                         data: evolutionData.counts || []
                     }],
                     xaxis: {
@@ -1008,7 +1010,7 @@
                     tooltip: {
                         y: {
                             formatter: function(val) {
-                                return val + ' offres';
+                                return val + ' {{ __('offers.offers') }}';
                             }
                         }
                     },
@@ -1043,7 +1045,7 @@
 
                 const regionOptions = {
                     series: [{
-                        name: 'Offres',
+                        name: '{{ __('offers.offers') }}',
                         data: chartRegionData.series || []
                     }],
                     xaxis: {
@@ -1089,7 +1091,7 @@
                     tooltip: {
                         y: {
                             formatter: function(val) {
-                                return val + ' offres';
+                                return val + ' {{ __('offers.offers') }}';
                             }
                         }
                     },
@@ -1123,8 +1125,10 @@
                 const data = event[0] || event;
                 Swal.fire({
                     icon: data.type,
-                    title: data.type === 'success' ? '✅ Succès' : data.type === 'warning' ?
-                        '⚠️ Attention' : '❌ Erreur',
+                    title: data.type === 'success' ? '✅ ' + '{{ __('offers.success') }}' : data
+                        .type === 'warning' ?
+                        '⚠️ ' + '{{ __('offers.warning') }}' : '❌ ' +
+                        '{{ __('offers.error') }}',
                     text: data.message,
                     toast: true,
                     position: 'top-end',
