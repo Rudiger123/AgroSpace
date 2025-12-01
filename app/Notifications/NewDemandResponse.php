@@ -34,19 +34,20 @@ class NewDemandResponse extends Notification implements ShouldQueue
 
     public function toMail($notifiable): MailMessage
     {
-        $responderName = $this->response->user->name ?? 'Un utilisateur';
-        $priceInfo = $this->response->proposed_price
-            ? "Prix proposé : " . number_format($this->response->proposed_price, 0, ',', ' ') . " FCFA"
-            : "Aucun prix spécifié.";
-
-        return (new MailMessage())
-            ->subject('📩 Nouvelle proposition pour votre demande')
-            ->greeting('Bonjour ' . $notifiable->name . ',')
-            ->line($responderName . ' a répondu à votre demande.')
-            ->line($priceInfo)
-            ->line('Message : "' . str($this->response->message)->limit(100) . '"')
-            ->action('Voir la proposition', route('demands-management', ["search" => $this->response->demand_id]))
-            ->line('Connectez-vous pour accepter ou refuser cette offre.');
+        $responder = $this->response->user;
+    
+        return (new MailMessage)
+            ->subject('Nouvelle proposition pour votre demande')
+            ->view('emails.notification', [
+                'title'      => 'Vous avez une nouvelle proposition !',
+                'content'    => view('emails.partials.new-demand-response', [
+                    'notifiable' => $notifiable,
+                    'responder'  => $responder,
+                    'response'   => $this->response,
+                ])->render(),
+                'actionText' => 'Voir la proposition',
+                'actionUrl'  => route('demands-management', $this->response->demand_id),
+            ]);
     }
 
     public function toDatabase($notifiable): array

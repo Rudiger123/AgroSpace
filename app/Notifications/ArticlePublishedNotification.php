@@ -68,18 +68,19 @@ class ArticlePublishedNotification extends Notification implements ShouldQueue
     {
         $recipientName = $notifiable->name ?? $notifiable->email ?? 'Cher(e) abonné(e)';
 
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject('Nouvel article : ' . $this->article->title)
-            ->greeting('Bonjour ' . $recipientName . ',')
-            ->line('Un nouvel article vient d\'être publié sur le blog AgroSpace.')
-            ->line('**' . $this->article->title . '**')
-            ->line($this->article->excerpt ?? strip_tags(substr($this->article->content, 0, 150)) . '...')
-            ->line('Auteur : ' . $this->author->name)
-            ->line('Catégorie : ' . ($this->article->category->name ?? 'Non catégorisé'))
-            ->action('Lire l\'article', route('blog.show', $this->article->slug))
-            ->line('Merci de faire partie de la communauté AgroSpace !');
+            ->view('emails.notification', [
+                'title'       => 'Nouvel article publié sur le blog',
+                'content'     => view('emails.partials.article-published', [
+                    'recipientName' => $recipientName,
+                    'article'       => $this->article,
+                    'author'        => $this->author,
+                ])->render(),
+                'actionText'  => 'Lire l\'article',
+                'actionUrl'   => route('blog.show', $this->article->slug),
+            ]);
     }
-
     /**
      * Get the array representation for database.
      */

@@ -59,16 +59,18 @@ class NewOfferNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject('Nouvelle offre disponible - ' . $this->offer->titre)
-            ->greeting('Bonjour ' . $notifiable->name . ',')
-            ->line('Une nouvelle offre vient d\'être publiée sur AgroSpace.')
-            ->line('**' . $this->offer->titre . '**')
-            ->line($this->offer->description)
-            ->line('Producteur : ' . $this->creator->name)
-            ->line('Prix : ' . number_format($this->offer->prix, 0, ',', ' ') . ' FCFA')
-            ->action('Voir l\'offre', route('offers.moderate', ['search' => $this->offer->titre]))
-            ->line('Merci d\'utiliser AgroSpace !');
+            ->view('emails.notification', [
+                'title'      => 'Nouvelle offre publiée !',
+                'content'    => view('emails.partials.new-offer', [
+                    'notifiable' => $notifiable,
+                    'offer'      => $this->offer,
+                    'creator'    => $this->creator,
+                ])->render(),
+                'actionText' => 'Voir l\'offre',
+                'actionUrl'  => route('offers.moderate', ['search' => $this->offer->titre]),
+            ]);
     }
 
     /**

@@ -22,19 +22,18 @@ class NewContactNotification extends Notification implements ShouldQueue
     }
 
     public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage())
-            ->subject('📩 Nouveau message de contact - ' . $this->contact->subject)
-            ->greeting('Bonjour Admin,')
-            ->line('Vous avez reçu un nouveau message de contact.')
-            ->line('**De:** ' . $this->contact->name)
-            ->line('**Email:** ' . $this->contact->email)
-            ->line('**Sujet:** ' . $this->contact->subject)
-            ->line('**Message:**')
-            ->line($this->contact->message)
-            ->action('Voir le message', route('admin.contacts.index'))
-            ->line('Merci d\'utiliser AgroSpace!');
-    }
+{
+    return (new MailMessage)
+        ->subject('Nouveau message de contact - ' . $this->contact->subject)
+        ->view('emails.notification', [
+            'title'      => 'Nouveau message de contact',
+            'content'    => view('emails.partials.new-contact-admin', [
+                'contact' => $this->contact,
+            ])->render(),
+            'actionText' => 'Voir tous les messages',
+            'actionUrl'  => route('contacts.index'),
+        ]);
+}
 
     public function toArray(object $notifiable): array
     {

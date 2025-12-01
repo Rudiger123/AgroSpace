@@ -34,15 +34,17 @@ class ReviewReceived extends Notification implements ShouldQueue
 
     public function toMail($notifiable): MailMessage
     {
-        $consumerName = $this->avis->consumer->name ?? 'Un consommateur';
-
-        return (new MailMessage())
-            ->subject('⭐ Nouvel avis reçu sur AgroSpace')
-            ->greeting('Bonjour ' . $notifiable->name . ',')
-            ->line($consumerName . ' a laissé un avis de ' . $this->avis->note . '/5.')
-            ->line('Commentaire : "' . str($this->avis->commentaire)->limit(100) . '"')
-            ->action('Voir l\'avis', url('/profile/reviews')) // Ajuster la route
-            ->line('Merci de contribuer à la qualité de notre plateforme !');
+        return (new MailMessage)
+            ->subject('Nouvel avis reçu sur AgroSpace')
+            ->view('emails.notification', [
+                'title'      => 'Nouvel avis (' . $this->avis->note . '/5)',
+                'content'    => view('emails.partials.review-received', [
+                    'notifiable' => $notifiable,
+                    'avis'       => $this->avis,
+                ])->render(),
+                'actionText' => 'Voir mes avis',
+                'actionUrl'  => route('admin.avis', ["search" => $this->avis->title]),
+            ]);
     }
 
     public function toDatabase($notifiable): array
@@ -53,7 +55,7 @@ class ReviewReceived extends Notification implements ShouldQueue
             'message' => ($this->avis->consumer->name ?? 'Un utilisateur') . ' a évalué vos services.',
             'model_id' => $this->avis->id,
             'model_type' => Avis::class,
-            'action_url' => route('reviews.show', $this->avis->id), // Ajuster la route
+            'action_url' => route('admin.avis', ["search" => $this->avis->title]), // Ajuster la route
             'icon' => 'star',
             'color' => 'yellow',
         ];
@@ -66,7 +68,7 @@ class ReviewReceived extends Notification implements ShouldQueue
             'type' => 'review_received',
             'title' => 'Nouvel avis ⭐',
             'message' => 'Vous avez reçu une note de ' . $this->avis->note . '/5',
-            'action_url' => route('reviews.show', $this->avis->id),
+            'action_url' => route('admin.avis', ["search" => $this->avis->title]),
             'icon' => 'star',
             'color' => 'yellow',
             'created_at' => now()->toIso8601String(),

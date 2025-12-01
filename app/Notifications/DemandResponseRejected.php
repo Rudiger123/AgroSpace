@@ -36,22 +36,24 @@ class DemandResponseRejected extends Notification implements ShouldQueue
      * Get the mail representation of the notification.
      */
     public function toMail(object $notifiable): MailMessage
-    {
-        $demand = $this->demandResponse->demand;
-        $producer = $this->demandResponse->user;
+{
+    $demand   = $this->demandResponse->demand;
+    $producer = $this->demandResponse->user;
+    $response = $this->demandResponse;
 
-        return (new MailMessage())
-            ->subject("ℹ️ Mise à jour de votre réponse à la demande #{$demand->id} : Rejetée")
-            ->greeting("Bonjour {$producer->name},")
-            ->line("Nous vous informons que le consommateur a choisi de ne pas retenir votre réponse concernant sa demande : **\"{$demand->titre}\"**.")
-            ->line("Détails de votre réponse :")
-            ->line("- **Prix Proposé :** {$this->demandResponse->proposed_price} F CFA")
-            ->line("- **Message :** " . str($this->demandResponse->message)->limit(100))
-            ->line("Le consommateur a peut-être reçu d'autres offres qui correspondaient mieux à ses besoins immédiats.")
-            ->line("Ne vous découragez pas ! De nombreuses autres demandes sont publiées chaque jour. Continuez à soumettre vos offres !")
-            ->action('Voir la Demande Originale', route('demands-list', $demand->id))
-            ->salutation("Cordialement,\nL'équipe AgroSpace.");
-    }
+    return (new MailMessage)
+        ->subject("Mise à jour : votre réponse à la demande #{$demand->id} a été refusée")
+        ->view('emails.notification', [
+            'title'      => 'Votre proposition n’a pas été retenue',
+            'content'    => view('emails.partials.demand-response-rejected', [
+                'producer' => $producer,
+                'demand'   => $demand,
+                'response' => $response,
+            ])->render(),
+            'actionText' => 'Voir d’autres demandes',
+            'actionUrl'  => route('demands.list'), // ou la route publique des demandes
+        ]);
+}
 
     /**
      * Get the array representation of the notification.

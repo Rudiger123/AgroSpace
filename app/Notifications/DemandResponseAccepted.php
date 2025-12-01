@@ -36,23 +36,26 @@ class DemandResponseAccepted extends Notification implements ShouldQueue
      * Get the mail representation of the notification.
      */
     public function toMail(object $notifiable): MailMessage
-    {
-        $demand = $this->demandResponse->demand;
-        $consumer = $demand->user;
-        $producer = $this->demandResponse->user;
+{
+    $demand     = $this->demandResponse->demand;
+    $consumer   = $demand->user;
+    $producer   = $this->demandResponse->user;
+    $response   = $this->demandResponse;
 
-        return (new MailMessage())
-            ->subject("🎉 Félicitations ! Votre réponse à la demande #{$demand->id} a été acceptée !")
-            ->greeting("Bonjour {$producer->name},")
-            ->line("Excellente nouvelle ! Le consommateur **{$consumer->name}** a accepté votre offre en réponse à sa demande : **\"{$demand->titre}\"**.")
-            ->line("Un espace de chat instantané a été créé automatiquement pour vous permettre de finaliser les détails de l'échange (prix, quantité, lieu de rencontre, etc.).")
-            ->action('Accéder à la Conversation', route('chats', $this->demandResponse->conversation_id ?? '#')) // Assurez-vous que conversation_id est disponible
-            ->line("Détails de votre réponse :")
-            ->line("- **Prix Proposé :** {$this->demandResponse->proposed_price} F CFA")
-            ->line("- **Message :** " . str($this->demandResponse->message)->limit(100))
-            ->line("Veuillez consulter le chat pour toutes les informations de contact nécessaires.")
-            ->salutation("Cordialement,\nL'équipe AgroSpace.");
-    }
+    return (new MailMessage)
+        ->subject("Félicitations ! Votre réponse à la demande #{$demand->id} a été acceptée !")
+        ->view('emails.notification', [
+            'title'      => 'Votre offre a été ACCEPTÉE !',
+            'content'    => view('emails.partials.demand-response-accepted', [
+                'producer' => $producer,
+                'consumer' => $consumer,
+                'demand'   => $demand,
+                'response' => $response,
+            ])->render(),
+            'actionText' => 'Aller au chat',
+            'actionUrl'  => route('chats', $response->conversation_id ?? '#'),
+        ]);
+}
 
     /**
      * Get the array representation of the notification.
