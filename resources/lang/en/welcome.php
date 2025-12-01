@@ -91,5 +91,5 @@ return [
         'button' => 'Start for free',
         'button_title' => 'Create a free AgroSpace account - Quick sign up',
         'note' => '✓ 100% free and fast registration (under 1 minute) • ✓ No credit card required • ✓ Immediate access to all features',
-    ],
+   ],
 ];

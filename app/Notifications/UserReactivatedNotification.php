@@ -22,18 +22,18 @@ class UserReactivatedNotification extends Notification implements ShouldQueue
     }
 
     public function toMail($notifiable): MailMessage
-{
-    return (new MailMessage)
-        ->subject('Réactivation de votre compte AgroSpace')
-        ->view('emails.notification', [
-            'title'      => 'Compte réactivé !',
-            'content'    => view('emails.partials.account-reactivated', [
-                'notifiable' => $notifiable,
-            ])->render(),
-            'actionText' => 'Me connecter',
-            'actionUrl'  => route('login'),
-        ]);
-}
+    {
+        return (new MailMessage())
+            ->subject('Réactivation de votre compte AgroSpace')
+            ->view('emails.notification', [
+                'title'      => 'Compte réactivé !',
+                'content'    => view('emails.partials.account-reactivated', [
+                    'notifiable' => $notifiable,
+                ])->render(),
+                'actionText' => 'Me connecter',
+                'actionUrl'  => route('login'),
+            ]);
+    }
 
     public function toDatabase($notifiable): array
     {

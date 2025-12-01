@@ -60,8 +60,8 @@ return [
         ],
         'contact' => [
             'address' => 'Bafoussam, Cameroon',
-            'email' => 'contact@agrospace.cm',
-            'phone' => '+237 6XX XX XX XX',
+            'email' => 'feutsoprudiger@gmail.com',
+            'phone' => '+237 652311947',
         ],
         'copyright' => '© :year AgroSpace – All rights reserved. Made with ❤️ for African agriculture.',
     ],

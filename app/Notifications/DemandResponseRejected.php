@@ -36,24 +36,24 @@ class DemandResponseRejected extends Notification implements ShouldQueue
      * Get the mail representation of the notification.
      */
     public function toMail(object $notifiable): MailMessage
-{
-    $demand   = $this->demandResponse->demand;
-    $producer = $this->demandResponse->user;
-    $response = $this->demandResponse;
+    {
+        $demand   = $this->demandResponse->demand;
+        $producer = $this->demandResponse->user;
+        $response = $this->demandResponse;
 
-    return (new MailMessage)
-        ->subject("Mise à jour : votre réponse à la demande #{$demand->id} a été refusée")
-        ->view('emails.notification', [
-            'title'      => 'Votre proposition n’a pas été retenue',
-            'content'    => view('emails.partials.demand-response-rejected', [
-                'producer' => $producer,
-                'demand'   => $demand,
-                'response' => $response,
-            ])->render(),
-            'actionText' => 'Voir d’autres demandes',
-            'actionUrl'  => route('demands.list'), // ou la route publique des demandes
-        ]);
-}
+        return (new MailMessage())
+            ->subject("Mise à jour : votre réponse à la demande #{$demand->id} a été refusée")
+            ->view('emails.notification', [
+                'title'      => 'Votre proposition n’a pas été retenue',
+                'content'    => view('emails.partials.demand-response-rejected', [
+                    'producer' => $producer,
+                    'demand'   => $demand,
+                    'response' => $response,
+                ])->render(),
+                'actionText' => 'Voir d’autres demandes',
+                'actionUrl'  => route('demands.list'), // ou la route publique des demandes
+            ]);
+    }
 
     /**
      * Get the array representation of the notification.
