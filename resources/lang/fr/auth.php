@@ -10,6 +10,15 @@ return [
         'success' => 'Authentification réussie !',
     ],
 
+     // Déconnexion
+     'logout' => 'Déconnexion',
+     'logout_subtext' => 'Terminer votre session',
+     'logout_confirm_title' => 'Confirmer la déconnexion',
+     'logout_confirm_text' => 'Êtes-vous sûr de vouloir vous déconnecter ? Votre session actuelle sera terminée.',
+     'logout_success' => 'Vous avez été déconnecté avec succès.',
+     'logout_cancel' => 'Annuler',
+     'logout_confirm_button' => 'Se déconnecter',
+
         'password' => 'Le mot de passe est incorrect.',
         'password_confirm_message' => 'Ceci est une zone sécurisée de l\'application. Veuillez confirmer votre mot de passe avant de continuer.',
         'confirm' => 'Confirmer',

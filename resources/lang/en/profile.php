@@ -4,7 +4,7 @@ return [
     'management' => [
         'title' => 'Profile Management',
     ],
-    
+
     'messages' => [
         'profile_updated' => 'Profile updated successfully!',
         'avatar_updated' => 'Profile picture updated!',
@@ -14,25 +14,25 @@ return [
         '2fa_disabled' => 'Two-factor authentication disabled',
         'account_deleted' => 'Your account has been successfully deleted',
     ],
-    
+
     'errors' => [
         'error' => 'Error: ',
         'incorrect_password' => 'Incorrect password',
         'logout_error' => 'Error logging out user: ',
     ],
-    
+
     'delete' => [
         'confirm_title' => 'Confirm deletion',
         'confirm_text' => 'Are you sure you want to delete your account? This action is irreversible.',
         'confirm_button' => 'Yes, delete',
         'cancel_button' => 'Cancel',
     ],
-    
+
     'recovery_codes' => [
         'csv_filename' => 'agrospace-recovery-codes.csv',
         'md_filename' => 'agrospace-recovery-codes.md',
     ],
- 
+
         'my_profile' => 'My Profile',
         'manage_info' => 'Manage your personal information and preferences',
         'back_to_dashboard' => 'Back to dashboard',

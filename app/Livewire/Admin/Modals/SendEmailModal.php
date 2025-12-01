@@ -48,40 +48,40 @@ class SendEmailModal extends Component
 
     public function mount()
     {
-       $this->templates = [ 
-        'welcome' => [
-            'subject' => __('emails.welcome_subject'),
-            'message' => __('emails.welcome_message'),
-        ],
-        'verification' => [
-            'subject' => __('emails.verification_subject'),
-            'message' => __('emails.verification_message'),
-        ],
-        'offer_approved' => [
-            'subject' => __('emails.offer_approved_subject'),
-            'message' => __('emails.offer_approved_message'),
-        ],
-        'offer_rejected' => [
-            'subject' => __('emails.offer_rejected_subject'),
-            'message' => __('emails.offer_rejected_message'),
-        ],
-        'account_suspended' => [
-            'subject' => __('emails.account_suspended_subject'),
-            'message' => __('emails.account_suspended_message'),
-        ],
-        'newsletter' => [
-            'subject' => __('emails.newsletter_subject'),
-            'message' => __('emails.newsletter_message'),
-        ],
-        'promotion' => [
-            'subject' => __('emails.promotion_subject'),
-            'message' => __('emails.promotion_message'),
-        ],
+        $this->templates = [
+         'welcome' => [
+             'subject' => __('emails.welcome_subject'),
+             'message' => __('emails.welcome_message'),
+         ],
+         'verification' => [
+             'subject' => __('emails.verification_subject'),
+             'message' => __('emails.verification_message'),
+         ],
+         'offer_approved' => [
+             'subject' => __('emails.offer_approved_subject'),
+             'message' => __('emails.offer_approved_message'),
+         ],
+         'offer_rejected' => [
+             'subject' => __('emails.offer_rejected_subject'),
+             'message' => __('emails.offer_rejected_message'),
+         ],
+         'account_suspended' => [
+             'subject' => __('emails.account_suspended_subject'),
+             'message' => __('emails.account_suspended_message'),
+         ],
+         'newsletter' => [
+             'subject' => __('emails.newsletter_subject'),
+             'message' => __('emails.newsletter_message'),
+         ],
+         'promotion' => [
+             'subject' => __('emails.promotion_subject'),
+             'message' => __('emails.promotion_message'),
+         ],
     ];
     }
 
     protected $templates = [
-       
+
     ];
 
     #[On('openSendEmailModal')]

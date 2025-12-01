@@ -10,6 +10,15 @@ return [
         'success' => 'Authentication successful!',
     ],
 
+    // Logout
+    'logout' => 'Logout',
+    'logout_subtext' => 'End your session',
+    'logout_confirm_title' => 'Confirm Logout',
+    'logout_confirm_text' => 'Are you sure you want to log out? Your current session will be ended.',
+    'logout_success' => 'You have been successfully logged out.',
+    'logout_cancel' => 'Cancel',
+    'logout_confirm_button' => 'Log out',
+
 
         'password' => 'The password is incorrect.',
         'password_confirm_message' => 'This is a secure area of the application. Please confirm your password before continuing.',

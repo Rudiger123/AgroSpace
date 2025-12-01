@@ -91,7 +91,7 @@ class ManageOffers extends Component
         'photos.image' => 'Les fichiers doivent être des images.',
         'photos.max' => 'Les images ne doivent pas dépasser 2MB.',
         'date_expiration.after' => 'La date d\'expiration doit être ultérieure à aujourd\'hui.',
-  
+
     ];
 
     protected function getTranslatedMessages()

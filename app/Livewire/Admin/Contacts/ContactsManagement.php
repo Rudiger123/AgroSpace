@@ -57,14 +57,14 @@ class ContactsManagement extends Component
         'replyMssage_min' => 'The message must contain at least 10 characters.',
     ];
 
-     // Méthode pour obtenir les messages traduits
-     protected function getTranslatedMessages()
-     {
-         return [
-            'replyMessage.required' => __('contacts.reply_message_required'),
-            'replyMessage.min' => __('contacts.reply_message_min'),
-         ];
-     }
+    // Méthode pour obtenir les messages traduits
+    protected function getTranslatedMessages()
+    {
+        return [
+           'replyMessage.required' => __('contacts.reply_message_required'),
+           'replyMessage.min' => __('contacts.reply_message_min'),
+        ];
+    }
 
     // Lifecycle hooks
     public function mount()

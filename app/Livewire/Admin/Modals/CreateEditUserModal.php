@@ -73,11 +73,11 @@ class CreateEditUserModal extends Component
         'role.exists' => 'The selected role does not exist',
     ];
 
-     // Méthode pour obtenir les messages traduits
-     protected function getTranslatedMessages()
-     {
-         return [
-            'name.required' => __('users.name_required'),
+    // Méthode pour obtenir les messages traduits
+    protected function getTranslatedMessages()
+    {
+        return [
+           'name.required' => __('users.name_required'),
         'email.required' => __('users.email_required'),
         'email.email' => __('users.email_invalid'),
         'email.unique' => __('users.email_unique'),
@@ -91,9 +91,9 @@ class CreateEditUserModal extends Component
         'avatar.image' => __('users.avatar_image'),
         'avatar.max' => __('users.avatar_max'),
         'role.exists' => __('users.role_exists')
-         ];
-     }
- 
+        ];
+    }
+
 
     #[On('openCreateUserModal')]
     public function openCreate()

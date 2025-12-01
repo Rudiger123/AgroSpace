@@ -4,7 +4,8 @@
         {{-- Header --}}
         <div class="mb-6 sm:mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">{{ __('offers.moderation_title') }}</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
+                    {{ __('offers.moderation_title') }}</h1>
                 <p class="mt-1 text-sm text-gray-500">{{ __('offers.moderation_subtitle') }}</p>
             </div>
             <button wire:click="bulkValidate"
@@ -21,7 +22,8 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4 mb-6 sm:mb-8">
             <div
                 class="bg-white p-4 sm:p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.total') }}</div>
+                <div class="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.total') }}
+                </div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-gray-900">{{ $stats['total'] }}</div>
                 <div class="text-xs text-blue-600 mt-1 font-medium flex items-center">
                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -35,44 +37,51 @@
 
             <div
                 class="bg-gradient-to-br from-orange-50 to-orange-100 p-4 sm:p-5 rounded-xl shadow-sm border border-orange-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-orange-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.pending') }}</div>
+                <div class="text-orange-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.pending') }}
+                </div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-orange-700">{{ $stats['pending'] }}</div>
                 <div class="text-xs text-orange-600 mt-1 font-medium">{{ __('offers.to_moderate') }}</div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-5 rounded-xl shadow-sm border border-green-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-green-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.validated') }}</div>
+                <div class="text-green-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.validated') }}
+                </div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-green-700">{{ $stats['validated'] }}</div>
                 <div class="text-xs text-green-600 mt-1 font-medium">{{ __('offers.active') }}</div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-red-50 to-red-100 p-4 sm:p-5 rounded-xl shadow-sm border border-red-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-red-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.rejected') }}</div>
+                <div class="text-red-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.rejected') }}
+                </div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-red-700">{{ $stats['rejected'] }}</div>
                 <div class="text-xs text-red-600 mt-1 font-medium">{{ __('offers.refused') }}</div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 sm:p-5 rounded-xl shadow-sm border border-purple-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-purple-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.suspended') }}</div>
+                <div class="text-purple-600 text-xs font-bold uppercase tracking-wider mb-2">
+                    {{ __('offers.suspended') }}</div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-purple-700">{{ $stats['suspended'] }}</div>
                 <div class="text-xs text-purple-600 mt-1 font-medium">{{ __('offers.blocked') }}</div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 sm:p-5 rounded-xl shadow-sm border border-yellow-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-yellow-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.featured') }}</div>
+                <div class="text-yellow-600 text-xs font-bold uppercase tracking-wider mb-2">
+                    {{ __('offers.featured') }}</div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-yellow-700">{{ $stats['featured'] }}</div>
                 <div class="text-xs text-yellow-600 mt-1 font-medium">{{ __('offers.featured_label') }}</div>
             </div>
 
             <div
                 class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 sm:p-5 rounded-xl shadow-sm border border-blue-200 hover:shadow-lg transition-all hover:-translate-y-1">
-                <div class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.today') }}</div>
+                <div class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-2">{{ __('offers.today') }}
+                </div>
                 <div class="text-2xl sm:text-3xl font-extrabold text-blue-700">{{ $stats['today'] }}</div>
-                <div class="text-xs text-blue-600 mt-1 font-medium">+{{ $stats['thisWeek'] }} {{ __('offers.this_week') }}</div>
+                <div class="text-xs text-blue-600 mt-1 font-medium">+{{ $stats['thisWeek'] }}
+                    {{ __('offers.this_week') }}</div>
             </div>
         </div>
 
@@ -428,7 +437,8 @@
             </div>
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">{{ __('offers.validation_note') }}</label>
+                    <label
+                        class="block text-sm font-semibold text-gray-700 mb-2">{{ __('offers.validation_note') }}</label>
                     <textarea wire:model="validationNote" rows="3"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm transition"
                         placeholder="{{ __('offers.validation_note_placeholder') }}"></textarea>
@@ -565,7 +575,8 @@
                     class="px-4 sm:px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-gray-50 to-gray-100">
                     <div>
                         <h3 class="text-lg sm:text-xl font-bold text-gray-900">{{ __('offers.offer_details') }}</h3>
-                        <p class="text-xs sm:text-sm text-gray-500">{{ __('offers.ref') }} #{{ $selectedOffer->id }} • {{ __('offers.published_on') }}
+                        <p class="text-xs sm:text-sm text-gray-500">{{ __('offers.ref') }}
+                            #{{ $selectedOffer->id }} • {{ __('offers.published_on') }}
                             {{ $selectedOffer->created_at->format('d/m/Y à H:i') }}</p>
                     </div>
                     <button wire:click="resetModals"
@@ -647,7 +658,8 @@
                                         {{ number_format($selectedOffer->prix, 0, ',', ' ') }}
                                         <span class="text-sm text-gray-500 font-normal">FCFA</span>
                                     </div>
-                                    <div class="text-sm text-gray-600">{{ __('offers.for') }} {{ $selectedOffer->quantite }}
+                                    <div class="text-sm text-gray-600">{{ __('offers.for') }}
+                                        {{ $selectedOffer->quantite }}
                                         {{ $selectedOffer->unite }}</div>
                                 </div>
                             </div>
@@ -667,17 +679,20 @@
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                 <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition">
-                                    <span class="text-xs text-gray-500 block font-medium mb-1">📍 {{ __('offers.location') }}</span>
+                                    <span class="text-xs text-gray-500 block font-medium mb-1">📍
+                                        {{ __('offers.location') }}</span>
                                     <span
                                         class="font-semibold text-gray-900 text-sm">{{ $selectedOffer->ville }}</span>
                                 </div>
                                 <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition">
-                                    <span class="text-xs text-gray-500 block font-medium mb-1">🗺️ {{ __('offers.region') }}</span>
+                                    <span class="text-xs text-gray-500 block font-medium mb-1">🗺️
+                                        {{ __('offers.region') }}</span>
                                     <span
                                         class="font-semibold text-gray-900 text-sm">{{ $selectedOffer->region }}</span>
                                 </div>
                                 <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition">
-                                    <span class="text-xs text-gray-500 block font-medium mb-1">📊 {{ __('offers.status') }}</span>
+                                    <span class="text-xs text-gray-500 block font-medium mb-1">📊
+                                        {{ __('offers.status') }}</span>
                                     @php
                                         $statusColor = match ($selectedOffer->statut) {
                                             'validé' => 'text-green-600',
@@ -701,7 +716,8 @@
                                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
                                     <div>
-                                        <span class="font-semibold block mb-1">{{ __('offers.delivery_conditions') }} :</span>
+                                        <span class="font-semibold block mb-1">{{ __('offers.delivery_conditions') }}
+                                            :</span>
                                         <p class="leading-relaxed">{{ $selectedOffer->conditions_livraison }}</p>
                                     </div>
                                 </div>
@@ -732,403 +748,404 @@
                         <button wire:click="updateStatus({{ $selectedOffer->id }}, 'suspendue')"
                             class="px-4 py-2 bg-purple-100 text-purple-700 border border-purple-200 rounded-lg hover:bg-purple-200 font-medium transition-all">
                             🚫 {{ __('offers.suspend') }}
+                    @endif
 
-                            @endif
-                            
-                            
-                            
-                            @endif
-                            </div>
-                            {{-- SCRIPT D'INITIALISATION DES GRAPHIQUES --}}
-                            @push('scripts')
-                            <script src="https://cdn.jsdelivr.net/npm/apexcharts">
-                            <script>    // Réinitialiser les graphiques après chaque mise à jour Livewire
-    document.addEventListener('livewire:navigated', function() {
-        initCharts();
-    });
 
-    function initCharts() {
-        // Données depuis le backend
-        const chartStatusData = @json($chartStatusData);
-        const chartCategoryData = @json($chartCategoryData);
-        const evolutionData = @json($evolutionData);
-        const chartRegionData = @json($chartRegionData);
 
-        console.log('Initialisation des graphiques...', {
-            chartStatusData,
-            chartCategoryData,
-            evolutionData,
-            chartRegionData
-        });
+    @endif
+</div>
+{{-- SCRIPT D'INITIALISATION DES GRAPHIQUES --}}
+@push('scripts')
+    <script>
+     // Réinitialiser les graphiques après chaque mise à jour Livewire
+            document.addEventListener('livewire:navigated', function() {
+                initCharts();
+            });
 
-        // ===== GRAPHIQUE 1 : STATUTS (DONUT) =====
-        const statusChartEl = document.querySelector('#statusChart');
-        if (statusChartEl) {
-            // Détruire l'ancien graphique s'il existe
-            if (window.statusChartInstance) {
-                window.statusChartInstance.destroy();
-            }
+        function initCharts() {
+            // Données depuis le backend
+            const chartStatusData = @json($chartStatusData);
+            const chartCategoryData = @json($chartCategoryData);
+            const evolutionData = @json($evolutionData);
+            const chartRegionData = @json($chartRegionData);
 
-            const statusOptions = {
-                series: chartStatusData.series || [],
-                labels: chartStatusData.labels || [],
-                chart: {
-                    type: 'donut',
-                    height: 280,
-                    fontFamily: 'inherit',
-                    animations: {
-                        enabled: true,
-                        easing: 'easeinout',
-                        speed: 800
-                    }
-                },
-                colors: ['#F59E0B', '#10B981', '#EF4444', '#8B5CF6', '#3B82F6'],
-                legend: {
-                    position: 'bottom',
-                    fontSize: '12px',
-                    horizontalAlign: 'center'
-                },
-                dataLabels: {
-                    enabled: true,
-                    style: {
+            console.log('Initialisation des graphiques...', {
+                chartStatusData,
+                chartCategoryData,
+                evolutionData,
+                chartRegionData
+            });
+
+            // ===== GRAPHIQUE 1 : STATUTS (DONUT) =====
+            const statusChartEl = document.querySelector('#statusChart');
+            if (statusChartEl) {
+                // Détruire l'ancien graphique s'il existe
+                if (window.statusChartInstance) {
+                    window.statusChartInstance.destroy();
+                }
+
+                const statusOptions = {
+                    series: chartStatusData.series || [],
+                    labels: chartStatusData.labels || [],
+                    chart: {
+                        type: 'donut',
+                        height: 280,
+                        fontFamily: 'inherit',
+                        animations: {
+                            enabled: true,
+                            easing: 'easeinout',
+                            speed: 800
+                        }
+                    },
+                    colors: ['#F59E0B', '#10B981', '#EF4444', '#8B5CF6', '#3B82F6'],
+                    legend: {
+                        position: 'bottom',
                         fontSize: '12px',
-                        fontWeight: 600
+                        horizontalAlign: 'center'
                     },
-                    dropShadow: {
-                        enabled: false
-                    }
-                },
-                plotOptions: {
-                    pie: {
-                        donut: {
-                            size: '65%',
-                            labels: {
-                                show: true,
-                                total: {
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            fontSize: '12px',
+                            fontWeight: 600
+                        },
+                        dropShadow: {
+                            enabled: false
+                        }
+                    },
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                size: '65%',
+                                labels: {
                                     show: true,
-                                    label: '{{ __('offers.total') }}',
-                                    fontSize: '16px',
-                                    fontWeight: 700,
-                                    color: '#374151'
+                                    total: {
+                                        show: true,
+                                        label: '{{ __('offers.total') }}',
+                                        fontSize: '16px',
+                                        fontWeight: 700,
+                                        color: '#374151'
+                                    }
                                 }
                             }
                         }
-                    }
-                },
-                responsive: [{
-                    breakpoint: 640,
-                    options: {
-                        chart: {
-                            height: 240
-                        },
-                        legend: {
-                            fontSize: '10px'
+                    },
+                    responsive: [{
+                        breakpoint: 640,
+                        options: {
+                            chart: {
+                                height: 240
+                            },
+                            legend: {
+                                fontSize: '10px'
+                            }
                         }
-                    }
-                }]
-            };
+                    }]
+                };
 
-            window.statusChartInstance = new ApexCharts(statusChartEl, statusOptions);
-            window.statusChartInstance.render();
-            console.log('✅ Graphique Statuts rendu');
-        }
-
-        // ===== GRAPHIQUE 2 : CATÉGORIES (BARRES) =====
-        const catChartEl = document.querySelector('#catChart');
-        if (catChartEl) {
-            if (window.catChartInstance) {
-                window.catChartInstance.destroy();
+                window.statusChartInstance = new ApexCharts(statusChartEl, statusOptions);
+                window.statusChartInstance.render();
+                console.log('✅ Graphique Statuts rendu');
             }
 
-            const catOptions = {
-                series: [{
-                    name: '{{ __('offers.offers') }}',
-                    data: chartCategoryData.series || []
-                }],
-                xaxis: {
-                    categories: chartCategoryData.labels || [],
-                    labels: {
-                        style: {
-                            fontSize: '11px',
-                            fontWeight: 500
+            // ===== GRAPHIQUE 2 : CATÉGORIES (BARRES) =====
+            const catChartEl = document.querySelector('#catChart');
+            if (catChartEl) {
+                if (window.catChartInstance) {
+                    window.catChartInstance.destroy();
+                }
+
+                const catOptions = {
+                    series: [{
+                        name: '{{ __('offers.offers') }}',
+                        data: chartCategoryData.series || []
+                    }],
+                    xaxis: {
+                        categories: chartCategoryData.labels || [],
+                        labels: {
+                            style: {
+                                fontSize: '11px',
+                                fontWeight: 500
+                            }
                         }
-                    }
-                },
-                chart: {
-                    type: 'bar',
-                    height: 280,
-                    toolbar: {
-                        show: false
                     },
-                    fontFamily: 'inherit',
-                    animations: {
+                    chart: {
+                        type: 'bar',
+                        height: 280,
+                        toolbar: {
+                            show: false
+                        },
+                        fontFamily: 'inherit',
+                        animations: {
+                            enabled: true,
+                            easing: 'easeinout',
+                            speed: 800
+                        }
+                    },
+                    colors: ['#3B82F6'],
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 6,
+                            horizontal: true,
+                            distributed: false,
+                            dataLabels: {
+                                position: 'center'
+                            }
+                        }
+                    },
+                    dataLabels: {
                         enabled: true,
-                        easing: 'easeinout',
-                        speed: 800
-                    }
-                },
-                colors: ['#3B82F6'],
-                plotOptions: {
-                    bar: {
-                        borderRadius: 6,
-                        horizontal: true,
-                        distributed: false,
-                        dataLabels: {
-                            position: 'center'
+                        style: {
+                            fontSize: '11px',
+                            colors: ['#fff'],
+                            fontWeight: 600
                         }
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    style: {
-                        fontSize: '11px',
-                        colors: ['#fff'],
-                        fontWeight: 600
-                    }
-                },
-                grid: {
-                    borderColor: '#f3f4f6',
-                    padding: {
-                        left: 10,
-                        right: 10
-                    }
-                },
-                tooltip: {
-                    y: {
-                        formatter: function(val) {
-                            return val + ' {{ __('offers.offers') }}';
+                    },
+                    grid: {
+                        borderColor: '#f3f4f6',
+                        padding: {
+                            left: 10,
+                            right: 10
                         }
-                    }
-                },
-                responsive: [{
-                    breakpoint: 640,
-                    options: {
-                        chart: {
-                            height: 240
-                        },
-                        xaxis: {
-                            labels: {
-                                style: {
-                                    fontSize: '10px'
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val + ' {{ __('offers.offers') }}';
+                            }
+                        }
+                    },
+                    responsive: [{
+                        breakpoint: 640,
+                        options: {
+                            chart: {
+                                height: 240
+                            },
+                            xaxis: {
+                                labels: {
+                                    style: {
+                                        fontSize: '10px'
+                                    }
                                 }
                             }
                         }
-                    }
-                }]
-            };
+                    }]
+                };
 
-            window.catChartInstance = new ApexCharts(catChartEl, catOptions);
-            window.catChartInstance.render();
-            console.log('✅ Graphique Catégories rendu');
-        }
-
-        // ===== GRAPHIQUE 3 : ÉVOLUTION (AREA) =====
-        const evolutionChartEl = document.querySelector('#evolutionChart');
-        if (evolutionChartEl) {
-            if (window.evolutionChartInstance) {
-                window.evolutionChartInstance.destroy();
+                window.catChartInstance = new ApexCharts(catChartEl, catOptions);
+                window.catChartInstance.render();
+                console.log('✅ Graphique Catégories rendu');
             }
 
-            const evolutionOptions = {
-                series: [{
-                    name: '{{ __('offers.published_offers') }}',
-                    data: evolutionData.counts || []
-                }],
-                xaxis: {
-                    categories: evolutionData.dates || [],
-                    labels: {
-                        style: {
-                            fontSize: '11px',
-                            fontWeight: 500
+            // ===== GRAPHIQUE 3 : ÉVOLUTION (AREA) =====
+            const evolutionChartEl = document.querySelector('#evolutionChart');
+            if (evolutionChartEl) {
+                if (window.evolutionChartInstance) {
+                    window.evolutionChartInstance.destroy();
+                }
+
+                const evolutionOptions = {
+                    series: [{
+                        name: '{{ __('offers.published_offers') }}',
+                        data: evolutionData.counts || []
+                    }],
+                    xaxis: {
+                        categories: evolutionData.dates || [],
+                        labels: {
+                            style: {
+                                fontSize: '11px',
+                                fontWeight: 500
+                            }
                         }
-                    }
-                },
-                chart: {
-                    type: 'area',
-                    height: 280,
-                    toolbar: {
-                        show: false
                     },
-                    fontFamily: 'inherit',
-                    sparkline: {
+                    chart: {
+                        type: 'area',
+                        height: 280,
+                        toolbar: {
+                            show: false
+                        },
+                        fontFamily: 'inherit',
+                        sparkline: {
+                            enabled: false
+                        },
+                        animations: {
+                            enabled: true,
+                            easing: 'easeinout',
+                            speed: 800
+                        }
+                    },
+                    colors: ['#10B981'],
+                    stroke: {
+                        curve: 'smooth',
+                        width: 3
+                    },
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            shadeIntensity: 1,
+                            opacityFrom: 0.7,
+                            opacityTo: 0.2,
+                            stops: [0, 90, 100]
+                        }
+                    },
+                    dataLabels: {
                         enabled: false
                     },
-                    animations: {
-                        enabled: true,
-                        easing: 'easeinout',
-                        speed: 800
-                    }
-                },
-                colors: ['#10B981'],
-                stroke: {
-                    curve: 'smooth',
-                    width: 3
-                },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        shadeIntensity: 1,
-                        opacityFrom: 0.7,
-                        opacityTo: 0.2,
-                        stops: [0, 90, 100]
-                    }
-                },
-                dataLabels: {
-                    enabled: false
-                },
-                grid: {
-                    borderColor: '#f3f4f6',
-                    padding: {
-                        left: 10,
-                        right: 10
-                    }
-                },
-                markers: {
-                    size: 4,
-                    colors: ['#10B981'],
-                    strokeColors: '#fff',
-                    strokeWidth: 2,
-                    hover: {
-                        size: 6
-                    }
-                },
-                tooltip: {
-                    y: {
-                        formatter: function(val) {
-                            return val + ' {{ __('offers.offers') }}';
+                    grid: {
+                        borderColor: '#f3f4f6',
+                        padding: {
+                            left: 10,
+                            right: 10
                         }
-                    }
-                },
-                responsive: [{
-                    breakpoint: 640,
-                    options: {
-                        chart: {
-                            height: 240
-                        },
-                        xaxis: {
-                            labels: {
-                                style: {
-                                    fontSize: '9px'
+                    },
+                    markers: {
+                        size: 4,
+                        colors: ['#10B981'],
+                        strokeColors: '#fff',
+                        strokeWidth: 2,
+                        hover: {
+                            size: 6
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val + ' {{ __('offers.offers') }}';
+                            }
+                        }
+                    },
+                    responsive: [{
+                        breakpoint: 640,
+                        options: {
+                            chart: {
+                                height: 240
+                            },
+                            xaxis: {
+                                labels: {
+                                    style: {
+                                        fontSize: '9px'
+                                    }
                                 }
                             }
                         }
-                    }
-                }]
-            };
+                    }]
+                };
 
-            window.evolutionChartInstance = new ApexCharts(evolutionChartEl, evolutionOptions);
-            window.evolutionChartInstance.render();
-            console.log('✅ Graphique Évolution rendu');
-        }
-
-        // ===== GRAPHIQUE 4 : RÉGIONS (RADAR) =====
-        const regionChartEl = document.querySelector('#regionChart');
-        if (regionChartEl) {
-            if (window.regionChartInstance) {
-                window.regionChartInstance.destroy();
+                window.evolutionChartInstance = new ApexCharts(evolutionChartEl, evolutionOptions);
+                window.evolutionChartInstance.render();
+                console.log('✅ Graphique Évolution rendu');
             }
 
-            const regionOptions = {
-                series: [{
-                    name: '{{ __('offers.offers') }}',
-                    data: chartRegionData.series || []
-                }],
-                xaxis: {
-                    categories: chartRegionData.labels || [],
-                    labels: {
-                        style: {
-                            fontSize: '10px',
-                            fontWeight: 500
+            // ===== GRAPHIQUE 4 : RÉGIONS (RADAR) =====
+            const regionChartEl = document.querySelector('#regionChart');
+            if (regionChartEl) {
+                if (window.regionChartInstance) {
+                    window.regionChartInstance.destroy();
+                }
+
+                const regionOptions = {
+                    series: [{
+                        name: '{{ __('offers.offers') }}',
+                        data: chartRegionData.series || []
+                    }],
+                    xaxis: {
+                        categories: chartRegionData.labels || [],
+                        labels: {
+                            style: {
+                                fontSize: '10px',
+                                fontWeight: 500
+                            }
                         }
-                    }
-                },
-                chart: {
-                    type: 'radar',
-                    height: 280,
-                    toolbar: {
+                    },
+                    chart: {
+                        type: 'radar',
+                        height: 280,
+                        toolbar: {
+                            show: false
+                        },
+                        fontFamily: 'inherit',
+                        animations: {
+                            enabled: true,
+                            easing: 'easeinout',
+                            speed: 800
+                        }
+                    },
+                    colors: ['#F59E0B'],
+                    stroke: {
+                        width: 2,
+                        colors: ['#F59E0B']
+                    },
+                    fill: {
+                        opacity: 0.2,
+                        colors: ['#F59E0B']
+                    },
+                    markers: {
+                        size: 4,
+                        colors: ['#F59E0B'],
+                        strokeColors: '#fff',
+                        strokeWidth: 2
+                    },
+                    yaxis: {
                         show: false
                     },
-                    fontFamily: 'inherit',
-                    animations: {
-                        enabled: true,
-                        easing: 'easeinout',
-                        speed: 800
-                    }
-                },
-                colors: ['#F59E0B'],
-                stroke: {
-                    width: 2,
-                    colors: ['#F59E0B']
-                },
-                fill: {
-                    opacity: 0.2,
-                    colors: ['#F59E0B']
-                },
-                markers: {
-                    size: 4,
-                    colors: ['#F59E0B'],
-                    strokeColors: '#fff',
-                    strokeWidth: 2
-                },
-                yaxis: {
-                    show: false
-                },
-                tooltip: {
-                    y: {
-                        formatter: function(val) {
-                            return val + ' {{ __('offers.offers') }}';
+                    tooltip: {
+                        y: {
+                            formatter: function(val) {
+                                return val + ' {{ __('offers.offers') }}';
+                            }
                         }
-                    }
-                },
-                responsive: [{
-                    breakpoint: 640,
-                    options: {
-                        chart: {
-                            height: 240
-                        },
-                        xaxis: {
-                            labels: {
-                                style: {
-                                    fontSize: '8px'
+                    },
+                    responsive: [{
+                        breakpoint: 640,
+                        options: {
+                            chart: {
+                                height: 240
+                            },
+                            xaxis: {
+                                labels: {
+                                    style: {
+                                        fontSize: '8px'
+                                    }
                                 }
                             }
                         }
-                    }
-                }]
-            };
+                    }]
+                };
 
-            window.regionChartInstance = new ApexCharts(regionChartEl, regionOptions);
-            window.regionChartInstance.render();
-            console.log('✅ Graphique Régions rendu');
+                window.regionChartInstance = new ApexCharts(regionChartEl, regionOptions);
+                window.regionChartInstance.render();
+                console.log('✅ Graphique Régions rendu');
+            }
+
+            console.log('🎉 Tous les graphiques ont été initialisés avec succès !');
         }
 
-        console.log('🎉 Tous les graphiques ont été initialisés avec succès !');
-    }
-
-    document.addEventListener('livewire:init', () => {
-        Livewire.on('toast', (event) => {
-            const data = event[0] || event;
-            Swal.fire({
-                icon: data.type,
-                title: data.type === 'success' ? '✅ ' + '{{ __('offers.success') }}' : data.type === 'warning' ?
-                    '⚠️ ' + '{{ __('offers.warning') }}' : '❌ ' + '{{ __('offers.error') }}',
-                text: data.message,
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 4000,
-                timerProgressBar: true,
-                customClass: {
-                    popup: 'colored-toast',
-                    title: 'text-sm font-semibold',
-                    htmlContainer: 'text-xs'
-                },
-                background: data.type === 'success' ? '#f0fdf4' : data.type === 'warning' ?
-                    '#fffbeb' : '#fef2f2',
-                color: data.type === 'success' ? '#166534' : data.type === 'warning' ?
-                    '#92400e' : '#991b1b',
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('toast', (event) => {
+                const data = event[0] || event;
+                Swal.fire({
+                    icon: data.type,
+                    title: data.type === 'success' ? '✅ ' + '{{ __('offers.success') }}' : data
+                        .type === 'warning' ?
+                        '⚠️ ' + '{{ __('offers.warning') }}' : '❌ ' +
+                        '{{ __('offers.error') }}',
+                    text: data.message,
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'colored-toast',
+                        title: 'text-sm font-semibold',
+                        htmlContainer: 'text-xs'
+                    },
+                    background: data.type === 'success' ? '#f0fdf4' : data.type === 'warning' ?
+                        '#fffbeb' : '#fef2f2',
+                    color: data.type === 'success' ? '#166534' : data.type === 'warning' ?
+                        '#92400e' : '#991b1b',
+                });
             });
         });
-    });
-</script>
+    </script>
 @endpush
