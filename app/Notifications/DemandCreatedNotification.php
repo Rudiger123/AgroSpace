@@ -49,19 +49,17 @@ class DemandCreatedNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage())
-            ->subject('📋 Nouvelle demande à modérer - AgroSpace')
-            ->greeting('Bonjour ' . $notifiable->name . ',')
-            ->line('Une nouvelle demande a été créée et nécessite votre modération.')
-            ->line('**Détails de la demande:**')
-            ->line('- **Titre:** ' . $this->demand->title)
-            ->line('- **Utilisateur:** ' . $this->user->name)
-            ->line('- **Catégorie:** ' . $this->demand->category->name)
-            ->line('- **Région:** ' . $this->demand->region)
-            ->line('- **Urgence:** ' . $this->getUrgencyText($this->demand->urgency))
-            ->action('🔍 Voir la demande', route('demands.index', $this->demand->id))
-            ->line('Merci de modérer cette demande dans les plus brefs délais.')
-            ->salutation('Cordialement,<br>L\'équipe AgroSpace');
+        return (new MailMessage)
+            ->subject('Nouvelle demande à modérer - AgroSpace')
+            ->view('emails.notification', [
+                'title'      => 'Nouvelle demande en attente de modération',
+                'content'    => view('emails.partials.demand-created-admin', [
+                    'demand' => $this->demand,
+                    'user'   => $this->user,
+                ])->render(),
+                'actionText' => 'Modérer la demande',
+                'actionUrl'  => route('demands.index'), // ou la route admin exacte
+            ]);
     }
 
     /**
