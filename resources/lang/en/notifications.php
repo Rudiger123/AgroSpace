@@ -1,0 +1,60 @@
+<?php
+
+return [
+    'processing_start' => 'Starting notification processing',
+    'admins_found' => 'Administrators found',
+    'sent_success' => 'Notification sent',
+    'send_error' => 'Error sending notification to admin',
+    'summary' => 'Notification summary',
+    'critical_error' => 'Critical error in listener',
+
+        'new_notification' => 'New notification',
+        'all_marked_read' => 'All notifications have been marked as read.',
+        'deleted' => 'Notification deleted',
+        'marked_read' => 'Notification marked as read.',
+        'unable_to_mark_read' => 'Unable to mark this notification as read.',
+        'delete_error' => 'An error occurred while deleting.',
+        'mark_all_error' => 'Error while updating notifications.',
+        'confirm_delete_all_title' => 'Confirm deletion',
+        'confirm_delete_all_text' => 'Are you sure you want to delete all user notifications?',
+        'confirm_delete' => 'Yes, delete',
+        'cancel' => 'Cancel',
+        'all_deleted' => 'All notifications have been deleted.',
+        'delete_all_error' => 'Unable to clear notifications.',
+
+            'bell' => [
+                'aria_label' => 'Notifications',
+            ],
+            'dropdown' => [
+                'title' => 'Notifications',
+                'unread' => ':count unread|:count unread',
+                'mark_all_read' => 'Mark all as read',
+                'view_all' => 'View all notifications',
+            ],
+            'toast' => [
+                'default_title' => 'New notification',
+                'see_more' => 'See more',
+                'close' => 'Close',
+            ],
+            'list' => [
+                'empty_title' => 'It\'s quiet here',
+                'empty_message' => 'You\'re up to date! No new notifications at the moment.',
+                'default_title' => 'Notification',
+                'mark_as_read' => 'Mark as read',
+                'delete' => 'Delete',
+            ],
+            'page' => [
+                'title' => 'Notification Center',
+                'subtitle' => 'Manage your AgroSpace alerts.',
+                'mark_all_read' => 'Mark all as read',
+                'clear_all' => 'Clear all',
+                'filter_all' => 'All',
+                'filter_unread' => 'Unread',
+                'filter_archived' => 'Archived',
+                'missing_title' => 'Missing title',
+                'new_badge' => 'New',
+                'mark_as_read' => 'Mark as read',
+                'empty_title' => 'All clean!',
+                'empty_message' => 'No notifications in this category.',
+            ],
+        ];

@@ -5,7 +5,7 @@
             @click="open = !open" 
             type="button"
             class="relative p-2.5 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 group"
-            aria-label="Notifications"
+            aria-label="{{ __('notifications.bell.aria_label') }}"
         >
             <!-- Bell Icon avec animation -->
             <svg class="w-6 h-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" 
@@ -56,9 +56,9 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-base font-bold text-gray-900">Notifications</h3>
+                            <h3 class="text-base font-bold text-gray-900">{{ __('notifications.dropdown.title') }}</h3>
                             @if ($unreadCount > 0)
-                                <p class="text-xs text-gray-500">{{ $unreadCount }} non lue{{ $unreadCount > 1 ? 's' : '' }}</p>
+                                <p class="text-xs text-gray-500">{{ $unreadCount }} {{ __('notifications.dropdown.unread', ['count' => $unreadCount]) }}</p>
                             @endif
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            <span>Tout marquer</span>
+                            <span>{{ __('notifications.dropdown.mark_all_read') }}</span>
                         </button>
                     @endif
                 </div>
@@ -87,7 +87,7 @@
                         href="{{ route('notifications.index') }}"  wire:navigate
                         class="flex items-center justify-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors duration-200 group"
                     >
-                        <span>Voir toutes les notifications</span>
+                        <span>{{ __('notifications.dropdown.view_all') }}</span>
                         <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                         </svg>
@@ -174,11 +174,11 @@
                             
                             <!-- Content -->
                             <div class="flex-1 min-w-0 pt-0.5">
-                                <p class="text-sm font-bold text-gray-900 mb-1">${notification.title || 'Nouvelle notification'}</p>
+                                <p class="text-sm font-bold text-gray-900 mb-1">${notification.title || "{{ __('notifications.toast.default_title') }}"}</p>
                                 <p class="text-sm text-gray-600 leading-relaxed">${notification.message || ''}</p>
                                 ${notification.action_url ? `
                                     <a href="${notification.action_url}" class="inline-flex items-center gap-1 mt-2 text-xs font-semibold ${color.icon} hover:underline">
-                                        <span>Voir plus</span>
+                                        <span>{{ __('notifications.toast.see_more') }}</span>
                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                         </svg>
@@ -191,9 +191,9 @@
                                 onclick="removeToast(this)" 
                                 class="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 text-gray-400 hover:text-gray-600 hover:bg-white/80 rounded-lg transition-all duration-200"
                             >
-                                <span class="sr-only">Fermer</span>
+                                <span class="sr-only">{{ __('notifications.toast.close') }}</span>
                                 <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                                 </svg>
                             </button>
                         </div>

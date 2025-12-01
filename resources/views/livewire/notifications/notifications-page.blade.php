@@ -3,8 +3,8 @@
         
         <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-base tracking-tight">Centre de Notifications</h1>
-                <p class="text-sm text-gray-500 mt-1">Gérez vos alertes AgroSpace.</p>
+                <h1 class="text-2xl font-bold text-base tracking-tight">{{ __('notifications.page.title') }}</h1>
+                <p class="text-sm text-gray-500 mt-1">{{ __('notifications.page.subtitle') }}</p>
             </div>
             
             <div class="flex space-x-3">
@@ -14,7 +14,7 @@
                         class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-xl font-medium text-gray-700 text-sm hover:bg-gray-50 shadow-sm transition-all"
                     >
                         <svg class="w-4 h-4 mr-2 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        Tout lire
+                        {{ __('notifications.page.mark_all_read') }}
                     </button>
                     
                     <button 
@@ -22,14 +22,14 @@
                         class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-xl font-medium text-red-600 text-sm hover:bg-red-50 shadow-sm transition-all"
                     >
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        Tout vider
+                        {{ __('notifications.page.clear_all') }}
                     </button>
                 @endif
             </div>
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-6 p-1.5 inline-flex">
-            @foreach(['all' => 'Toutes', 'unread' => 'Non lues', 'read' => 'Archives'] as $key => $label)
+            @foreach(['all' => __('notifications.page.filter_all'), 'unread' => __('notifications.page.filter_unread'), 'read' => __('notifications.page.filter_archived')] as $key => $label)
                 <button 
                     wire:click="setFilter('{{ $key }}')"
                     class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 {{ $filter === $key ? 'bg-primary-100 text-primary-800 shadow-sm' : 'text-gray-500 hover:text-gray-900' }}"
@@ -64,10 +64,10 @@
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center justify-between mb-1">
                                     <p class="text-sm font-bold text-gray-900 truncate {{ !$isRead ? 'text-base' : '' }}">
-                                        {{ $notification->data['title'] ?? 'Titre manquant' }}
+                                        {{ $notification->data['title'] ?? __('notifications.page.missing_title') }}
                                         @if(!$isRead)
                                             <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800">
-                                                Nouveau
+                                                {{ __('notifications.page.new_badge') }}
                                             </span>
                                         @endif
                                     </p>
@@ -90,7 +90,7 @@
                                             wire:click="markAsRead('{{ $notification->id }}')" 
                                             class="text-xs font-semibold text-primary-600 hover:text-primary-700 hover:underline"
                                         >
-                                            Marquer comme lu
+                                            {{ __('notifications.page.mark_as_read') }}
                                         </button>
                                     </div>
                                 @endif
@@ -102,8 +102,8 @@
                         <div class="mx-auto h-12 w-12 text-gray-300 rounded-full bg-gray-50 flex items-center justify-center mb-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
                         </div>
-                        <h3 class="text-sm font-medium text-gray-900">C'est tout propre !</h3>
-                        <p class="mt-1 text-sm text-gray-500">Aucune notification dans cette catégorie.</p>
+                        <h3 class="text-sm font-medium text-gray-900">{{ __('notifications.page.empty_title') }}</h3>
+                        <p class="mt-1 text-sm text-gray-500">{{ __('notifications.page.empty_message') }}</p>
                     </li>
                 @endforelse
             </ul>

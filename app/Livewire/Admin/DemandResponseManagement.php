@@ -17,7 +17,7 @@ use App\Notifications\DemandResponseAccepted;
 use App\Notifications\DemandResponseRejected;
 
 #[Layout('layouts.app')]
-#[Title('Gestion des Réponses aux Demandes')]
+#[Title('Demand Response Management')]
 class DemandResponseManagement extends Component
 {
     use WithPagination;
@@ -136,7 +136,7 @@ class DemandResponseManagement extends Component
 
         $this->closeModals();
         $this->loadStats();
-        $this->dispatch('toast', ['type' => 'info', 'message' => "Réponse de {$producer->name} à la demande #{$response->demand_id} rejetée et producteur notifié."]);
+        $this->dispatch('toast', ['type' => 'info', 'message' => __('demand_responses.rejected_notification', ['name' => $producer->name, 'id' => $response->demand_id])]);
     }
 
     public function acceptResponse()
@@ -145,7 +145,7 @@ class DemandResponseManagement extends Component
 
         if ($response->demand->responses()->where('status', 'accepted')->exists()) {
             $this->closeModals();
-            $this->dispatch('toast', ['type' => 'warning', 'message' => 'Une réponse a déjà été acceptée pour cette demande.']);
+            $this->dispatch('toast', ['type' => 'warning', 'message' => __('demand_responses.already_accepted')]);
             return;
         }
 
@@ -170,7 +170,7 @@ class DemandResponseManagement extends Component
             'sendable_type' => Auth::user()->getMorphClass(),
             'sendable_id' => Auth::id(),
             'type' => 'text',
-            'body' => "Bonjour, je vous contacte à propos de votre offre sur ma demande : **\"{$response_title}\"** du $response_date. Votre offre a été sélectionnée. Discutons des détails pour finaliser l'échange.",
+            'body' => __('demand_responses.conversation_message', ['title' => $response_title, 'date' => $response_date]),
         ]);
 
         $createdConversation->updated_at = now();
@@ -192,7 +192,7 @@ class DemandResponseManagement extends Component
         $this->loadStats();
         $this->dispatch('toast', [
             'type' => 'success',
-            'message' => 'Réponse acceptée. La conversation a été initiée ou mise à jour.'
+            'message' => __('demand_responses.accepted_notification')
         ]);
     }
 

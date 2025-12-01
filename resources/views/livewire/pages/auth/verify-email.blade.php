@@ -52,15 +52,15 @@ new #[Layout('layouts.guest')] class extends Component {
                 <a href="/" class="inline-flex items-center space-x-2 mb-2">
                     <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center">
                         <img src="{{ asset('images/logo.png') }}" class="w-12 h-12"
-                            alt="Agrospace la plateforme de mise en relation des acteurs du secteur agropastorale...">
+                            alt="{{ __('auth.logo_alt') }}">
                     </div>
                     <span class="text-3xl font-bold text-[#2E7D32]" style="font-family: 'Poppins', sans-serif;">
-                        Agrospace
+                        {{ __('app.name') }}
                     </span>
                 </a>
 
                 <p class="text-[#37474F]/70 mt-2">
-                    {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+                    {{ __('auth.verify_email_message') }}
                 </p>
             </div>
 
@@ -71,17 +71,17 @@ new #[Layout('layouts.guest')] class extends Component {
                 x-transition:enter-end="opacity-100 transform translate-y-0">
                 @if (session('status') == 'verification-link-sent')
                     <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-                        {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+                        {{ __('auth.verification_link_sent') }}
                     </div>
                 @endif
                 <button wire:click="sendVerification"
                     class="w-full bg-[#2E7D32] text-white py-3 rounded-lg font-semibold hover:bg-[#1B5E20] focus:outline-none focus:ring-4 focus:ring-[#2E7D32]/50 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
-                    {{ __('Resend Verification Email') }}
+                    {{ __('auth.resend_verification_email') }}
                 </button>
 
                 <button wire:click="logout"
                     class="underline w-full mt-3 text-sm text-center text-gray-600  hover:text-gray-900 rounded-md">
-                    {{ __('Log Out') }}
+                    {{ __('auth.log_out') }}
                 </button>
             </div>
 

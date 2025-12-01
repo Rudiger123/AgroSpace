@@ -416,29 +416,29 @@ class Dashboard extends Component
     private function getStatLabel($key)
     {
         $labels = [
-            'total_users' => 'Total Utilisateurs',
-            'active_users' => 'Utilisateurs Actifs',
-            'total_offers' => 'Total Offres',
-            'active_offers' => 'Offres Actives',
-            'total_demands' => 'Total Demandes',
-            'active_demands' => 'Demandes Actives',
-            'total_posts' => 'Total Articles',
-            'published_posts' => 'Articles Publiés',
-            'total_views' => 'Vues Totales',
-            'total_contacts' => 'Contacts Reçus',
-            'avg_rating' => 'Note Moyenne',
-            'total_reviews' => 'Nombre d\'Avis',
-            'pending_offers' => 'Offres en Attente',
-            'conversion_rate' => 'Taux de Conversion',
-            'expired_offers' => 'Offres Expirées',
-            'sold_offers' => 'Offres Vendues',
-            'satisfied_demands' => 'Demandes Satisfaites',
-            'expired_demands' => 'Demandes Expirées',
-            'total_responses' => 'Réponses Reçues',
-            'avg_views' => 'Vues Moyennes',
-            'reviews_given' => 'Avis Donnés',
-            'pending_comments' => 'Commentaires en Attente',
-            'new_users_today' => 'Nouveaux Aujourd\'hui',
+            'total_users' => __('dashboard.stats.total_users'),
+            'active_users' => __('dashboard.stats.active_users'),
+            'total_offers' => __('dashboard.stats.total_offers'),
+            'active_offers' => __('dashboard.stats.active_offers'),
+            'total_demands' => __('dashboard.stats.total_demands'),
+            'active_demands' => __('dashboard.stats.active_demands'),
+            'total_posts' => __('dashboard.stats.total_posts'),
+            'published_posts' => __('dashboard.stats.published_posts'),
+            'total_views' => __('dashboard.stats.total_views'),
+            'total_contacts' => __('dashboard.stats.total_contacts'),
+            'avg_rating' => __('dashboard.stats.avg_rating'),
+            'total_reviews' => __('dashboard.stats.total_reviews'),
+            'pending_offers' => __('dashboard.stats.pending_offers'),
+            'conversion_rate' => __('dashboard.stats.conversion_rate'),
+            'expired_offers' => __('dashboard.stats.expired_offers'),
+            'sold_offers' => __('dashboard.stats.sold_offers'),
+            'satisfied_demands' => __('dashboard.stats.satisfied_demands'),
+            'expired_demands' => __('dashboard.stats.expired_demands'),
+            'total_responses' => __('dashboard.stats.total_responses'),
+            'avg_views' => __('dashboard.stats.avg_views'),
+            'reviews_given' => __('dashboard.stats.reviews_given'),
+            'pending_comments' => __('dashboard.stats.pending_comments'),
+            'new_users_today' => __('dashboard.stats.new_users_today'),
         ];
 
         return $labels[$key] ?? ucfirst(str_replace('_', ' ', $key));
@@ -484,23 +484,23 @@ class Dashboard extends Component
     private function getMainChartTitle()
     {
         if ($this->user->isAdmin()) {
-            return 'Croissance des Utilisateurs';
+            return __('dashboard.charts.user_growth');
         }
         if ($this->user->isProducer()) {
-            return 'Vues des Offres';
+            return __('dashboard.charts.offer_views');
         }
-        return 'Évolution des Demandes';
+        return __('dashboard.charts.demand_evolution');
     }
 
     private function getMainChartLabel()
     {
         if ($this->user->isAdmin()) {
-            return 'Nouveaux utilisateurs';
+            return __('dashboard.charts.new_users');
         }
         if ($this->user->isProducer()) {
-            return 'Vues';
+            return __('dashboard.charts.views');
         }
-        return 'Demandes';
+        return __('dashboard.charts.demands');
     }
 
     private function getMainChartKey()
@@ -517,12 +517,12 @@ class Dashboard extends Component
     private function getSecondaryChartTitle()
     {
         if ($this->user->isAdmin()) {
-            return 'Utilisateurs par Rôle';
+            return __('dashboard.charts.users_by_role');
         }
         if ($this->user->isProducer()) {
-            return 'Distribution des Notes';
+            return __('dashboard.charts.rating_distribution');
         }
-        return 'Statut des Demandes';
+        return __('dashboard.charts.demand_status');
     }
 
     private function getSecondaryChartKey()
@@ -554,29 +554,29 @@ class Dashboard extends Component
     private function getBarChartTitle()
     {
         if ($this->user->isAdmin()) {
-            return 'Activité Mensuelle';
+            return __('dashboard.charts.monthly_activity');
         }
         if ($this->user->isProducer()) {
-            return 'Performances Mensuelles';
+            return __('dashboard.charts.monthly_performance');
         }
-        return 'Réponses par Demande';
+        return __('dashboard.charts.responses_by_demand');
     }
 
     private function getBarChartSeries()
     {
         if ($this->user->isAdmin()) {
             return [
-                ['name' => 'Offres', 'data' => [44, 55, 41, 67, 22, 43]],
-                ['name' => 'Demandes', 'data' => [13, 23, 20, 8, 13, 27]]
+                ['name' => __('dashboard.charts.offers'), 'data' => [44, 55, 41, 67, 22, 43]],
+                ['name' => __('dashboard.charts.demands'), 'data' => [13, 23, 20, 8, 13, 27]]
             ];
         } elseif ($this->user->isProducer()) {
             return [
-                ['name' => 'Total', 'data' => $this->chartData['monthly_performance']['total'] ?? []],
-                ['name' => 'Vendues', 'data' => $this->chartData['monthly_performance']['sold'] ?? []]
+                ['name' => __('dashboard.charts.total'), 'data' => $this->chartData['monthly_performance']['total'] ?? []],
+                ['name' => __('dashboard.charts.sold'), 'data' => $this->chartData['monthly_performance']['sold'] ?? []]
             ];
         } else {
             return [
-                ['name' => 'Réponses', 'data' => $this->chartData['responses_received']['responses'] ?? []]
+                ['name' => __('dashboard.charts.responses'), 'data' => $this->chartData['responses_received']['responses'] ?? []]
             ];
         }
     }
@@ -595,22 +595,34 @@ class Dashboard extends Component
     private function getTopItemsTitle()
     {
         if ($this->user->isAdmin()) {
-            return 'Top Producteurs';
+            return __('dashboard.top_items.top_producers');
         }
         if ($this->user->isProducer()) {
-            return 'Mes Meilleures Offres';
+            return __('dashboard.top_items.my_best_offers');
         }
-        return 'Mes Demandes Actives';
+        return __('dashboard.top_items.my_active_demands');
     }
 
     private function getTopItemsHeaders()
     {
         if ($this->user->isAdmin()) {
-            return ['Nom', 'Offres Actives', 'Note'];
+            return [
+                __('dashboard.top_items.name'),
+                __('dashboard.top_items.active_offers'),
+                __('dashboard.top_items.rating')
+            ];
         } elseif ($this->user->isProducer()) {
-            return ['Titre', 'Vues', 'Contacts'];
+            return [
+                __('dashboard.top_items.title'),
+                __('dashboard.top_items.views'),
+                __('dashboard.top_items.contacts')
+            ];
         } else {
-            return ['Titre', 'Réponses', 'Statut'];
+            return [
+                __('dashboard.top_items.title'),
+                __('dashboard.top_items.responses'),
+                __('dashboard.top_items.status')
+            ];
         }
     }
 
@@ -631,7 +643,7 @@ class Dashboard extends Component
         if ($this->user->isAdmin()) {
             return [
                 '<p class="text-sm font-medium text-gray-900">' . $item->name . '</p><p class="text-xs text-gray-500">' . $item->email . '</p>',
-                '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">' . $item->offers_count . ' offres</span>',
+                '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">' . $item->offers_count . ' ' . __('dashboard.top_items.offers') . '</span>',
                 '<div class="flex items-center"><svg class="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><span class="text-sm font-medium text-gray-900">' . number_format($item->note_moyenne, 1) . '</span></div>',
             ];
         } elseif ($this->user->isProducer()) {

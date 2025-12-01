@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'title' => 'Authentification à deux facteurs',
+    'recovery_instructions' => 'Entrez un code de récupération pour vous connecter',
+    'authenticator_instructions' => 'Entrez le code de votre application d\'authentification',
+    'attempts_warning' => '<strong>:attempts</strong> tentative(s) échouée(s). Il vous reste <strong>:remaining</strong> tentative(s).',
+    'auth_code_label' => 'Code d\'authentification',
+    'auth_code_placeholder' => '000000',
+    'auth_code_help' => 'Ouvrez votre application d\'authentification (Google Authenticator, Authy, etc.)',
+    'verify_button' => 'Vérifier le code',
+    'verifying' => 'Vérification...',
+    'recovery_info' => 'Les codes de récupération sont des codes uniques générés lors de l\'activation de la 2FA. Chaque code ne peut être utilisé qu\'une seule fois.',
+    'recovery_code_label' => 'Code de récupération',
+    'recovery_code_placeholder' => 'XXXXXXXXXXXX',
+    'recovery_code_help' => 'Entrez l\'un de vos codes de récupération sauvegardés',
+    'verify_recovery_button' => 'Vérifier le code de récupération',
+    'use_auth_code' => 'Utiliser le code d\'authentification',
+    'use_recovery_code' => 'Utiliser un code de récupération',
+    'or' => 'ou',
+    'back_to_login' => 'Retour à la connexion',
+    'lost_recovery_codes' => 'Vous avez perdu vos codes de récupération ?',
+    'contact_support' => 'Contactez le support',
+    'multiple_failed_attempts' => 'Plusieurs tentatives échouées',
+    'continue' => 'Continuer',
+    'success' => 'Succès!',
+    'error' => 'Erreur!',
+];

@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'title' => 'Two-Factor Authentication',
+    'recovery_instructions' => 'Enter a recovery code to log in',
+    'authenticator_instructions' => 'Enter the code from your authenticator app',
+    'attempts_warning' => '<strong>:attempts</strong> failed attempt(s). You have <strong>:remaining</strong> attempt(s) remaining.',
+    'auth_code_label' => 'Authentication code',
+    'auth_code_placeholder' => '000000',
+    'auth_code_help' => 'Open your authenticator app (Google Authenticator, Authy, etc.)',
+    'verify_button' => 'Verify code',
+    'verifying' => 'Verifying...',
+    'recovery_info' => 'Recovery codes are unique codes generated when 2FA is activated. Each code can only be used once.',
+    'recovery_code_label' => 'Recovery code',
+    'recovery_code_placeholder' => 'XXXXXXXXXXXX',
+    'recovery_code_help' => 'Enter one of your saved recovery codes',
+    'verify_recovery_button' => 'Verify recovery code',
+    'use_auth_code' => 'Use authentication code',
+    'use_recovery_code' => 'Use a recovery code',
+    'or' => 'or',
+    'back_to_login' => 'Back to login',
+    'lost_recovery_codes' => 'Lost your recovery codes?',
+    'contact_support' => 'Contact support',
+    'multiple_failed_attempts' => 'Multiple failed attempts',
+    'continue' => 'Continue',
+    'success' => 'Success!',
+    'error' => 'Error!',
+];

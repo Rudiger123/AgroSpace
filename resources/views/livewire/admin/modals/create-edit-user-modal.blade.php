@@ -44,10 +44,10 @@
                             </div>
                             <div>
                                 <h3 class="text-2xl font-bold text-white">
-                                    {{ $userId ? 'Modifier l\'utilisateur' : 'Nouvel utilisateur' }}
+                                    {{ $userId ? __('users.edit_title') : __('users.create_title') }}
                                 </h3>
                                 <p class="text-sm text-green-100 mt-1">
-                                    {{ $userId ? 'Mettez à jour les informations du compte' : 'Créez un nouveau compte utilisateur sur la plateforme' }}
+                                    {{ $userId ? __('users.edit_subtitle') : __('users.create_subtitle') }}
                                 </p>
                             </div>
                         </div>
@@ -71,11 +71,11 @@
                                 @if ($avatar)
                                     <img src="{{ $avatar->temporaryUrl() }}"
                                         class="w-28 h-28 rounded-2xl ring-4 ring-green-100 object-cover shadow-lg"
-                                        alt="Avatar">
+                                        alt="{{ __('users.avatar_alt') }}">
                                 @elseif($currentAvatar)
                                     <img src="{{ $currentAvatar }}"
                                         class="w-28 h-28 rounded-2xl ring-4 ring-green-100 object-cover shadow-lg"
-                                        alt="Avatar">
+                                        alt="{{ __('users.avatar_alt') }}">
                                 @else
                                     <div
                                         class="w-28 h-28 rounded-2xl ring-4 ring-green-100 bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
@@ -101,8 +101,8 @@
                                 </label>
                             </div>
                             <div class="text-center">
-                                <p class="text-sm font-semibold text-gray-700">Photo de profil</p>
-                                <p class="text-xs text-gray-500 mt-1">JPG, PNG ou GIF (max. 2MB)</p>
+                                <p class="text-sm font-semibold text-gray-700">{{ __('users.profile_photo') }}</p>
+                                <p class="text-xs text-gray-500 mt-1">{{ __('users.avatar_format') }}</p>
                             </div>
                             @error('avatar')
                                 <div
@@ -128,14 +128,14 @@
                                         </path>
                                     </svg>
                                 </div>
-                                <h4 class="text-lg font-bold text-gray-900">Informations Personnelles</h4>
+                                <h4 class="text-lg font-bold text-gray-900">{{ __('users.personal_info') }}</h4>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {{-- Nom complet --}}
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-800 ml-1">
-                                        Nom complet
+                                        {{ __('users.full_name') }}
                                         <span class="text-red-500 ml-1">*</span>
                                     </label>
                                     <div class="relative">
@@ -150,7 +150,7 @@
                                         </div>
                                         <input type="text" wire:model="name"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
-                                            placeholder="Ex: Jean Kouam">
+                                            placeholder="{{ __('users.full_name_placeholder') }}">
                                     </div>
                                     @error('name')
                                         <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
@@ -162,7 +162,7 @@
                                 {{-- Email --}}
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-800 ml-1">
-                                        Adresse email
+                                        {{ __('users.email') }}
                                         <span class="text-red-500 ml-1">*</span>
                                     </label>
                                     <div class="relative">
@@ -177,7 +177,7 @@
                                         </div>
                                         <input type="email" wire:model="email"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
-                                            placeholder="email@example.com">
+                                            placeholder="{{ __('users.email_placeholder') }}">
                                     </div>
                                     @error('email')
                                         <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
@@ -189,7 +189,7 @@
                                 {{-- Téléphone --}}
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-800 ml-1">
-                                        Téléphone
+                                        {{ __('users.phone') }}
                                         <span class="text-red-500 ml-1">*</span>
                                     </label>
                                     <div class="relative">
@@ -204,7 +204,7 @@
                                         </div>
                                         <input type="tel" wire:model="phone"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
-                                            placeholder="+237 690 123 456">
+                                            placeholder="{{ __('users.phone_placeholder') }}">
                                     </div>
                                     @error('phone')
                                         <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
@@ -216,7 +216,7 @@
                                 {{-- Rôle --}}
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-800 ml-1">
-                                        Rôle
+                                        {{ __('users.role') }}
                                         <span class="text-red-500 ml-1">*</span>
                                     </label>
                                     <div class="relative">
@@ -231,14 +231,14 @@
                                         </div>
                                         <select wire:model="role"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
-                                            <option value="">Sélectionner un rôle</option>
+                                            <option value="">{{ __('users.select_role') }}</option>
                                             @foreach (App\Models\Role::all() as $role)
                                                 @if ($role->id == 1)
-                                                    <option value="{{ $role->id }}">👨‍💼 Administrateur</option>
+                                                    <option value="{{ $role->id }}">👨‍💼 {{ __('users.admin') }}</option>
                                                 @elseif ($role->id == 2)
-                                                    <option value="{{ $role->id }}">👨‍🌾 Producteur</option>
+                                                    <option value="{{ $role->id }}">👨‍🌾 {{ __('users.producer') }}</option>
                                                 @else
-                                                    <option value="{{ $role->id }}">🛒 Consommateur</option>
+                                                    <option value="{{ $role->id }}">🛒 {{ __('users.consumer') }}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -265,14 +265,14 @@
                                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     </svg>
                                 </div>
-                                <h4 class="text-lg font-bold text-gray-900">Localisation</h4>
+                                <h4 class="text-lg font-bold text-gray-900">{{ __('users.location') }}</h4>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {{-- Région --}}
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-800 ml-1">
-                                        Région
+                                        {{ __('users.region') }}
                                         <span class="text-red-500 ml-1">*</span>
                                     </label>
                                     <div class="relative">
@@ -287,7 +287,7 @@
                                         </div>
                                         <select wire:model="region"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50">
-                                            <option value="">Sélectionner une région</option>
+                                            <option value="">{{ __('users.select_region') }}</option>
                                             @foreach (['Adamaoua', 'Centre', 'Est', 'Extrême-Nord', 'Littoral', 'Nord', 'Nord-Ouest', 'Ouest', 'Sud', 'Sud-Ouest'] as $r)
                                                 <option value="{{ $r }}">{{ $r }}</option>
                                             @endforeach
@@ -303,7 +303,7 @@
                                 {{-- Ville --}}
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-800 ml-1">
-                                        Ville
+                                        {{ __('users.city') }}
                                         <span class="text-red-500 ml-1">*</span>
                                     </label>
                                     <div class="relative">
@@ -318,7 +318,7 @@
                                         </div>
                                         <input type="text" wire:model="city"
                                             class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
-                                            placeholder="Ex: Douala">
+                                            placeholder="{{ __('users.city_placeholder') }}">
                                     </div>
                                     @error('city')
                                         <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
@@ -340,13 +340,13 @@
                                         </path>
                                     </svg>
                                 </div>
-                                <h4 class="text-lg font-bold text-gray-900">Activité Professionnelle</h4>
+                                <h4 class="text-lg font-bold text-gray-900">{{ __('users.professional_activity') }}</h4>
                             </div>
 
                             {{-- Activité --}}
                             <div class="space-y-1.5">
                                 <label class="block text-sm font-bold text-gray-800 ml-1">
-                                    Activité/Profession
+                                    {{ __('users.activity') }}
                                     <span class="text-red-500 ml-1">*</span>
                                 </label>
                                 <div class="relative">
@@ -360,7 +360,7 @@
                                     </div>
                                     <input type="text" wire:model="activity"
                                         class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 pl-12 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50"
-                                        placeholder="Ex: Éleveur de Poulets, Maraîcher...">
+                                        placeholder="{{ __('users.activity_placeholder') }}">
                                 </div>
                                 @error('activity')
                                     <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
@@ -372,19 +372,18 @@
                             {{-- Biographie --}}
                             <div class="space-y-1.5">
                                 <label class="block text-sm font-bold text-gray-800 ml-1">
-                                    Biographie
-                                    <span class="text-gray-400 text-sm font-normal ml-2">(Optionnel)</span>
+                                    {{ __('users.bio') }}
+                                    <span class="text-gray-400 text-sm font-normal ml-2">{{ __('users.optional') }}</span>
                                 </label>
                                 <textarea wire:model="bio" rows="4"
                                     class="w-full border border-gray-200 rounded-xl shadow-sm py-2.5 px-3 bg-gray-50 text-gray-700 placeholder-gray-400 transition-all duration-200 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-200 focus:ring-opacity-50 resize-y min-h-[100px]"
-                                    placeholder="Décrivez brièvement l'activité, l'expérience et les compétences de l'utilisateur..."></textarea>
+                                    placeholder="{{ __('users.bio_placeholder') }}"></textarea>
                                 @error('bio')
                                     <p class="text-red-500 text-xs font-medium mt-1 ml-1 flex items-center gap-1">
                                         <span>⚠</span>{{ $message }}
                                     </p>
                                 @enderror
-                                <p class="text-xs text-gray-500 mt-2">Cette information sera visible sur le profil
-                                    public.</p>
+                                <p class="text-xs text-gray-500 mt-2">{{ __('users.bio_visibility') }}</p>
                             </div>
                         </div>
 
@@ -399,7 +398,7 @@
                                         </path>
                                     </svg>
                                 </div>
-                                <h4 class="text-lg font-bold text-gray-900">Statut du Compte</h4>
+                                <h4 class="text-lg font-bold text-gray-900">{{ __('users.account_status') }}</h4>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -424,8 +423,8 @@
                                             <p class="font-bold transition-colors"
                                                 :class="selectedStatus === 'active' ? 'text-green-700' :
                                                     'text-gray-700 group-hover:text-green-700'">
-                                                Actif</p>
-                                            <p class="text-xs text-gray-500 mt-1">Accès complet</p>
+                                                {{ __('users.status_active') }}</p>
+                                            <p class="text-xs text-gray-500 mt-1">{{ __('users.status_active_desc') }}</p>
                                         </div>
                                     </div>
                                 </label>
@@ -452,8 +451,8 @@
                                             <p class="font-bold transition-colors"
                                                 :class="selectedStatus === 'suspended' ? 'text-orange-700' :
                                                     'text-gray-700 group-hover:text-orange-700'">
-                                                Suspendu</p>
-                                            <p class="text-xs text-gray-500 mt-1">Accès restreint</p>
+                                                {{ __('users.status_suspended') }}</p>
+                                            <p class="text-xs text-gray-500 mt-1">{{ __('users.status_suspended_desc') }}</p>
                                         </div>
                                     </div>
                                 </label>
@@ -480,8 +479,8 @@
                                             <p class="font-bold transition-colors"
                                                 :class="selectedStatus === 'banned' ? 'text-red-700' :
                                                     'text-gray-700 group-hover:text-red-700'">
-                                                Banni</p>
-                                            <p class="text-xs text-gray-500 mt-1">Accès bloqué</p>
+                                                {{ __('users.status_banned') }}</p>
+                                            <p class="text-xs text-gray-500 mt-1">{{ __('users.status_banned_desc') }}</p>
                                         </div>
                                     </div>
                                 </label>
@@ -506,14 +505,14 @@
                                             </path>
                                         </svg>
                                     </div>
-                                    <h4 class="text-lg font-bold text-gray-900">Sécurité</h4>
+                                    <h4 class="text-lg font-bold text-gray-900">{{ __('users.security') }}</h4>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {{-- Mot de passe --}}
                                     <div class="space-y-1.5">
                                         <label class="block text-sm font-bold text-gray-800 ml-1">
-                                            Mot de passe <span class="text-red-500 ml-1">*</span>
+                                            {{ __('users.password') }} <span class="text-red-500 ml-1">*</span>
                                         </label>
                                         <div class="relative">
                                             <div
@@ -540,7 +539,7 @@
                                     {{-- Confirmation Mot de passe --}}
                                     <div class="space-y-1.5">
                                         <label class="block text-sm font-bold text-gray-800 ml-1">
-                                            Confirmer le mot de passe <span class="text-red-500 ml-1">*</span>
+                                            {{ __('users.password_confirmation') }} <span class="text-red-500 ml-1">*</span>
                                         </label>
                                         <div class="relative">
                                             <div
@@ -570,10 +569,9 @@
                             <div class="text-sm">
                                 <label for="emailVerified"
                                     class="font-medium text-blue-900 cursor-pointer select-none">
-                                    Marquer l'email comme vérifié
+                                    {{ __('users.mark_email_verified') }}
                                 </label>
-                                <p class="text-blue-700 mt-1">L'utilisateur pourra se connecter sans passer par l'étape
-                                    de validation d'email.</p>
+                                <p class="text-blue-700 mt-1">{{ __('users.mark_email_verified_help') }}</p>
                             </div>
                         </div>
 
@@ -582,13 +580,13 @@
                             class="sticky bottom-0 -mx-8 -mb-8 px-8 py-6 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-4 mt-8 rounded-b-3xl">
                             <button type="button" @click="$wire.close()"
                                 class="px-6 py-2.5 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-white hover:shadow-sm transition-all focus:ring-2 focus:ring-gray-200">
-                                Annuler
+                                {{ __('users.cancel') }}
                             </button>
 
                             <button type="submit"
                                 class="px-8 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-xl shadow-lg shadow-green-500/30 hover:shadow-green-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
                                 <span wire:loading.remove wire:target="save">
-                                    {{ $userId ? 'Mettre à jour' : 'Créer le compte' }}
+                                    {{ $userId ? __('users.update') : __('users.create_account') }}
                                 </span>
                                 <span wire:loading wire:target="save" class="flex items-center gap-2">
                                     <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
@@ -599,7 +597,7 @@
                                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                         </path>
                                     </svg>
-                                    Traitement...
+                                    {{ __('users.processing') }}
                                 </span>
                             </button>
                         </div>
@@ -609,6 +607,4 @@
             </div>
         </div>
     </div>
-
-
 </div>

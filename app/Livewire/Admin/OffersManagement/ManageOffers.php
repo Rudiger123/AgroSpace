@@ -77,21 +77,21 @@ class ManageOffers extends Component
     ];
 
     protected $messages = [
-        'titre.required' => 'Le titre est obligatoire.',
-        'titre.min' => 'Le titre doit faire au moins 5 caractères.',
-        'description.required' => 'La description est obligatoire.',
-        'description.min' => 'La description doit faire au moins 20 caractères.',
-        'categorie.required' => 'La catégorie est obligatoire.',
-        'prix.required' => 'Le prix est obligatoire.',
-        'prix.numeric' => 'Le prix doit être un nombre.',
-        'quantite.required' => 'La quantité est obligatoire.',
-        'quantite.integer' => 'La quantité doit être un nombre entier.',
-        'unite.required' => 'L\'unité est obligatoire.',
-        'region.required' => 'La région est obligatoire.',
-        'localisation.required' => 'L\'adresse est obligatoire.',
-        'photos.*.image' => 'Les fichiers doivent être des images.',
-        'photos.*.max' => 'Les images ne doivent pas dépasser 2MB.',
-        'date_expiration.after' => 'La date d\'expiration doit être ultérieure à aujourd\'hui.',
+        'titre.required' => __('offers.validation.titre_required'),
+        'titre.min' => __('offers.validation.titre_min'),
+        'description.required' => __('offers.validation.description_required'),
+        'description.min' => __('offers.validation.description_min'),
+        'categorie.required' => __('offers.validation.categorie_required'),
+        'prix.required' => __('offers.validation.prix_required'),
+        'prix.numeric' => __('offers.validation.prix_numeric'),
+        'quantite.required' => __('offers.validation.quantite_required'),
+        'quantite.integer' => __('offers.validation.quantite_integer'),
+        'unite.required' => __('offers.validation.unite_required'),
+        'region.required' => __('offers.validation.region_required'),
+        'localisation.required' => __('offers.validation.localisation_required'),
+        'photos.*.image' => __('offers.validation.photos_image'),
+        'photos.*.max' => __('offers.validation.photos_max'),
+        'date_expiration.after' => __('offers.validation.date_expiration_after'),
     ];
 
     public function mount()
@@ -194,14 +194,14 @@ class ManageOffers extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'offer créée avec succès !'
+                'message' => __('offers.created_success')
             ]);
 
             $this->dispatch('offerCreated');
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('offers.error') . $e->getMessage()
             ]);
         }
     }
@@ -249,14 +249,14 @@ class ManageOffers extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'offer mise à jour avec succès !'
+                'message' => __('offers.updated_success')
             ]);
 
             $this->dispatch('offerUpdated');
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('offers.error') . $e->getMessage()
             ]);
         }
     }
@@ -274,14 +274,14 @@ class ManageOffers extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'offre supprimée avec succès !'
+                'message' => __('offers.deleted_success')
             ]);
 
             $this->dispatch('offerDeleted');
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('offers.error') . $e->getMessage()
             ]);
         }
     }
@@ -296,12 +296,12 @@ class ManageOffers extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'offre marquée comme vendue !'
+                'message' => __('offers.marked_as_sold_success')
             ]);
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('offers.error') . $e->getMessage()
             ]);
         }
     }
@@ -316,12 +316,12 @@ class ManageOffers extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'offer dupliquée avec succès !'
+                'message' => __('offers.duplicated_success')
             ]);
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('offers.error') . $e->getMessage()
             ]);
         }
     }
@@ -342,12 +342,12 @@ class ManageOffers extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Photo supprimée !'
+                'message' => __('offers.photo_deleted_success')
             ]);
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('offers.error') . $e->getMessage()
             ]);
         }
     }
@@ -368,12 +368,12 @@ class ManageOffers extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Photo principale définie !'
+                'message' => __('offers.main_photo_set_success')
             ]);
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('offers.error') . $e->getMessage()
             ]);
         }
     }

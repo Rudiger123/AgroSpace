@@ -65,7 +65,7 @@ class PublicDemands extends Component
         if (!Auth::check()) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Vous devez être connecté pour répondre à une demande'
+                'message' => __('demands.login_required_response')
             ]);
             return redirect()->route('login');
         }
@@ -76,7 +76,7 @@ class PublicDemands extends Component
         if ($demand->user_id === Auth::user()->id) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Vous ne pouvez pas répondre à votre propre demande'
+                'message' => __('demands.own_demand_response')
             ]);
             return;
         }
@@ -89,7 +89,7 @@ class PublicDemands extends Component
         if ($alreadyResponded) {
             $this->dispatch('toast', [
                 'type' => 'info',
-                'message' => 'Vous avez déjà répondu à cette demande'
+                'message' => __('demands.already_responded')
             ]);
             return;
         }
@@ -128,14 +128,14 @@ class PublicDemands extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Votre réponse a été envoyée avec succès !'
+                'message' => __('demands.response_success')
             ]);
 
             // TODO: Envoyer une notification au demandeur
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur lors de l\'envoi de la réponse: ' . $e->getMessage()
+                'message' => __('demands.response_error', ['error' => $e->getMessage()])
             ]);
         }
     }

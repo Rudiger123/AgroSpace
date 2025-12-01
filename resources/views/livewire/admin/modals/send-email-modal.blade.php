@@ -29,15 +29,15 @@
                             </div>
                             <div>
                                 <h3 class="text-xl font-bold text-white">
-                                    {{ count($recipients) > 1 ? 'Envoi d\'email groupé' : 'Envoyer un email' }}
+                                    {{ count($recipients) > 1 ? __('emails.bulk_email') : __('emails.send_email') }}
                                 </h3>
                                 <p class="text-sm text-blue-100">
                                     @if (count($recipients) > 1)
-                                        Envoyer à {{ count($recipients) }} destinataire(s)
+                                        {{ __('emails.send_to_count', ['count' => count($recipients)]) }}
                                     @elseif(count($recipients) === 1)
-                                        Destinataire: {{ $recipients[0]->name }}
+                                        {{ __('emails.recipient', ['name' => $recipients[0]->name]) }}
                                     @else
-                                        Composez votre email
+                                        {{ __('emails.compose_email') }}
                                     @endif
                                 </p>
                             </div>
@@ -57,7 +57,7 @@
                     {{-- Destinataires --}}
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-3">
-                            Destinataires ({{ count($recipients) }})
+                            {{ __('emails.recipients_count', ['count' => count($recipients)]) }}
                         </label>
                         <div
                             class="flex flex-wrap gap-2 p-4 bg-gray-50 rounded-lg border border-gray-200 max-h-32 overflow-y-auto">
@@ -75,29 +75,29 @@
                     {{-- Template Selection --}}
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            Modèle d'email (optionnel)
+                            {{ __('emails.email_template') }}
                         </label>
                         <select wire:model.live="selectedTemplate"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
-                            <option value="">Créer un email personnalisé</option>
-                            <option value="welcome">🎉 Email de bienvenue</option>
-                            <option value="verification">✅ Vérification de compte</option>
-                            <option value="offer_approved">📦 Offre approuvée</option>
-                            <option value="offer_rejected">❌ Offre rejetée</option>
-                            <option value="account_suspended">⏸ Compte suspendu</option>
-                            <option value="newsletter">📰 Newsletter</option>
-                            <option value="promotion">🎁 Promotion spéciale</option>
+                            <option value="">{{ __('emails.create_custom_email') }}</option>
+                            <option value="welcome">{{ __('emails.templates.welcome') }}</option>
+                            <option value="verification">{{ __('emails.templates.verification') }}</option>
+                            <option value="offer_approved">{{ __('emails.templates.offer_approved') }}</option>
+                            <option value="offer_rejected">{{ __('emails.templates.offer_rejected') }}</option>
+                            <option value="account_suspended">{{ __('emails.templates.account_suspended') }}</option>
+                            <option value="newsletter">{{ __('emails.templates.newsletter') }}</option>
+                            <option value="promotion">{{ __('emails.templates.promotion') }}</option>
                         </select>
                     </div>
 
                     {{-- Sujet --}}
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            Objet de l'email <span class="text-red-500">*</span>
+                            {{ __('emails.email_subject') }} <span class="text-red-500">*</span>
                         </label>
                         <input type="text" wire:model="subject"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                            placeholder="Ex: Bienvenue sur Agrospace 🌾">
+                            placeholder="{{ __('emails.subject_placeholder') }}">
                         @error('subject')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
@@ -106,36 +106,36 @@
                     {{-- Message --}}
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            Message <span class="text-red-500">*</span>
+                            {{ __('emails.message') }} <span class="text-red-500">*</span>
                         </label>
                         <div class="border border-gray-300 rounded-lg overflow-hidden">
                             {{-- Toolbar --}}
                             <div class="bg-gray-50 border-b border-gray-300 px-3 py-2 flex items-center gap-2">
-                                <button type="button" class="p-2 hover:bg-gray-200 rounded transition" title="Gras">
+                                <button type="button" class="p-2 hover:bg-gray-200 rounded transition" title="{{ __('emails.bold') }}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M6 12h12m-6-6v12"></path>
                                     </svg>
                                 </button>
                                 <button type="button" class="p-2 hover:bg-gray-200 rounded transition"
-                                    title="Italique">
+                                    title="{{ __('emails.italic') }}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                                     </svg>
                                 </button>
                                 <div class="w-px h-6 bg-gray-300 mx-1"></div>
-                                <span class="text-xs text-gray-500">Variables: {nom}, {email}, {role}</span>
+                                <span class="text-xs text-gray-500">{{ __('emails.variables') }}</span>
                             </div>
 
                             <textarea wire:model="message" rows="10" class="w-full px-4 py-3 outline-none resize-none"
-                                placeholder="Bonjour {nom},&#10;&#10;Nous sommes ravis de vous accueillir sur Agrospace...&#10;&#10;Cordialement,&#10;L'équipe Agrospace"></textarea>
+                                placeholder="{{ __('emails.message_placeholder') }}"></textarea>
                         </div>
                         @error('message')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                         <p class="text-xs text-gray-500 mt-2">
-                            💡 Astuce: Utilisez {nom}, {email}, {role} pour personnaliser automatiquement
+                            {{ __('emails.tip') }}
                         </p>
                     </div>
 
@@ -149,14 +149,14 @@
                                     d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 001.066 1.066c.756.426.756 2.924 0 3.35a1.724 1.724 0 00-1.066 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-1.066-1.066c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-1.066z">
                                 </path>
                             </svg>
-                            Options d'envoi
+                            {{ __('emails.sending_options') }}
                         </h4>
 
                         <div class="flex items-center gap-3">
                             <input type="checkbox" wire:model="sendCopy" id="sendCopy"
                                 class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
                             <label for="sendCopy" class="text-sm text-gray-700 cursor-pointer">
-                                M'envoyer une copie de cet email
+                                {{ __('emails.send_copy') }}
                             </label>
                         </div>
 
@@ -164,7 +164,7 @@
                             <input type="checkbox" wire:model="scheduleEmail" id="scheduleEmail"
                                 class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
                             <label for="scheduleEmail" class="text-sm text-gray-700 cursor-pointer">
-                                Programmer l'envoi pour plus tard
+                                {{ __('emails.schedule_send') }}
                             </label>
                         </div>
 
@@ -187,12 +187,12 @@
                             </path>
                         </svg>
                         <div class="flex-1">
-                            <p class="text-sm font-semibold text-amber-900">Prévisualiser avant l'envoi</p>
-                            <p class="text-xs text-amber-700 mt-1">Vérifiez votre email avant de l'envoyer</p>
+                            <p class="text-sm font-semibold text-amber-900">{{ __('emails.preview_before_send') }}</p>
+                            <p class="text-xs text-amber-700 mt-1">{{ __('emails.check_email_before_send') }}</p>
                         </div>
                         <button type="button" wire:click="previewEmail"
                             class="px-4 py-2 bg-white border border-amber-300 text-amber-700 rounded-lg hover:bg-amber-50 transition text-sm font-semibold">
-                            Aperçu
+                            {{ __('emails.preview') }}
                         </button>
                     </div>
 
@@ -205,19 +205,19 @@
                                     d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
                                 </path>
                             </svg>
-                            Enregistrer en brouillon
+                            {{ __('emails.save_draft') }}
                         </button>
 
                         <div class="flex gap-3">
                             <button type="button" @click="$wire.close()"
                                 class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition">
-                                Annuler
+                                {{ __('emails.cancel') }}
                             </button>
                             <button type="submit"
                                 class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:shadow-lg transition flex items-center gap-2"
                                 wire:loading.attr="disabled">
                                 <span wire:loading.remove>
-                                    {{ $scheduleEmail ? 'Programmer' : 'Envoyer' }}
+                                    {{ $scheduleEmail ? __('emails.schedule') : __('emails.send') }}
                                 </span>
                                 <span wire:loading>
                                     <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">

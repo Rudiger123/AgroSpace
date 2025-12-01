@@ -110,7 +110,7 @@ class NotificationBell extends Component
         // Show toast notification
         $this->dispatch('showToast', [
             'type' => 'info',
-            'message' => $notification['message'] ?? 'Nouvelle notification',
+            'message' => $notification['message'] ?? __('notifications.new_notification'),
         ]);
     }
 

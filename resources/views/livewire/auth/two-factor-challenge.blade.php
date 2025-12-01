@@ -10,12 +10,12 @@
                     </path>
                 </svg>
             </div>
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Authentification à deux facteurs</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ __('two_factor.title') }}</h1>
             <p class="text-gray-600">
                 @if ($useRecoveryCode)
-                    Entrez un code de récupération pour vous connecter
+                    {{ __('two_factor.recovery_instructions') }}
                 @else
-                    Entrez le code de votre application d'authentification
+                    {{ __('two_factor.authenticator_instructions') }}
                 @endif
             </p>
         </div>
@@ -33,8 +33,7 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                         <p class="text-sm text-yellow-700">
-                            <strong>{{ $attempts }}</strong> tentative(s) échouée(s).
-                            Il vous reste <strong>{{ $maxAttempts - $attempts }}</strong> tentative(s).
+                            {!! __('two_factor.attempts_warning', ['attempts' => $attempts, 'remaining' => $maxAttempts - $attempts]) !!}
                         </p>
                     </div>
                 </div>
@@ -45,10 +44,10 @@
                 <form wire:submit.prevent="verify" class="space-y-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Code d'authentification <span class="text-red-500">*</span>
+                            {{ __('two_factor.auth_code_label') }} <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model.defer="code" placeholder="000000" maxlength="6"
+                            <input type="text" wire:model.defer="code" placeholder="{{ __('two_factor.auth_code_placeholder') }}" maxlength="6"
                                 pattern="[0-9]{6}" inputmode="numeric" autocomplete="one-time-code" autofocus
                                 class="w-full px-4 py-4 text-center text-2xl font-mono tracking-widest border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -71,13 +70,13 @@
                             </p>
                         @enderror
                         <p class="mt-2 text-xs text-gray-500">
-                            Ouvrez votre application d'authentification (Google Authenticator, Authy, etc.)
+                            {{ __('two_factor.auth_code_help') }}
                         </p>
                     </div>
 
                     <button type="submit" wire:loading.attr="disabled"
                         class="w-full bg-primary-500 text-white py-4 rounded-xl hover:bg-primary-600 transition font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">
-                        <span wire:loading.remove wire:target="verify">Vérifier le code</span>
+                        <span wire:loading.remove wire:target="verify">{{ __('two_factor.verify_button') }}</span>
                         <span wire:loading wire:target="verify" class="flex items-center">
                             <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -86,7 +85,7 @@
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                 </path>
                             </svg>
-                            Vérification...
+                            {{ __('two_factor.verifying') }}
                         </span>
                     </button>
                 </form>
@@ -102,8 +101,7 @@
                             </svg>
                             <div>
                                 <p class="text-sm text-blue-700">
-                                    Les codes de récupération sont des codes uniques générés lors de l'activation de la
-                                    2FA. Chaque code ne peut être utilisé qu'une seule fois.
+                                    {{ __('two_factor.recovery_info') }}
                                 </p>
                             </div>
                         </div>
@@ -111,10 +109,10 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Code de récupération <span class="text-red-500">*</span>
+                            {{ __('two_factor.recovery_code_label') }} <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <input type="text" wire:model.defer="recovery_code" placeholder="XXXXXXXXXXXX"
+                            <input type="text" wire:model.defer="recovery_code" placeholder="{{ __('two_factor.recovery_code_placeholder') }}"
                                 maxlength="20" autocomplete="off" autofocus
                                 class="w-full px-4 py-4 text-center text-xl font-mono tracking-wider uppercase border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition">
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -137,13 +135,13 @@
                             </p>
                         @enderror
                         <p class="mt-2 text-xs text-gray-500">
-                            Entrez l'un de vos codes de récupération sauvegardés
+                            {{ __('two_factor.recovery_code_help') }}
                         </p>
                     </div>
 
                     <button type="submit" wire:loading.attr="disabled"
                         class="w-full bg-primary-500 text-white py-4 rounded-xl hover:bg-primary-600 transition font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">
-                        <span wire:loading.remove wire:target="verify">Vérifier le code de récupération</span>
+                        <span wire:loading.remove wire:target="verify">{{ __('two_factor.verify_recovery_button') }}</span>
                         <span wire:loading wire:target="verify" class="flex items-center">
                             <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -152,7 +150,7 @@
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                 </path>
                             </svg>
-                            Vérification...
+                            {{ __('two_factor.verifying') }}
                         </span>
                     </button>
                 </form>
@@ -167,14 +165,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
-                        <span>Utiliser le code d'authentification</span>
+                        <span>{{ __('two_factor.use_auth_code') }}</span>
                     @else
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z">
                             </path>
                         </svg>
-                        <span>Utiliser un code de récupération</span>
+                        <span>{{ __('two_factor.use_recovery_code') }}</span>
                     @endif
                 </button>
             </div>
@@ -185,7 +183,7 @@
                     <div class="w-full border-t border-gray-300"></div>
                 </div>
                 <div class="relative flex justify-center text-sm">
-                    <span class="px-4 bg-white text-gray-500">ou</span>
+                    <span class="px-4 bg-white text-gray-500">{{ __('two_factor.or') }}</span>
                 </div>
             </div>
 
@@ -196,16 +194,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
-                <span>Retour à la connexion</span>
+                <span>{{ __('two_factor.back_to_login') }}</span>
             </button>
         </div>
 
         <!-- Info aide -->
         <div class="mt-6 text-center">
             <p class="text-sm text-gray-600">
-                Vous avez perdu vos codes de récupération ?
+                {{ __('two_factor.lost_recovery_codes') }}
                 <a href="mailto:support@agrospace.cm" class="text-primary-600 hover:text-primary-700 font-medium">
-                    Contactez le support
+                    {{ __('two_factor.contact_support') }}
                 </a>
             </p>
         </div>
@@ -225,10 +223,10 @@
             window.addEventListener('suggest-recovery', event => {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Plusieurs tentatives échouées',
+                    title: '{{ __("two_factor.multiple_failed_attempts") }}',
                     text: event.detail.message,
-                    confirmButtonText: 'Utiliser un code de récupération',
-                    cancelButtonText: 'Continuer',
+                    confirmButtonText: '{{ __("two_factor.use_recovery_code") }}',
+                    cancelButtonText: '{{ __("two_factor.continue") }}',
                     showCancelButton: true,
                     confirmButtonColor: '#22c55e',
                     cancelButtonColor: '#6b7280'
@@ -244,7 +242,7 @@
                 const data = event.detail;
                 Swal.fire({
                     icon: data.type,
-                    title: data.type === 'success' ? 'Succès!' : 'Erreur!',
+                    title: data.type === 'success' ? '{{ __("two_factor.success") }}' : '{{ __("two_factor.error") }}',
                     text: data.message,
                     timer: data.type === 'success' ? 2000 : null,
                     showConfirmButton: data.type !== 'success',

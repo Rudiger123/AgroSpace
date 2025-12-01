@@ -1,11 +1,11 @@
-    <div class="min-h-screen bg-gray-50/50 py-8" x-data="demandsManagement()" x-init="initCharts()">
+<div class="min-h-screen bg-gray-50/50 py-8" x-data="demandsManagement()" x-init="initCharts()">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
         <!-- Header & Actions -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">Gestion des Demandes</h1>
-                <p class="mt-1 text-sm text-gray-600">Supervision et modération des demandes utilisateurs</p>
+                <h1 class="text-3xl font-bold text-gray-900">{{ __('demands.title') }}</h1>
+                <p class="mt-1 text-sm text-gray-600">{{ __('demands.subtitle') }}</p>
             </div>
             <button wire:click="expireOldDemands"
                 class="inline-flex items-center px-5 py-2.5 bg-white border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 hover:border-orange-300 hover:text-orange-600 shadow-sm transition-all group">
@@ -14,7 +14,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                Nettoyer expirées
+                {{ __('demands.clean_expired') }}
             </button>
         </div>
 
@@ -22,13 +22,13 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Graphique 1: Statuts -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h3 class="text-sm font-bold text-gray-700 mb-4">État des Demandes</h3>
+                <h3 class="text-sm font-bold text-gray-700 mb-4">{{ __('demands.status_chart_title') }}</h3>
                 <div id="statusChart" class="h-64" wire:ignore></div>
             </div>
 
             <!-- Graphique 2: Catégories -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h3 class="text-sm font-bold text-gray-700 mb-4">Top Catégories</h3>
+                <h3 class="text-sm font-bold text-gray-700 mb-4">{{ __('demands.category_chart_title') }}</h3>
                 <div id="categoryChart" class="h-64" wire:ignore></div>
             </div>
 
@@ -41,24 +41,24 @@
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <p class="text-orange-100 text-sm font-medium">Demandes Actives</p>
+                    <p class="text-orange-100 text-sm font-medium">{{ __('demands.active_requests') }}</p>
                     <p class="text-4xl font-bold mt-2">{{ $stats['active'] }}</p>
                     <p class="text-xs text-orange-100 mt-1 bg-white/20 inline-block px-2 py-0.5 rounded-lg">
-                        {{ $stats['pending'] }} en attente de vérif.
+                        {{ $stats['pending'] }} {{ __('demands.pending_verification') }}
                     </p>
                 </div>
 
                 <div
                     class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
                     <div>
-                        <p class="text-gray-500 text-sm font-medium">Total Interactions</p>
+                        <p class="text-gray-500 text-sm font-medium">{{ __('demands.total_interactions') }}</p>
                         <p class="text-3xl font-bold text-gray-900 mt-1">{{ $stats['responses'] }}</p>
                         <p class="text-xs text-green-600 mt-1 flex items-center">
                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                             </svg>
-                            Réponses générées
+                            {{ __('demands.generated_responses') }}
                         </p>
                     </div>
                     <div class="p-3 bg-blue-50 rounded-xl text-blue-600">
@@ -77,7 +77,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
                 <div class="lg:col-span-2 form-group">
                     <label
-                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">Recherche</label>
+                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">{{ __('demands.search_label') }}</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,41 +86,41 @@
                             </svg>
                         </div>
                         <input type="text" wire:model.live.debounce.300ms="search"
-                            placeholder="Titre, ville, utilisateur..."
+                            placeholder="{{ __('demands.search_placeholder') }}"
                             class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 focus:bg-white transition-all shadow-sm">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label
-                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">Statut</label>
+                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">{{ __('demands.status_label') }}</label>
                     <select wire:model.live="statusFilter"
                         class="w-full py-2.5 px-3 bg-gray-50 border-gray-200 rounded-xl text-gray-700 focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 focus:bg-white transition-all shadow-sm cursor-pointer">
-                        <option value="all">Tous</option>
-                        <option value="active">Active</option>
-                        <option value="satisfied">Satisfaite</option>
-                        <option value="expired">Expirée</option>
-                        <option value="cancelled">Annulée</option>
+                        <option value="all">{{ __('demands.all') }}</option>
+                        <option value="active">{{ __('demands.active') }}</option>
+                        <option value="satisfied">{{ __('demands.satisfied') }}</option>
+                        <option value="expired">{{ __('demands.expired') }}</option>
+                        <option value="cancelled">{{ __('demands.cancelled') }}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label
-                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">Vérification</label>
+                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">{{ __('demands.verification_label') }}</label>
                     <select wire:model.live="verifiedFilter"
                         class="w-full py-2.5 px-3 bg-gray-50 border-gray-200 rounded-xl text-gray-700 focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 focus:bg-white transition-all shadow-sm cursor-pointer">
-                        <option value="all">Toutes</option>
-                        <option value="verified">✓ Vérifiées</option>
-                        <option value="unverified">⏳ Non vérifiées</option>
+                        <option value="all">{{ __('demands.all_verif') }}</option>
+                        <option value="verified">✓ {{ __('demands.verified') }}</option>
+                        <option value="unverified">⏳ {{ __('demands.unverified') }}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label
-                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">Catégorie</label>
+                        class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">{{ __('demands.category_label') }}</label>
                     <select wire:model.live="categoryFilter"
                         class="w-full py-2.5 px-3 bg-gray-50 border-gray-200 rounded-xl text-gray-700 focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 focus:bg-white transition-all shadow-sm cursor-pointer">
-                        <option value="">Toutes</option>
+                        <option value="">{{ __('demands.all_categories') }}</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
@@ -128,13 +128,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">Tri</label>
+                    <label class="text-xs font-bold text-gray-500 ml-1 mb-1 block uppercase tracking-wide">{{ __('demands.sort_label') }}</label>
                     <select wire:model.live="sortBy"
                         class="w-full py-2.5 px-3 bg-gray-50 border-gray-200 rounded-xl text-gray-700 focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 focus:bg-white transition-all shadow-sm cursor-pointer">
-                        <option value="latest">Récents</option>
-                        <option value="oldest">Anciens</option>
-                        <option value="most_viewed">Populaires</option>
-                        <option value="most_responses">Réponses</option>
+                        <option value="latest">{{ __('demands.recent') }}</option>
+                        <option value="oldest">{{ __('demands.oldest') }}</option>
+                        <option value="most_viewed">{{ __('demands.popular') }}</option>
+                        <option value="most_responses">{{ __('demands.most_responses') }}</option>
                     </select>
                 </div>
             </div>
@@ -147,15 +147,15 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                Demande</th>
+                                {{ __('demands.request') }}</th>
                             <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                Demandeur</th>
+                                {{ __('demands.requester') }}</th>
                             <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                Infos</th>
+                                {{ __('demands.info') }}</th>
                             <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                Statut</th>
+                                {{ __('demands.status') }}</th>
                             <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                Actions</th>
+                                {{ __('demands.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-100">
@@ -177,7 +177,7 @@
                                                     class="text-xs text-gray-500">{{ $demand->category->name }}</span>
                                                 @if ($demand->urgency === 'high')
                                                     <span class="w-2 h-2 rounded-full bg-red-500"
-                                                        title="Urgente"></span>
+                                                        title="{{ __('demands.urgent') }}"></span>
                                                 @endif
                                             </div>
                                         </div>
@@ -217,7 +217,7 @@
                                                 </path>
                                             </svg>
                                             {{ $demand->views_count }} •
-                                            {{ $demand->responses_count ?? $demand->responses->count() }} rép.
+                                            {{ $demand->responses_count ?? $demand->responses->count() }} {{ __('demands.rep') }}
                                         </div>
                                     </div>
                                 </td>
@@ -244,7 +244,7 @@
                                                         d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                         clip-rule="evenodd"></path>
                                                 </svg>
-                                                Vérifié
+                                                {{ __('demands.verified') }}
                                             </span>
                                         @endif
                                     </div>
@@ -254,7 +254,7 @@
                                         class="flex items-center justify-end space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                         <button wire:click="viewDetails({{ $demand->id }})"
                                             class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition"
-                                            title="Détails">
+                                            title="{{ __('demands.details') }}">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -282,18 +282,17 @@
                                                 @if (!$demand->is_verified)
                                                     <button wire:click="openVerifyModal({{ $demand->id }})"
                                                         class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 flex items-center">
-                                                        Vérifier
+                                                        {{ __('demands.verify') }}
                                                     </button>
                                                 @else
                                                     <button wire:click="unverifyDemand({{ $demand->id }})"
                                                         class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-700 flex items-center">
-                                                        Retirer vérification
+                                                        {{ __('demands.unverify') }}
                                                     </button>
                                                 @endif
                                                 <div class="border-t border-gray-100 my-1"></div>
                                                 <button wire:click="updateStatus({{ $demand->id }}, 'active')"
-                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">Marquer
-                                                    Active</button>
+                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">{{ __('demands.mark_active') }}</button>
                                                 {{-- <button wire:click="updateStatus({{ $demand->id }}, 'satisfied')"
                                                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">Marquer
                                                     Satisfaite</button> --}}
@@ -301,7 +300,7 @@
                                                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-700">Annuler</button>
                                                 <div class="border-t border-gray-100 my-1"></div> --}}
                                                 <button wire:click="confirmDelete({{ $demand->id }})"
-                                                    class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Supprimer</button>
+                                                    class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">{{ __('demands.delete') }}</button>
                                             </div>
                                         </div>
                                     </div>
@@ -319,8 +318,8 @@
                                             </path>
                                         </svg>
                                     </div>
-                                    <h3 class="text-lg font-bold text-gray-900">Aucune demande trouvée</h3>
-                                    <p class="text-gray-500 mt-1">Essayez de modifier vos filtres de recherche.</p>
+                                    <h3 class="text-lg font-bold text-gray-900">{{ __('demands.no_requests_found') }}</h3>
+                                    <p class="text-gray-500 mt-1">{{ __('demands.adjust_filters') }}</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -385,7 +384,7 @@
                             <div class="lg:col-span-2 space-y-6">
                                 <div>
                                     <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">
-                                        Description</h4>
+                                        {{ __('demands.description') }}</h4>
                                     <p
                                         class="text-gray-600 leading-relaxed bg-gray-50 p-4 rounded-xl border border-gray-100">
                                         {{ $selectedDemand->description }}
@@ -394,29 +393,29 @@
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                        <p class="text-xs text-gray-500 font-bold uppercase">Budget</p>
+                                        <p class="text-xs text-gray-500 font-bold uppercase">{{ __('demands.budget') }}</p>
                                         <p class="text-lg font-bold text-gray-900">
-                                            {{ $selectedDemand->budget ? number_format($selectedDemand->budget) . ' FCFA' : 'Non spécifié' }}
+                                            {{ $selectedDemand->budget ? number_format($selectedDemand->budget) . ' FCFA' : __('demands.not_specified') }}
                                         </p>
                                     </div>
                                     <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                        <p class="text-xs text-gray-500 font-bold uppercase">Quantité</p>
+                                        <p class="text-xs text-gray-500 font-bold uppercase">{{ __('demands.quantity') }}</p>
                                         <p class="text-lg font-bold text-gray-900">
-                                            {{ $selectedDemand->quantity ?? 'Non spécifiée' }}</p>
+                                            {{ $selectedDemand->quantity ?? __('demands.not_specified') }}</p>
                                     </div>
                                     <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                        <p class="text-xs text-gray-500 font-bold uppercase">Localisation</p>
+                                        <p class="text-xs text-gray-500 font-bold uppercase">{{ __('demands.location') }}</p>
                                         <p class="text-lg font-bold text-gray-900">{{ $selectedDemand->city }}</p>
                                     </div>
                                     <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                        <p class="text-xs text-gray-500 font-bold uppercase">Validité</p>
+                                        <p class="text-xs text-gray-500 font-bold uppercase">{{ __('demands.validity') }}</p>
                                         <p class="text-lg font-bold text-gray-900">
                                             {{ $selectedDemand->validity_date->format('d/m/Y') }}</p>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">Réponses
+                                    <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3">{{ __('demands.responses') }}
                                         ({{ $selectedDemand->responses->count() }})</h4>
                                     <div class="space-y-3">
                                         @forelse($selectedDemand->responses as $response)
@@ -433,14 +432,13 @@
                                                     </div>
                                                     <p class="text-gray-600 text-sm mt-1">{{ $response->message }}</p>
                                                     @if ($response->proposed_price)
-                                                        <p class="text-xs font-bold text-green-600 mt-2">Offre:
+                                                        <p class="text-xs font-bold text-green-600 mt-2">{{ __('demands.offer') }}:
                                                             {{ number_format($response->proposed_price) }} FCFA</p>
                                                     @endif
                                                 </div>
                                             </div>
                                         @empty
-                                            <div class="text-center text-gray-400 py-4 italic">Aucune réponse pour le
-                                                moment.</div>
+                                            <div class="text-center text-gray-400 py-4 italic">{{ __('demands.no_responses') }}</div>
                                         @endforelse
                                     </div>
                                 </div>
@@ -449,7 +447,7 @@
                             {{-- Sidebar Info --}}
                             <div class="space-y-6">
                                 <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-                                    <h5 class="font-bold text-gray-900 mb-4">Demandeur</h5>
+                                    <h5 class="font-bold text-gray-900 mb-4">{{ __('demands.requester') }}</h5>
                                     <div class="flex items-center gap-3 mb-4">
                                         <img src="https://ui-avatars.com/api/?name={{ urlencode($selectedDemand->user->name) }}&background=random"
                                             class="w-12 h-12 rounded-full ring-4 ring-orange-50">
@@ -460,7 +458,7 @@
                                     </div>
                                     <div class="border-t border-gray-100 pt-4 text-sm space-y-2">
                                         <div class="flex justify-between">
-                                            <span class="text-gray-500">Inscrit le</span>
+                                            <span class="text-gray-500">{{ __('demands.registered_on') }}</span>
                                             <span
                                                 class="font-medium">{{ $selectedDemand->user->created_at->format('d/m/Y') }}</span>
                                         </div>
@@ -468,14 +466,14 @@
                                 </div>
 
                                 <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
-                                    <h5 class="font-bold text-blue-900 mb-2">Statistiques</h5>
+                                    <h5 class="font-bold text-blue-900 mb-2">{{ __('demands.stats') }}</h5>
                                     <div class="flex justify-between items-center py-2 border-b border-blue-200/50">
-                                        <span class="text-blue-700">Vues</span>
+                                        <span class="text-blue-700">{{ __('demands.views') }}</span>
                                         <span
                                             class="font-bold text-blue-900">{{ $selectedDemand->views_count }}</span>
                                     </div>
                                     <div class="flex justify-between items-center py-2">
-                                        <span class="text-blue-700">Contacts</span>
+                                        <span class="text-blue-700">{{ __('demands.contacts') }}</span>
                                         <span
                                             class="font-bold text-blue-900">{{ $selectedDemand->contacts_received }}</span>
                                     </div>
@@ -504,18 +502,17 @@
                                 </path>
                             </svg>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Supprimer définitivement ?</h3>
-                        <p class="text-gray-500 mb-8 leading-relaxed">Cette action est irréversible. Toutes les données
-                            associées à cette demande seront perdues.</p>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ __('demands.delete_confirm_title') }}</h3>
+                        <p class="text-gray-500 mb-8 leading-relaxed">{{ __('demands.delete_confirm_message') }}</p>
 
                         <div class="grid grid-cols-2 gap-4">
                             <button wire:click="$set('showDeleteModal', false)"
                                 class="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-xl transition-colors">
-                                Annuler
+                                {{ __('demands.cancel') }}
                             </button>
                             <button wire:click="deleteDemand"
                                 class="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-200 transition-transform hover:scale-[1.02]">
-                                Supprimer
+                                {{ __('demands.delete') }}
                             </button>
                         </div>
                     </div>
@@ -558,7 +555,7 @@
                                     show: true,
                                     total: {
                                         show: true,
-                                        label: 'Total',
+                                        label: '{{ __("demands.total") }}',
                                         color: '#6b7280'
                                     }
                                 }
@@ -570,7 +567,7 @@
                     tooltip: {
                         y: {
                             formatter: function(value) {
-                                return value + ' demandes';
+                                return value + ' {{ __("demands.requests") }}';
                             }
                         }
                     }
@@ -579,7 +576,7 @@
                 // 2. Chart des catégories (Bar)
                 const categoryOptions = {
                     series: [{
-                        name: 'Demandes',
+                        name: '{{ __("demands.requests") }}',
                         data: chartsData.categories.map(c => c.total)
                     }],
                     chart: {
@@ -621,7 +618,7 @@
                     tooltip: {
                         y: {
                             formatter: function(value, { seriesIndex, dataPointIndex }) {
-                                return chartsData.categories[dataPointIndex].name + ': ' + value + ' demandes';
+                                return chartsData.categories[dataPointIndex].name + ': ' + value + ' {{ __("demands.requests") }}';
                             }
                         }
                     }

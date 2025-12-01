@@ -5,16 +5,16 @@
         <div class="mb-8">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <div class="flex-1">
-                    <h1 class="text-3xl font-bold text-gray-900">Réponses aux Demandes</h1>
-                    <p class="text-gray-600 mt-2">Gérez les réponses des producteurs aux demandes des consommateurs</p>
+                    <h1 class="text-3xl font-bold text-gray-900">{{ __('demand-response.title') }}</h1>
+                    <p class="text-gray-600 mt-2">{{ __('demand-response.subtitle') }}</p>
                 </div>
                 <div class="mt-4 sm:mt-0">
                     <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-100">
-                        <p class="text-sm text-green-800 font-medium">Réponses en attente</p>
+                        <p class="text-sm text-green-800 font-medium">{{ __('demand-response.pending_responses') }}</p>
                         <div class="flex items-center mt-1">
                             <div class="text-2xl font-bold text-green-900">{{ $stats['pending'] }}</div>
                             <div class="ml-3 text-sm text-green-700">
-                                sur {{ $stats['total'] }} réponses totales
+                                {{ __('demand-response.out_of_total', ['total' => $stats['total']]) }}
                             </div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Total des réponses</p>
+                        <p class="text-sm font-medium text-gray-600">{{ __('demand-response.total_responses') }}</p>
                         <p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
                     </div>
                 </div>
@@ -50,10 +50,10 @@
                         </div>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">En attente</p>
+                        <p class="text-sm font-medium text-gray-600">{{ __('demand-response.pending') }}</p>
                         <p class="text-2xl font-bold text-gray-900">{{ $stats['pending'] }}</p>
                         <p class="text-xs text-yellow-600 font-medium mt-1">
-                            {{ $stats['total'] > 0 ? round(($stats['pending'] / $stats['total']) * 100, 1) : 0 }}% du total
+                            {{ $stats['total'] > 0 ? round(($stats['pending'] / $stats['total']) * 100, 1) : 0 }}% {{ __('demand-response.of_total') }}
                         </p>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Acceptées</p>
+                        <p class="text-sm font-medium text-gray-600">{{ __('demand-response.accepted') }}</p>
                         <p class="text-2xl font-bold text-gray-900">{{ $stats['accepted'] }}</p>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Rejetées</p>
+                        <p class="text-sm font-medium text-gray-600">{{ __('demand-response.rejected') }}</p>
                         <p class="text-2xl font-bold text-gray-900">{{ $stats['rejected'] }}</p>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                             </svg>
                         </div>
                         <input type="text" wire:model.live.debounce.300ms="search"
-                            placeholder="Rechercher par message ou nom de producteur..."
+                            placeholder="{{ __('demand-response.search_placeholder') }}"
                             class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition duration-150 ease-in-out">
                     </div>
                 </div>
@@ -111,10 +111,10 @@
                 <div class="flex-shrink-0">
                     <select wire:model.live="statusFilter"
                         class="block w-full lg:w-48 pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 rounded-lg transition duration-150 ease-in-out">
-                        <option value="all">Tous les statuts</option>
-                        <option value="pending">En attente</option>
-                        <option value="accepted">Accepté</option>
-                        <option value="rejected">Rejeté</option>
+                        <option value="all">{{ __('demand-response.all_statuses') }}</option>
+                        <option value="pending">{{ __('demand-response.pending') }}</option>
+                        <option value="accepted">{{ __('demand-response.accepted') }}</option>
+                        <option value="rejected">{{ __('demand-response.rejected') }}</option>
                     </select>
                 </div>
             </div>
@@ -126,12 +126,12 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Réponse</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producteur</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Demande</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
-                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('demand-response.response') }}</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('demand-response.producer') }}</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('demand-response.demand') }}</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('demand-response.price') }}</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('demand-response.status') }}</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('demand-response.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -159,7 +159,7 @@
                                     <div class="text-sm text-gray-900">{{ Str::limit($response->demand->title, 30) }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-primary-600">{{ number_format($response->proposed_price, 0, ',', ' ') }} F CFA</div>
+                                    <div class="text-sm font-semibold text-primary-600">{{ number_format($response->proposed_price, 0, ',', ' ') }} {{ __('demand-response.currency') }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @php
@@ -171,7 +171,7 @@
                                         $color = $statusColors[$response->status] ?? 'bg-gray-100 text-gray-800';
                                     @endphp
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $color }}">
-                                        {{ ucfirst($response->status) }}
+                                        {{ ucfirst(__('demand-response.' . $response->status)) }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -182,22 +182,22 @@
                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                                 </svg>
-                                                Accepter
+                                                {{ __('demand-response.accept') }}
                                             </button>
                                             <button wire:click="openRejectModal({{ $response->id }})"
                                                 class="inline-flex items-center px-3 py-1.5 border border-red-300 shadow-sm text-sm font-medium rounded-lg text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
                                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                                 </svg>
-                                                Rejeter
+                                                {{ __('demand-response.reject') }}
                                             </button>
                                         @elseif ($response->status === 'accepted')
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                Validée
+                                                {{ __('demand-response.validated') }}
                                             </span>
                                         @elseif ($response->status === 'rejected')
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                Rejetée
+                                                {{ __('demand-response.rejected') }}
                                             </span>
                                         @endif
                                         <button wire:click="openDetailsModal({{ $response->id }})"
@@ -206,7 +206,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                             </svg>
-                                            Détails
+                                            {{ __('demand-response.details') }}
                                         </button>
                                     </div>
                                 </td>
@@ -218,8 +218,8 @@
                                         <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                         </svg>
-                                        <p class="text-lg font-medium text-gray-900 mb-2">Aucune réponse trouvée</p>
-                                        <p class="text-gray-500">Aucune réponse ne correspond à vos critères de recherche.</p>
+                                        <p class="text-lg font-medium text-gray-900 mb-2">{{ __('demand-response.no_responses_found') }}</p>
+                                        <p class="text-gray-500">{{ __('demand-response.no_responses_match') }}</p>
                                     </div>
                                 </td>
                             </tr>
@@ -238,18 +238,18 @@
     
     <!-- Modales -->
     <x-livewire.confirmation-modal wire:model="showAcceptModal"
-        title="Accepter cette offre"
-        content="En acceptant, la réponse sera marquée comme 'acceptée' et une conversation de chat instantané sera créée entre le consommateur (vous) et le producteur. Le producteur sera notifié par email."
-        button-text="Oui, accepter l'offre"
+        title="{{ __('demand-response.accept_offer') }}"
+        content="{{ __('demand-response.accept_offer_content') }}"
+        button-text="{{ __('demand-response.yes_accept_offer') }}"
         button-color="bg-green-600 hover:bg-green-700"
         wire:click="acceptResponse"
         wire:loading.attr="disabled"
     />
     
     <x-livewire.confirmation-modal wire:model="showRejectModal"
-        title="Rejeter cette offre"
-        content="Confirmez-vous le rejet de cette réponse ? Le statut passera à 'rejeté' et le producteur en sera informé par email. Cette action est irréversible."
-        button-text="Oui, rejeter l'offre"
+        title="{{ __('demand-response.reject_offer') }}"
+        content="{{ __('demand-response.reject_offer_content') }}"
+        button-text="{{ __('demand-response.yes_reject_offer') }}"
         button-color="bg-red-600 hover:bg-red-700"
         wire:click="rejectResponse"
         wire:loading.attr="disabled"
@@ -261,7 +261,7 @@
                 <svg class="w-6 h-6 text-gray-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                Détails de la réponse #{{ $selectedResponseId }}
+                {{ __('demand-response.response_details') }} #{{ $selectedResponseId }}
             </div>
         </x-slot>
     
@@ -274,27 +274,27 @@
                 <div class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500">Informations générales</h3>
+                            <h3 class="text-sm font-medium text-gray-500">{{ __('demand-response.general_info') }}</h3>
                             <dl class="mt-2 space-y-2">
                                 <div>
-                                    <dt class="text-xs text-gray-500">Producteur</dt>
+                                    <dt class="text-xs text-gray-500">{{ __('demand-response.producer') }}</dt>
                                     <dd class="text-sm font-medium text-gray-900">{{ $response->user->name ?? 'N/A' }}</dd>
                                 </div>
                                 <div>
-                                    <dt class="text-xs text-gray-500">Demande</dt>
+                                    <dt class="text-xs text-gray-500">{{ __('demand-response.demand') }}</dt>
                                     <dd class="text-sm font-medium text-gray-900">{{ $response->demand->title ?? 'N/A' }}</dd>
                                 </div>
                                 <div>
-                                    <dt class="text-xs text-gray-500">Prix proposé</dt>
-                                    <dd class="text-sm font-semibold text-primary-600">{{ number_format($response->proposed_price, 0, ',', ' ') }} F CFA</dd>
+                                    <dt class="text-xs text-gray-500">{{ __('demand-response.proposed_price') }}</dt>
+                                    <dd class="text-sm font-semibold text-primary-600">{{ number_format($response->proposed_price, 0, ',', ' ') }} {{ __('demand-response.currency') }}</dd>
                                 </div>
                             </dl>
                         </div>
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500">Statut</h3>
+                            <h3 class="text-sm font-medium text-gray-500">{{ __('demand-response.status') }}</h3>
                             <dl class="mt-2 space-y-2">
                                 <div>
-                                    <dt class="text-xs text-gray-500">Statut</dt>
+                                    <dt class="text-xs text-gray-500">{{ __('demand-response.status') }}</dt>
                                     <dd>
                                         @php
                                             $statusColors = [
@@ -305,12 +305,12 @@
                                             $color = $statusColors[$response->status] ?? 'bg-gray-100 text-gray-800';
                                         @endphp
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $color }}">
-                                            {{ ucfirst($response->status) }}
+                                            {{ ucfirst(__('demand-response.' . $response->status)) }}
                                         </span>
                                     </dd>
                                 </div>
                                 <div>
-                                    <dt class="text-xs text-gray-500">Date de création</dt>
+                                    <dt class="text-xs text-gray-500">{{ __('demand-response.creation_date') }}</dt>
                                     <dd class="text-sm text-gray-900">{{ $response->created_at->format('d/m/Y à H:i') }}</dd>
                                 </div>
                             </dl>
@@ -318,24 +318,24 @@
                     </div>
 
                     <div>
-                        <h3 class="text-sm font-medium text-gray-500 mb-3">Message du producteur</h3>
+                        <h3 class="text-sm font-medium text-gray-500 mb-3">{{ __('demand-response.producer_message') }}</h3>
                         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                             <p class="text-gray-700 whitespace-pre-wrap leading-relaxed">{{ $response->message }}</p>
                         </div>
                     </div>
                 </div>
             @else
-                <p class="text-gray-500 text-center py-8">Chargement des détails...</p>
+                <p class="text-gray-500 text-center py-8">{{ __('demand-response.loading_details') }}</p>
             @endif
         @else
-            <p class="text-gray-500 text-center py-8">Sélectionnez une réponse pour voir les détails.</p>
+            <p class="text-gray-500 text-center py-8">{{ __('demand-response.select_response_details') }}</p>
         @endif
     
         <x-slot name="footer">
             <div class="flex justify-end space-x-3">
                 <button x-on:click="$dispatch('close')"
                     class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200">
-                    Fermer
+                    {{ __('demand-response.close') }}
                 </button>
             </div>
         </x-slot>

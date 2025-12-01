@@ -10,7 +10,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 
 #[Layout('layouts.app')]
-#[Title('La gestion des Notifications')]
+#[Title('Notification Management')]
 class NotificationsPage extends Component
 {
     use WithPagination;
@@ -36,13 +36,13 @@ class NotificationsPage extends Component
             // Toast Succès
             $this->dispatch('show-toast', [
                 'type' => 'success',
-                'message' => 'Notification marquée comme lue.',
+                'message' => __('notifications.marked_read'),
             ]);
         } catch (\Exception $e) {
             // Toast Erreur
             $this->dispatch('show-toast', [
                 'type' => 'error',
-                'message' => 'Impossible de modifier cette notification.',
+                'message' => __('notifications.unable_to_mark_read'),
             ]);
         }
     }
@@ -57,12 +57,12 @@ class NotificationsPage extends Component
 
             $this->dispatch('show-toast', [
                 'type' => 'success',
-                'message' => 'Notification supprimée avec succès.',
+                'message' => __('notifications.deleted'),
             ]);
         } catch (\Exception $e) {
             $this->dispatch('show-toast', [
                 'type' => 'error',
-                'message' => 'Une erreur est survenue lors de la suppression.',
+                'message' => __('notifications.delete_error'),
             ]);
         }
     }
@@ -76,12 +76,12 @@ class NotificationsPage extends Component
 
             $this->dispatch('show-toast', [
                 'type' => 'success',
-                'message' => 'Toutes les notifications ont été marquées comme lues.',
+                'message' => __('notifications.all_marked_read'),
             ]);
         } catch (\Exception $e) {
             $this->dispatch('show-toast', [
                 'type' => 'error',
-                'message' => 'Erreur lors de la mise à jour des notifications.',
+                'message' => __('notifications.mark_all_error'),
             ]);
         }
     }
@@ -89,11 +89,11 @@ class NotificationsPage extends Component
     public function confirmDeleteAll()
     {
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmer la suppréssion',
-            'text' => "Êtes-vous sûr de vouloir supprimer toutes les notifications de l'utilisateur ?",
+            'title' => __('notifications.confirm_delete_all_title'),
+            'text' => __('notifications.confirm_delete_all_text'),
             'icon' => 'question',
-            'confirmText' => 'Oui, supprimer',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('notifications.confirm_delete'),
+            'cancelText' => __('notifications.cancel'),
             'method' => 'deleteAll',
             'params' => []
         ]);
@@ -110,12 +110,12 @@ class NotificationsPage extends Component
 
             $this->dispatch('show-toast', [
                 'type' => 'success',
-                'message' => 'Toutes les notifications ont été supprimées.',
+                'message' => __('notifications.all_deleted'),
             ]);
         } catch (\Exception $e) {
             $this->dispatch('show-toast', [
                 'type' => 'error',
-                'message' => 'Impossible de vider les notifications.',
+                'message' => __('notifications.delete_all_error'),
             ]);
         }
     }

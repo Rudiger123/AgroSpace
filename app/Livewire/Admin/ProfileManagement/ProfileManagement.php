@@ -18,7 +18,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 
 #[Layout('layouts.app')]
-#[Title('Gestion du Profil')]
+#[Title(__('profile.management.title'))]
 class ProfileManagement extends Component
 {
     use WithFileUploads;
@@ -142,12 +142,12 @@ class ProfileManagement extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => "Profil mis à jour avec succès !"
+                'message' => __("profile.messages.profile_updated")
             ]);
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('profile.errors.error') . $e->getMessage()
             ]);
         }
     }
@@ -168,12 +168,12 @@ class ProfileManagement extends Component
             $this->dispatch('profile-updated');
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Photo de profil mise à jour !'
+                'message' => __('profile.messages.avatar_updated')
             ]);
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('profile.errors.error') . $e->getMessage()
             ]);
         }
     }
@@ -200,7 +200,7 @@ class ProfileManagement extends Component
                 'toast',
                 [
                     'type' => 'success',
-                    'message' => 'Mot de passe mis à jour. Veuillez vérifier votre nouveau mot de passe en vous connectant!',
+                    'message' => __('profile.messages.password_updated'),
                 ]
             );
         } catch (\Exception $e) {
@@ -232,7 +232,7 @@ class ProfileManagement extends Component
                 'toast',
                 [
                     'type' => 'success',
-                    'message' => 'Email mis à jour. Veuillez vérifier votre nouveau email avant de vous reconnecter.',
+                    'message' => __('profile.messages.email_updated'),
                 ]
             );
         } catch (\Exception $e) {
@@ -250,7 +250,7 @@ class ProfileManagement extends Component
         ]);
 
         if (!Hash::check($this->twofa_password, Auth::user()->password)) {
-            $this->addError('twofa_password', 'Mot de passe incorrect');
+            $this->addError('twofa_password', __('profile.errors.incorrect_password'));
             return;
         }
 
@@ -273,12 +273,12 @@ class ProfileManagement extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Authentification à deux facteurs activée !'
+                'message' => __('profile.messages.2fa_enabled')
             ]);
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('profile.errors.error') . $e->getMessage()
             ]);
         }
     }
@@ -295,12 +295,12 @@ class ProfileManagement extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Authentification à deux facteurs désactivée'
+                'message' => __('profile.messages.2fa_disabled')
             ]);
         } catch (\Exception $e) {
             $this->dispatch('toast', [
                 'type' => 'error',
-                'message' => 'Erreur : ' . $e->getMessage()
+                'message' => __('profile.errors.error') . $e->getMessage()
             ]);
         }
     }
@@ -314,13 +314,13 @@ class ProfileManagement extends Component
                 $content = $exporter->toCsv($this->recoveryCodes);
                 return response()->streamDownload(function () use ($content) {
                     echo $content;
-                }, 'agrospace-recovery-codes.csv');
+                }, __('profile.recovery_codes.csv_filename'));
 
             case 'md':
                 $content = $exporter->toMarkdown($this->recoveryCodes);
                 return response()->streamDownload(function () use ($content) {
                     echo $content;
-                }, 'agrospace-recovery-codes.md');
+                }, __('profile.recovery_codes.md_filename'));
 
                 /*case 'pdf':
                 return $exporter->toPdf($this->recoveryCodes, Auth::user()->name);
@@ -337,11 +337,11 @@ class ProfileManagement extends Component
     public function confirmDelete()
     {
         $this->dispatch('swal:confirm', [
-            'title' => 'Confirmer la suppression',
-            'text' => "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
+            'title' => __('profile.delete.confirm_title'),
+            'text' => __("profile.delete.confirm_text"),
             'icon' => 'warning',
-            'confirmText' => 'Oui, supprimer',
-            'cancelText' => 'Annuler',
+            'confirmText' => __('profile.delete.confirm_button'),
+            'cancelText' => __('profile.delete.cancel_button'),
             'method' => 'deleteAccount',
             'params' => []
         ]);
@@ -366,7 +366,7 @@ class ProfileManagement extends Component
 
             $this->dispatch('toast', [
                 'type' => 'success',
-                'message' => 'Votre Compte à été supprimé avec succès',
+                'message' => __('profile.messages.account_deleted'),
             ]);
 
             $this->redirect('/', navigate: true);

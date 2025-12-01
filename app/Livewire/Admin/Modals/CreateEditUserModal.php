@@ -57,20 +57,20 @@ class CreateEditUserModal extends Component
     }
 
     protected $messages = [
-        'name.required' => 'Le nom est obligatoire',
-        'email.required' => 'L\'email est obligatoire',
-        'email.email' => 'L\'email n\'est pas valide',
-        'email.unique' => 'Cet email est déjà utilisé',
-        'phone.required' => 'Le téléphone est obligatoire',
-        'role.required' => 'Le rôle est obligatoire',
-        'region.required' => 'La région est obligatoire',
-        'city.required' => 'La ville est obligatoire',
-        'password.required' => 'Le mot de passe est obligatoire',
-        'password.min' => 'Le mot de passe doit contenir au moins 8 caractères',
-        'password.confirmed' => 'Les mots de passe ne correspondent pas',
-        'avatar.image' => 'Le fichier doit être une image',
-        'avatar.max' => 'L\'image ne doit pas dépasser 2 Mo',
-        'role.exists' => 'Le role selectionné est inexistant'
+        'name.required' => __('users.name_required'),
+        'email.required' => __('users.email_required'),
+        'email.email' => __('users.email_invalid'),
+        'email.unique' => __('users.email_unique'),
+        'phone.required' => __('users.phone_required'),
+        'role.required' => __('users.role_required'),
+        'region.required' => __('users.region_required'),
+        'city.required' => __('users.city_required'),
+        'password.required' => __('users.password_required'),
+        'password.min' => __('users.password_min'),
+        'password.confirmed' => __('users.password_confirmed'),
+        'avatar.image' => __('users.avatar_image'),
+        'avatar.max' => __('users.avatar_max'),
+        'role.exists' => __('users.role_exists')
     ];
 
     #[On('openCreateUserModal')]
@@ -139,12 +139,12 @@ class CreateEditUserModal extends Component
         if ($this->userId) {
             $user = User::findOrFail($this->userId);
             $user->update($data);
-            $title = 'Mise à Jour';
-            $message = "L'utilisateur {$user->name} a été mis à jour avec succès.";
+            $title = __('users.update_title');
+            $message = __('users.update_success') . $user->name . '.';
         } else {
             $user = User::create($data);
-            $title = 'Création';
-            $message = "L'utilisateur {$user->name} a été créé avec succès.";
+            $title = __('users.create_title');
+            $message = __('users.create_success') . $user->name . '.';
         }
 
         $this->dispatch('userSaved');

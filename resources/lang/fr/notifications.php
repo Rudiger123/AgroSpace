@@ -1,0 +1,60 @@
+<?php
+
+return [
+    'processing_start' => 'Début du traitement des notifications',
+    'admins_found' => 'Administrateurs trouvés',
+    'sent_success' => 'Notification envoyée',
+    'send_error' => 'Erreur envoi notification à un admin',
+    'summary' => 'Résumé des notifications',
+    'critical_error' => 'Erreur critique dans le listener',
+
+        'new_notification' => 'Nouvelle notification',
+        'all_marked_read' => 'Toutes les notifications ont été marquées comme lues.',
+        'deleted' => 'Notification supprimée',
+        'marked_read' => 'Notification marquée comme lue.',
+        'unable_to_mark_read' => 'Impossible de modifier cette notification.',
+        'delete_error' => 'Une erreur est survenue lors de la suppression.',
+        'mark_all_error' => 'Erreur lors de la mise à jour des notifications.',
+        'confirm_delete_all_title' => 'Confirmer la suppression',
+        'confirm_delete_all_text' => 'Êtes-vous sûr de vouloir supprimer toutes les notifications de l\'utilisateur ?',
+        'confirm_delete' => 'Oui, supprimer',
+        'cancel' => 'Annuler',
+        'all_deleted' => 'Toutes les notifications ont été supprimées.',
+        'delete_all_error' => 'Impossible de vider les notifications.',
+
+            'bell' => [
+                'aria_label' => 'Notifications',
+            ],
+            'dropdown' => [
+                'title' => 'Notifications',
+                'unread' => ':count non lue|:count non lues',
+                'mark_all_read' => 'Tout marquer',
+                'view_all' => 'Voir toutes les notifications',
+            ],
+            'toast' => [
+                'default_title' => 'Nouvelle notification',
+                'see_more' => 'Voir plus',
+                'close' => 'Fermer',
+            ],
+            'list' => [
+                'empty_title' => 'C\'est calme par ici',
+                'empty_message' => 'Vous êtes à jour ! Aucune nouvelle notification pour le moment.',
+                'default_title' => 'Notification',
+                'mark_as_read' => 'Marquer comme lu',
+                'delete' => 'Supprimer',
+            ],
+            'page' => [
+                'title' => 'Centre de Notifications',
+                'subtitle' => 'Gérez vos alertes AgroSpace.',
+                'mark_all_read' => 'Tout lire',
+                'clear_all' => 'Tout vider',
+                'filter_all' => 'Toutes',
+                'filter_unread' => 'Non lues',
+                'filter_archived' => 'Archives',
+                'missing_title' => 'Titre manquant',
+                'new_badge' => 'Nouveau',
+                'mark_as_read' => 'Marquer comme lu',
+                'empty_title' => 'C\'est tout propre !',
+                'empty_message' => 'Aucune notification dans cette catégorie.',
+            ],
+        ];

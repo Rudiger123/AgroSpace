@@ -45,7 +45,7 @@ window.addEventListener('keydown', (e) => {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
-        <span class="flex-1 text-left text-xs sm:text-sm truncate md:block hidden">Rechercher...</span>
+        <span class="flex-1 text-left text-xs sm:text-sm truncate md:block hidden">{{ __('search.search_placeholder') }}</span>
         <kbd
             class="hidden sm:inline-flex items-center px-2 py-1 text-xs font-semibold text-gray-500 bg-white border border-gray-300 rounded">
             <span class="text-xs">⌘</span>K
@@ -79,7 +79,7 @@ window.addEventListener('keydown', (e) => {
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                         <input x-ref="searchInput" wire:model.live.debounce.300ms="query" type="text"
-                            placeholder="Rechercher..."
+                            placeholder="{{ __('search.search_placeholder') }}"
                             class="w-full px-3 sm:px-4 py-3 sm:py-4 text-base sm:text-lg text-gray-900 placeholder-gray-500 bg-transparent border-0 focus:outline-none focus:ring-0"
                             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 
@@ -109,14 +109,13 @@ window.addEventListener('keydown', (e) => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
-                            <p class="text-gray-500 text-base sm:text-lg font-medium">Commencez à taper pour rechercher</p>
-                            <p class="text-gray-400 text-xs sm:text-sm mt-2">Articles, offres, demandes, utilisateurs...</p>
+                            <p class="text-gray-500 text-base sm:text-lg font-medium">{{ __('search.start_typing') }}</p>
+                            <p class="text-gray-400 text-xs sm:text-sm mt-2">{{ __('search.search_categories') }}</p>
                         </div>
                     @elseif($totalResults > 0)
                         <div class="py-2">
                             <div class="px-3 sm:px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                {{ $totalResults }} résultat{{ $totalResults > 1 ? 's' : '' }}
-                                trouvé{{ $totalResults > 1 ? 's' : '' }}
+                                {{ $totalResults }} {{ __('search.results_found', ['count' => $totalResults]) }}
                             </div>
 
                             @foreach ($results as $index => $result)
@@ -198,8 +197,8 @@ window.addEventListener('keydown', (e) => {
                                     d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
                                 </path>
                             </svg>
-                            <p class="text-gray-500 text-base sm:text-lg font-medium">Aucun résultat trouvé</p>
-                            <p class="text-gray-400 text-xs sm:text-sm mt-2">Essayez avec d'autres mots-clés</p>
+                            <p class="text-gray-500 text-base sm:text-lg font-medium">{{ __('search.no_results') }}</p>
+                            <p class="text-gray-400 text-xs sm:text-sm mt-2">{{ __('search.try_other_keywords') }}</p>
                         </div>
                     @endif
                 </div>
@@ -211,19 +210,19 @@ window.addEventListener('keydown', (e) => {
                             <span class="flex items-center space-x-1">
                                 <kbd class="px-2 py-1 bg-white border border-gray-300 rounded shadow-sm">↑</kbd>
                                 <kbd class="px-2 py-1 bg-white border border-gray-300 rounded shadow-sm">↓</kbd>
-                                <span class="ml-1">Naviguer</span>
+                                <span class="ml-1">{{ __('search.navigate') }}</span>
                             </span>
                             <span class="flex items-center space-x-1">
                                 <kbd class="px-2 py-1 bg-white border border-gray-300 rounded shadow-sm">↵</kbd>
-                                <span class="ml-1">Sélectionner</span>
+                                <span class="ml-1">{{ __('search.select') }}</span>
                             </span>
                             <span class="flex items-center space-x-1">
                                 <kbd class="px-2 py-1 bg-white border border-gray-300 rounded shadow-sm">Esc</kbd>
-                                <span class="ml-1">Fermer</span>
+                                <span class="ml-1">{{ __('search.close') }}</span>
                             </span>
                         </div>
                         <span class="text-gray-400 hidden lg:inline">
-                            Recherche globale AgroSpace
+                            {{ __('search.global_search') }}
                         </span>
                     </div>
                 </div>
@@ -231,7 +230,7 @@ window.addEventListener('keydown', (e) => {
                 <!-- Mobile Footer -->
                 <div class="sm:hidden border-t border-gray-200 px-3 py-2 bg-gray-50">
                     <div class="flex items-center justify-center text-xs text-gray-500">
-                        <span>Appuyez sur Échap pour fermer</span>
+                        <span>{{ __('search.press_escape_close') }}</span>
                     </div>
                 </div>
             </div>

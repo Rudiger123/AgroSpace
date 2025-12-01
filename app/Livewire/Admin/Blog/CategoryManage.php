@@ -41,10 +41,10 @@ class CategoryManage extends Component
     ];
 
     protected $messages = [
-        'name.required' => 'Le nom de la catégorie est obligatoire.',
-        'slug.required' => 'Le slug est obligatoire.',
-        'slug.unique' => 'Ce slug est déjà utilisé.',
-        'color.required' => 'La couleur est obligatoire.',
+        'name.required' => __('categories.validation.name_required'),
+        'slug.required' => __('categories.validation.slug_required'),
+        'slug.unique' => __('categories.validation.slug_unique'),
+        'color.required' => __('categories.validation.color_required'),
     ];
 
     public function updatedName($value)
@@ -108,10 +108,10 @@ class CategoryManage extends Component
 
         if ($this->categoryId) {
             Category::find($this->categoryId)->update($data);
-            $message = 'Catégorie mise à jour avec succès.';
+            $message = __('categories.updated_success');
         } else {
             Category::create($data);
-            $message = 'Catégorie créée avec succès.';
+            $message = __('categories.created_success');
         }
 
         $this->message($message);
@@ -128,7 +128,7 @@ class CategoryManage extends Component
     public function delete()
     {
         Category::find($this->categoryId)->delete();
-        $message = 'Catégorie supprimée avec succès.';
+        $message = __('categories.deleted_success');
         $this->message($message);
         $this->closeDeleteModal();
     }
@@ -139,7 +139,7 @@ class CategoryManage extends Component
         $category->is_active = !$category->is_active;
         $category->save();
 
-        $message =  'Statut de la catégorie mis à jour.';
+        $message = __('categories.status_updated');
         $this->message($message);
     }
 

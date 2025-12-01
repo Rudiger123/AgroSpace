@@ -3,8 +3,8 @@
         
         <!-- En-tête -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Paramètres</h1>
-            <p class="text-gray-600 mt-2">Gérez vos préférences et paramètres de compte</p>
+            <h1 class="text-3xl font-bold text-gray-900">{{ __('preferences.title') }}</h1>
+            <p class="text-gray-600 mt-2">{{ __('preferences.subtitle') }}</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -20,7 +20,7 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.93 4.93l9.07 9.07-9.07 9.07L4.93 4.93z"/>
                         </svg>
-                        Notifications
+                        {{ __('preferences.notifications') }}
                     </button>
 
                     <button @click="activeTab = 'preferences'" 
@@ -32,7 +32,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        Préférences
+                        {{ __('preferences.preferences') }}
                     </button>
 
                 </nav>
@@ -48,35 +48,35 @@
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.93 4.93l9.07 9.07-9.07 9.07L4.93 4.93z"/>
                             </svg>
-                            Paramètres de notifications
+                            {{ __('preferences.notification_settings') }}
                         </h2>
 
                         <div class="space-y-6">
                             <!-- Canaux de notification -->
                             <div>
-                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Canaux de réception</h3>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ __('preferences.channels_title') }}</h3>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <label class="flex items-center space-x-3 p-4 border border-gray-200 rounded-xl hover:bg-gray-50 cursor-pointer transition">
                                         <input type="checkbox" wire:model="email_notifications" class="rounded text-green-600 focus:ring-green-500">
                                         <div>
-                                            <span class="font-medium text-gray-700">Email</span>
-                                            <p class="text-sm text-gray-500">Recevoir par email</p>
+                                            <span class="font-medium text-gray-700">{{ __('preferences.email') }}</span>
+                                            <p class="text-sm text-gray-500">{{ __('preferences.email_desc') }}</p>
                                         </div>
                                     </label>
 
                                     <label class="flex items-center space-x-3 p-4 border border-gray-200 rounded-xl hover:bg-gray-50 cursor-pointer transition">
                                         <input type="checkbox" wire:model="push_notifications" class="rounded text-green-600 focus:ring-green-500">
                                         <div>
-                                            <span class="font-medium text-gray-700">Push</span>
-                                            <p class="text-sm text-gray-500">Notifications navigateur</p>
+                                            <span class="font-medium text-gray-700">{{ __('preferences.push') }}</span>
+                                            <p class="text-sm text-gray-500">{{ __('preferences.push_desc') }}</p>
                                         </div>
                                     </label>
 
                                     <label class="flex items-center space-x-3 p-4 border border-gray-200 rounded-xl hover:bg-gray-50 cursor-pointer transition">
                                         <input type="checkbox" wire:model="sms_notifications" class="rounded text-green-600 focus:ring-green-500">
                                         <div>
-                                            <span class="font-medium text-gray-700">SMS</span>
-                                            <p class="text-sm text-gray-500">Messages texte</p>
+                                            <span class="font-medium text-gray-700">{{ __('preferences.sms') }}</span>
+                                            <p class="text-sm text-gray-500">{{ __('preferences.sms_desc') }}</p>
                                         </div>
                                     </label>
                                 </div>
@@ -84,14 +84,14 @@
 
                             <!-- Types de notifications -->
                             <div>
-                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Types de notifications</h3>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">{{ __('preferences.types_title') }}</h3>
                                 <div class="space-y-3">
                                     @foreach ([
-                                        ['key' => 'notify_new_offers', 'label' => 'Nouvelles offres', 'desc' => 'Nouvelles offres publiées'],
-                                        ['key' => 'notify_new_demands', 'label' => 'Nouvelles demandes', 'desc' => 'Nouvelles demandes créées'],
-                                        ['key' => 'notify_articles', 'label' => 'Articles', 'desc' => 'Nouveaux articles du blog'],
-                                        ['key' => 'notify_chat_messages', 'label' => 'Messages', 'desc' => 'Nouveaux messages de chat'],
-                                        ['key' => 'notify_admin_alerts', 'label' => 'Alertes admin', 'desc' => 'Notifications importantes']
+                                        ['key' => 'notify_new_offers', 'label' => __('preferences.new_offers'), 'desc' => __('preferences.new_offers_desc')],
+                                        ['key' => 'notify_new_demands', 'label' => __('preferences.new_demands'), 'desc' => __('preferences.new_demands_desc')],
+                                        ['key' => 'notify_articles', 'label' => __('preferences.articles'), 'desc' => __('preferences.articles_desc')],
+                                        ['key' => 'notify_chat_messages', 'label' => __('preferences.messages'), 'desc' => __('preferences.messages_desc')],
+                                        ['key' => 'notify_admin_alerts', 'label' => __('preferences.admin_alerts'), 'desc' => __('preferences.admin_alerts_desc')]
                                     ] as $notification)
                                         <label class="flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-50 cursor-pointer transition">
                                             <div class="flex items-center space-x-3">
@@ -111,13 +111,13 @@
                                 <button wire:click="savePreferences" 
                                         wire:loading.attr="disabled"
                                         class="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 disabled:opacity-50 flex items-center gap-2">
-                                    <span wire:loading.remove>Sauvegarder</span>
+                                    <span wire:loading.remove>{{ __('preferences.save') }}</span>
                                     <span wire:loading>
                                         <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
-                                        Sauvegarde...
+                                        {{ __('preferences.saving') }}
                                     </span>
                                 </button>
                             </div>
@@ -131,25 +131,25 @@
                         <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
-                            Préférences générales
+                            {{ __('preferences.general_preferences') }}
                         </h2>
 
                         <form wire:submit="savePreferences" class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-medium text-gray-700">Langue</label>
+                                    <label class="block text-sm font-medium text-gray-700">{{ __('preferences.language') }}</label>
                                     <select wire:model="language" 
                                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
-                                        <option value="fr">Français</option>
-                                        <option value="en">English</option>
-                                        <option value="es">Español</option>
+                                        <option value="fr">{{ __('preferences.french') }}</option>
+                                        <option value="en">{{ __('preferences.english') }}</option>
+                                        <option value="es">{{ __('preferences.spanish') }}</option>
                                     </select>
                                 </div>
 
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-medium text-gray-700">Fuseau horaire</label>
+                                    <label class="block text-sm font-medium text-gray-700">{{ __('preferences.timezone') }}</label>
                                     <select wire:model="timezone" 
                                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
                                         @foreach (timezone_identifiers_list() as $tz)
@@ -159,22 +159,22 @@
                                 </div>
 
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-medium text-gray-700">Devise</label>
+                                    <label class="block text-sm font-medium text-gray-700">{{ __('preferences.currency') }}</label>
                                     <select wire:model="currency" 
                                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
-                                        <option value="XAF">FCFA (XAF)</option>
-                                        <option value="EUR">Euro (EUR)</option>
-                                        <option value="USD">Dollar US (USD)</option>
+                                        <option value="XAF">{{ __('preferences.xaf') }}</option>
+                                        <option value="EUR">{{ __('preferences.eur') }}</option>
+                                        <option value="USD">{{ __('preferences.usd') }}</option>
                                     </select>
                                 </div>
 
                                 <div class="space-y-2">
-                                    <label class="block text-sm font-medium text-gray-700">Thème</label>
+                                    <label class="block text-sm font-medium text-gray-700">{{ __('preferences.theme') }}</label>
                                     <select wire:model="theme" 
                                             class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
-                                        <option value="light">Clair</option>
-                                        <option value="dark">Sombre</option>
-                                        <option value="system">Système</option>
+                                        <option value="light">{{ __('preferences.light') }}</option>
+                                        <option value="dark">{{ __('preferences.dark') }}</option>
+                                        <option value="system">{{ __('preferences.system') }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -182,14 +182,14 @@
                             <div class="space-y-4">
                                 <label class="flex items-center space-x-3">
                                     <input type="checkbox" wire:model="compact_view" class="rounded text-green-600 focus:ring-green-500">
-                                    <span class="font-medium text-gray-700">Vue compacte</span>
-                                    <span class="text-sm text-gray-500">Afficher plus d'éléments par page</span>
+                                    <span class="font-medium text-gray-700">{{ __('preferences.compact_view') }}</span>
+                                    <span class="text-sm text-gray-500">{{ __('preferences.compact_view_desc') }}</span>
                                 </label>
 
                                 <label class="flex items-center space-x-3">
                                     <input type="checkbox" wire:model="show_tutorials" class="rounded text-green-600 focus:ring-green-500">
-                                    <span class="font-medium text-gray-700">Tutoriels</span>
-                                    <span class="text-sm text-gray-500">Afficher les guides et astuces</span>
+                                    <span class="font-medium text-gray-700">{{ __('preferences.tutorials') }}</span>
+                                    <span class="text-sm text-gray-500">{{ __('preferences.tutorials_desc') }}</span>
                                 </label>
                             </div>
 
@@ -197,13 +197,13 @@
                                 <button type="submit" 
                                         wire:loading.attr="disabled"
                                         class="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 disabled:opacity-50 flex items-center gap-2">
-                                    <span wire:loading.remove>Sauvegarder</span>
+                                    <span wire:loading.remove>{{ __('preferences.save') }}</span>
                                     <span wire:loading>
                                         <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
-                                        Sauvegarde...
+                                        {{ __('preferences.saving') }}
                                     </span>
                                 </button>
                             </div>

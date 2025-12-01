@@ -32,10 +32,7 @@ new #[Layout('layouts.guest')] class extends Component {
         session()->flash('status', __($status));
     }
 }; ?>
-
-<div
-    class=" min-h-screen flex items-center justify-center font-inter">
-
+<div class=" min-h-screen flex items-center justify-center font-inter">
 
     {{-- Background Pattern --}}
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -50,18 +47,17 @@ new #[Layout('layouts.guest')] class extends Component {
             x-transition:enter-end="opacity-100 transform translate-y-0">
             <a href="/" class="inline-flex items-center space-x-2 mb-2">
                 <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <img src="{{ asset('images/logo.png') }}" class="w-12 h-12"
-                        alt="Agrospace la plateforme de mise en relation des acteurs du secteur agropastorale...">
+                    <img src="{{ asset('images/logo.png') }}" class="w-12 h-12" alt="{{ __('auth.logo_alt') }}">
                 </div>
                 <span class="text-3xl font-bold text-[#2E7D32]" style="font-family: 'Poppins', sans-serif;">
-                    Agrospace
+                    {{ __('app.name') }}
                 </span>
             </a>
             <h2 class="text-2xl font-bold text-[#37474F] mt-4" style="font-family: 'Poppins', sans-serif;">
-                Mot de passe oublié ?
+                {{ __('auth.forgot_password_title') }}
             </h2>
             <p class="text-[#37474F]/70 mt-2">
-                Pas de soucis, nous allons vous envoyer un lien de réinitialisation
+                {{ __('auth.forgot_password_subtitle') }}
             </p>
         </div>
 
@@ -75,13 +71,13 @@ new #[Layout('layouts.guest')] class extends Component {
             <form wire:submit.prevent="sendPasswordResetLink" class="space-y-5">
                 <div>
                     <label for="email" class="block text-sm font-medium text-[#37474F] mb-2">
-                        Adresse Email
+                        {{ __('auth.email_address') }}
                     </label>
                     <div class="relative">
                         <input type="email" id="email" wire:model.live.debounce.200ms="email"
                             class="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2E7D32] focus:border-transparent transition-all
-                                name="email"
-                            required autofocus placeholder="votre@email.com">
+                            name="email"
+                            required autofocus placeholder="{{ __('auth.email_placeholder') }}">
                         <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -103,7 +99,7 @@ new #[Layout('layouts.guest')] class extends Component {
                 <button type="submit" wire:loading.attr="disabled"
                     class="w-full bg-[#2E7D32] text-white py-3 rounded-lg font-semibold hover:bg-[#1B5E20] focus:outline-none focus:ring-4 focus:ring-[#2E7D32]/50 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
                     <span wire:loading.remove>
-                        Email Password reset Link
+                        {{ __('auth.send_reset_link') }}
                     </span>
                     <span wire:loading class="flex items-center justify-center">
                         <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
@@ -113,7 +109,7 @@ new #[Layout('layouts.guest')] class extends Component {
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                             </path>
                         </svg>
-                        envoi en cours...
+                        {{ __('auth.sending') }}
                     </span>
                 </button>
             </form>
@@ -129,7 +125,7 @@ new #[Layout('layouts.guest')] class extends Component {
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
-                Retour à la connexion
+                {{ __('auth.back_to_login') }}
             </a>
         </div>
     </div>

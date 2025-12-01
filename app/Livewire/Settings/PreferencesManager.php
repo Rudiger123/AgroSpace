@@ -117,7 +117,7 @@ class PreferencesManager extends Component
 
             $this->dispatch('notify', [
                 'type' => 'success',
-                'message' => 'Préférences mises à jour avec succès!'
+                'message' => __('settings.preferences.success')
             ]);
 
             $this->dispatch('preferencesUpdated');
@@ -126,7 +126,7 @@ class PreferencesManager extends Component
 
             $this->dispatch('notify', [
                 'type' => 'error',
-                'message' => 'Erreur lors de la mise à jour des préférences.'
+                'message' => __('settings.preferences.error')
             ]);
         } finally {
             $this->saving = false;
