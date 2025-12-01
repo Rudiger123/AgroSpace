@@ -35,8 +35,8 @@ class NewDemandResponse extends Notification implements ShouldQueue
     public function toMail($notifiable): MailMessage
     {
         $responder = $this->response->user;
-    
-        return (new MailMessage)
+
+        return (new MailMessage())
             ->subject('Nouvelle proposition pour votre demande')
             ->view('emails.notification', [
                 'title'      => 'Vous avez une nouvelle proposition !',

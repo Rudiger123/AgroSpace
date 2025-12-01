@@ -22,18 +22,18 @@ class NewContactNotification extends Notification implements ShouldQueue
     }
 
     public function toMail(object $notifiable): MailMessage
-{
-    return (new MailMessage)
-        ->subject('Nouveau message de contact - ' . $this->contact->subject)
-        ->view('emails.notification', [
-            'title'      => 'Nouveau message de contact',
-            'content'    => view('emails.partials.new-contact-admin', [
-                'contact' => $this->contact,
-            ])->render(),
-            'actionText' => 'Voir tous les messages',
-            'actionUrl'  => route('contacts.index'),
-        ]);
-}
+    {
+        return (new MailMessage())
+            ->subject('Nouveau message de contact - ' . $this->contact->subject)
+            ->view('emails.notification', [
+                'title'      => 'Nouveau message de contact',
+                'content'    => view('emails.partials.new-contact-admin', [
+                    'contact' => $this->contact,
+                ])->render(),
+                'actionText' => 'Voir tous les messages',
+                'actionUrl'  => route('contacts.index'),
+            ]);
+    }
 
     public function toArray(object $notifiable): array
     {

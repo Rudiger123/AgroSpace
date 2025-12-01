@@ -68,7 +68,7 @@ class ArticlePublishedNotification extends Notification implements ShouldQueue
     {
         $recipientName = $notifiable->name ?? $notifiable->email ?? 'Cher(e) abonné(e)';
 
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Nouvel article : ' . $this->article->title)
             ->view('emails.notification', [
                 'title'       => 'Nouvel article publié sur le blog',

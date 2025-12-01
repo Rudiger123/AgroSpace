@@ -34,7 +34,7 @@ class ReviewReceived extends Notification implements ShouldQueue
 
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Nouvel avis reçu sur AgroSpace')
             ->view('emails.notification', [
                 'title'      => 'Nouvel avis (' . $this->avis->note . '/5)',

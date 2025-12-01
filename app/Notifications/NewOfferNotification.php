@@ -59,7 +59,7 @@ class NewOfferNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Nouvelle offre disponible - ' . $this->offer->titre)
             ->view('emails.notification', [
                 'title'      => 'Nouvelle offre publiée !',

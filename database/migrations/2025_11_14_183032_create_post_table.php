@@ -16,7 +16,7 @@ return new class () extends Migration {
             $table->string('featured_image')->nullable();
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
-            $table->boolean('is_featured')->default('false');
+            $table->boolean('is_featured')->default(false); // Changé de 'false' à false
             $table->boolean('published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->string('meta_title')->nullable();
@@ -29,11 +29,17 @@ return new class () extends Migration {
             $table->enum('status', ['draft', 'published', 'scheduled'])->default('draft');
             $table->timestamps();
 
+            // Index standards
             $table->index(['published', 'published_at']);
             $table->index('author_id');
             $table->index('category_id');
             $table->index('status');
-            $table->fullText(['title', 'content', 'excerpt']);
+            
+            // Index pour la recherche (adapté pour PostgreSQL)
+            $table->index('title'); // Index simple sur le titre
+            
+            // Pour PostgreSQL: créer un index GIN séparé si besoin de recherche
+            // Note: ne pas indexer excerpt car texte trop long
         });
     }
 
