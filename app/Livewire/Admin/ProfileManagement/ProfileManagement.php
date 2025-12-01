@@ -18,7 +18,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 
 #[Layout('layouts.app')]
-#[Title(__('profile.management.title'))]
+#[Title("profile management")]
 class ProfileManagement extends Component
 {
     use WithFileUploads;

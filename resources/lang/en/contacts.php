@@ -3,11 +3,11 @@
 return [
     'title' => 'Contacts Management',
     'subtitle' => 'Manage your messages and feedback professionally',
-    
+
     'delete_selected' => 'Delete (:count)',
     'delete_selected_confirm' => 'Are you sure you want to delete :count message(s)?',
     'export' => 'Export',
-    
+
     'stats' => [
         'total' => 'Total Messages',
         'new' => 'New',
@@ -20,19 +20,19 @@ return [
         'processed' => 'Processed',
         'archived' => 'Archived',
     ],
-    
+
     'advanced_stats' => [
         'today' => 'Today',
         'this_week' => 'This week',
         'avg_response_time' => 'Average time',
         'response_rate' => 'Response rate',
     ],
-    
+
     'search' => [
         'label' => '🔍 Search',
         'placeholder' => 'Name, email, subject, message...',
     ],
-    
+
     'status' => [
         'label' => '📊 Status',
         'all' => '🎯 All statuses',
@@ -42,17 +42,17 @@ return [
         'closed' => '❌ Closed',
         'new_badge' => 'NEW',
     ],
-    
+
     'status_labels' => [
         'new' => 'New',
         'opened' => 'Opened',
         'replied' => 'Replied',
         'closed' => 'Closed',
     ],
-    
+
     'results_found' => 'result(s) found',
     'reset' => 'Reset',
-    
+
     'table' => [
         'contact' => 'Contact',
         'subject_message' => 'Subject & Message',
@@ -60,16 +60,16 @@ return [
         'date' => 'Date',
         'actions' => 'Actions',
     ],
-    
+
     'actions' => [
         'view' => 'View details',
         'reply' => 'Reply',
         'delete' => 'Delete',
     ],
-    
+
     'no_messages' => 'No messages found',
     'no_messages_description' => 'Contact messages will appear here',
-    
+
     'modal_view' => [
         'subject' => '📝 Subject',
         'message' => '💬 Message',
@@ -80,7 +80,7 @@ return [
         'unknown' => 'Unknown',
         'on' => 'on',
     ],
-    
+
     'modal_reply' => [
         'title' => 'Reply to message',
         'to' => 'To',
@@ -95,13 +95,13 @@ return [
         'send_copy_to_me' => 'Send me a copy',
         'send_copy_to_me_description' => 'Receive a copy of this reply',
     ],
-    
+
     'modal_delete' => [
         'title' => 'Confirm deletion',
         'confirm_message' => 'Are you sure you want to delete this message from :name?',
         'warning' => 'This action is irreversible!',
     ],
-    
+
     'buttons' => [
         'close' => 'Close',
         'close_status' => 'Close',
@@ -111,7 +111,7 @@ return [
         'sending' => 'Sending...',
         'delete' => 'Delete',
     ],
-    
+
     'notifications' => [
         'reply_sent' => 'Reply sent!',
         'great' => 'Great!',

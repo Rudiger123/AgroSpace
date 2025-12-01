@@ -74,7 +74,7 @@ return [
             ],
             'export' => 'Export',
             'new_user' => 'New User',
-            
+
             'stats' => [
                 'total' => 'Total',
                 'active' => 'Active',
@@ -83,7 +83,7 @@ return [
                 'verified' => 'Verified',
                 'this_month' => 'This month',
             ],
-            
+
             'charts' => [
                 'role_distribution' => 'Role Distribution',
                 'top_regions' => 'Top 5 Regions',
@@ -91,11 +91,11 @@ return [
                 'users' => 'Users',
                 'new_users' => 'New users',
             ],
-            
+
             'search' => [
                 'placeholder' => 'Search by name, email or phone...',
             ],
-            
+
             'filters' => [
                 'all_roles' => 'All roles',
                 'producers' => '👨‍🌾 Producers',
@@ -108,9 +108,9 @@ return [
                 'all_regions' => 'All regions',
                 'reset' => 'Reset',
             ],
-            
+
             'selected_count' => '{1} :count user selected|[2,*] :count users selected',
-            
+
             'actions' => [
                 'send_email' => 'Send email',
                 'suspend' => 'Suspend',
@@ -122,14 +122,14 @@ return [
                 'reactivate' => 'Reactivate',
                 'view_history' => 'View history',
             ],
-            
+
             'roles' => [
                 'producer' => '👨‍🌾 Producer',
                 'consumer' => '🛒 Consumer',
                 'admin' => '👨‍💼 Admin',
                 'user' => 'User',
             ],
-            
+
             'table' => [
                 'user' => 'User',
                 'role' => 'Role',
@@ -138,18 +138,18 @@ return [
                 'last_login' => 'Last login',
                 'actions' => 'Actions',
             ],
-            
+
             'location' => [
                 'na' => 'N/A',
             ],
-            
+
             'never_connected' => 'Never connected',
             'offers' => 'offers',
             'demands' => 'demands',
             'no_users_found' => 'No users found',
             'try_modify_search' => 'Try modifying your search criteria',
             'admin' => 'Admin',
-            
+
             'history' => [
                 'title' => 'History',
                 'type' => 'Type',

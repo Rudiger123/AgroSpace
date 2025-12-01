@@ -42,12 +42,36 @@ class TagManage extends Component
 
     // Préréglages de couleurs
     public $colorPresets = [
-        '#22c55e', '#16a34a', '#15803d', '#166534', '#14532d',
-        '#f59e0b', '#d97706', '#b45309', '#92400e', '#78350f',
-        '#ef4444', '#dc2626', '#b91c1c', '#991b1b', '#7f1d1d',
-        '#3b82f6', '#2563eb', '#1d4ed8', '#1e40af', '#1e3a8a',
-        '#8b5cf6', '#7c3aed', '#6d28d9', '#5b21b6', '#4c1d95',
-        '#ec4899', '#db2777', '#be185d', '#9d174d', '#831843',
+        '#22c55e',
+        '#16a34a',
+        '#15803d',
+        '#166534',
+        '#14532d',
+        '#f59e0b',
+        '#d97706',
+        '#b45309',
+        '#92400e',
+        '#78350f',
+        '#ef4444',
+        '#dc2626',
+        '#b91c1c',
+        '#991b1b',
+        '#7f1d1d',
+        '#3b82f6',
+        '#2563eb',
+        '#1d4ed8',
+        '#1e40af',
+        '#1e3a8a',
+        '#8b5cf6',
+        '#7c3aed',
+        '#6d28d9',
+        '#5b21b6',
+        '#4c1d95',
+        '#ec4899',
+        '#db2777',
+        '#be185d',
+        '#9d174d',
+        '#831843',
     ];
 
     protected $rules = [
@@ -59,10 +83,19 @@ class TagManage extends Component
     ];
 
     protected $messages = [
-        'name.required' => __('tags.validation.name_required'),
-        'slug.required' => __('tags.validation.slug_required'),
-        'slug.unique' => __('tags.validation.slug_unique'),
+        'name.required' => 'Le nom du tag est obligatoire.',
+        'slug.required' => 'Le slug est obligatoire.',
+        'slug.unique' => 'Ce tag existe déjà.',
     ];
+
+    protected function getTranslatedMessages()
+    {
+        return [
+            'name.required' => __('tags.validation.name_required'),
+            'slug.required' => __('tags.validation.slug_required'),
+            'slug.unique' => __('tags.validation.slug_unique'),
+        ];
+    }
 
     public function updatedName($value)
     {

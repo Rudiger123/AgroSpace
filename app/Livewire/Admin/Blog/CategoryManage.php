@@ -41,11 +41,23 @@ class CategoryManage extends Component
     ];
 
     protected $messages = [
-        'name.required' => __('categories.validation.name_required'),
-        'slug.required' => __('categories.validation.slug_required'),
-        'slug.unique' => __('categories.validation.slug_unique'),
-        'color.required' => __('categories.validation.color_required'),
+
+        'name.required' => 'Category name is required.',
+        'slug.required' => 'Slug is required.',
+        'slug.unique' => 'This slug is already in use.',
+        'color.required' => 'Color is required.',
     ];
+
+    // Méthode pour obtenir les messages traduits
+    protected function getTranslatedMessages()
+    {
+        return [
+            'name.required' => __('categories.validation.name_required'),
+            'slug.required' => __('categories.validation.slug_required'),
+            'slug.unique' => __('categories.validation.slug_unique'),
+            'color.required' => __('categories.validation.color_required'),
+        ];
+    }
 
     public function updatedName($value)
     {

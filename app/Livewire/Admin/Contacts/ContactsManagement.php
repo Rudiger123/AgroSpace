@@ -53,9 +53,18 @@ class ContactsManagement extends Component
     ];
 
     protected $messages = [
-        'replyMessage.required' => __('contacts.reply_message_required'),
-        'replyMessage.min' => __('contacts.reply_message_min'),
+        'replyMessage_required' => 'Please enter a reply message.',
+        'replyMssage_min' => 'The message must contain at least 10 characters.',
     ];
+
+     // Méthode pour obtenir les messages traduits
+     protected function getTranslatedMessages()
+     {
+         return [
+            'replyMessage.required' => __('contacts.reply_message_required'),
+            'replyMessage.min' => __('contacts.reply_message_min'),
+         ];
+     }
 
     // Lifecycle hooks
     public function mount()

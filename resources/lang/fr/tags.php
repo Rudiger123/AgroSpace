@@ -8,44 +8,44 @@ return [
     'export_csv' => 'Exporter CSV',
     'import_csv' => 'Importer CSV',
     'delete_selected' => 'Supprimer la sélection (:count)',
-    
+
     'search_placeholder' => 'Rechercher un tag...',
     'sort_by_name' => 'Trier par nom',
     'sort_by_date' => 'Date de création',
     'sort_by_color' => 'Couleur',
     'sort_by_status' => 'Statut',
     'sort_order' => 'Ordre',
-    
+
     'filter_all' => 'Tous les tags',
     'filter_active' => 'Actifs',
     'filter_inactive' => 'Inactifs',
-    
+
     'stats' => [
         'total' => 'Total Tags',
         'active' => 'Actifs',
         'selected' => 'Sélectionnés',
         'colors' => 'Couleurs',
     ],
-    
+
     'default_color' => 'Couleur par défaut',
     'status' => [
         'active' => 'Actif',
         'inactive' => 'Inactif',
     ],
-    
+
     'actions' => [
         'edit' => 'Modifier',
         'duplicate' => 'Dupliquer',
         'delete' => 'Supprimer',
     ],
-    
+
     'modal' => [
         'edit_title' => 'Modifier le Tag',
         'edit_subtitle' => 'Mettez à jour les informations du tag',
         'create_title' => 'Créer un Tag',
         'create_subtitle' => 'Ajoutez un nouveau tag à votre collection',
     ],
-    
+
     'form' => [
         'name' => 'Nom',
         'name_placeholder' => 'Entrez le nom du tag...',
@@ -58,7 +58,7 @@ return [
         'status' => 'Statut du tag',
         'status_description' => 'Activez ou désactivez ce tag',
     ],
-    
+
     'buttons' => [
         'cancel' => 'Annuler',
         'update' => 'Mettre à jour',
@@ -67,25 +67,25 @@ return [
         'import' => 'Importer',
         'delete_all' => 'Supprimer tout',
     ],
-    
+
     'delete_modal' => [
         'title' => 'Confirmer la suppression',
         'message' => 'Êtes-vous sûr de vouloir supprimer ce tag ? Cette action est irréversible.',
     ],
-    
+
     'import_modal' => [
         'title' => 'Importer des tags',
         'file_label' => 'Fichier CSV',
         'click_to_choose' => 'Cliquez pour choisir un fichier CSV',
         'format' => 'Format: nom, description, couleur, statut',
     ],
-    
+
     'bulk_delete_modal' => [
         'title' => 'Suppression multiple',
         'message' => 'Êtes-vous sûr de vouloir supprimer ces tags ?',
         'tags_count' => 'tags',
     ],
-    
+
     'notifications' => [
         'color_copied' => 'Couleur copiée !',
     ],

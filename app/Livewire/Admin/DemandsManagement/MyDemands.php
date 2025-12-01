@@ -8,7 +8,6 @@ use App\Models\Category;
 use App\Models\User;
 use App\Notifications\DemandCreatedNotification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Layout;
 use Livewire\Component;

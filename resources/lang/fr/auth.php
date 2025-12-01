@@ -9,7 +9,7 @@ return [
         'max_attempts_reached' => 'Trop de tentatives échouées. Veuillez réessayer plus tard.',
         'success' => 'Authentification réussie !',
     ],
-    
+
         'password' => 'Le mot de passe est incorrect.',
         'password_confirm_message' => 'Ceci est une zone sécurisée de l\'application. Veuillez confirmer votre mot de passe avant de continuer.',
         'confirm' => 'Confirmer',

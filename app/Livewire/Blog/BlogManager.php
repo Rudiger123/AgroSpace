@@ -216,7 +216,6 @@ class BlogManager extends Component
                 \Log::info("Envoi de notifications à " . $recipients->count() . " destinataires");
 
                 Notification::send($recipients, new ArticlePublishedNotification($this->selectedPost, Auth::user()));
-                
             }
             if ($this->showEditModal) {
                 $this->selectedPost->update($postData);

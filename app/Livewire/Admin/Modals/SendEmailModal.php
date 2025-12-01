@@ -30,13 +30,25 @@ class SendEmailModal extends Component
     ];
 
     protected $messages = [
-        'subject.required' => __('emails.subject_required'),
+        'subject.required' => 'The subject is required',
+    'message.required' => 'The message is required',
+    'message.min' => 'The message must contain at least 10 characters',
+    'scheduledAt.after' => 'The date must be in the future',
+    ];
+
+    protected function getTranslatedMessages()
+    {
+        return [
+            'subject.required' => __('emails.subject_required'),
         'message.required' => __('emails.message_required'),
         'message.min' => __('emails.message_min'),
         'scheduledAt.after' => __('emails.scheduled_after'),
-    ];
+        ];
+    }
 
-    protected $templates = [
+    public function mount()
+    {
+       $this->templates = [ 
         'welcome' => [
             'subject' => __('emails.welcome_subject'),
             'message' => __('emails.welcome_message'),
@@ -65,6 +77,11 @@ class SendEmailModal extends Component
             'subject' => __('emails.promotion_subject'),
             'message' => __('emails.promotion_message'),
         ],
+    ];
+    }
+
+    protected $templates = [
+       
     ];
 
     #[On('openSendEmailModal')]

@@ -26,7 +26,7 @@ return [
         'pending_comments' => 'Pending Comments',
         'new_users_today' => 'New Today',
     ],
-    
+
     'charts' => [
         'user_growth' => 'User Growth',
         'offer_views' => 'Offer Views',
@@ -46,7 +46,7 @@ return [
         'sold' => 'Sold',
         'responses' => 'Responses',
     ],
-    
+
     'top_items' => [
         'top_producers' => 'Top Producers',
         'my_best_offers' => 'My Best Offers',

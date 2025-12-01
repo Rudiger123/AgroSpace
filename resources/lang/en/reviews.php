@@ -42,7 +42,7 @@ return [
     'comment' => 'Comment',
     'loading_details' => 'Loading details...',
     'close' => 'Close',
- 
+
         'visibility_toggled' => 'The review has been :status successfully.',
         'deleted_success' => 'The review has been deleted successfully.',
     ];

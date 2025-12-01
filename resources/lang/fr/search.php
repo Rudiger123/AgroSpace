@@ -12,7 +12,7 @@ return [
     'close' => 'Fermer',
     'global_search' => 'Recherche globale AgroSpace',
     'press_escape_close' => 'Appuyez sur Échap pour fermer',
- 
+
         'article' => 'Article',
         'offer' => 'Offer',
         'demand' => 'Demand',

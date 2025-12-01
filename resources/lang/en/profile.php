@@ -32,9 +32,7 @@ return [
         'csv_filename' => 'agrospace-recovery-codes.csv',
         'md_filename' => 'agrospace-recovery-codes.md',
     ],
-    <?php
-
-    return [
+ 
         'my_profile' => 'My Profile',
         'manage_info' => 'Manage your personal information and preferences',
         'back_to_dashboard' => 'Back to dashboard',

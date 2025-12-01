@@ -49,122 +49,122 @@ return [
     'create_account' => 'Créer le compte',
     'processing' => 'Traitement...',
 
-        'name_required' => 'The name is required',
-        'email_required' => 'The email is required',
-        'email_invalid' => 'The email is invalid',
-        'email_unique' => 'This email is already used',
-        'phone_required' => 'The phone is required',
-        'role_required' => 'The role is required',
-        'region_required' => 'The region is required',
-        'city_required' => 'The city is required',
-        'password_required' => 'The password is required',
-        'password_min' => 'The password must contain at least 8 characters',
-        'password_confirmed' => 'The passwords do not match',
-        'avatar_image' => 'The file must be an image',
-        'avatar_max' => 'The image must not exceed 2 MB',
-        'role_exists' => 'The selected role does not exist',
-        'update_title' => 'Update',
-        'update_success' => 'The user ',
-        'create_title' => 'Creation',
-        'create_success' => 'The user ',
- 
-            'management' => [
-                'title' => 'Gestion des Utilisateurs',
-                'subtitle' => 'Administrez tous les comptes de la plateforme AgroSpace',
-            ],
-            'export' => 'Exporter',
-            'new_user' => 'Nouvel Utilisateur',
-            
-            'stats' => [
-                'total' => 'Total',
-                'active' => 'Actifs',
-                'producers' => 'Producteurs',
-                'consumers' => 'Consommateurs',
-                'verified' => 'Vérifiés',
-                'this_month' => 'Ce mois',
-            ],
-            
-            'charts' => [
-                'role_distribution' => 'Répartition par Rôle',
-                'top_regions' => 'Top 5 Régions',
-                'growth' => 'Croissance (6 mois)',
-                'users' => 'Utilisateurs',
-                'new_users' => 'Nouveaux utilisateurs',
-            ],
-            
-            'search' => [
-                'placeholder' => 'Rechercher par nom, email ou téléphone...',
-            ],
-            
-            'filters' => [
-                'all_roles' => 'Tous les rôles',
-                'producers' => '👨‍🌾 Producteurs',
-                'consumers' => '🛒 Consommateurs',
-                'admins' => '👨‍💼 Administrateurs',
-                'all_statuses' => 'Tous les statuts',
-                'active' => '✅ Actifs',
-                'suspended' => '⏸ Suspendus',
-                'banned' => '🚫 Bannis',
-                'all_regions' => 'Toutes les régions',
-                'reset' => 'Réinitialiser',
-            ],
-            
-            'selected_count' => '{1} :count utilisateur sélectionné|[2,*] :count utilisateurs sélectionnés',
-            
-            'actions' => [
-                'send_email' => 'Envoyer email',
-                'suspend' => 'Suspendre',
-                'delete' => 'Supprimer',
-                'view_profile' => 'Voir le profil',
-                'edit' => 'Modifier',
-                'more_actions' => 'Plus d\'actions',
-                'verify_user' => 'Vérifier l\'utilisateur',
-                'reactivate' => 'Réactiver',
-                'view_history' => 'Voir l\'historique',
-            ],
-            
-            'roles' => [
-                'producer' => '👨‍🌾 Producteur',
-                'consumer' => '🛒 Consommateur',
-                'admin' => '👨‍💼 Admin',
-                'user' => 'Utilisateur',
-            ],
-            
-            'table' => [
-                'user' => 'Utilisateur',
-                'role' => 'Rôle',
-                'status' => 'Statut',
-                'location' => 'Localisation',
-                'last_login' => 'Dernière connexion',
-                'actions' => 'Actions',
-            ],
-            
-            'location' => [
-                'na' => 'N/A',
-            ],
-            
-            'never_connected' => 'Jamais connecté',
-            'offers' => 'offres',
-            'demands' => 'demandes',
-            'no_users_found' => 'Aucun utilisateur trouvé',
-            'try_modify_search' => 'Essayez de modifier vos critères de recherche',
-            'admin' => 'Admin',
-            
-            'history' => [
-                'title' => 'Historique',
-                'type' => 'Type',
-                'title' => 'Titre',
-                'date' => 'Date',
-                'status' => 'Statut',
-                'offer' => 'Offre',
-                'demand' => 'Demande',
-                'active' => 'Actif',
-                'pending' => 'En attente',
-                'no_offers' => 'Aucune offre créée',
-                'no_demands' => 'Aucune demande faite',
-                'close' => 'Fermer',
-            ],
-            'info' => 'Informations',
+    'name_required' => 'The name is required',
+    'email_required' => 'The email is required',
+    'email_invalid' => 'The email is invalid',
+    'email_unique' => 'This email is already used',
+    'phone_required' => 'The phone is required',
+    'role_required' => 'The role is required',
+    'region_required' => 'The region is required',
+    'city_required' => 'The city is required',
+    'password_required' => 'The password is required',
+    'password_min' => 'The password must contain at least 8 characters',
+    'password_confirmed' => 'The passwords do not match',
+    'avatar_image' => 'The file must be an image',
+    'avatar_max' => 'The image must not exceed 2 MB',
+    'role_exists' => 'The selected role does not exist',
+    'update_title' => 'Update',
+    'update_success' => 'The user ',
+    'create_title' => 'Creation',
+    'create_success' => 'The user ',
+
+    'management' => [
+        'title' => 'Gestion des Utilisateurs',
+        'subtitle' => 'Administrez tous les comptes de la plateforme AgroSpace',
+    ],
+    'export' => 'Exporter',
+    'new_user' => 'Nouvel Utilisateur',
+
+    'stats' => [
+        'total' => 'Total',
+        'active' => 'Actifs',
+        'producers' => 'Producteurs',
+        'consumers' => 'Consommateurs',
+        'verified' => 'Vérifiés',
+        'this_month' => 'Ce mois',
+    ],
+
+    'charts' => [
+        'role_distribution' => 'Répartition par Rôle',
+        'top_regions' => 'Top 5 Régions',
+        'growth' => 'Croissance (6 mois)',
+        'users' => 'Utilisateurs',
+        'new_users' => 'Nouveaux utilisateurs',
+    ],
+
+    'search' => [
+        'placeholder' => 'Rechercher par nom, email ou téléphone...',
+    ],
+
+    'filters' => [
+        'all_roles' => 'Tous les rôles',
+        'producers' => '👨‍🌾 Producteurs',
+        'consumers' => '🛒 Consommateurs',
+        'admins' => '👨‍💼 Administrateurs',
+        'all_statuses' => 'Tous les statuts',
+        'active' => '✅ Actifs',
+        'suspended' => '⏸ Suspendus',
+        'banned' => '🚫 Bannis',
+        'all_regions' => 'Toutes les régions',
+        'reset' => 'Réinitialiser',
+    ],
+
+    'selected_count' => '{1} :count utilisateur sélectionné|[2,*] :count utilisateurs sélectionnés',
+
+    'actions' => [
+        'send_email' => 'Envoyer email',
+        'suspend' => 'Suspendre',
+        'delete' => 'Supprimer',
+        'view_profile' => 'Voir le profil',
+        'edit' => 'Modifier',
+        'more_actions' => 'Plus d\'actions',
+        'verify_user' => 'Vérifier l\'utilisateur',
+        'reactivate' => 'Réactiver',
+        'view_history' => 'Voir l\'historique',
+    ],
+
+    'roles' => [
+        'producer' => '👨‍🌾 Producteur',
+        'consumer' => '🛒 Consommateur',
+        'admin' => '👨‍💼 Admin',
+        'user' => 'Utilisateur',
+    ],
+
+    'table' => [
+        'user' => 'Utilisateur',
+        'role' => 'Rôle',
+        'status' => 'Statut',
+        'location' => 'Localisation',
+        'last_login' => 'Dernière connexion',
+        'actions' => 'Actions',
+    ],
+
+    'location' => [
+        'na' => 'N/A',
+    ],
+
+    'never_connected' => 'Jamais connecté',
+    'offers' => 'offres',
+    'demands' => 'demandes',
+    'no_users_found' => 'Aucun utilisateur trouvé',
+    'try_modify_search' => 'Essayez de modifier vos critères de recherche',
+    'admin' => 'Admin',
+
+    'history' => [
+        'title' => 'Historique',
+        'type' => 'Type',
+        'title' => 'Titre',
+        'date' => 'Date',
+        'status' => 'Statut',
+        'offer' => 'Offre',
+        'demand' => 'Demande',
+        'active' => 'Actif',
+        'pending' => 'En attente',
+        'no_offers' => 'Aucune offre créée',
+        'no_demands' => 'Aucune demande faite',
+        'close' => 'Fermer',
+    ],
+    'info' => 'Informations',
     'activity' => 'Activité',
     'history' => 'Historique',
     'contact_info' => 'Coordonnées',
@@ -193,4 +193,4 @@ return [
     'send_email' => 'Envoyer un email',
     'edit' => 'Modifier',
     'close' => 'Fermer',
-        ];
+];

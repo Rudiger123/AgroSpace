@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 
 #[Layout('layouts.app')]
-#[Title(__('users.management.title') . ' - Agrospace')]
+#[Title("users management")]
 class UsersManagement extends Component
 {
     use WithPagination;

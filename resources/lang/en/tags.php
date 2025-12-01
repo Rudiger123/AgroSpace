@@ -8,44 +8,44 @@ return [
     'export_csv' => 'Export CSV',
     'import_csv' => 'Import CSV',
     'delete_selected' => 'Delete Selection (:count)',
-    
+
     'search_placeholder' => 'Search for a tag...',
     'sort_by_name' => 'Sort by name',
     'sort_by_date' => 'Creation date',
     'sort_by_color' => 'Color',
     'sort_by_status' => 'Status',
     'sort_order' => 'Order',
-    
+
     'filter_all' => 'All tags',
     'filter_active' => 'Active',
     'filter_inactive' => 'Inactive',
-    
+
     'stats' => [
         'total' => 'Total Tags',
         'active' => 'Active',
         'selected' => 'Selected',
         'colors' => 'Colors',
     ],
-    
+
     'default_color' => 'Default color',
     'status' => [
         'active' => 'Active',
         'inactive' => 'Inactive',
     ],
-    
+
     'actions' => [
         'edit' => 'Edit',
         'duplicate' => 'Duplicate',
         'delete' => 'Delete',
     ],
-    
+
     'modal' => [
         'edit_title' => 'Edit Tag',
         'edit_subtitle' => 'Update tag information',
         'create_title' => 'Create Tag',
         'create_subtitle' => 'Add a new tag to your collection',
     ],
-    
+
     'form' => [
         'name' => 'Name',
         'name_placeholder' => 'Enter tag name...',
@@ -58,7 +58,7 @@ return [
         'status' => 'Tag status',
         'status_description' => 'Enable or disable this tag',
     ],
-    
+
     'buttons' => [
         'cancel' => 'Cancel',
         'update' => 'Update',
@@ -67,29 +67,29 @@ return [
         'import' => 'Import',
         'delete_all' => 'Delete All',
     ],
-    
+
     'delete_modal' => [
         'title' => 'Confirm Deletion',
         'message' => 'Are you sure you want to delete this tag? This action is irreversible.',
     ],
-    
+
     'import_modal' => [
         'title' => 'Import Tags',
         'file_label' => 'CSV File',
         'click_to_choose' => 'Click to choose a CSV file',
         'format' => 'Format: name, description, color, status',
     ],
-    
+
     'bulk_delete_modal' => [
         'title' => 'Multiple Deletion',
         'message' => 'Are you sure you want to delete these tags?',
         'tags_count' => 'tags',
     ],
-    
+
     'notifications' => [
         'color_copied' => 'Color copied!',
     ],
- 
+
         'validation' => [
             'name_required' => 'Tag name is required.',
             'slug_required' => 'Slug is required.',

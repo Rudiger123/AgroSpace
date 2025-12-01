@@ -31,7 +31,6 @@ use Livewire\Volt\Volt;
  * Les Routes protegées
  */
 Route::middleware(['auth', 'verified', '2fa'])->group(function () {
-
     /**
      * Routes accéssible par l'utilisateur connécté
      */

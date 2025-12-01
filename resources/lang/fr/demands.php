@@ -109,7 +109,7 @@ return [
         'demand_expired' => 'La demande a expiré',
         'one_day_left' => '1 jour restant',
         'days_left' => 'jours restants',
-    
+
             'title' => 'Gestion des Demandes',
             'subtitle' => 'Supervision et modération des demandes utilisateurs',
             'clean_expired' => 'Nettoyer expirées',

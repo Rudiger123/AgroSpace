@@ -57,7 +57,27 @@ class CreateEditUserModal extends Component
     }
 
     protected $messages = [
-        'name.required' => __('users.name_required'),
+        'name.required' => 'The name is required',
+        'email.required' => 'The email is required',
+        'email.invalid' => 'The email is invalid',
+        'email.unique' => 'This email is already used',
+        'phone.required' => 'The phone is required',
+        'role.required' => 'The role is required',
+        'region.required' => 'The region is required',
+        'city.required' => 'The city is required',
+        'password.required' => 'The password is required',
+        'password.min' => 'The password must contain at least 8 characters',
+        'password.confirmed' => 'The passwords do not match',
+        'avatar.image' => 'The file must be an image',
+        'avatar.max' => 'The image must not exceed 2 MB',
+        'role.exists' => 'The selected role does not exist',
+    ];
+
+     // Méthode pour obtenir les messages traduits
+     protected function getTranslatedMessages()
+     {
+         return [
+            'name.required' => __('users.name_required'),
         'email.required' => __('users.email_required'),
         'email.email' => __('users.email_invalid'),
         'email.unique' => __('users.email_unique'),
@@ -71,7 +91,9 @@ class CreateEditUserModal extends Component
         'avatar.image' => __('users.avatar_image'),
         'avatar.max' => __('users.avatar_max'),
         'role.exists' => __('users.role_exists')
-    ];
+         ];
+     }
+ 
 
     #[On('openCreateUserModal')]
     public function openCreate()

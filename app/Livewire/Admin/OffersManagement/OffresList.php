@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin\OffersManagement;
 
-use App\Livewire\Admin\AvisManagement;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Offre;
@@ -43,7 +42,7 @@ class OffresList extends Component
     // Modal notation
     public $showAvisModal = false;
     public $avisproducerId;
-    $avisOffreId;
+    public $avisOffreId;
     public $avisNote = 5;
     public $avisCommentaire = '';
 
@@ -97,7 +96,7 @@ class OffresList extends Component
 
             $response_title = $offre->titre;
             $response_date = $offre->created_at->format('d/m/Y');
-    
+
             $message = Message::create([
                 'reply_id' => null,
                 'conversation_id' => $createdConversation->id,
@@ -109,7 +108,7 @@ class OffresList extends Component
                     'date' => $response_date
                 ]),
             ]);
-    
+
             $createdConversation->updated_at = now();
             $createdConversation->save();
 
@@ -184,7 +183,7 @@ class OffresList extends Component
             ]);
 
             $this->notification($avis);
-            
+
             $this->showAvisModal = false;
             $this->reset(['avisproducerId', 'avisOffreId', 'avisNote', 'avisCommentaire']);
 
